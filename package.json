@@ -1,0 +1,37 @@
+{
+    "devDependencies": {
+        "@symfony/stimulus-bridge": "^2.0.0",
+        "@symfony/webpack-encore": "^1.0.5",
+        "core-js": "^3.0.0",
+        "regenerator-runtime": "^0.13.2",
+        "stimulus": "^2.0.0",
+        "webpack-notifier": "^1.6.0"
+    },
+    "license": "UNLICENSED",
+    "private": true,
+    "scripts": {
+        "dev-server": "encore dev-server",
+        "dev": "encore dev",
+        "watch": "encore dev --watch",
+        "build": "encore production --progress"
+    },
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.2",
+        "@popperjs/core": "^2.6.0",
+        "bootstrap": "^5.0.0-beta2",
+        "bootstrap-editable": "^1.0.1",
+        "ckeditor": "^4.5.6",
+        "copy-webpack-plugin": "^7.0.0",
+        "country-state-city": "^2.0.0",
+        "datatables.net": "^1.10.23",
+        "datatables.net-bs4": "^1.10.23",
+        "datatables.net-buttons-bs4": "^1.6.5",
+        "datatables.net-editor": "^1.6.5",
+        "datatables.net-editor-jqui": "^1.6.3",
+        "expose-loader": "^2.0.0",
+        "jquery": "^3.5.1",
+        "pdfmake": "^0.1.70",
+        "popper.js": "^1.16.1",
+        "webpack-jquery-ui": "^2.0.1"
+    }
+}

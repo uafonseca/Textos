@@ -1,0 +1,72 @@
+{% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+<nav id="sidebar" class="sidebar">
+    <div class="sidebar-content js-simplebar">
+        <a class="sidebar-brand" href="{{ path('app_home_page') }}">
+            <span class="align-middle">CORPLIDERES</span>
+        </a>
+
+        <ul class="sidebar-nav">
+            <li class="sidebar-header">
+                Pages
+            </li>
+            <li class="sidebar-item {% if currentPath == path('admin') %}active{% endif %}">
+                <a class="sidebar-link" href="{{ path('admin') }}">
+                    <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
+                <a href="#auth" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Configuración</span>
+                </a>
+                <ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('system_company') }}">Configuración del sistema</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('system_config') }}">Términos y condiciones</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('role_index') }}">Roles</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('provincia_index') }}">Provincias</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('canton_index') }}">Cantónes</a></li>
+                </ul>
+            </li>
+
+
+            <li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
+                <a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
+                    <i class="align-middle" data-feather="user"></i> <span class="align-middle">Perfil</span>
+                </a>
+            </li>
+
+            {#<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">#}
+                {#<a href="#auth" data-toggle="collapse" class="sidebar-link collapsed">#}
+                    {#<i class="align-middle" data-feather="list"></i> <span class="align-middle">Catálogos sistema</span>#}
+                {#</a>#}
+                {#<ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">#}
+                    {#<li class="sidebar-item"><a class="sidebar-link" href="{{ path('role_index') }}">Roles</a></li>#}
+                    {#<li class="sidebar-item"><a class="sidebar-link" href="{{ path('provincia_index') }}">Provincias</a></li>#}
+                    {#<li class="sidebar-item"><a class="sidebar-link" href="{{ path('canton_index') }}">Cantónes</a></li>#}
+                {#</ul>#}
+            {#</li>#}
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="pages-settings.html">
+                    <i class="align-middle" data-feather="settings"></i> <span class="align-middle">Settings</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="pages-invoice.html">
+                    <i class="align-middle" data-feather="credit-card"></i> <span class="align-middle">Invoice</span>
+                </a>
+            </li>
+
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="pages-blank.html">
+                    <i class="align-middle" data-feather="book"></i> <span class="align-middle">Blank</span>
+                </a>
+            </li>
+
+        </ul>
+    </div>
+</nav>
+
+<div class="main">
+    {{ include('partials/top-menu.html.twig') }}

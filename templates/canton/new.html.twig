@@ -1,0 +1,11 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}New Canton{% endblock %}
+
+{% block body %}
+    <h1>Nuevo Cantón</h1>
+
+    {{ include('canton/_form.html.twig') }}
+    <br>
+    <a href="{{ path('canton_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i>Regresar</a>
+{% endblock %}

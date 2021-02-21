@@ -1,0 +1,13 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}Edit Role{% endblock %}
+
+{% block body %}
+    <h1>Editar Rol</h1>
+
+    {{ include('role/_form.html.twig', {'button_label': 'Actualizar'}) }}
+    <br>
+    <a href="{{ path('role_index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Regresar</a>
+    <br>
+    {{ include('role/_delete_form.html.twig') }}
+{% endblock %}

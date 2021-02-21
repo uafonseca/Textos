@@ -1,0 +1,6 @@
+body {
+    background-color: lightgray;
+}
+.badge-danger{
+    color: red!important;
+}

@@ -1,0 +1,154 @@
+{% extends 'base.html.twig' %}
+{% block main %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+    <div class="container-fluid">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-light mb-3 mt-3">
+                    <div class="card-body">
+                        <div class="card-header mb-3">Datos personales</div>
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.name, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.firstName, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.lastName, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.scoholName, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.country, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.provincia, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.canton, {'attr': {'class': 'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.password.first, {'attr': {'class':
+                                        'form-control'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.password.second, {'attr': {'class':
+                                        'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_group">
+                            <div class="col-md-6 mb-3">
+                                {{ form_row(form.roles) }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="student" class="col-md-6">
+                <div class="card bg-light mb-3 mt-3">
+                    <div class="card-body">
+                        <div class="card-header mb-3">Datos del estudiante</div>
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.student.brithday, {'attr': {'class': 'student'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.student.mentorName, {'attr': {'class': 'student'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.student.mentorFirstName, {'attr': {'class': 'student'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.student.mentorLastName, {'attr': {'class': 'student'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.student.mentorDNI, {'attr': {'class': 'student'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.student.mentorPhone, {'attr': {'class': 'student'}}) }}
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-12 mb-3">
+                                    {{ form_row(form.student.scoholOthers, {'attr': {'class': 'student'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="teacher" class="col-md-6 d-none">
+                <div class="card bg-light mb-3 mt-3">
+                    <div class="card-body">
+                        <div class="card-header mb-3">Datos del Profesor</div>
+                        <div class="form_group">
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.profesor.dni, {'attr': {'class': 'profesor'}}) }}
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    {{ form_row(form.profesor.phone, {'attr': {'class': 'profesor'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 p-3">
+                <div class="form-group">
+                    <div class="col-md-8 col-md-offset-4" style="margin-top:5px;">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-btn fa-user"></i> Register
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <script> const url_canton = '{{ path('canton_all') }}'</script>
+    {{ encore_entry_script_tags('registration.index') }}
+{% endblock %}

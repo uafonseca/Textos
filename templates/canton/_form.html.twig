@@ -1,0 +1,8 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 col-sm-12">{{ form_row(form.nombre) }}</div>
+        <div class="col-md-6 col-sm-12">{{ form_row(form.provincia) }}</div>
+    </div>
+<br>
+    <button class="btn btn-success"><i class="fa fa-save"></i> {{ button_label|default('Guardar') }}</button>
+{{ form_end(form) }}

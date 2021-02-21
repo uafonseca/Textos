@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Canton{% endblock %}
+
+{% block body %}
+    <h1>Canton</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ canton.id }}</td>
+            </tr>
+            <tr>
+                <th>Nombre</th>
+                <td>{{ canton.nombre }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('canton_index') }}">back to list</a>
+
+    <a href="{{ path('canton_edit', {'id': canton.id}) }}">edit</a>
+
+    {{ include('canton/_delete_form.html.twig') }}
+{% endblock %}
