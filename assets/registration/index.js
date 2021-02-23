@@ -21,7 +21,7 @@ app.registration = {
         roleActions: () => {
             let student = $('#student');
             let teacher = $('#teacher');
-            $('form[name="user"] input[id="user_roles_0"]').on('change', '', function (e) {
+            $('form[name="user"] input[id="user_roles_1"]').on('change', '', function (e) {
                 const scope = $(this);
                 if (scope.filter(':checked').val()) {
 
@@ -39,7 +39,7 @@ app.registration = {
                 }
             });
 
-            $('form[name="user"] input[id="user_roles_1"]').on('change', '', function (e) {
+            $('form[name="user"] input[id="user_roles_2"]').on('change', '', function (e) {
                 const scope = $(this);
                 if (scope.filter(':checked').val()) {
                     if (!student.hasClass('d-none'))

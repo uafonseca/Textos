@@ -27,8 +27,7 @@
 				'class' => Canton::class,
 				'query_builder' => function(EntityRepository $repository) use ($id){
 					return $repository->createQueryBuilder('canton')
-						->innerJoin('canton.provincia', 'provincia')
-						->where('provincia.id = :provincia')
+						->where('canton.provincia = :provincia')
 						->setParameter('provincia', $id)
 						;
 				},

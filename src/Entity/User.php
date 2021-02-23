@@ -5,7 +5,8 @@
 	use App\Repository\UserRepository;
 	use App\Traits\UuidEntityTrait;
 	use Doctrine\Common\Collections\ArrayCollection;
-	use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 	use Symfony\Component\Security\Core\User\UserInterface;
 	use Symfony\Component\Uid\Uuid;
 	use Symfony\Component\Validator\Constraints as Assert;
@@ -62,7 +63,7 @@
 		/**
 		 * @ORM\OneToMany(targetEntity=Role::class, mappedBy="users")
 		 */
-		private $roles;
+		private $rolesObject;
 		
 		/**
 		 * @var string The hashed password
@@ -106,7 +107,7 @@
 		 */
 		public function __construct ()
 		{
-			$this->roles = new ArrayCollection();
+			$this->rolesObject = new ArrayCollection();
 			$this->uuid = Uuid::v1 ();
 		}
 		
@@ -144,8 +145,8 @@
 		public function getRoles (): array
 		{
 			$rolenames = [];
-			foreach ($this->roles as $role)
-				if ($role instanceof Role)
+			foreach ($this->rolesObject as $role)
+			 if ($role instanceof Role)
 					$rolenames [] = $role->getRolename ();
 			
 			return count ($rolenames) > 0 ? $rolenames : [ 'ROLE_USER' ];
@@ -156,21 +157,24 @@
 		 *
 		 * @return User
 		 */
-		public function addRole (Role $role): self
+		public function addRoleObj (Role $role): self
 		{
-			if (!$this->roles->contains ($role)) {
-				$this->roles->add ($role);
-			}
+			if ( $this->rolesObject instanceof Collection && !$this->rolesObject->contains ($role)) {
+				dump('llego');die;
+				$this->rolesObject->add ($role);
+			}else if(is_array($this->rolesObject))
+				$this->rolesObject[] = $role;
+			return $this;
 		}
 		
 		/**
-		 * @param $roles
+		 * @param $rolesObject
 		 *
 		 * @return User
 		 */
-		public function setRoles ($roles): self
+		public function setRoles ($rolesObject): self
 		{
-			$this->roles = $roles;
+			$this->rolesObject = $rolesObject;
 			
 			return $this;
 		}

@@ -28,18 +28,22 @@ class CantonController extends AbstractController
 	
 	
 	/**
+     * @param \Symfony\Component\HttpFoundation\Request $request
 	 * @Route("/all", name="canton_all")
 	 */
-    public function finAll(CantonRepository $cantonRepository){
-    	$array = [];
-    	
-    	foreach ($cantonRepository->findAll () as $canton){
-    		$array[] = [
-    			'id' => $canton->getId (),
-			    'name' => $canton->getNombre ()
-		    ];
-	    }
-    	return new JsonResponse($array);
+    public function finAll(CantonRepository $cantonRepository, Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $id = $request->request->get('id');
+        $canton = $em->getRepository(Canton::class)->findBy(['provincia'=>$id]);
+        $arr = [];
+        foreach($canton as $c){
+            $arr[] = [
+                'id' => $c->getId(),
+                'name' => $c->getNombre(),
+            ];
+
+        }
+        return new JsonResponse($arr);
     }
 
     /**

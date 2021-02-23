@@ -1,8 +1,9 @@
 <?php
 	
 	namespace App\Controller;
-	
-	use App\Entity\User;
+
+use App\Entity\Role;
+use App\Entity\User;
 	use App\Form\UserType;
 	use App\Repository\RoleRepository;
 	use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,14 +33,14 @@
 			
 			if ($form->isSubmitted () && $form->isValid ()) {
 				// Encode the new users password
-				$user->setPassword ($this->passwordEncoder->encodePassword ($user, $user->getPassword ()));
+				$password = $this->passwordEncoder->encodePassword ($user, $user->getPassword());
+				$user->setPassword ($password);
 				
 				$userRoleName = $form->get ('roles')->getData ();
 				
 				$role = $repository->findByName ($userRoleName);
 				
-				if ($role)
-					$user->addRole ($role);
+				if($role instanceof Role) $user->addRoleObj ($role);
 				
 				// Save
 				$em = $this->getDoctrine ()->getManager ();
