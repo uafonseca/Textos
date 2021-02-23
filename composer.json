@@ -49,6 +49,8 @@
         "vich/uploader-bundle": "^1.16"
     },
     "require-dev": {
+        "deployer/deployer": "^6.8",
+        "deployer/recipes": "^6.2",
         "symfony/browser-kit": "^5.2",
         "symfony/css-selector": "^5.2",
         "symfony/debug-bundle": "^5.2",

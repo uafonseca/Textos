@@ -1,0 +1,33 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Level index
+{% endblock %}
+
+{% block body %}
+	<h1>Niveles</h1>
+
+	<table class="table table-bordered table-hover">
+		<thead>
+			<tr>
+				<th>Nombre</th>
+				<th>Acciones</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for level in levels %}
+				<tr>
+					<td>{{ level.name }}</td>
+					<td>
+						<a href="{{ path('level_edit', {'id': level.id}) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+					</td>
+				</tr>
+			{% else %}
+				<tr>
+					<td colspan="4">no records found</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+
+	<a href="{{ path('level_new') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Adicionar</a>
+{% endblock %}

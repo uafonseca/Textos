@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}New Level{% endblock %}
+
+{% block body %}
+    <h1>Nuevo nivel</h1>
+
+    {{ include('level/_form.html.twig') }}
+        <br>
+    <a href="{{ path('level_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+{% endblock %}

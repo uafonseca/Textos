@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Editar{% endblock %}
+
+{% block body %}
+    <h1>Editar Etapa escolar</h1>
+
+    {{ include('school_stage/_form.html.twig', {'button_label': 'Editar'}) }}
+    <br>
+    <a href="{{ path('school_stage_index') }}"class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+    <br>
+    {{ include('school_stage/_delete_form.html.twig') }}
+{% endblock %}

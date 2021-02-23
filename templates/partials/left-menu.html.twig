@@ -29,22 +29,22 @@
             </li>
 
 
-            {# <li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
+            <li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
                 <a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
                     <i class="align-middle" data-feather="user"></i> <span class="align-middle">Perfil</span>
                 </a>
-            </li> #}
+            </li> 
 
-            {#<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">#}
-                {#<a href="#auth" data-toggle="collapse" class="sidebar-link collapsed">#}
-                    {#<i class="align-middle" data-feather="list"></i> <span class="align-middle">Catálogos sistema</span>#}
-                {#</a>#}
-                {#<ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">#}
-                    {#<li class="sidebar-item"><a class="sidebar-link" href="{{ path('role_index') }}">Roles</a></li>#}
-                    {#<li class="sidebar-item"><a class="sidebar-link" href="{{ path('provincia_index') }}">Provincias</a></li>#}
-                    {#<li class="sidebar-item"><a class="sidebar-link" href="{{ path('canton_index') }}">Cantónes</a></li>#}
-                {#</ul>#}
-            {#</li>#}
+            <li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
+                <a href="#catalogos" data-toggle="collapse" class="sidebar-link collapsed">
+                    <i class="align-middle" data-feather="list"></i> <span class="align-middle">Catálogos</span>
+                </a>
+                <ul id="catalogos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('category_index') }}">Categorías</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('school_stage_index') }}">Etapa escolar</a></li>
+                    <li class="sidebar-item"><a class="sidebar-link" href="{{ path('level_index') }}">Nivel</a></li>
+                </ul>
+            {# {#</li> #}
 
             <li class="sidebar-item">
                 <a class="sidebar-link" href="pages-settings.html">

@@ -1,40 +1,82 @@
 <?php
+
 namespace Deployer;
 
-require 'recipe/symfony.php';
+require 'recipe/symfony4.php';
+require 'recipe/yarn.php';
 
 // Project name
-set('application', 'my_project');
+set('lideresv2', 'my_project');
 
 // Project repository
 set('repository', 'https://github.com/uafonseca/lideres.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true); 
+set('git_tty', true);
 
 // Shared files/dirs between deploys 
 add('shared_files', []);
-add('shared_dirs', []);
+
+add('shared_dirs', ['var/log', 'var/sessions', 'vendor','public/uploads']);
 
 // Writable dirs by web server 
-add('writable_dirs', []);
+add('writable_dirs', ['var/log','var/cache','var/sessions', 'public/']);
 
 
 // Hosts
 
-host('project.com')
-    ->set('deploy_path', '~/{{application}}');    
-    
-// Tasks
+host('23.239.26.54')
+    ->set('branch', 'main')
+    ->user('deploy')
+    ->set('deploy_path', '/var/www/html/v2Lideres');
 
-task('build', function () {
-    run('cd {{release_path}} && build');
+
+set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-suggest');
+
+set('writable_mode', 'chmod');
+
+set('writable_use_sudo', true);
+
+set('writable_chmod_recursive', true);
+
+set('release_name', function () {
+    return date('YmdHis');
 });
 
-// [Optional] if deploy fails automatically unlock.
+set('keep_releases', 2);
+
+set('env', [
+    'APP_ENV' => 'production',
+]);
+
+set('release_version_text', function () {
+    $release = get('branch');
+    if (input()->hasOption('tag') && !empty(input()->getOption('tag'))) {
+        $release = input()->getOption('tag');
+    }
+    return $release;
+});
+
+// Tasks
+
+
+desc('Compile assets in production');
+task('yarn:run:production', 'yarn run encore production');
+
+desc('Database update');
+task('database:update', function () {
+    run('php {{bin/console}} doctrine:schema:update --force');
+});
+
+desc('Publish assets');
+task('assets:install', 'php {{bin/console}} assets:install --symlink public');
+
+task('build', [
+    'database:update',
+    'assets:install',
+    'yarn:install',
+    'yarn:run:production',
+]);
+
+after('deploy:vendors', 'build');
 after('deploy:failed', 'deploy:unlock');
-
-// Migrate database before symlink new release.
-
-before('deploy:symlink', 'database:migrate');
-

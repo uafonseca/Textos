@@ -1,0 +1,12 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}New SchoolStage{% endblock %}
+
+{% block body %}
+    <h1>Nueva etapa escolar</h1>
+
+    {{ include('school_stage/_form.html.twig') }}
+    <br>
+    <a href="{{ path('school_stage_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+{% endblock %}

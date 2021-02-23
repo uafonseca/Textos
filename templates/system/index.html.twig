@@ -1,6 +1,7 @@
 {% extends 'layout.html.twig' %}
 {% form_theme formTerms 'bootstrap_4_layout.html.twig' %}
 {% block body %}
+    {{form_start(formTerms)}}
     <div class="row">
         <div class="col-12">{{ form_row(formTerms.terms) }}</div>
         <div class="col-12">{{ form_row(formTerms.privacy) }}</div>
@@ -8,4 +9,5 @@
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
         </div>
     </div>
+    {{ form_end(formTerms)}}
 {% endblock %}

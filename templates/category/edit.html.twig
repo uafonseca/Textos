@@ -1,0 +1,14 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Edit Category{% endblock %}
+
+{% block body %}
+    <h1>Editar categoría</h1>
+
+    {{ include('category/_form.html.twig', {'button_label': 'Actualizar'}) }}
+    </br>
+    <a href="{{ path('category_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+    </br>
+    {{ include('category/_delete_form.html.twig') }}
+{% endblock %}
