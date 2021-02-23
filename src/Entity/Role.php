@@ -29,7 +29,7 @@ class Role
     private $rolename;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="roles")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rolesObject")
      */
     private $users;
 	
@@ -70,4 +70,9 @@ class Role
 
         return $this;
     }
+    
+    public function __toString(){
+        return $this->rolename;
+    }
+
 }
