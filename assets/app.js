@@ -20,9 +20,11 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-editable'
 import 'datatables.net-buttons-bs4'
 import 'popper.js'
+import 'select2'
+// import 'select2'
 import './core/core'
 import './datatables/index'
-
+import './core/plugins'
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 

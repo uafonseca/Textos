@@ -73,15 +73,8 @@ class UserType extends AbstractType
 				'multiple' => false,
 				'expanded' => true,
 				'label' => 'Registrarse como',
-				// 'choices' => [
-				// 	'Estudiante' => 'ROLE_USER',
-				// 	'Profesor' => 'ROLE_ADMIN',
-				// ],
-
+			
 			])
-			->addEventSubscriber(new AddProvinciaFieldListener())
-
-			->addEventSubscriber(new AddCantonFieldListener())
 
 			->add('password', RepeatedType::class, [
 				'type' => PasswordType::class,
@@ -97,15 +90,85 @@ class UserType extends AbstractType
 			->add('lastName', TextType::class, [
 				'label' => 'Segundo apellido'
 			])
-			->add('canton', EntityType::class, [
+			->add('canton', ChoiceType::class, [
 				'label' => 'Ciudad',
-				'class' => Canton::class
+				'choices' => []
+			])
+			->add('country', ChoiceType::class, [
+				'label' => 'Pais',
+				'choices' => []
+			])
+			->add('provincia', ChoiceType::class, [
+				'label' => 'Provincia',
+				'choices' => []
 			])
 			->add('scoholName', TextType::class, [
 				'label' => 'Nombre de la institución'
 			])
 			->add('student', EstudianteType::class)
+
 			->add('profesor', ProfesorType::class);
+		$builder->addEventListener(
+			FormEvents::PRE_SUBMIT,
+			function (FormEvent $event) {
+
+				$form = $event->getForm();
+
+				$data = $event->getData()['provincia'];
+
+				$choices = array();
+
+				if (is_array($data)) {
+					foreach ($data as $choice) {
+						$choices[$choice] = $choice;
+					}
+				} else {
+					$choices[$data] = $data;
+				}
+				$form->add('provincia', ChoiceType::class, array('choices' => $choices));
+			}
+		);
+		$builder->addEventListener(
+			FormEvents::PRE_SUBMIT,
+			function (FormEvent $event) {
+
+				$form = $event->getForm();
+
+				$data = $event->getData()['canton'];
+
+				$choices = array();
+
+				if (is_array($data)) {
+					foreach ($data as $choice) {
+						$choices[$choice] = $choice;
+					}
+				} else {
+					$choices[$data] = $data;
+				}
+				$form->add('canton', ChoiceType::class, array('choices' => $choices));
+			}
+		);
+
+		$builder->addEventListener(
+			FormEvents::PRE_SUBMIT,
+			function (FormEvent $event) {
+
+				$form = $event->getForm();
+
+				$data = $event->getData()['country'];
+
+				$choices = array();
+
+				if (is_array($data)) {
+					foreach ($data as $choice) {
+						$choices[$choice] = $choice;
+					}
+				} else {
+					$choices[$data] = $data;
+				}
+				$form->add('country', ChoiceType::class, array('choices' => $choices));
+			}
+		);
 
 		$builder->get('roles')
 			->addModelTransformer(new CallbackTransformer(

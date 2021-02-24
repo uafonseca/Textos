@@ -87,12 +87,14 @@ use Doctrine\ORM\Mapping as ORM;
 		private $profesor;
 		
 		/**
-		 * @ORM\ManyToOne(targetEntity=Provincia::class, inversedBy="users")
+		 *
+		 * @ORM\Column(type="string", length=180)
 		 */
 		private $provincia;
 		
 		/**
-		 * @ORM\ManyToOne(targetEntity=Canton::class, inversedBy="users")
+		 *
+		 * @ORM\Column(type="string", length=180)
 		 */
 		private $canton;
 		
@@ -357,7 +359,7 @@ use Doctrine\ORM\Mapping as ORM;
 			return $this->provincia;
 		}
 		
-		public function setProvincia (?Provincia $provincia): self
+		public function setProvincia ( $provincia): self
 		{
 			$this->provincia = $provincia;
 			
@@ -369,7 +371,7 @@ use Doctrine\ORM\Mapping as ORM;
 			return $this->canton;
 		}
 		
-		public function setCanton (?Canton $canton): self
+		public function setCanton ( $canton): self
 		{
 			$this->canton = $canton;
 			
