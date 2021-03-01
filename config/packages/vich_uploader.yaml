@@ -7,3 +7,8 @@ vich_uploader:
             upload_destination: '%kernel.project_dir%/public/uploads/images/users'
             namer: vich_uploader.namer_hash
             delete_on_update: true
+        pdf_file:
+            uri_prefix: /uploads/pdf
+            upload_destination: '%kernel.project_dir%/public/uploads/pdf'
+            namer: vich_uploader.namer_hash
+            delete_on_update: true

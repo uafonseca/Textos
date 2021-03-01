@@ -78,6 +78,7 @@
 		 */
 		protected $updateAt;
 		
+		
 		/**
 		 * Image constructor.
 		 */

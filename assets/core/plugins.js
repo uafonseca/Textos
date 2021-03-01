@@ -25,18 +25,18 @@ app.plugins = {
 
         return $(selector).select2(config);
     },
-    // initFileInput: function (selector) {
-    //     $(selector).fileinput({
-    //         showCaption: false,
-    //         showPreview: false,
-    //         showUploadedThumbs: false,
-    //         showUpload: false,
-    //         showCancel: false,
-    //         showRemove: false,
-    //         browseLabel: '&nbsp;Importar',
-    //         browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
-    //     });
-    // },
+    initFileInput: function (selector) {
+        $(selector).fileinput({
+            showCaption: false,
+            showPreview: false,
+            showUploadedThumbs: false,
+            showUpload: false,
+            showCancel: false,
+            showRemove: false,
+            browseLabel: '&nbsp;Importar',
+            browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+        });
+    },
     // initNewFileInput: function (selector, imageDefault, style = '') {
 
     //     let myStyle = style === '' ? 'width: "100px", height: "92px"' : 'width:' + style.width;

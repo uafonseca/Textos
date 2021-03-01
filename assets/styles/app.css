@@ -1,7 +1,12 @@
 @import "~select2/dist/css/select2.min.css";
+
 body {
     background-color: lightgray;
 }
 .badge-danger{
     color: red!important;
+}
+.disabled{
+    pointer-events:none;
+    opacity: 0.4;
 }

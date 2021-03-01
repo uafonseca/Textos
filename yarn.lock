@@ -1490,6 +1490,20 @@ bootstrap-editable@^1.0.1:
   resolved "https://registry.yarnpkg.com/bootstrap-editable/-/bootstrap-editable-1.0.1.tgz#445a671b5ab5fed77e8c7f4e5ffbc796c60b5023"
   integrity sha1-RFpnG1q1/td+jH9OX/vHlsYLUCM=
 
+bootstrap-fileinput@^5.1.4:
+  version "5.1.4"
+  resolved "https://registry.yarnpkg.com/bootstrap-fileinput/-/bootstrap-fileinput-5.1.4.tgz#3447ff4020a04ca1054e9d06d3f697f8dadc5619"
+  integrity sha512-Vvr0ZNoL2AS3Ghu21tKjTBgyqdHh9dtcjWJRwEvRkzkuoraeycHzbSqDUCBAgzV0ET8bE7kol/+C0jGBSm5sMQ==
+  dependencies:
+    bootstrap ">= 3.4.1"
+    jquery ">= 1.9.0"
+    opencollective-postinstall "^2.0.2"
+
+"bootstrap@>= 3.4.1":
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.0.tgz#97b9f29ac98f98dfa43bf7468262d84392552fd7"
+  integrity sha512-Io55IuQY3kydzHtbGvQya3H+KorS/M9rSNyfCGCg9WZ4pyT/lCxIlpJgG1GXW/PswzC84Tr2fBYi+7+jFVQQBw==
+
 bootstrap@^5.0.0-beta2:
   version "5.0.0-beta2"
   resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.0.0-beta2.tgz#ab1504a12807fa58e5e41408e35fcea42461e84b"
@@ -3530,7 +3544,7 @@ jquery-ui@^1.12.1:
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
   integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
 
-jquery@>=1.7, jquery@^3.3.1, jquery@^3.5.1:
+"jquery@>= 1.9.0", jquery@>=1.7, jquery@^3.3.1, jquery@^3.5.1:
   version "3.5.1"
   resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.5.1.tgz#d7b4d08e1bfdb86ad2f1a3d039ea17304717abb5"
   integrity sha512-XwIBPqcMn57FxfT+Go5pzySnm4KWkT1Tv7gjrpT1srtf8Weynl6R273VJ5GjkRb51IzMp5nbaPjJXMWeju2MKg==
@@ -4064,6 +4078,11 @@ open@^7.3.0:
   dependencies:
     is-docker "^2.0.0"
     is-wsl "^2.1.1"
+
+opencollective-postinstall@^2.0.2:
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/opencollective-postinstall/-/opencollective-postinstall-2.0.3.tgz#7a0fff978f6dbfa4d006238fbac98ed4198c3259"
+  integrity sha512-8AV/sCtuzUeTo8gQK5qDZzARrulB3egtLzFgteqB2tcT4Mw7B8Kt7JcDHmltjz6FOAHsvTevk70gZEbhM4ZS9Q==
 
 optionator@^0.8.1:
   version "0.8.3"

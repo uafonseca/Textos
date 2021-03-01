@@ -1,5 +1,3 @@
-let csc = require("country-state-city").default;
-
 app.registration = {
   index: {
     initComponents: () => {

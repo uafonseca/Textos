@@ -85,10 +85,10 @@ class UserType extends AbstractType
 				'label' => 'Nombre(s)'
 			])
 			->add('firstName', TextType::class, [
-				'label' => 'Primer Apellido'
+				'label' => 'Apellidos'
 			])
-			->add('lastName', TextType::class, [
-				'label' => 'Segundo apellido'
+			->add('username', TextType::class, [
+				'label' => 'Nombre de usuario'
 			])
 			->add('canton', ChoiceType::class, [
 				'label' => 'Ciudad',

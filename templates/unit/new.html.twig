@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}New Unit{% endblock %}
+
+{% block body %}
+    <h1>Nueva unidad</h1>
+
+    {{ include('unit/_form.html.twig') }}
+
+    <a href="{{ path('unit_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+{% endblock %}
+
+{% block javascripts %}
+    {{ encore_entry_script_tags('unit.form') }}
+{% endblock %}

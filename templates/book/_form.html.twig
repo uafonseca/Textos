@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+<div class="row">
+	<div class="col-md-6 col-sm-12">{{ form_row(form.title)}}
+	</div>
+	<div class="col-md-6 col-sm-12">{{ form_row(form.source)}}
+	</div>
+	<div class="col-md-6 col-sm-12">{{ form_row(form.category)}}
+	</div>
+	<div class="col-md-6 col-sm-12">{{ form_row(form.stage)}}
+	</div>
+	<div class="col-md-6 col-sm-12">{{ form_row(form.level)}}
+	</div>
+	<div class="col-md-6 col-sm-12">{{ form_row(form.portada)}}
+	</div>
+
+	<div class="col-md-6 col-sm-12 mt-3">
+		<div id="url-card" class="card">
+            <div class="card-body">
+            <div class="row">
+                <div class="col-md-10 disabled">{{ form_row(form.link.uri)}}</div>
+                <div class="col-md-2 pt-4">{{ form_row(form.link.active)}}</div>
+            </div>
+            </div>
+        </div>
+	</div>
+
+    <div class="col-md-6 col-sm-12 mt-3">
+		<div id="html-card" class="card">
+            <div class="card-body">
+            <div class="row">
+                <div class="col-md-10 disabled">{{ form_row(form.htmlCode.code)}}</div>
+                <div class="col-md-2 pt-4">{{ form_row(form.htmlCode.active)}}</div>
+            </div>
+            </div>
+        </div>
+	</div>
+</div>
+<button class="btn btn-success"><i class="fa fa-save"></i> {{ button_label|default('Guardar') }}</button>
+{{ form_end(form) }}

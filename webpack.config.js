@@ -23,6 +23,8 @@ Encore
   .addEntry("app", "./assets/app.js")
   .addEntry("jQueryLoader", "./assets/core/jQuery.js")
   .addEntry("registration.index", "./assets/registration/index.js")
+  .addEntry("book.form", "./assets/book/index.js")
+  .addEntry("unit.form", "./assets/unit/index.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   .enableStimulusBridge("./assets/controllers.json")
