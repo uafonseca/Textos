@@ -3539,7 +3539,7 @@ jest-worker@^26.3.0, jest-worker@^26.6.2:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
-jquery-ui@^1.12.1:
+jquery-ui@>=1.0, jquery-ui@^1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
   integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
@@ -5529,6 +5529,18 @@ svgo@^1.0.0:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+symfony-collection-js@^3.0.2:
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/symfony-collection-js/-/symfony-collection-js-3.0.2.tgz#98531c10df5a76e9f5f6ffbfe65645cddf8d5be9"
+  integrity sha512-yGnrFeYm3PWyNA3/ymmISS6uK9qojt4LGYev/RS4+ao5LTtAEUidnyJC1z4LT51BFlrM4bkQB3WfAOgNtmUzyQ==
+
+symfony-collection@ninsuo/symfony-collection:
+  version "2.1.30"
+  resolved "https://codeload.github.com/ninsuo/symfony-collection/tar.gz/61e92c33a86676a812c8dfbcaab45dfdfb0c12ff"
+  dependencies:
+    jquery ">=1.7"
+    jquery-ui ">=1.0"
 
 tapable@^2.0.0, tapable@^2.1.1, tapable@^2.2.0:
   version "2.2.0"

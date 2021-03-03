@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Repository\UnitRepository;
 use App\Traits\UuidEntityTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
 
@@ -30,15 +32,21 @@ class Unit
      */
     private $book;
 
-        /**
+    /**
      * @ORM\OneToOne(targetEntity=PDF::class, cascade={"persist", "remove"})
      */
     private $pdf;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Activity::class, mappedBy="unit", orphanRemoval=true,cascade={"persist"})
+     */
+    private $activities;
+
     public function __construct()
-	{
-		$this->uuid = Uuid::v1();
-	}
+    {
+        $this->uuid = Uuid::v1();
+        $this->activities = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -81,4 +89,38 @@ class Unit
         return $this;
     }
 
+    /**
+     * @return Collection|Activity[]
+     */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
+    }
+
+    public function addActivity(Activity $activity): self
+    {
+        if (!$this->activities->contains($activity)) {
+            $this->activities[] = $activity;
+            $activity->setUnit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeActivity(Activity $activity): self
+    {
+        if ($this->activities->removeElement($activity)) {
+            // set the owning side to null (unless already changed)
+            if ($activity->getUnit() === $this) {
+                $activity->setUnit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

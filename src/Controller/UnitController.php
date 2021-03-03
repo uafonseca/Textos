@@ -37,6 +37,12 @@ class UnitController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($unit);
+
+            /** @var Activity $activity */
+            foreach ($unit->getActivities() as $activity){
+                $activity->setUnit($unit);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('unit_index');
@@ -67,6 +73,12 @@ class UnitController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Activity $activity */
+            foreach ($unit->getActivities() as $activity){
+                $activity->setUnit($unit);
+            }
+            
             $this->getDoctrine()->getManager()->flush();
 
             return $this->redirectToRoute('unit_index');

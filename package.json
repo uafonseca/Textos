@@ -34,6 +34,8 @@
         "pdfmake": "^0.1.70",
         "popper.js": "^1.16.1",
         "select2": "^4.1.0-rc.0",
+        "symfony-collection": "ninsuo/symfony-collection",
+        "symfony-collection-js": "^3.0.2",
         "webpack-jquery-ui": "^2.0.1"
     }
 }

@@ -1,5 +1,5 @@
 {% extends 'layout.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' 'jquery.collection.html.twig' 'theme_templates/theme.unit.html.twig' %}
 
 {% block title %}Edit Unit{% endblock %}
 
@@ -12,3 +12,7 @@
         <br>
     {{ include('unit/_delete_form.html.twig') }}
 {% endblock %}
+{% block javascripts %}
+    {{ encore_entry_script_tags('unit.form') }}
+{% endblock %}
+

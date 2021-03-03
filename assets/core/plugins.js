@@ -172,21 +172,21 @@ app.plugins = {
     //         }
     //     });
     // },
-    // initPrototype: function (selector, options = {}) {
-    //     $(selector).collection({
-    //         add: `<a class="btn btn-primary" href="#"><i class="fa fa-plus"></i> ${options.buttonLabel ? options.buttonLabel : 'Adicionar'}</a>`,
-    //         remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
-    //         allow_up: false,
-    //         allow_down: false,
-    //         allow_duplicate: false,
-    //         add_at_the_end: true,
-    //         after_add: options['afterAdd'],
-    //         init_with_n_elements: options['init_with_n_elements'],
-    //         position_field_selector: options['position_field_selector'],
-    //         prefix: options['prefix'],
-    //         children: options['children']
-    //     });
-    // },
+    initPrototype: function (selector, options = {}) {
+        $(selector).collection({
+            add: `<a class="btn btn-primary" href="#"><i class="fa fa-plus"></i> ${options.buttonLabel ? options.buttonLabel : 'Adicionar'}</a>`,
+            remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
+            allow_up: false,
+            allow_down: false,
+            allow_duplicate: false,
+            add_at_the_end: true,
+            after_add: options['afterAdd'],
+            init_with_n_elements: options['init_with_n_elements'],
+            position_field_selector: options['position_field_selector'],
+            prefix: options['prefix'],
+            children: options['children']
+        });
+    },
     // initDateRangePicker: function (selector, startAt, endAt) {
     //     return $(selector).daterangepicker({
     //         timePicker: false,
