@@ -20,7 +20,7 @@ add('shared_files', []);
 add('shared_dirs', ['var/log', 'var/sessions', 'vendor','public/uploads']);
 
 // Writable dirs by web server 
-add('writable_dirs', ['var/log','var/cache','var/log','var/sessions', 'public/']);
+add('writable_dirs', ['var/log','var/cache','var/sessions', 'public/']);
 
 
 // Hosts
