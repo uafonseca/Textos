@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Datatables\Tables\UserDatatable;
+use App\Entity\Role;
 use App\Entity\User;
 use App\Form\User1Type;
+use App\Form\UserPromoteType;
 use App\Repository\UserRepository;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
@@ -14,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/user")
+ * @Route("/admin/user")
  */
 class UserController extends AbstractController
 {
@@ -113,6 +115,33 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
+    /**
+     * @Route("/{uuid}/promote", name="user_promote", methods={"GET","POST"})
+     */
+    public function promote(Request $request, User $user): Response
+    {
+        $form = $this->createForm(UserPromoteType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Role $role */
+            foreach ($user->getRolesObject() as $role){
+                $role->addUser($user);
+            }
+
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render('user/promote.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
+        ]);
+    }
+
 
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})

@@ -192,7 +192,7 @@
 
 							<div class="form_group">
 								<div class="row">
-									<div class="col-md-6 mb-3">
+									{# <div class="col-md-6 mb-3">
 										{{form_label(form.student.mentorDNI)}}
 										<div class="input-group flex-nowrap">
 											<span class="input-group-text" id="addon-wrapping">
@@ -200,7 +200,7 @@
 											</span>
 											{{ form_widget(form.student.mentorDNI, {'attr': {'class': 'student'}}) }}
 										</div>
-									</div>
+									</div> #}
 									<div class="col-md-6 mb-3">
 										{{form_label(form.student.mentorPhone)}}
 										<div class="input-group flex-nowrap">
@@ -212,21 +212,7 @@
 									</div>
 								</div>
 							</div>
-
-							<div class="form_group">
-								<div class="row">
-									<div class="col-md-12 mb-3">
-										{{form_label(form.student.scoholOthers)}}
-										<div class="input-group flex-nowrap">
-											<span class="input-group-text" id="addon-wrapping">
-												<i class="fa fa-list"></i>
-											</span>
-											{{ form_widget(form.student.scoholOthers, {'attr': {'class': 'student'}}) }}
-											<i id="student-link"></i>
-										</div>
-									</div>
-								</div>
-							</div>
+							<i id="student-link"></i>
 						</div>
 					</div>
 				</div>

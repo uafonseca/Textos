@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\CompanyRepository;
 use Doctrine\ORM\Mapping as ORM;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=CompanyRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Company
 {
+    use TimestampableTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

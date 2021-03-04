@@ -4,18 +4,23 @@ namespace App\Entity;
 
 use App\Repository\RoleRepository;
 use App\Traits\UuidEntityTrait;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=RoleRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Role
 {
-	use UuidEntityTrait;
-	
-	public const ROLE_ADMIN = 'ROLE_ADMIN';
-	public const ROLE_USER = 'ROLE_USER';
+    use UuidEntityTrait;
+    use TimestampableTrait;
+
+    public const ROLE_ADMIN = 'ROLE_ADMIN';
+    public const ROLE_USER = 'ROLE_USER';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -29,20 +34,22 @@ class Role
     private $rolename;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="rolesObject")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="rolesObject")
      */
     private $users;
-	
-	/**
-	 * Role constructor.
-	 */
-	public function __construct ()
-	{
-		$this->uuid = Uuid::v1 ();
-	}
-	
-	
-	public function getId(): ?int
+
+
+    /**
+     * Role constructor.
+     */
+    public function __construct()
+    {
+        $this->uuid = Uuid::v1();
+        $this->users = new ArrayCollection();
+    }
+
+
+    public function getId(): ?int
     {
         return $this->id;
     }
@@ -59,20 +66,38 @@ class Role
         return $this;
     }
 
-    public function getUsers(): ?User
+
+
+    public function __toString()
+    {
+        return $this->rolename;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getUsers(): Collection
     {
         return $this->users;
     }
 
-    public function setUsers(?User $users): self
+    public function addUser(User $user): self
     {
-        $this->users = $users;
+        if (!$this->users->contains($user)) {
+            $this->users[] = $user;
+            $user->addRolesObject($this);
+        }
 
         return $this;
     }
-    
-    public function __toString(){
-        return $this->rolename;
+
+    public function removeUser(User $user): self
+    {
+        if ($this->users->removeElement($user)) {
+            $user->removeRolesObject($this);
+        }
+
+        return $this;
     }
 
 }

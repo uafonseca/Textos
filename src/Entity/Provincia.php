@@ -8,13 +8,17 @@
 	use Doctrine\Common\Collections\Collection;
 	use Doctrine\ORM\Mapping as ORM;
 	use Symfony\Component\Uid\Uuid;
-	
-	/**
+use TimestampableTrait;
+
+/**
 	 * @ORM\Entity(repositoryClass=ProvinciaRepository::class)
+ 	 * @ORM\HasLifecycleCallbacks
+	 * 
 	 */
 	class Provincia
 	{
 		use UuidEntityTrait;
+		use TimestampableTrait;
 		/**
 		 * @ORM\Id()
 		 * @ORM\GeneratedValue()

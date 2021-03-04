@@ -37,25 +37,13 @@ class EstudianteType extends AbstractType
 	
 	            'attr' => ['class'=>'student'],
             ])
-            ->add('mentorDNI',null,[
-	            'label' => 'Documento de identidad representante',
-	
-	            'attr' => ['class'=>'student'],
-	
-	            'constraints' => [
-		            new Regex('/^\d{10}/')
-	            ],
-            ])
+            
             ->add('mentorPhone',NumberType::class,[
 	            'label' => 'Celular',
 	
 	            'attr' => ['class'=>'student'],
             ])
-            ->add('scoholOthers',null,[
-	            'label' => 'Otros',
-	
-	            'attr' => ['class'=>'student'],
-            ])
+            
         ;
     }
 

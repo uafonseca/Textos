@@ -60,7 +60,7 @@
 		 */
 		public static function edit($route): array
 		{
-			return self::default($route, 'fa-pencil text-info', 'action-edit', 'Editar');
+			return self::default($route, 'fa-edit text-info', 'action-edit', 'Editar');
 		}
 		
 		/**

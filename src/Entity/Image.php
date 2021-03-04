@@ -17,6 +17,7 @@
 	 * @Vich\Uploadable
 	 * @ORM\Entity
 	 * @ORM\Table(name="`image`")
+	 * @ORM\HasLifecycleCallbacks
 	 */
 	class Image
 	{

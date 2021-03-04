@@ -7,11 +7,12 @@
 	 */
 	
 	namespace App\Datatables\Tables;
-	
-	
-	use App\Entity\User;
+
+use App\Datatables\Utiles\TableActions;
+use App\Entity\User;
 	use Sg\DatatablesBundle\Datatable\AbstractDatatable;
-	use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
+use Sg\DatatablesBundle\Datatable\Column\Column;
 	use Sg\DatatablesBundle\Datatable\Style;
 	
 	class UserDatatable extends AbstractDatatable
@@ -37,36 +38,36 @@
 			$this->columnBuilder
 				->add ('uuid', Column::class, [
 					'title' => 'uuid',
-//					'visible' => false,
+					'visible' => false,
 				])
-//				->add('grado', VirtualColumn::class, [
-//					'title' => 'Grado/Curso',
-//				])
-//				->add('nombre', Column::class, [
-//					'title' => 'Nombre',
-//				])
-//				->add('uri', Column::class, [
-//					'title' => 'Url',
-//				])
-//				->add(null, ActionColumn::class, [
-//					'title' => $this->translator->trans('sg.datatables.actions.title'),
-//					'actions' => [
-//						TableActions::edit('acceso.edit'),
-//						TableActions::delete('acceso.remove'),
-//						[
-//							'route' => 'redirect_accesos',
-//							'route_parameters' => array_merge(array(
-//								'uuid' => 'uuid'
-//							)),
-//							'icon' => 'fa fa-play cortex-table-action-icon',
-//							'attributes' => [
-//								'target' => '_blank',
-//								'style' => "color:  green;",
-//								'data-tippy-content' => 'Abrir'
-//							]
-//						]
-//					],
-//				])
+				->add('name', Column::class, [
+					'title' => 'Nombre',
+				])
+				->add('firstName', Column::class, [
+					'title' => 'Apellidos',
+				])
+				->add('username', Column::class, [
+					'title' => 'Usuario',
+				])
+				->add('email', Column::class, [
+					'title' => 'Correo',
+				])
+				->add(null, ActionColumn::class, [
+					'title' => $this->translator->trans('sg.datatables.actions.title'),
+					'actions' => [
+						[
+							'route' => 'user_promote',
+							'route_parameters' => array_merge(array(
+								'uuid' => 'uuid'
+							)),
+							'icon' => 'fa fa-cog cortex-table-action-icon',
+							'attributes' => [
+								'style' => "color:  green;",
+								'data-tippy-content' => 'Promover'
+							]
+						]
+					],
+				])
 			;
 		}
 		

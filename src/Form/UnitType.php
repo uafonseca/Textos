@@ -21,7 +21,8 @@ class UnitType extends AbstractType
             ])
         
             ->add('book', EntityType::class,[
-                'class'=> Book::class
+                'class'=> Book::class,
+                'label' => 'Texto'
             ])
 
             ->add('pdf',PdfType::class)

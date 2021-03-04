@@ -3,13 +3,17 @@
 namespace App\Entity;
 
 use App\Repository\ActivityRepository;
+use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=ActivityRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Activity
 {
+    use TimestampableTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

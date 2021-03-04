@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\TermsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=TermsRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Terms
 {
+    use TimestampableTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

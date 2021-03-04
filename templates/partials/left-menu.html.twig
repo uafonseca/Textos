@@ -1,4 +1,5 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
+
 <nav id="sidebar" class="sidebar">
 	<div class="sidebar-content js-simplebar">
 		<a class="sidebar-brand" href="{{ path('app_home_page') }}">
@@ -32,10 +33,7 @@
 						<a class="sidebar-link" href="{{ path('role_index') }}">Roles</a>
 					</li>
 					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ path('provincia_index') }}">Provincias</a>
-					</li>
-					<li class="sidebar-item">
-						<a class="sidebar-link" href="{{ path('canton_index') }}">Cantónes</a>
+						<a class="sidebar-link" href="{{ path('user_index') }}">Permisos</a>
 					</li>
 				</ul>
 			</li>

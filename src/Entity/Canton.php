@@ -10,13 +10,16 @@
 	use Doctrine\ORM\Mapping as ORM;
 	use Symfony\Component\Uid\Uuid;
 	use Symfony\Component\Validator\Constraints as Assert;
-	
-	/**
+use TimestampableTrait;
+
+/**
 	 * @ORM\Entity(repositoryClass=CantonRepository::class)
+	 * @ORM\HasLifecycleCallbacks
 	 */
 	class Canton
 	{
 		use UuidEntityTrait;
+		use TimestampableTrait;
 		/**
 		 * @ORM\Id()
 		 * @ORM\GeneratedValue()

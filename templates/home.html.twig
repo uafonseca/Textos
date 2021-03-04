@@ -1,9 +1,36 @@
 {% extends 'layout.html.twig' %}
 
+{% block stylesheets %}
+    <style type="text/css">
+        .content{
+            padding: 0;
+        }
+    </style>
+{% endblock %}
 {% block main %}
-    <main class="content">
-        <div class="container-fluid p-0">
-            <a href="{{ path('app_login') }}">Entrar</a>
-        </div>
-    </main>
+	<main class="content">
+    {{ include('partials/top-menu.html.twig') }}
+		<div class="main">
+			<div class="container pt-5">
+				<div class="row">
+					{% for item in books %}
+						<div class="col-12 col-md-6 col-lg-4">
+							<div class="card">
+								<img class="card-img-top" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
+								<div class="card-header">
+									<h5 class="card-title mb-0">{{ item.title }}</h5>
+								</div>
+								<div class="card-body">
+									<p class="card-text">{{ item.level }}</p>
+									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                     Detalles </a>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</main>
 {% endblock %}

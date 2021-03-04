@@ -91,7 +91,7 @@ class UserType extends AbstractType
 				'label' => 'Nombre de usuario'
 			])
 			->add('canton', ChoiceType::class, [
-				'label' => 'Ciudad',
+				'label' => 'Canton',
 				'choices' => []
 			])
 			->add('country', ChoiceType::class, [

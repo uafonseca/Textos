@@ -15,36 +15,14 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class User1Type extends AbstractType
+class UserPromoteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-	        ->add ('avatar',ImageType::class,[
-	        	'label' => 'Ávatar',
-		        'required' => false
-	        ])
-	        ->add ('email', EmailType::class)
-	        ->add ('country', null, [
-		        'label' => 'País',
-	        ])
-	        ->add ('name', TextType::class, [
-		        'label' => 'Nombre(s)'
-	        ])
-	        ->add ('firstName', TextType::class, [
-		        'label' => 'Primer Apellido'
-	        ])
-	        ->add ('canton', null, [
-		        'label' => 'Ciudad',
-	        ])
-	        ->add ('city', null, [
-		        'label' => 'Provincia',
-	
-	        ])
-	        ->add ('scoholName', TextType::class, [
-		        'label' => 'Nombre de la institución'
-	        ])
-	        ->add ('Guardar', SubmitType::class)
+	        ->add('rolesObject', null,[
+				'label' => 'Listado de roles'
+			])
         ;
     }
 

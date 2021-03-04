@@ -15,16 +15,19 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use TimestampableTrait;
 
 /**
  * @Vich\Uploadable
  * @ORM\Entity
  * @ORM\Table(name="`pdf`")
  * @Assert\Callback(methods={"validate"})
+ * @ORM\HasLifecycleCallbacks
  */
 class PDF
 {
 	use UuidEntityTrait;
+	use TimestampableTrait;
 	/**
 	 * @var int
 	 *

@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\HtmlCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=HtmlCodeRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class HtmlCode
 {
+    use TimestampableTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

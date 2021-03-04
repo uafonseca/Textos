@@ -4,12 +4,15 @@ namespace App\Entity;
 
 use App\Repository\LinkRepository;
 use Doctrine\ORM\Mapping as ORM;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=LinkRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Link
 {
+    use TimestampableTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

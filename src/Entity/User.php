@@ -11,16 +11,19 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  * @ORM\Table(name="`user`")
  * @UniqueEntity(fields={"username"}, message="Existe un usuario registrado con este nombre")
  * @UniqueEntity(fields={"email"}, message="Existe un correo registrado con este nombre")
+ * @ORM\HasLifecycleCallbacks
  */
 class User implements UserInterface
 {
 	use UuidEntityTrait;
+	use TimestampableTrait;
 	/**
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
@@ -51,7 +54,7 @@ class User implements UserInterface
 	 */
 	protected $name;
 
-		/**
+	/**
 	 *
 	 * @ORM\Column(type="string", length=180)
 	 */
@@ -62,12 +65,6 @@ class User implements UserInterface
 	 * @ORM\Column(type="string", length=180)
 	 */
 	protected $firstName;
-
-
-	/**
-	 * @ORM\OneToMany(targetEntity=Role::class, mappedBy="users")
-	 */
-	private $rolesObject;
 
 	/**
 	 * @var string The hashed password
@@ -107,14 +104,21 @@ class User implements UserInterface
 	 */
 	private $avatar;
 
+	/**
+	 * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
+	 */
+	private $rolesObject;
+
+
 
 	/**
 	 * User constructor.
 	 */
 	public function __construct()
 	{
-		$this->rolesObject = new ArrayCollection();
+
 		$this->uuid = Uuid::v1();
+		$this->rolesObject = new ArrayCollection();
 	}
 
 
@@ -166,7 +170,7 @@ class User implements UserInterface
 	public function addRoleObj(Role $role): self
 	{
 		if ($this->rolesObject instanceof Collection && !$this->rolesObject->contains($role)) {
-			dump('llego');
+
 			die;
 			$this->rolesObject->add($role);
 		} else if (is_array($this->rolesObject))
@@ -359,7 +363,7 @@ class User implements UserInterface
 		return $this;
 	}
 
-	public function getCanton(): ?Canton
+	public function getCanton()
 	{
 		return $this->canton;
 	}
@@ -387,5 +391,29 @@ class User implements UserInterface
 	public function __toString()
 	{
 		return $this->name;
+	}
+
+	/**
+	 * @return Collection|Role[]
+	 */
+	public function getRolesObject(): Collection
+	{
+		return $this->rolesObject;
+	}
+
+	public function addRolesObject(Role $rolesObject): self
+	{
+		if (!$this->rolesObject->contains($rolesObject)) {
+			$this->rolesObject[] = $rolesObject;
+		}
+
+		return $this;
+	}
+
+	public function removeRolesObject(Role $rolesObject): self
+	{
+		$this->rolesObject->removeElement($rolesObject);
+
+		return $this;
 	}
 }

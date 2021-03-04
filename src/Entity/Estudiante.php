@@ -6,13 +6,16 @@ use App\Repository\EstudianteRepository;
 use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
+use TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=EstudianteRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Estudiante
 {
 	use UuidEntityTrait;
+    use TimestampableTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

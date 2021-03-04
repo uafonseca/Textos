@@ -1,34 +1,31 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
-{% block title %}Book{% endblock %}
+{% block title %}
+	{{book.title}}
+{% endblock %}
 
 {% block body %}
-    <h1>Book</h1>
-
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ book.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ book.title }}</td>
-            </tr>
-            <tr>
-                <th>Source</th>
-                <td>{{ book.source }}</td>
-            </tr>
-            <tr>
-                <th>Uuid</th>
-                <td>{{ book.uuid }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('book_index') }}">back to list</a>
-
-    <a href="{{ path('book_edit', {'id': book.id}) }}">edit</a>
-
-    {{ include('book/_delete_form.html.twig') }}
+	<h1>{{ book.title }}</h1>
+	<div class="row">
+		<div class="col-12 col-md-6 col-lg-4">
+			<div class="card">
+				<img class="card-img-top" src="{{ vich_uploader_asset(book.portada , 'imagenFile') }}" alt="Unsplash">
+				<div class="card-header">
+					<h5 class="card-title mb-0">{{ book.title }}</h5>
+				</div>
+				<div class="card-body">
+					<p class="card-text">{{ book.level }}</p>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-md-6 col-lg-4">
+			{% for item in book.units %}
+				<div class="card">
+					<div class="card-body">
+						<p class="card-text">{{ book }}</p>
+					</div>
+				</div>
+			{% endfor %}
+		</div>
+	</div>
 {% endblock %}
