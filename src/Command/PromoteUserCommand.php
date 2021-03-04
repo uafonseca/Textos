@@ -56,6 +56,7 @@ class PromoteUserCommand extends Command
 
             if($user && $role){
                 $user->addRolesObject($role);
+                $this->entityManager->flush();
                 $io->success('Usuario promovido correctamente');
             }else{
                 $io->error('El usuario o el rol no se han encontrado');    
