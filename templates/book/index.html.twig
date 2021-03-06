@@ -1,36 +1,17 @@
 {% extends 'layout.html.twig' %}
+{% import "macros/card-macro.html.twig" as card_macro %}
 
-{% block title %}Book index{% endblock %}
+{% block title %}Book index
+{% endblock %}
 
 {% block body %}
-    <h1>Textos</h1>
+	{% set path = path('book_new') %}
 
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Título</th>
-                <th>Dirigido a:</th>
-                <th>Categoría</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for book in books %}
-            <tr>
-                <td>{{ book.title }}</td>
-                <td>{{ book.source|join(',') }}</td>
-                <td>{{ book.category }}</td>
-                <td>
-                    <a href="{{ path('book_edit', {'id': book.id}) }}" class="btn btn-warning"><i class="fa fa-edit"></i><a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+	{{ card_macro.card_default('Listado de textos',sg_datatables_render_html(datatable),'<a href="'~path~'" class="btn btn-primary">
+				<i class="fa fa-plus"></i>
+				Adicionar</a>') }}
+{% endblock %}
 
-    <a href="{{ path('book_new') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Adicionar</a>
+{% block javascripts %}
+	{{sg_datatables_render_js(datatable)}}
 {% endblock %}

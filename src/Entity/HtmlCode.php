@@ -4,7 +4,7 @@ namespace App\Entity;
 
 use App\Repository\HtmlCodeRepository;
 use Doctrine\ORM\Mapping as ORM;
-use TimestampableTrait;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=HtmlCodeRepository::class)

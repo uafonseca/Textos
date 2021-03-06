@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
-use TimestampableTrait;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=LevelRepository::class)

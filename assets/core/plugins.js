@@ -82,45 +82,45 @@ app.plugins = {
     //     });
     // },
 
-    // initializeEmpresaFileInput: function (field_selector, image_url_defaultPreview) {
+    initializeEmpresaFileInput: function (field_selector, image_url_defaultPreview) {
 
-    //     let STYLE_SETTING = 'style="width:{width};height:{height};"',
-    //         img_field = "<img src='value_replace' style='width:190px;height:110px' alt='foto'>";
+        let STYLE_SETTING = 'style="width:{width};height:{height};"',
+            img_field = "<img src='value_replace' style='width:190px;height:110px' alt='foto'>";
 
-    //     $(field_selector).fileinput({
-    //         'defaultPreviewContent': [
-    //             img_field.replace('value_replace', image_url_defaultPreview)
-    //         ],
-    //         'previewSettings': {
-    //             image: {width: "190px", height: "110px"}
-    //         },
-    //         'initialCaption': '&nbsp; Foto Trabajador', // Muestro que esa foto es la original del usuario
-    //         'overwriteInitial': false, // Cuando limpien el preview se vuelve a mostrar el initialCaption
-    //         'showCaption': true,
-    //         'showUpload': false,
-    //         'browseLabel': '&nbsp;Buscar',
-    //         'removeLabel': '&nbsp;Quitar',
-    //         'allowedFileTypes': ['image'],
-    //         'allowedPreviewTypes': ['image'],
-    //         'allowedFileExtensions': ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
-    //         'maxFileSize': '150000',
-    //         'maxImageWidth': '1000000',
-    //         'layoutTemplates': {
-    //             main1: '' +
-    //                 '{preview}' +
-    //                 '<div class="kv-upload-progress hide"></div>\n' +
-    //                 '       {browse}\n' +
-    //                 '       {remove}\n' +
-    //                 '       {cancel}\n' +
-    //                 '       {upload}\n',
-    //             btnDefault: '<button type="{type}" tabindex="500" title="{title}" class="file-input-btn {css}"{status}>{icon}{label}</button>',
-    //             icon: '<i class="fa fa-camera-retro"></i>&nbsp;'
-    //         },
-    //         'previewTemplates': {
-    //             image: '   <img src="{data}" class="file-preview-image" title="{caption}" alt="{caption}" ' + STYLE_SETTING + '>\n'
-    //         }
-    //     });
-    // },
+        $(field_selector).fileinput({
+            'defaultPreviewContent': [
+                img_field.replace('value_replace', image_url_defaultPreview)
+            ],
+            'previewSettings': {
+                image: {width: "190px", height: "110px"}
+            },
+            'initialCaption': '&nbsp; Foto', // Muestro que esa foto es la original del usuario
+            'overwriteInitial': false, // Cuando limpien el preview se vuelve a mostrar el initialCaption
+            'showCaption': true,
+            'showUpload': false,
+            'browseLabel': '&nbsp;Buscar',
+            'removeLabel': '&nbsp;Quitar',
+            'allowedFileTypes': ['image'],
+            'allowedPreviewTypes': ['image'],
+            'allowedFileExtensions': ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
+            'maxFileSize': '150000',
+            'maxImageWidth': '1000000',
+            'layoutTemplates': {
+                main1: '' +
+                    '{preview}' +
+                    '<div class="kv-upload-progress hide"></div>\n' +
+                    '       {browse}\n' +
+                    '       {remove}\n' +
+                    '       {cancel}\n' +
+                    '       {upload}\n',
+                btnDefault: '<button type="{type}" tabindex="500" title="{title}" class="file-input-btn {css}"{status}>{icon}{label}</button>',
+                icon: '<i class="fa fa-camera-retro"></i>&nbsp;'
+            },
+            'previewTemplates': {
+                image: '   <img src="{data}" class="card-img-top" title="{caption}" alt="{caption}" ' + STYLE_SETTING + '>\n'
+            }
+        });
+    },
 
     // initDatepicker: function (selector, options) {
     //     const defaultOptions = {
@@ -174,7 +174,7 @@ app.plugins = {
     // },
     initPrototype: function (selector, options = {}) {
         $(selector).collection({
-            add: `<a class="btn btn-primary" href="#"><i class="fa fa-plus"></i> ${options.buttonLabel ? options.buttonLabel : 'Adicionar'}</a>`,
+            add: `<a class="btn btn-primary ml-3" style="max-width: 110px;" href="#"><i class="fa fa-plus"></i> ${options.buttonLabel ? options.buttonLabel : 'Adicionar'}</a>`,
             remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
             allow_up: false,
             allow_down: false,

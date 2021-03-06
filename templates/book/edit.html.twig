@@ -1,19 +1,83 @@
 {% extends 'layout.html.twig' %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% import "macros/card-macro.html.twig" as card_macro %}
 
-{% block title %}Edit Book{% endblock %}
+{% block title %}Edit Book
+{% endblock %}
 
 {% block body %}
-    <h1>Editar texto</h1>
+	{{card_macro.card_title('<h2>Editar texto</h2>')}}
+{{ form_start(form) }}
+	<div class="row">
+		<div class="col-md-3">
+			<div class="card">
+				<div class="card-body">
+                    {{ form_row(form.portada)}}
+				</div>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="card">
+				<div class="card-body">
+					
+					<div class="row">
+						<div class="col-md-6 col-sm-12">{{ form_row(form.title)}}
+						</div>
+						<div class="col-md-6 col-sm-12">{{ form_row(form.source)}}
+						</div>
+						<div class="col-md-6 col-sm-12">{{ form_row(form.category)}}
+						</div>
+						<div class="col-md-6 col-sm-12">{{ form_row(form.stage)}}
+						</div>
+						<div class="col-md-6 col-sm-12">{{ form_row(form.level)}}
+						</div>
+						<div class="col-md-6 col-sm-12">
+						</div>
 
-    {{ include('book/_form.html.twig', {'button_label': 'Actualizar'}) }}
-    <br>
+						<div class="col-md-6 col-sm-12 mt-3">
+							<div id="url-card" class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-10 disabled">{{ form_row(form.link.uri)}}</div>
+										<div class="col-md-2 pt-4">{{ form_row(form.link.active)}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
 
-    <a href="{{ path('book_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
-
-    {{ include('book/_delete_form.html.twig') }}
+						<div class="col-md-6 col-sm-12 mt-3">
+							<div id="html-card" class="card">
+								<div class="card-body">
+									<div class="row">
+										<div class="col-md-10 disabled">{{ form_row(form.htmlCode.code)}}</div>
+										<div class="col-md-2 pt-4">{{ form_row(form.htmlCode.active)}}</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-md-3 col-sm-12 mt-3">
+							<button class="btn btn-success">
+								<i class="fa fa-save"></i>
+								{{ button_label|default('Editat') }}</button>
+						</div>
+                        <div class="col-md-3 col-sm-12 mt-3">
+							<a href="{{ path('book_index') }}" class="btn btn-secondary">
+								<i class="fa fa-arrow-left"></i>
+								Regresar</a>
+						</div>
+                       
+					</div>
+					
+				</div>
+			</div>
+		</div>
+	</div>
+{{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}
-   {{ encore_entry_script_tags('book.form') }}
+    <script type="text/javascript">
+        const image_url_defaultPreview = '{{ vich_uploader_asset(book.portada , 'imagenFile') }}';
+    </script>
+	{{ encore_entry_script_tags('book.form') }}
 {% endblock %}

@@ -40,10 +40,14 @@ app.books = {
                 $('#book_htmlCode_code').parent().parent().addClass('disabled');
             }
           })
+      },
+      initInput: () => {
+        app.plugins.initializeEmpresaFileInput('#book_portada_imagenFile_file', image_url_defaultPreview);
       }
   },
 };
 
 $(() => {
     app.books.form.index();
+    app.books.form.initInput();
   });

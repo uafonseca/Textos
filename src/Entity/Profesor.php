@@ -6,7 +6,7 @@ use App\Repository\ProfesorRepository;
 use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
-use TimestampableTrait;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=ProfesorRepository::class)

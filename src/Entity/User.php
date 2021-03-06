@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use TimestampableTrait;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)

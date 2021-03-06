@@ -1,23 +1,33 @@
 <?php
 
-/**
- * Created by PhpStorm.
- * User: Ubel
- * Date: 17/02/2021
- * Time: 6:47 PM
- */
 
 namespace App\Datatables\Tables;
 
 use App\Datatables\Utiles\TableActions;
-use App\Entity\User;
+use App\Entity\Book;
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
+use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 
-class UserDatatable extends AbstractDatatable
+
+class BookDatatable extends AbstractDatatable
 {
+
+	public function getLineFormatter()
+	{
+		return function ($row) {
+			$book = $this->getEntityManager()->getRepository('App:Book')->find($row['id']);
+			$html = '<ul>';
+			foreach ($book->getUnits() as $unit) {
+				$html .= '<li>' . $unit->getName() . '</li>';
+			}
+			$html .= '</ul>';
+			$row['units'] = $html;
+			return $row;
+		};
+	}
 	public function buildDatatable(array $options = [])
 	{
 		$this->ajax->set([
@@ -36,48 +46,46 @@ class UserDatatable extends AbstractDatatable
 		$this->features->set([
 			'processing' => true,
 		]);
+
 		$this->columnBuilder
 			->add('uuid', Column::class, [
 				'title' => 'uuid',
 				'visible' => false,
 			])
-			->add('name', Column::class, [
-				'title' => 'Nombre',
+			->add('title', Column::class, [
+				'title' => 'Título',
 			])
-			->add('firstName', Column::class, [
-				'title' => 'Apellidos',
+			->add('category.name', Column::class, [
+				'title' => 'Categoría',
 			])
-			->add('username', Column::class, [
-				'title' => 'Usuario',
+			->add('stage.name', Column::class, [
+				'title' => 'Etapa escolar',
 			])
-			->add('email', Column::class, [
-				'title' => 'Correo',
+			->add('level.name', Column::class, [
+				'title' => 'Nivel',
+			])
+			->add('source', Column::class, [
+				'title' => 'Dirigido a',
+			])
+			->add('units', VirtualColumn::class, [
+				'title' => 'Unidades',
 			])
 			->add(null, ActionColumn::class, [
 				'title' => $this->translator->trans('sg.datatables.actions.title'),
 				'actions' => [
-					[
-						'route' => 'user_promote',
-						'route_parameters' => array_merge(array(
-							'uuid' => 'uuid'
-						)),
-						'icon' => 'fa fa-cog cortex-table-action-icon',
-						'attributes' => [
-							'style' => "color:  green;",
-							'data-tippy-content' => 'Promover'
-						]
-					]
+					TableActions::edit('book_edit')
 				],
-			]);
+			])
+		;
 	}
 
 	public function getEntity()
 	{
-		return User::class;
+		return Book::class;
 	}
 
 	public function getName()
 	{
-		return 'user-datatable';
+		return 'book-datatable';
 	}
 }

@@ -4,13 +4,7 @@
 		<div class="wrapper">
 			{{ include('partials/left-menu.html.twig') }}
 			<main class="content">
-				<div class="container-fluid p-0">
-					<div class="card">
-						<div class="card-body">
-                            {% block body %}{% endblock %}
-                        </div>
-					</div>
-				</div>
+				<div class="row">{% block body %}{% endblock %}</div>
 			</main>
 			{{ include('partials/footer.html.twig') }}
 		</div>

@@ -35,8 +35,9 @@ class UnitType extends AbstractType
                 'entry_options' => [
                     'label' => false,
                 ],
+                'label' => false,
                 'attr' => array(
-                    'class' => 'activity-collection',
+                    'class' => 'activity-collection row',
                 ),
             ])
         ;

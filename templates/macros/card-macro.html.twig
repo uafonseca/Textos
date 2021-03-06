@@ -1,0 +1,22 @@
+{% macro card_default(text_header,body, footer) %}
+	<div class="card">
+		<div class="card-header">
+			<h2 class="card-title">{{text_header|raw}}</h1>
+			<hr>
+		</div>
+		<div class="card-body">
+			{{body|raw}}
+		</div>
+		<div class="card-footer">
+			{{footer|raw}}
+		</div>
+	</div>
+{% endmacro %}
+
+{% macro card_title(title) %}
+	<div class="card">
+		<div class="card-body">
+			{{title|raw}}
+		</div>
+	</div>
+{% endmacro %}

@@ -1,5 +1,6 @@
 <?php
 
+namespace App\Traits;
 /**
  * Adds created at and updated at timestamps to entities.
  * Entities using this must have HasLifecycleCallbacks annotation.

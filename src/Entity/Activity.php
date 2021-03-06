@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ActivityRepository;
 use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
-use TimestampableTrait;
+use App\Traits\TimestampableTrait;
 
 /**
  * @ORM\Entity(repositoryClass=ActivityRepository::class)

@@ -1,34 +1,16 @@
 {% extends 'layout.html.twig' %}
+{% import "macros/card-macro.html.twig" as card_macro %}
 
 {% block title %}Unit index{% endblock %}
 
 {% block body %}
-    <h1>Unidades</h1>
+    {% set path = path('unit_new') %}
 
-    <table class="table table-bordered table-hover">
-        <thead>
-            <tr>
-                <th>Nombre</th>
-                <th>Libro</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for unit in units %}
-            <tr>
-                <td>{{ unit.name }}</td>
-                <td>{{ unit.book.title }}</td>
-                <td>
-                    <a href="{{ path('unit_edit', {'id': unit.id}) }}" class="btn btn-warning"> <i class="fa fa-edit"></i> </a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="4">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+    {{ card_macro.card_default('Listado de unidades',sg_datatables_render_html(datatable),'<a href="'~path~'" class="btn btn-primary">
+				<i class="fa fa-plus"></i>
+				Adicionar</a>') }}
+{% endblock %}
 
-    <a href="{{ path('unit_new') }}" class="btn btn-primary"> <i class="fa fa-plus-circle"></i> Adicionar</a>
+{% block javascripts %}
+	{{sg_datatables_render_js(datatable)}}
 {% endblock %}

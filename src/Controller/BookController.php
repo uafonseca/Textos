@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Datatables\Tables\BookDatatable;
 use App\Entity\Book;
 use App\Form\BookType;
 use App\Repository\BookRepository;
@@ -10,21 +11,57 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Sg\DatatablesBundle\Datatable\DatatableFactory;
+use Sg\DatatablesBundle\Response\DatatableResponse;
 
 /**
  * @Route("/book")
  */
 class BookController extends AbstractController
 {
+
+
+    /** @var DatatableFactory */
+	private $datatableFactory;
+	
+	/** @var DatatableResponse */
+	private $datatableResponse;
+	
+	/**
+	 * UserController constructor.
+	 *
+	 * @param DatatableFactory  $datatableFactory
+	 * @param DatatableResponse $datatableResponse
+	 */
+	public function __construct (DatatableFactory $datatableFactory, DatatableResponse $datatableResponse)
+	{
+		$this->datatableFactory = $datatableFactory;
+		$this->datatableResponse = $datatableResponse;
+	}
+
     /**
-     * @Route("/", name="book_index", methods={"GET"})
+     * @Route("/", name="book_index", methods={"GET", "POST"})
      * 
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
-    public function index(BookRepository $bookRepository): Response
+    public function index(Request $request): Response
     {
+
+        $datatable = $this->datatableFactory->create(BookDatatable::class);
+    	
+    	$datatable->buildDatatable ([
+    		'url' => $this->generateUrl ('book_index')
+	    ]);
+    	
+    	if ($request->isXmlHttpRequest () && $request->isMethod ('POST')){
+    		$this->datatableResponse->setDatatable($datatable);
+		    $this->datatableResponse->getDatatableQueryBuilder();
+
+        return $this->datatableResponse->getResponse();
+	    }
+    	
         return $this->render('book/index.html.twig', [
-            'books' => $bookRepository->findAll(),
+            'datatable' => $datatable
         ]);
     }
 
@@ -66,7 +103,7 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="book_edit", methods={"GET","POST"})
+     * @Route("/{uuid}/edit", name="book_edit", methods={"GET","POST"})
      * 
      * @IsGranted("ROLE_SUPER_ADMIN")
      */

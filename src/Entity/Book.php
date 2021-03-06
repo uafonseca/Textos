@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use App\Traits\TimestampableTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
-use TimestampableTrait;
+
 
 /**
  * @ORM\Entity(repositoryClass=BookRepository::class)

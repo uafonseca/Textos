@@ -8,8 +8,7 @@
 	use Doctrine\Common\Collections\Collection;
 	use Doctrine\ORM\Mapping as ORM;
 	use Symfony\Component\Uid\Uuid;
-use TimestampableTrait;
-
+	use App\Traits\TimestampableTrait;
 /**
 	 * @ORM\Entity(repositoryClass=ProvinciaRepository::class)
  	 * @ORM\HasLifecycleCallbacks
