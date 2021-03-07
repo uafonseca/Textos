@@ -159,7 +159,7 @@ class User implements UserInterface
 			if ($role instanceof Role)
 				$rolenames[] = $role->getRolename();
 
-		return count($rolenames) > 0 ? $rolenames : ['ROLE_USER'];
+		return count($rolenames) > 0 ? array_unique($rolenames) : ['ROLE_USER'];
 	}
 
 	/**

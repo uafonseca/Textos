@@ -17,10 +17,18 @@ set('git_tty', true);
 // Shared files/dirs between deploys 
 add('shared_files', []);
 
+set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-suggest');
+
+set('writable_mode', 'chmod');
+
+set('writable_use_sudo', true);
+
+set('writable_chmod_recursive', true);
+
 add('shared_dirs', ['var/log', 'var/sessions', 'vendor','public/uploads']);
 
 // Writable dirs by web server 
-add('writable_dirs', ['var/log','var/cache','var/sessions', 'public/']);
+add('writable_dirs', ['var/log','var/cache/dev','var/cache/dev','var/sessions', 'public/']);
 
 
 // Hosts
@@ -29,15 +37,6 @@ host('23.239.26.54')
     ->set('branch', 'main')
     ->user('deploy')
     ->set('deploy_path', '/var/www/html/v2Lideres');
-
-
-set('composer_options', '{{composer_action}} --verbose --prefer-dist --no-progress --no-interaction --optimize-autoloader --no-suggest');
-
-set('writable_mode', 'chmod');
-
-set('writable_use_sudo', true);
-
-set('writable_chmod_recursive', true);
 
 set('release_name', function () {
     return date('YmdHis');
