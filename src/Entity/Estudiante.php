@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\EstudianteRepository;
+use App\Traits\CompanyEntityTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
@@ -16,6 +17,7 @@ class Estudiante
 {
 	use UuidEntityTrait;
     use TimestampableTrait;
+    use CompanyEntityTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

@@ -1,4 +1,7 @@
 {
+    "behat/transliterator": {
+        "version": "v1.3.0"
+    },
     "composer/package-versions-deprecated": {
         "version": "1.11.99.1"
     },
@@ -116,6 +119,9 @@
         "files": [
             "./config/routes/fos_js_routing.yaml"
         ]
+    },
+    "gedmo/doctrine-extensions": {
+        "version": "v3.0.3"
     },
     "jms/metadata": {
         "version": "2.4.0"

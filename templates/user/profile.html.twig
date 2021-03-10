@@ -3,6 +3,7 @@
 {% block title %}User{% endblock %}
 
 {% block body %}
+{{ form_start(form) }}
     <main class="content">
         <div class="container-fluid p-0">
 
@@ -13,7 +14,8 @@
                             <h5 class="card-title mb-0">Detalles</h5>
                         </div>
                         <div class="card-body text-center">
-                            <img src=" {% if user.avatar %}{{ vich_uploader_asset(user.avatar,'imagenFile') }}{% else %}{% endif %}" alt="{{ user.name }}" class="img-fluid rounded-circle mb-2" width="128" height="128" />
+                            {# <img src=" {% if user.avatar %}{{ vich_uploader_asset(user.avatar,'imagenFile') }}{% else %}{% endif %}" alt="{{ user.name }}" class="img-fluid rounded-circle mb-2" width="128" height="128" /> #}
+                            {{ form_row(form.avatar)}}
                             <h5 class="card-title mb-2">{{ user.name?user.name:'NA' }}</h5>
                             <div class="text-muted mb-2">{{ user.firstName?user.firstName:'NA' }}</div>
                         </div>
@@ -21,7 +23,7 @@
                         <div class="card-body">
                             <h5 class="h6 card-title">Sobre mi</h5>
                             <ul class="list-unstyled mb-0">
-                                <li class="mb-1"><span data-feather="home" class="feather-sm mr-1"></span> Vive en <a href="#">{{ user.city?user.city:'NA' }}</a></li>
+                                <li class="mb-1"><span data-feather="home" class="feather-sm mr-1"></span> Vive en <a href="#"><span id="liveIn"></span></a></li>
                                 <li class="mb-1"><span data-feather="briefcase" class="feather-sm mr-1"></span> Trabaja en <a href="#">{{ user.scoholName?user.scoholName:'NA' }}</a></li>
                             </ul>
                         </div>
@@ -40,15 +42,23 @@
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.name) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.firstName) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.country) }}</div>
-                                <div class="col-md-6 col-sm-12">{{ form_row(form.city) }}</div>
+                                <div class="col-md-6 col-sm-12">{{ form_row(form.provincia) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.canton) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.scoholName) }}</div>
                             </div>
-                            {{ form_end(form) }}
+                           
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
+     {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        const image_url_defaultPreview = '{{ vich_uploader_asset(user.avatar , 'imagenFile') }}';
+    </script>
+	{{ encore_entry_script_tags('profile.form') }}
 {% endblock %}

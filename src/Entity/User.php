@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Traits\CompanyEntityTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +13,8 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use App\Traits\TimestampableTrait;
+use Gedmo\Mapping\Annotation as Gedmo;
+use Serializable;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -20,10 +23,11 @@ use App\Traits\TimestampableTrait;
  * @UniqueEntity(fields={"email"}, message="Existe un correo registrado con este nombre")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface
+class User implements UserInterface//, Serializable 
 {
 	use UuidEntityTrait;
 	use TimestampableTrait;
+	use CompanyEntityTrait;
 	/**
 	 * @ORM\Id
 	 * @ORM\GeneratedValue
@@ -116,8 +120,6 @@ class User implements UserInterface
 	 */
 	public function __construct()
 	{
-
-		$this->uuid = Uuid::v1();
 		$this->rolesObject = new ArrayCollection();
 	}
 
@@ -146,7 +148,7 @@ class User implements UserInterface
 	 */
 	public function getusername(): string
 	{
-		return (string)$this->email;
+		return (string)$this->username;
 	}
 
 	/**
@@ -351,7 +353,7 @@ class User implements UserInterface
 		return $this;
 	}
 
-	public function getProvincia(): ?Provincia
+	public function getProvincia(): ?string
 	{
 		return $this->provincia;
 	}
@@ -416,4 +418,15 @@ class User implements UserInterface
 
 		return $this;
 	}
+
+	// public function serialize()
+    // {
+    //     $this->avatar = base64_encode($this->avatar);
+	// 	$this->username = $this->username;
+    // }
+
+    // public function unserialize($serialized)
+    // {
+    //     $this->avatar = base64_decode($this->avatar);
+    // }
 }

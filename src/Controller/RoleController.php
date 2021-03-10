@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use App\Datatables\Tables\RoleDatatable;
 use App\Entity\Role;
 use App\Form\RoleType;
 use App\Repository\RoleRepository;
+use Sg\DatatablesBundle\Datatable\DatatableFactory;
+use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,13 +18,47 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class RoleController extends AbstractController
 {
+
+      /** @var DatatableFactory */
+	private $datatableFactory;
+	
+	/** @var DatatableResponse */
+	private $datatableResponse;
+	
+	/**
+	 * UserController constructor.
+	 *
+	 * @param DatatableFactory  $datatableFactory
+	 * @param DatatableResponse $datatableResponse
+	 */
+	public function __construct (DatatableFactory $datatableFactory, DatatableResponse $datatableResponse)
+	{
+		$this->datatableFactory = $datatableFactory;
+		$this->datatableResponse = $datatableResponse;
+	}
+
+    
     /**
-     * @Route("/", name="role_index", methods={"GET"})
+     * @Route("/", name="role_index", methods={"GET", "POST"})
      */
-    public function index(RoleRepository $roleRepository): Response
+    public function index(Request $request): Response
     {
+
+        $datatable = $this->datatableFactory->create(RoleDatatable::class);
+    	
+    	$datatable->buildDatatable ([
+    		'url' => $this->generateUrl ('role_index')
+	    ]);
+    	
+    	if ($request->isXmlHttpRequest () && $request->isMethod ('POST')){
+    		$this->datatableResponse->setDatatable($datatable);
+		    $this->datatableResponse->getDatatableQueryBuilder();
+
+        return $this->datatableResponse->getResponse();
+	    }
+    	
         return $this->render('role/index.html.twig', [
-            'roles' => $roleRepository->findAll(),
+            'datatable' => $datatable
         ]);
     }
 
@@ -49,7 +86,7 @@ class RoleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="role_show", methods={"GET"})
+     * @Route("/{uuid}", name="role_show", methods={"GET"})
      */
     public function show(Role $role): Response
     {
@@ -59,7 +96,7 @@ class RoleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="role_edit", methods={"GET","POST"})
+     * @Route("/{uuid}/edit", name="role_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Role $role): Response
     {
@@ -79,7 +116,7 @@ class RoleController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="role_delete", methods={"DELETE"})
+     * @Route("/{uuid}", name="role_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Role $role): Response
     {

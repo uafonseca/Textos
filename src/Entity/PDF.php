@@ -9,6 +9,7 @@
 
 namespace App\Entity;
 
+use App\Traits\CompanyEntityTrait;
 use App\Traits\UuidEntityTrait;
 use Symfony\Component\Uid\Uuid;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -28,6 +29,7 @@ class PDF
 {
 	use UuidEntityTrait;
 	use TimestampableTrait;
+	use CompanyEntityTrait;
 	/**
 	 * @var int
 	 *

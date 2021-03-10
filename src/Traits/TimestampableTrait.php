@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Traits;
+use Gedmo\Mapping\Annotation as Gedmo;
+
 /**
  * Adds created at and updated at timestamps to entities.
  * Entities using this must have HasLifecycleCallbacks annotation.
@@ -13,6 +15,7 @@ trait TimestampableTrait
 	 * @var \DateTime
 	 *
 	 * @ORM\Column(name="created_at", type="datetime", nullable = true)
+	 * @Gedmo\Timestampable(on="create")
 	 */
 	private $createdAt;
 
@@ -20,6 +23,7 @@ trait TimestampableTrait
 	 * @var \DateTime
 	 *
 	 * @ORM\Column(name="updated_at", type="datetime", nullable = true)
+	 * @Gedmo\Timestampable(on="update")
 	 */
 	private $updatedAt;
 

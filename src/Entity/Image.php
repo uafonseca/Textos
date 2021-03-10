@@ -7,8 +7,9 @@
 	 */
 	
 	namespace App\Entity;
-	
-	use Symfony\Component\Uid\Uuid;
+
+use App\Traits\CompanyEntityTrait;
+use Symfony\Component\Uid\Uuid;
 	use Vich\UploaderBundle\Mapping\Annotation as Vich;
 	use Doctrine\ORM\Mapping as ORM;
 	
@@ -21,6 +22,7 @@
 	 */
 	class Image
 	{
+		use CompanyEntityTrait;
 		/**
 		 * @var int
 		 *

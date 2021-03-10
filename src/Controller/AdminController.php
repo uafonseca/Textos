@@ -6,6 +6,7 @@ use App\Entity\Company;
 use App\Entity\Terms;
 use App\Form\CompanyType;
 use App\Form\TermsType;
+use App\Repository\BookRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\TermsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,10 +26,11 @@ class AdminController extends AbstractController
     /**
      * @Route("/dashboard", name="admin")
      */
-    public function index(): Response
+    public function index(BookRepository $bookRepository): Response
     {
+
         return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
+            'books' => $bookRepository->findAll(),
         ]);
     }
 	
@@ -80,7 +82,7 @@ class AdminController extends AbstractController
     	
     	if($form->isSubmitted () && $form->isValid ()){
 		    $em = $this->getDoctrine ()->getManager ();
-		
+			$this->getUser ()->setCompany($company);
 		    $em->persist ($company);
 		    $em->flush ();
 	    }

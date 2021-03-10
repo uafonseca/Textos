@@ -37,7 +37,7 @@ class User1Type extends AbstractType
 	        ->add ('canton', null, [
 		        'label' => 'Ciudad',
 	        ])
-	        ->add ('city', null, [
+	        ->add ('provincia', null, [
 		        'label' => 'Provincia',
 	
 	        ])

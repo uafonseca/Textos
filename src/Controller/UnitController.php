@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Datatables\Tables\UnitDatatable;
+use App\Entity\Company;
 use App\Entity\Unit;
 use App\Form\UnitType;
 use App\Repository\UnitRepository;
@@ -71,6 +72,9 @@ class UnitController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+
+            $unit->setCompany($this->getCompany());
+
             $entityManager->persist($unit);
 
             /** @var Activity $activity */
@@ -137,5 +141,10 @@ class UnitController extends AbstractController
         }
 
         return $this->redirectToRoute('unit_index');
+    }
+
+    public function getCompany():Company
+    {
+        return $this->getUser()->getCompany();
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BookRepository;
+use App\Traits\CompanyEntityTrait;
 use App\Traits\TimestampableTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,6 +20,7 @@ class Book
 {
     use UuidEntityTrait;
     use TimestampableTrait;
+    use CompanyEntityTrait;
 
     /**
      * @ORM\Id

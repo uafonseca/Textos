@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\SchoolStage;
 use App\Form\SchoolStageType;
 use App\Repository\SchoolStageRepository;
@@ -36,6 +37,7 @@ class SchoolStageController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $schoolStage->setCompany($this->getCompany());
             $entityManager->persist($schoolStage);
             $entityManager->flush();
 
@@ -90,5 +92,10 @@ class SchoolStageController extends AbstractController
         }
 
         return $this->redirectToRoute('school_stage_index');
+    }
+    
+    public function getCompany():Company
+    {
+        return $this->getUser()->getCompany();
     }
 }

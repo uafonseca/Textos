@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Datatables\Tables\BookDatatable;
 use App\Entity\Book;
+use App\Entity\Company;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -76,8 +77,10 @@ class BookController extends AbstractController
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) 
+        {
             $entityManager = $this->getDoctrine()->getManager();
+            $book->setCompany($this->getCompany());
             $entityManager->persist($book);
             $entityManager->flush();
 
@@ -138,5 +141,11 @@ class BookController extends AbstractController
         }
 
         return $this->redirectToRoute('book_index');
+    }
+
+
+    public function getCompany():Company
+    {
+        return $this->getUser()->getCompany();
     }
 }

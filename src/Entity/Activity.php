@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ActivityRepository;
+use App\Traits\CompanyEntityTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\TimestampableTrait;
@@ -14,6 +15,7 @@ use App\Traits\TimestampableTrait;
 class Activity
 {
     use TimestampableTrait;
+    use CompanyEntityTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

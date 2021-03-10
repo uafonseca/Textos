@@ -4,7 +4,8 @@
 	
 	use App\Repository\CantonRepository;
 	use App\Entity\Provincia;
-	use App\Traits\UuidEntityTrait;
+use App\Traits\CompanyEntityTrait;
+use App\Traits\UuidEntityTrait;
 	use Doctrine\Common\Collections\ArrayCollection;
 	use Doctrine\Common\Collections\Collection;
 	use Doctrine\ORM\Mapping as ORM;
@@ -20,6 +21,7 @@
 	{
 		use UuidEntityTrait;
 		use TimestampableTrait;
+		use CompanyEntityTrait;
 		/**
 		 * @ORM\Id()
 		 * @ORM\GeneratedValue()

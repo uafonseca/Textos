@@ -1,12 +1,31 @@
 {% extends 'layout.html.twig' %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% import "macros/card-macro.html.twig" as card_macro %}
 
 {% block title %}New Role{% endblock %}
 
 {% block body %}
-    <h1>Nuevo Rol</h1>
+   {{card_macro.card_title('<h2>Nuevo rol</h2>')}}
 
-    {{ include('role/_form.html.twig') }}
 
-    <a href="{{ path('role_index') }}" class="btn btn-secondary"><i class="fa fa-arrow-left"></i> Regresar</a>
+	{{ form_start(form) }}
+	<div class="card">
+		<div class="card-body">
+			<div class="row">
+				<div class="col-md-12">{{ form_row(form.rolename)}}</div>
+
+				<div class="col-md-3 col-sm-12 mt-3">
+					<button class="btn btn-success">
+						<i class="fa fa-save"></i>
+						{{ button_label|default('Adicionar') }}</button>
+				</div>
+				<div class="col-md-3 col-sm-12 mt-3">
+					<a href="{{ path('role_index') }}" class="btn btn-secondary">
+						<i class="fa fa-arrow-left"></i>
+						Regresar</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{{ form_end(form) }}
 {% endblock %}

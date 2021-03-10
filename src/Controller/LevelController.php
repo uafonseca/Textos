@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Company;
 use App\Entity\Level;
 use App\Form\LevelType;
 use App\Repository\LevelRepository;
@@ -36,6 +37,7 @@ class LevelController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
+            $level->setCompany($this->getCompany());
             $entityManager->persist($level);
             $entityManager->flush();
 
@@ -90,5 +92,10 @@ class LevelController extends AbstractController
         }
 
         return $this->redirectToRoute('level_index');
+    }
+
+    public function getCompany():Company
+    {
+        return $this->getUser()->getCompany();
     }
 }

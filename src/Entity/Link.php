@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LinkRepository;
+use App\Traits\CompanyEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
 use App\Traits\TimestampableTrait;
 
@@ -13,6 +14,7 @@ use App\Traits\TimestampableTrait;
 class Link
 {
     use TimestampableTrait;
+    use CompanyEntityTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

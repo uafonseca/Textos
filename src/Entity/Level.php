@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\LevelRepository;
+use App\Traits\CompanyEntityTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -18,6 +19,7 @@ class Level
 {
     use UuidEntityTrait;
     use TimestampableTrait;
+    use CompanyEntityTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
