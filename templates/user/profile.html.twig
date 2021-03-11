@@ -58,7 +58,7 @@
 
 {% block javascripts %}
     <script type="text/javascript">
-        const image_url_defaultPreview = '{{ vich_uploader_asset(user.avatar , 'imagenFile') }}';
+        const image_url_defaultPreview = '{{ vich_uploader_asset(user.avatar , 'imagenFile') ? vich_uploader_asset(user.avatar , 'imagenFile'):'' }}';
     </script>
 	{{ encore_entry_script_tags('profile.form') }}
 {% endblock %}

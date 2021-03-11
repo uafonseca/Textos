@@ -28,7 +28,7 @@ set('writable_chmod_recursive', true);
 add('shared_dirs', ['var/log', 'var/sessions', 'vendor','public/uploads']);
 
 // Writable dirs by web server 
-add('writable_dirs', ['var/log','var/cache/dev','var/cache/dev','var/sessions', 'public/']);
+add('writable_dirs', ['var/log','var/cache','var/sessions', 'public/']);
 
 
 // Hosts
@@ -70,13 +70,6 @@ task('database:update', function () {
 desc('Publish assets');
 task('assets:install', 'php {{bin/console}} assets:install --symlink public');
 
-desc('chmod');
-task('chmod:777', function () {
-    run('sudo chmod -R 777 {{deploy_path}}/releases/{{release_name}}/var/log');
-    run('sudo chmod -R 777 {{deploy_path}}/releases/{{release_name}}/var/cache');
-    run('sudo chmod -R 777 {{deploy_path}}/releases/{{release_name}}/var/sessions');
-});
-
 task('build', [
     'database:update',
     'assets:install',
@@ -86,4 +79,3 @@ task('build', [
 
 after('deploy:vendors', 'build');
 after('deploy:failed', 'deploy:unlock');
-after('cleanup', 'chmod:777');
