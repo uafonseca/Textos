@@ -1,29 +1,99 @@
 {% extends 'layout.html.twig' %}
 
-{% block title %}Unit{% endblock %}
+{% block title %}Unit
+{% endblock %}
+
+
+{% block stylesheets %}
+	{{ encore_entry_link_tags('unit.show') }}
+{% endblock %}
 
 {% block body %}
-    <h1>Unit</h1>
+	<div class="container-fluid">
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ unit.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ unit.name }}</td>
-            </tr>
-            <tr>
-                <th>Uuid</th>
-                <td>{{ unit.uuid }}</td>
-            </tr>
-        </tbody>
-    </table>
+		<div class="toolbar">
+			<div class="tool">
+				<span>{{ unit.name }}</span>
+			</div>
+		
+			<div class="tool">
+				<button class="color-tool active" style="background-color: #212121;"></button>
+				<button class="color-tool" style="background-color: red;"></button>
+				<button class="color-tool" style="background-color: blue;"></button>
+				<button class="color-tool" style="background-color: green;"></button>
+				<button class="color-tool" style="background-color: yellow;"></button>
+			</div>
+			<div class="tool">
+				<button class="tool-button active" id="enableSelector">
+					<i  class="fa fa-hand-paper-o" title="Free Hand"></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="tool-button" id="enablePencil">
+					<i class="fa fa-pencil" title="Pencil"></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="tool-button" id="enableAddText">
+					<i class="fa fa-font" title="Add Text"></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="tool-button" id="enableAddArrow">
+					<i class="fa fa-long-arrow-right" title="Add Arrow" onclick=""></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="tool-button" id="enableRectangle">
+					<i class="fa fa-square-o" title="Add rectangle" onclick=""></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="tool-button" id="addImage">
+					<i class="fa fa-picture-o" title="Add an Image" onclick=""></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="btn btn-danger btn-sm" id="deleteSelectedObject">
+					<i class="fa fa-trash"></i>
+				</button>
+			</div>
+			<div class="tool">
+				<button class="btn btn-danger btn-sm" id="clearPage">Clear Page</button>
+			</div>
+			{# <div class="tool">
+				<button class="btn btn-info btn-sm" id="showPdfData">{}</button>
+			</div> #}
+			<div class="tool">
+				<button class="btn btn-light btn-sm" id="savePDF">
+					<i class="fa fa-save"></i>
+					Save</button>
+			</div>
+		</div>
+		<div id="container-pdf"></div>
 
-    <a href="{{ path('unit_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+		<div class="modal fade" id="dataModal" tabindex="-1" role="dialog" aria-labelledby="dataModalLabel" aria-hidden="true">
+			<div class="modal-dialog modal-lg" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="dataModalLabel">PDF annotation data</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<pre class="prettyprint lang-json linenums">
+				</pre>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
 
-
-    {{ include('unit/_delete_form.html.twig') }}
+{% block javascripts %}
+	<script>
+		const pdfUrl = "{{ vich_uploader_asset(unit.pdf,'pdfFile') }}"
+	</script>
+	{{ encore_entry_script_tags('unit.show') }}
 {% endblock %}

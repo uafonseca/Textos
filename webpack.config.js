@@ -27,6 +27,8 @@ Encore
   .addEntry("unit.form", "./assets/unit/index.js")
   .addEntry("profile.form", "./assets/profile/index.js")
 
+  .addEntry("unit.show", "./assets/unit/layout.js")
+
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   .enableStimulusBridge("./assets/controllers.json")
 
@@ -95,6 +97,7 @@ Encore
         { 
           patterns: [
             { from: './assets/images', to: 'images' },
+            { from: './node_modules/pdfjs-dist/build/pdf.worker.js', to: 'worker/[path][name].[ext]' },
           ]
         }
       )

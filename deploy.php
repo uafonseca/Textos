@@ -68,7 +68,7 @@ task('database:update', function () {
 });
 
 desc('Publish assets');
-task('assets:install', 'php {{bin/console}} assets:install --symlink public');
+task('assets:install', 'php {{bin/console}} assets:install public');
 
 task('build', [
     'database:update',

@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("/admin/unit")
+ * @Route("/unit")
  */
 class UnitController extends AbstractController
 {
@@ -142,6 +142,8 @@ class UnitController extends AbstractController
 
         return $this->redirectToRoute('unit_index');
     }
+
+
 
     public function getCompany():Company
     {

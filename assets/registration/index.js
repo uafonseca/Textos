@@ -102,7 +102,6 @@ app.registration = {
 
       $("#user_country").on("change", function () {
         countryCode = $("#user_country").val();
-        console.log(countryCode);
 
         url =
           "https://geo-battuta.net/api/region/" +

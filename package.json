@@ -21,6 +21,7 @@
         "bootstrap": "^5.0.0-beta2",
         "bootstrap-editable": "^1.0.1",
         "bootstrap-fileinput": "^5.1.4",
+        "buffer": "^6.0.3",
         "ckeditor": "^4.5.6",
         "copy-webpack-plugin": "^7.0.0",
         "country-state-city": "^2.0.0",
@@ -30,12 +31,17 @@
         "datatables.net-editor": "^1.6.5",
         "datatables.net-editor-jqui": "^1.6.3",
         "expose-loader": "^2.0.0",
+        "fabric": "^4.3.1",
         "jquery": "^3.5.1",
+        "jspdf": "^2.3.1",
+        "pdfjs": "^2.4.2",
+        "pdfjs-dist": "^2.6.347",
         "pdfmake": "^0.1.70",
         "popper.js": "^1.16.1",
         "select2": "^4.1.0-rc.0",
         "symfony-collection": "ninsuo/symfony-collection",
         "symfony-collection-js": "^3.0.2",
-        "webpack-jquery-ui": "^2.0.1"
+        "webpack-jquery-ui": "^2.0.1",
+        "worker-loader": "^3.0.8"
     }
 }

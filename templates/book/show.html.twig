@@ -22,7 +22,9 @@
 			{% for item in book.units %}
 				<div class="card">
 					<div class="card-body">
-						<p class="card-text">{{ book }}</p>
+						<p class="card-text">
+							<a href="{{ path('unit_show', {'uuid': item.uuid}) }}" class="btn btn-secondary">{{ book }}</a>
+						</p>
 					</div>
 				</div>
 			{% endfor %}
