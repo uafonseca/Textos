@@ -23,7 +23,7 @@ use Serializable;
  * @UniqueEntity(fields={"email"}, message="Existe un correo registrado con este nombre")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface//, Serializable 
+class User implements UserInterface, Serializable 
 {
 	use UuidEntityTrait;
 	use TimestampableTrait;
@@ -419,14 +419,32 @@ class User implements UserInterface//, Serializable
 		return $this;
 	}
 
-	// public function serialize()
-    // {
-    //     $this->avatar = base64_encode($this->avatar);
-	// 	$this->username = $this->username;
-    // }
+	public function serialize()
+    {
+        $this->avatar = base64_encode($this->avatar);
+		return serialize(array(
+			$this->id,
+			$this->uuid,
+			$this->username,
+			$this->email,
+			$this->password,
+			$this->avatar = base64_encode($this->avatar)
+		
+		));
+    }
 
-    // public function unserialize($serialized)
-    // {
-    //     $this->avatar = base64_decode($this->avatar);
-    // }
+    public function unserialize($serialized)
+    {
+		
+		list (
+			$this->id,
+			$this->uuid,
+			$this->username,
+			$this->email,
+			$this->password,
+			$this->avatar,
+		) = unserialize($serialized);
+
+		$this->avatar = base64_decode($this->avatar);
+    }
 }
