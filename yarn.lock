@@ -3957,10 +3957,68 @@ jest-worker@^26.3.0, jest-worker@^26.6.2:
     merge-stream "^2.0.0"
     supports-color "^7.0.0"
 
+jquery-blockui@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/jquery-blockui/-/jquery-blockui-2.7.0.tgz#912710a9e0fb8be86e83d70b180ffe91317609d5"
+  integrity sha512-lOiCCNYLaqUWMhBZRQ1GkeYAt2/4jX/1g9RvLYRvVtslaplGFnBLltffNAkkavjyPk6VintTj44Ky1yWrqxEzQ==
+
+jquery-confirm@^3.3.4:
+  version "3.3.4"
+  resolved "https://registry.yarnpkg.com/jquery-confirm/-/jquery-confirm-3.3.4.tgz#493e29d33713e86d6eb0c5bd177677a4373310d1"
+  integrity sha512-SF3mX2kWAK9FP/Hut1uLHI30LPZ9DAki3Jq6JId9vg6AlMVugjlh40APtuxPQ/0C44XTkQFSVyRrg57NMbaicA==
+  dependencies:
+    jquery ">=1.6"
+
+jquery-contextmenu@2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/jquery-contextmenu/-/jquery-contextmenu-2.1.1.tgz#b20007bc6fb4246874b3cef6a8dea03421bd0c3b"
+  integrity sha1-sgAHvG+0JGh0s872qN6gNCG9DDs=
+
+jquery-datetimepicker@^2.5.21:
+  version "2.5.21"
+  resolved "https://registry.yarnpkg.com/jquery-datetimepicker/-/jquery-datetimepicker-2.5.21.tgz#00c388a78df2732fedfdb5c6529b6e84d53e0235"
+  integrity sha512-wDTpZ4f1PWd1XGaIIE0n6jLynlm+akBJ7/NjaB1bk2UJSS593CHJPZ3+FNEXoyvNVUeBlBC0oX6WTfCyfUhX/w==
+  dependencies:
+    jquery ">= 1.7.2"
+    jquery-mousewheel ">= 3.1.13"
+    php-date-formatter "^1.3.4"
+
+"jquery-mousewheel@>= 3.1.13":
+  version "3.1.13"
+  resolved "https://registry.yarnpkg.com/jquery-mousewheel/-/jquery-mousewheel-3.1.13.tgz#06f0335f16e353a695e7206bf50503cb523a6ee5"
+  integrity sha1-BvAzXxbjU6aV5yBr9QUDy1I6buU=
+
+jquery-scrollto@1.4.6:
+  version "1.4.6"
+  resolved "https://registry.yarnpkg.com/jquery-scrollto/-/jquery-scrollto-1.4.6.tgz#67909a47c60305e131f78cc5c76c494d062b6fd5"
+  integrity sha1-Z5CaR8YDBeEx94zFx2xJTQYrb9U=
+
+jquery-slimscroll@^1.3.8:
+  version "1.3.8"
+  resolved "https://registry.yarnpkg.com/jquery-slimscroll/-/jquery-slimscroll-1.3.8.tgz#8481c44e7a47687653908a28f7f70aed64c84e36"
+  integrity sha1-hIHETnpHaHZTkIoo9/cK7WTITjY=
+  dependencies:
+    jquery ">= 1.7"
+
+jquery-sparkline@^2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/jquery-sparkline/-/jquery-sparkline-2.4.0.tgz#1be8b7b704dd3857152708aefb1d4a4b3a69fb33"
+  integrity sha1-G+i3twTdOFcVJwiu+x1KSzpp+zM=
+
 jquery-ui@>=1.0, jquery-ui@^1.12.1:
   version "1.12.1"
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
   integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
+
+jquery-validation@1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.14.0.tgz#b8c04c9da19292fc33e2dc059b624c593715b23a"
+  integrity sha1-uMBMnaGSkvwz4twFm2JMWTcVsjo=
+
+"jquery@>= 1.7", "jquery@>= 1.7.2", jquery@>=1.6:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/jquery/-/jquery-3.6.0.tgz#c72a09f15c1bdce142f49dbf1170bdf8adac2470"
+  integrity sha512-JVzAR/AjBvVt2BmYhxRCSYysDsPcssdmTFnzyLEts9qNwmjmu4JTAMYubEfwVOSwpQ1I1sKKFcxhZCI2buerfw==
 
 "jquery@>= 1.9.0", jquery@>=1.7, jquery@^3.3.1, jquery@^3.5.1:
   version "3.5.1"
@@ -4926,6 +4984,11 @@ performance-now@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/performance-now/-/performance-now-2.1.0.tgz#6309f4e0e5fa913ec1c69307ae364b4b377c9e7b"
   integrity sha1-Ywn04OX6kT7BxpMHrjZLSzd8nns=
+
+php-date-formatter@^1.3.4:
+  version "1.3.6"
+  resolved "https://registry.yarnpkg.com/php-date-formatter/-/php-date-formatter-1.3.6.tgz#6d67359da890c742005fa89d20be3ded31cc1d2a"
+  integrity sha512-/CKsZYmAwXeNh8KpD/CF9hcJDZNhdb2ICN8+qgqOt5sUu9liZIxZ1R284TNj5MtPt8RjG5X0xn6WSqL0kcKMBg==
 
 picomatch@^2.0.4, picomatch@^2.0.5, picomatch@^2.2.1:
   version "2.2.2"

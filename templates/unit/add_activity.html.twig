@@ -1,0 +1,66 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' 'jquery.collection.html.twig' 'theme_templates/theme.unit.html.twig' %}
+{% import "macros/card-macro.html.twig" as card_macro %}
+{% block stylesheets %}
+	<style type="text/css">
+		.file-default-preview {
+			height: 248px !important;
+		}
+	</style>
+{% endblock %}
+{% block title %}New Unit
+{% endblock %}
+{% block body %}
+	<h2>Datos de la unidad:{{ unit.name }}</h2>
+
+	{{form_start(form) }}
+
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6 mb-3">
+								<div class="col-md-12 mb-3">
+									{{ form_row(form.pdf) }}
+								</div>
+							</div>
+							<div class="col-md-6 mb-3 pt-5">
+								<div class="col-md-12 mb-3">
+									{{ form_row(form.name) }}
+								</div>
+								<div class="col-md-12 mb-3">
+									{{ form_row(form.book) }}
+								</div>
+								<div class="col-md-12 mb-3">
+									<a href="#" class="btn btn-primary add-entry"><i class="fa fa-plus-circle"></i> Adicionar recurso</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-header">
+						<h2 class="card-title">Recursos</h2>
+					</div>
+					<div id="all-activites" class="card-body">
+						
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{{ form_end(form) }}
+{% endblock %}
+{% block javascripts %}
+	<script>
+		const image_url_defaultPreview = '{{ vich_uploader_asset(unit.pdf, 'pdfFile') }}';
+		const unit_uuid = '{{ unit.uuid }}'
+	</script>
+	{{ encore_entry_script_tags('unit.form') }}
+{% endblock %}

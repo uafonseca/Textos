@@ -19,11 +19,16 @@ class UnitDatatable extends AbstractDatatable{
 		return function ($row) {
 			$unit = $this->getEntityManager()->getRepository('App:Unit')->find($row['id']);
 			$html = '<ul>';
+
+			$html1 = '<ul>';
 			foreach ($unit->getActivities() as $activity) {
 				$html .= '<li>' . $activity->getName() . '</li>';
+				$html1 .= '<li>' . $activity->getPage() . '</li>';
 			}
 			$html .= '</ul>';
+			$html1 .= '</ul>';
 			$row['activities'] = $html;
+			$row['pages'] = $html1;
 			return $row;
 		};
 	}
@@ -62,11 +67,15 @@ class UnitDatatable extends AbstractDatatable{
 				'title' => 'Nombre del acrchivo',
 			])
             ->add('activities', VirtualColumn::class, [
-				'title' => 'Actividades',
+				'title' => 'Recursos',
+			])
+			->add('pages', VirtualColumn::class, [
+				'title' => 'Páginas',
 			])
             ->add(null, ActionColumn::class, [
 				'title' => $this->translator->trans('sg.datatables.actions.title'),
 				'actions' => [
+					TableActions::add('unit_activities'),
 					TableActions::edit('unit_edit'),
                     TableActions::delete('unit_delete'),
 				],

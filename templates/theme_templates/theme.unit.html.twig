@@ -1,8 +1,8 @@
 {% block _unitType_activities_entry_row %}
-	<div class="col-md-6">
+	<div class="col-md-12">
 		<div class="card mb-3" style="bordered 1px solid;!important">
 			<div class="card-header">
-				<h5 style="display: inline">Actividad</h5>
+				<h5 style="display: inline">Recurso</h5>
 				<a href="#" style="float:right;" class="btn btn-danger cortex-collection-icon unitType_activities-collection-remove unitType_activities-collection-action">
 					<i class="fa fa-times"></i>
 				</a>
@@ -19,10 +19,22 @@
 
 {% block _unitType_activities_entry_widget %}
 	<div class="row">
-		<div class="col-md-7">{{ form_row(form.name) }}</div>
-		<div class="col-md-5">{{ form_row(form.page) }}</div>
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-7">
+					{{ form_row(form.name) }}</div>
+				<div class="col-md-5">
+					{{ form_row(form.page) }}</div>
+			</div>
+			<div class="row">
+				<div class="col-md-12">{{ form_row(form.url) }}</div>
+			</div>
+		</div>
+		<div class="col-md-6 border border-primary">
+		
+		</div>
 	</div>
 	<div class="row">
-		<div class="col-md-12">{{ form_row(form.url) }}</div>
+		<div class="col-md-12"></div>
 	</div>
 {% endblock %}

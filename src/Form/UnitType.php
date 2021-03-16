@@ -27,19 +27,19 @@ class UnitType extends AbstractType
 
             ->add('pdf',PdfType::class)
 
-            ->add('activities', CollectionType::class,[
-                'entry_type' => ActivityFormType::class,
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-                'entry_options' => [
-                    'label' => false,
-                ],
-                'label' => false,
-                'attr' => array(
-                    'class' => 'activity-collection row',
-                ),
-            ])
+            // ->add('activities', CollectionType::class,[
+            //     'entry_type' => ActivityFormType::class,
+            //     'allow_add' => true,
+            //     'allow_delete' => true,
+            //     'prototype' => true,
+            //     'entry_options' => [
+            //         'label' => false,
+            //     ],
+            //     'label' => false,
+            //     'attr' => array(
+            //         'class' => 'activity-collection row',
+            //     ),
+            // ])
         ;
     }
 

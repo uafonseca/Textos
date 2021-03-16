@@ -3,13 +3,17 @@
 namespace App\Controller;
 
 use App\Datatables\Tables\UnitDatatable;
+use App\Entity\Activity;
 use App\Entity\Company;
 use App\Entity\Unit;
+use App\Form\ActivityFormType;
 use App\Form\UnitType;
+use App\Repository\ActivityRepository;
 use App\Repository\UnitRepository;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -94,7 +98,7 @@ class UnitController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="unit_show", methods={"GET"})
+     * @Route("/show/{uuid}", name="unit_show", methods={"GET"})
      */
     public function show(Unit $unit): Response
     {
@@ -144,6 +148,83 @@ class UnitController extends AbstractController
     }
 
 
+    /**
+     * @Route("/activities/{uuid}", name="unit_activities", methods={"POST","GET"})
+     */
+    public function addActivities(Unit $unit, Request $request)
+    {
+        $form = $this->createForm(UnitType::class, $unit);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            /** @var Activity $activity */
+            foreach ($unit->getActivities() as $activity){
+                $activity->setUnit($unit);
+            }
+            
+            $this->getDoctrine()->getManager()->flush();
+
+            return $this->redirectToRoute('unit_index');
+        }
+
+        return $this->render('unit/add_activity.html.twig', [
+            'unit' => $unit,
+            'form' => $form->createView(),
+        ]);
+    }
+
+
+    /**
+     * @Route("/create-activity/{uuid}", name="create-activity", methods={"POST","GET"}, options={"expose" = true})
+     */
+    public function createActivity(Unit $unit,Request $request)
+    {
+        $activity = new Activity();
+        $activity->setUnit($unit);
+
+        $form = $this->createForm(ActivityFormType::class, $activity,[
+            'action' => $this->generateUrl('create-activity',[
+                'uuid' => $unit->getUuid(),
+            ])
+        ]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+            $em = $this->getDoctrine ()->getManager ();
+
+            $em->persist($activity);
+
+            $unit->addActivity($activity);
+
+            $em->flush ();
+
+            return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Datos guardados'
+            ]);
+        }
+
+        return $this->render('activity/new.html.twig',[
+            'form' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/all-activites/{uuid}", name="all-activites", methods={"POST","GET"}, options={"expose" = true})
+     */
+    public function loadActivities(Unit $unit, ActivityRepository $activityRepository)
+    {    
+        $all = $activityRepository->findBy([
+            'unit' => $unit
+        ]);
+
+        return $this->render('activity/list.html.twig',[
+            'all' => $all
+        ]);
+    }
 
     public function getCompany():Company
     {

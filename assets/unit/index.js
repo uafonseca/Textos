@@ -1,7 +1,19 @@
+// import 'jquery-confirm'
 app.unit = {
   form: {
     index: () => {
       app.plugins.initSelect2("#unitType_book");
+
+
+      $('.add-entry').on('click', function(event){
+        event.preventDefault();
+        app.dialogs.create({
+          url:Routing.generate('create-activity',{uuid:unit_uuid}),
+          containerFluid:true,
+          columnClass:'col-md-8 col-md-offset-2'
+        });
+      })
+
 
       let STYLE_SETTING = 'style="width:{width};height:{height};"',
         img_field =
@@ -44,6 +56,13 @@ app.unit = {
         },
       });
     },
+
+    updateActivities :() => {
+        $.get(Routing.generate('all-activites',{uuid:unit_uuid}), function(response){
+            $('#all-activites').html(response);
+        });
+    },
+
     collection: () => {
       app.plugins.initPrototype(".activity-collection", {});
     },
@@ -52,5 +71,5 @@ app.unit = {
 
 $(() => {
   app.unit.form.index();
-  app.unit.form.collection();
+  app.unit.form.updateActivities();
 });

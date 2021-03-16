@@ -7,11 +7,15 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
-import './custon-theme/css/app.css'
+import './custon-theme/css/app.css' 
 
 // start the Stimulus application
+import './core/jQuery'
+require('webpack-jquery-ui');
+require('webpack-jquery-ui/css');
 
-
+import './plugins/jquery-confirm-v3.3.4/dist/jquery-confirm.min'
+import './plugins/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css'
 import './custon-theme/js/app'
 import 'bootstrap/dist/css/bootstrap-grid.css';
 import 'bootstrap/dist/css/bootstrap-reboot.css';
@@ -28,8 +32,10 @@ import 'symfony-collection'
 import './core/core'
 import './datatables/index'
 import './core/plugins'
-require('webpack-jquery-ui');
-require('webpack-jquery-ui/css');
+import './core/dialogs'
+import './core/forms'
+
+
 
 import '@fortawesome/fontawesome-free'
 

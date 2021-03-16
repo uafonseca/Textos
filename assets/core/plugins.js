@@ -1,19 +1,7 @@
 app.plugins = {
-    // initDatatable: function (selector, options = {}) {
-    //     return $(selector).DataTable(options);
-    // },
-    // initTimePicker: function (selector) {
-    //     $(selector).timepicker({
-    //         defaultTime: 'current',
-    //         showInputs: false
-    //     });
-    // },
-    // initCheck2: function (selector) {
-    //     $(selector).iCheck({
-    //         checkboxClass: 'icheckbox_square-blue',
-    //         radioClass: 'iradio_square-blue'
-    //     });
-    // },
+    initDatatable: function (selector, options = {}) {
+        return $(selector).DataTable(options);
+    },
     initSelect2: function (selector, options = {}) {
         const config = {
             placeholder: 'Seleccionar'
@@ -37,50 +25,7 @@ app.plugins = {
             browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
         });
     },
-    // initNewFileInput: function (selector, imageDefault, style = '') {
-
-    //     let myStyle = style === '' ? 'width: "100px", height: "92px"' : 'width:' + style.width;
-    //     let STYLE_SETTING = 'style="width:{width};height:{height};"',
-    //         img_field = "<img src='value_replace' style='" + myStyle + "' alt='foto'>";
-
-
-    //     $(selector).fileinput({
-    //         'defaultPreviewContent': [
-    //             img_field.replace('value_replace', imageDefault)
-    //         ],
-    //         'previewSettings': {
-    //             image: style === '' ? {width: "100px", height: "92px"} : style
-    //         },
-    //         'initialCaption': '&nbsp; Foto Trabajador', // Muestro que esa foto es la original del usuario
-    //         'overwriteInitial': false, // Cuando limpien el preview se vuelve a mostrar el initialCaption
-    //         'showCaption': true,
-    //         'showUpload': false,
-    //         'browseLabel': '&nbsp;Buscar',
-    //         'removeLabel': '&nbsp;Quitar',
-    //         'allowedFileTypes': ['image'],
-    //         'allowedPreviewTypes': ['image'],
-    //         'allowedFileExtensions': ['jpg', 'jpeg', 'png', 'gif', 'bmp'],
-    //         'maxFileSize': '150000',
-    //         'maxImageWidth': '1000000',
-    //         'layoutTemplates': {
-    //             main1: '' +
-    //                 '<div class="col-md-7 no-padding">' +
-    //                 '{preview}' +
-    //                 '<div class="kv-upload-progress hide"></div></div>\n' +
-    //                 '<div class="col-md-5">' +
-    //                 '       {browse}\n' +
-    //                 '       {remove}\n' +
-    //                 '       {cancel}\n' +
-    //                 '       {upload}\n' +
-    //                 '</div>',
-    //             btnDefault: '<button type="{type}" tabindex="500" style="margin-top: 10px" title="{title}" class="file-input-btn {css}"{status}>{icon}{label}</button>',
-    //             icon: '<i class="fa fa-camera-retro"></i>&nbsp;'
-    //         },
-    //         'previewTemplates': {
-    //             image: '   <img src="{data}" class="file-preview-image" title="{caption}" alt="{caption}" ' + STYLE_SETTING + '>\n'
-    //         }
-    //     });
-    // },
+    
 
     initializeEmpresaFileInput: function (field_selector, image_url_defaultPreview) {
 
