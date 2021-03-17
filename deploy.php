@@ -70,9 +70,16 @@ task('database:update', function () {
 desc('Publish assets');
 task('assets:install', 'php {{bin/console}} assets:install public');
 
+desc('Expose routes');
+task('routes:expose', 'php {{bin/console}} fos:js-routing:dump --target=public/js/fos_js_routes.js');
+
+
+
+
 task('build', [
     'database:update',
     'assets:install',
+    'routes:expose',
     'yarn:install',
     'yarn:run:production',
 ]);

@@ -1,10 +1,47 @@
-{% for a in all %}
+<table class="table table-hover">
+	{% for a in all %}
+		<tr>
+			<td class="trext-center">
+				<a href="{{path('remove-activity',{id:a.id})}}" class="remove text-danger">
+					<i class="fa fa-times-circle"></i>
+				</a>
+				<a href="{{path('update-activity',{id:a.id})}}" class="action text-success">
+					<i class="fa fa-edit"></i>
+				</a>
+			</td>
+			<td class="trext-left">{{a.name}}</td>
+		</tr>
+	{% endfor %}
+</table>
 
-<div class="row">
-	<div class="col-md-1">
-		<a href="#" class="text-danger"> <i class="fa fa-times-circle"></i></a>
-	</div>
-	<div class="col-md-11">{{a.name}}</div>
-</div>
 
-{% endfor %}
+<script type="text/javascript">
+	$(document).ready(function () {
+		$('.action').on('click', function (event) {
+			event.preventDefault();
+			const scope = $(this)
+			app.dialogs.create({
+				url: scope.attr('href'),
+				containerFluid:true,
+          		columnClass:'col-md-8 col-md-offset-2'
+			})
+		})
+
+		$('.remove').on('click', function (event) {
+			event.preventDefault();
+			const scope = $(this)
+			app.dialogs.confirm({onAccept: function () {
+				$.ajax({
+					url:scope.attr('href'),
+					success: function(response) {
+						$.alert({
+							title: 'Información',
+    						content: response.message,
+						})
+						app.unit.form.updateActivities();
+					}
+				})
+			}})
+		})
+	})
+</script>

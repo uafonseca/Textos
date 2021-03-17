@@ -37,11 +37,15 @@
 				<div class="card-header">
 					<h3 class="card-title">Vista previa</div>
 					<div id="preview" class="card-body border border-primary text-center" style="height:280px!important">
-						<h1 class="text-muted">
-							<i class="fa fa-file fa-4x"></i>
-						</h1>
-						<h3>Acá se previsualiza tu contenido multimedia</h3>
-						<p class="text-muted">Ingresa un enlace a tu contenido multimedia en la parte izquierda y previsualizalo aquí</p>
+						{% if activity.type == 'Video' %}
+							<video style='width:100%; height:100%' src ="{{ vich_uploader_asset(activity.file, 'imagenFile')}}" >
+						{% endif %}
+						{% if activity.type == 'Audio' %}
+							<audio style='width:100%; height:100%' src ="{{ vich_uploader_asset(activity.file, 'imagenFile')}}" >
+						{% endif %}
+						{% if activity.type == 'Genially' %}
+							<iframe style='width:100%; height:100%' src ="{{ activity.url }}" ></iframe>
+						{% endif %}
 					</div>
 				</div>
 			</div>

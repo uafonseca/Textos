@@ -7,8 +7,9 @@ app.unit = {
 
       $('.add-entry').on('click', function(event){
         event.preventDefault();
+        const scope = $(this);
         app.dialogs.create({
-          url:Routing.generate('create-activity',{uuid:unit_uuid}),
+          url:Routing.generate('create-activity',{uuid:unit_uuid, type:scope.data('type')}),
           containerFluid:true,
           columnClass:'col-md-8 col-md-offset-2'
         });

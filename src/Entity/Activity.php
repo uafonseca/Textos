@@ -14,6 +14,13 @@ use App\Traits\TimestampableTrait;
  */
 class Activity
 {
+
+    const TYPE_GENIALLY = 'Genially';
+
+    const TYPE_AUDIO = 'Audio';
+
+    const TYPE_VIDEO = 'Video';
+
     use TimestampableTrait;
     use CompanyEntityTrait;
     /**
@@ -34,9 +41,19 @@ class Activity
     private $page;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $url;
+
+      /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $type;
+
+    /**
+	 * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+	 */
+	private $file;
 
     /**
      * @ORM\ManyToOne(targetEntity=Unit::class, inversedBy="activities",cascade={"persist"})
@@ -93,6 +110,30 @@ class Activity
     public function setUnit(?Unit $unit): self
     {
         $this->unit = $unit;
+
+        return $this;
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(?string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
+
+    public function getFile(): ?Image
+    {
+        return $this->file;
+    }
+
+    public function setFile(?Image $file): self
+    {
+        $this->file = $file;
 
         return $this;
     }

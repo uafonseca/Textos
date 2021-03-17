@@ -182,17 +182,23 @@ class UnitController extends AbstractController
     {
         $activity = new Activity();
         $activity->setUnit($unit);
+        $type = $request->query->get('type');
+        
 
         $form = $this->createForm(ActivityFormType::class, $activity,[
             'action' => $this->generateUrl('create-activity',[
                 'uuid' => $unit->getUuid(),
-            ])
+                'type' =>$type
+            ]),
+            'type' =>$type
         ]);
 
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
         {
+            $activity->setType($type);
+
             $em = $this->getDoctrine ()->getManager ();
 
             $em->persist($activity);
@@ -213,6 +219,43 @@ class UnitController extends AbstractController
     }
 
     /**
+     * @Route("/update-activity/{id}", name="update-activity", methods={"POST","GET"}, options={"expose" = true})
+     */
+    public function updateActivity(Activity $activity, Request $request)
+    {
+        
+        $form = $this->createForm(ActivityFormType::class, $activity,[
+            'action' => $this->generateUrl('update-activity',[
+                'id' => $activity->getId(),
+            ]),
+            'type' => $activity->getType()
+        ]);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid())
+        {
+
+            $em = $this->getDoctrine ()->getManager ();
+
+            $em->persist($activity);
+
+
+            $em->flush ();
+
+            return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Datos guardados'
+            ]);
+        }
+
+        return $this->render('activity/update.html.twig',[
+            'form' => $form->createView(),
+            'activity' => $activity
+        ]);
+    }
+
+    /**
      * @Route("/all-activites/{uuid}", name="all-activites", methods={"POST","GET"}, options={"expose" = true})
      */
     public function loadActivities(Unit $unit, ActivityRepository $activityRepository)
@@ -223,6 +266,21 @@ class UnitController extends AbstractController
 
         return $this->render('activity/list.html.twig',[
             'all' => $all
+        ]);
+    }
+
+    /**
+     * @Route("/remove-activity/{id}", name="remove-activity", methods={"POST","GET"}, options={"expose" = true})
+     */
+    public function removeActivity(Activity $activity){
+        $em = $this->getDoctrine ()->getManager ();
+
+        $em->remove($activity);
+        $em->flush ();
+
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Recuso eliminado'
         ]);
     }
 
