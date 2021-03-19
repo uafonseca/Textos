@@ -15,11 +15,17 @@ use App\Traits\TimestampableTrait;
 class Activity
 {
 
+    /** @Var string */
     const TYPE_GENIALLY = 'Genially';
 
+    /** @Var string */
     const TYPE_AUDIO = 'Audio';
 
+    /** @Var string */
     const TYPE_VIDEO = 'Video';
+
+    /** @Var string */
+    const TYPE_YOUTUBE = 'Youtube';
 
     use TimestampableTrait;
     use CompanyEntityTrait;
@@ -113,12 +119,23 @@ class Activity
 
         return $this;
     }
-
+    
+    /**
+     * getType
+     *
+     * @return string
+     */
     public function getType(): ?string
     {
         return $this->type;
     }
-
+    
+    /**
+     * setType
+     *
+     * @param  mixed $type
+     * @return self
+     */
     public function setType(?string $type): self
     {
         $this->type = $type;
@@ -126,11 +143,24 @@ class Activity
         return $this;
     }
 
+        
+    /**
+     * getFile
+     *
+     * @return Image
+     */
     public function getFile(): ?Image
     {
         return $this->file;
     }
 
+        
+    /**
+     * setFile
+     *
+     * @param  mixed $file
+     * @return self
+     */
     public function setFile(?Image $file): self
     {
         $this->file = $file;

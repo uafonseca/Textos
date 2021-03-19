@@ -87,17 +87,18 @@ Encore
   .copyFiles([
     {
         from: './node_modules/ckeditor/', to: 'ckeditor/[path][name].[ext]',pattern: /\.(js|css)$/, includeSubdirectories: false},
-    {from: './node_modules/ckeditor/adapters', to: 'ckeditor/adapters/[path][name].[ext]'},
-    {from: './node_modules/ckeditor/lang', to: 'ckeditor/lang/[path][name].[ext]'},
-    {from: './node_modules/ckeditor/plugins', to: 'ckeditor/plugins/[path][name].[ext]',pattern: /\.(js|css)$/},
-    {from: './node_modules/ckeditor/skins', to: 'ckeditor/skins/[path][name].[ext]',pattern: /\.(js|css)$/}
+        {from: './node_modules/ckeditor/adapters', to: 'ckeditor/adapters/[path][name].[ext]'},
+        {from: './node_modules/ckeditor/lang', to: 'ckeditor/lang/[path][name].[ext]'},
+        {from: './node_modules/ckeditor/plugins', to: 'ckeditor/plugins/[path][name].[ext]',pattern: /\.(js|css)$/},
+        {from: './node_modules/ckeditor/skins', to: 'ckeditor/skins/[path][name].[ext]',pattern: /\.(js|css)$/}
 ])
   .addPlugin(
     new CopyWebpackPlugin(
         { 
           patterns: [
             { from: './assets/images', to: 'images' },
-            { from: './node_modules/pdfjs-dist/build/pdf.worker.js', to: 'worker/[path][name].[ext]' },
+            { from: './assets/plugins', to: 'plugins/[path][name].[ext]' },
+            // { from: './node_modules/pdfjs-dist/build/pdf.worker.js', to: 'worker/[path][name].[ext]' },
           ]
         }
       )

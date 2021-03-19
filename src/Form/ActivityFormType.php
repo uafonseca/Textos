@@ -27,7 +27,7 @@ class ActivityFormType extends AbstractType
             case Activity::TYPE_GENIALLY:
                 $builder
                     ->add('url', null, [
-                        'label' => 'Url de la actividad Genially'
+                        'label' => 'Url de la actividad'
                     ]);
                 break;
             case Activity::TYPE_AUDIO:
@@ -35,6 +35,14 @@ class ActivityFormType extends AbstractType
                     ->add('file', ImageType::class, [
                         'label' => 'Archivo',
                         'attr' => ['class' => 'audio-file'],
+                        'help' => 'Formatos permitidos .mp3, .wav',
+                    ]);
+                break;
+            case Activity::TYPE_YOUTUBE:
+                $builder
+                    ->add('url', null, [
+                        'label' => 'Link del video de Youtube',
+                        'attr' => ['class' => 'youtube'],
                     ]);
                 break;
             default:
@@ -42,6 +50,7 @@ class ActivityFormType extends AbstractType
                     ->add('file', ImageType::class, [
                         'label' => 'Archivo',
                         'attr' => ['class' => 'video-file'],
+                        'help' => 'Formatos permitidos .mkv, .avi, .wmv, .mp4, .mpg',
                     ]);
                 break;
         }

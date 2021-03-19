@@ -13,6 +13,7 @@ import './custon-theme/css/app.css'
 import './core/jQuery'
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
+import './core/tippy'
 
 import './plugins/jquery-confirm-v3.3.4/dist/jquery-confirm.min'
 import './plugins/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css'
@@ -34,6 +35,7 @@ import './datatables/index'
 import './core/plugins'
 import './core/dialogs'
 import './core/forms'
+
 
 
 

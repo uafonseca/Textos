@@ -38,99 +38,120 @@
 					<h3 class="card-title">Vista previa</div>
 					<div id="preview" class="card-body border border-primary text-center" style="height:280px!important">
 						{% if activity.type == 'Video' %}
-							<video style='width:100%; height:100%' src ="{{ vich_uploader_asset(activity.file, 'imagenFile')}}" >
-						{% endif %}
-						{% if activity.type == 'Audio' %}
-							<audio style='width:100%; height:100%' src ="{{ vich_uploader_asset(activity.file, 'imagenFile')}}" >
-						{% endif %}
-						{% if activity.type == 'Genially' %}
-							<iframe style='width:100%; height:100%' src ="{{ activity.url }}" ></iframe>
-						{% endif %}
+							<video style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}">
+							{% endif %}
+							{% if activity.type == 'Audio' %}
+								<audio style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}">
+								{% endif %}
+								{% if activity.type == 'Genially' %}
+									<iframe style='width:100%; height:100%' src="{{ activity.url }}"></iframe>
+								{% endif %}
+							</div>
+						</div>
 					</div>
 				</div>
+				{{ form_end(form) }}
 			</div>
-		</div>
-		{{ form_end(form) }}
-	</div>
 
 
-	<script type="text/javascript">
-		$(document).ready(function(){
-				$('#activity_url').on('change',function(event){
-					const scope = $(this);
-					if( scope.val() && isUrlValid(scope.val())){
-						var newElement = "<iframe style='width:100%; height:100%'  src='"+scope.val()+"'></iframe>";
-						$('#preview').html('').append(newElement);
-					}
-				});
-		
-				$('form[name="activity"]').on('submit', function(event){
-					const form = $(this)
-					app.forms.submit(form,function(response){
-						if(response.type === 'success'){
-							$.alert({
-								title: 'Información',
-								content: response.message,
-							});
-							app.unit.form.updateActivities();
-							app.dialogs.close(form);
-						}else{
-
-						}
-					},event);
-				})
-		
-			});
-
-			$('.audio-file').fileinput({
-				showCaption: true,
-				showPreview: false,
-				showUploadedThumbs: false,
-				showUpload: false,
-				showCancel: false,
-				showRemove: false,
-				allowedFileExtensions: ['mp3', 'wav'],
-				browseLabel: '&nbsp;Importar',
-				browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
-        	});
-			$('.video-file').fileinput({
-				showCaption: true,
-				showPreview: false,
-				showUploadedThumbs: false,
-				showUpload: false,
-				showCancel: false,
-				showRemove: false,
-				browseLabel: '&nbsp;Importar',
-				allowedFileExtensions: ['mkv', 'avi','wmv', 'mp4','mpg'],
-				browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
-        	});
-
-			$('.video-file').on('change',function(event){
-				var reader = new FileReader();
-				 var input = this;
-				reader.onload = function (e) {
-					var newElement = "<video style='width:100%; height:100%'  src='"+e.target.result+"'></video>";
-					$('#preview').html('').append(newElement);
-				}
-				try{
-					reader.readAsDataURL(input.files[0]);
-				}catch(e){}
+			<script type="text/javascript">
+				$(document).ready(function(){
+								$('#activity_url').on('change',function(event){
+											const scope = $('#activity_url');
+						
+											if(scope.hasClass('youtube') && isUrlValid(scope.val())){
+												var id = getId(scope.val());
+												var newElement = "<iframe style='width:100%; height:100%'  src='//www.youtube.com/embed/"+id+"'></iframe>";
+												$('#preview').html('').append(newElement);
+											}else if( scope.val() && isUrlValid(scope.val())){
+												var newElement = "<iframe style='width:100%; height:100%'  src='"+scope.val()+"'></iframe>";
+												$('#preview').html('').append(newElement);
+											}
+										});
+										const scope = $('#activity_url');
+						
+											if(scope.hasClass('youtube') && isUrlValid(scope.val())){
+												var id = getId(scope.val());
+												var newElement = "<iframe style='width:100%; height:100%'  src='//www.youtube.com/embed/"+id+"'></iframe>";
+												$('#preview').html('').append(newElement);
+											}else if( scope.val() && isUrlValid(scope.val())){
+												var newElement = "<iframe style='width:100%; height:100%'  src='"+scope.val()+"'></iframe>";
+												$('#preview').html('').append(newElement);
+											}
+						
+								$('form[name="activity"]').on('submit', function(event){
+									const form = $(this)
+									app.forms.submit(form,function(response){
+										if(response.type === 'success'){
+											$.alert({
+												title: 'Información',
+												content: response.message,
+											});
+											app.unit.form.updateActivities();
+											app.dialogs.close(form);
+										}else{
 				
-			})
-			$('.audio-file').on('change',function(event){
-				var reader = new FileReader();
-				 var input = this;
-				reader.onload = function (e) {
-					var newElement = "<audio style='width:100%; height:100%'  src='"+e.target.result+"'></audio>";
-					$('#preview').html('').append(newElement);
-				}
-				try{
-					reader.readAsDataURL(input.files[0]);
-				}catch(e){}
-			})
-		
-			function isUrlValid(url) {
-				    return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
-				}
-			
-		</script>
+										}
+									},event);
+								})
+						
+							});
+				
+							$('.audio-file').fileinput({
+								showCaption: true,
+								showPreview: false,
+								showUploadedThumbs: false,
+								showUpload: false,
+								showCancel: false,
+								showRemove: false,
+								allowedFileExtensions: ['mp3', 'wav'],
+								browseLabel: '&nbsp;Importar',
+								browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+				        	});
+							$('.video-file').fileinput({
+								showCaption: true,
+								showPreview: false,
+								showUploadedThumbs: false,
+								showUpload: false,
+								showCancel: false,
+								showRemove: false,
+								browseLabel: '&nbsp;Importar',
+								allowedFileExtensions: ['mkv', 'avi','wmv', 'mp4','mpg'],
+								browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+				        	});
+				
+							$('.video-file').on('change',function(event){
+								var reader = new FileReader();
+								 var input = this;
+								reader.onload = function (e) {
+									var newElement = "<video style='width:100%; height:100%'  src='"+e.target.result+"'></video>";
+									$('#preview').html('').append(newElement);
+								}
+								try{
+									reader.readAsDataURL(input.files[0]);
+								}catch(e){}
+								
+							})
+							$('.audio-file').on('change',function(event){
+								var reader = new FileReader();
+								 var input = this;
+								reader.onload = function (e) {
+									var newElement = "<audio style='width:100%; height:100%'  src='"+e.target.result+"'></audio>";
+									$('#preview').html('').append(newElement);
+								}
+								try{
+									reader.readAsDataURL(input.files[0]);
+								}catch(e){}
+							})
+						
+							function isUrlValid(url) {
+								    return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+								}
+								function getId(url) {
+										const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+										const match = url.match(regExp);
+									
+										return (match && match[2].length === 11) ? match[2] : null;
+									}
+							
+						</script>
