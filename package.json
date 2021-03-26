@@ -52,6 +52,7 @@
         "symfony-collection": "ninsuo/symfony-collection",
         "symfony-collection-js": "^3.0.2",
         "tippy.js": "^6.3.1",
+        "toastr": "^2.1.4",
         "webpack-jquery-ui": "^2.0.1",
         "worker-loader": "^3.0.8"
     }

@@ -14,7 +14,9 @@ import './core/jQuery'
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
 import './core/tippy'
-
+import ('toastr');
+import('toastr/build/toastr.css');
+window.toastr = toastr;
 import './plugins/jquery-confirm-v3.3.4/dist/jquery-confirm.min'
 import './plugins/jquery-confirm-v3.3.4/dist/jquery-confirm.min.css'
 import './custon-theme/js/app'
@@ -35,9 +37,6 @@ import './datatables/index'
 import './core/plugins'
 import './core/dialogs'
 import './core/forms'
-
-
-
 
 import '@fortawesome/fontawesome-free'
 

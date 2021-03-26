@@ -1,0 +1,30 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+	<div class="card">
+		<div class="card-header">
+			<a href="{{ path('code_create') }}" class="add-new btn btn-primary">
+				<i class="fa fa-plus-circle"></i>
+				Adicionar</a>
+		</div>
+		<div class="card-body">
+			{{sg_datatables_render_html(datatable)}}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{sg_datatables_render_js(datatable)}}
+	<script type="text/javascript">
+		$(document).ready(function () {
+            $('.add-new').on('click', function (event) {
+                const scope = $(this)
+                event.preventDefault();
+                app.dialogs.create({
+                    url: scope.attr('href'),
+                    
+                })
+            })
+        })
+	</script>
+{% endblock %}

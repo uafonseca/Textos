@@ -74,12 +74,18 @@ class Book
      */
     private $units;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="book", orphanRemoval=true)
+     */
+    private $codes;
+
 
     public function __construct()
     {
         $this->uuid = Uuid::v1();
         $this->source = [];
         $this->units = new ArrayCollection();
+        $this->codes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -215,5 +221,35 @@ class Book
 
     public function __toString(){
         return $this->title;
+    }
+
+    /**
+     * @return Collection|Code[]
+     */
+    public function getCodes(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCode(Code $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCode(Code $code): self
+    {
+        if ($this->codes->removeElement($code)) {
+            // set the owning side to null (unless already changed)
+            if ($code->getBook() === $this) {
+                $code->setBook(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -69,7 +69,7 @@
 		 */
 		public static function delete($route): array
 		{
-			return self::default($route, 'fa-trash text-danger', 'cortex-confirm action-delete', 'Eliminar');
+			return self::default($route, 'fa-trash text-danger', 'confirm action-delete', 'Eliminar');
 		}
 		
 		/**

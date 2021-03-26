@@ -23,7 +23,7 @@ use Serializable;
  * @UniqueEntity(fields={"email"}, message="Existe un correo registrado con este nombre")
  * @ORM\HasLifecycleCallbacks
  */
-class User implements UserInterface, Serializable 
+class User implements UserInterface, Serializable
 {
 	use UuidEntityTrait;
 	use TimestampableTrait;
@@ -113,6 +113,11 @@ class User implements UserInterface, Serializable
 	 */
 	private $rolesObject;
 
+	/**
+	 * @ORM\OneToMany(targetEntity=Code::class, mappedBy="user", orphanRemoval=true)
+	 */
+	private $codes;
+
 
 
 	/**
@@ -121,6 +126,7 @@ class User implements UserInterface, Serializable
 	public function __construct()
 	{
 		$this->rolesObject = new ArrayCollection();
+		$this->codes = new ArrayCollection();
 	}
 
 
@@ -420,8 +426,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function serialize()
-    {
-        $this->avatar = base64_encode($this->avatar);
+	{
+		$this->avatar = base64_encode($this->avatar);
 		return serialize(array(
 			$this->id,
 			$this->uuid,
@@ -429,14 +435,14 @@ class User implements UserInterface, Serializable
 			$this->email,
 			$this->password,
 			$this->avatar = base64_encode($this->avatar)
-		
-		));
-    }
 
-    public function unserialize($serialized)
-    {
-		
-		list (
+		));
+	}
+
+	public function unserialize($serialized)
+	{
+
+		list(
 			$this->id,
 			$this->uuid,
 			$this->username,
@@ -446,5 +452,35 @@ class User implements UserInterface, Serializable
 		) = unserialize($serialized);
 
 		$this->avatar = base64_decode($this->avatar);
-    }
+	}
+
+	/**
+	 * @return Collection|Code[]
+	 */
+	public function getCodes(): Collection
+	{
+		return $this->codes;
+	}
+
+	public function addCode(Code $code): self
+	{
+		if (!$this->codes->contains($code)) {
+			$this->codes[] = $code;
+			$code->setUser($this);
+		}
+
+		return $this;
+	}
+
+	public function removeCode(Code $code): self
+	{
+		if ($this->codes->removeElement($code)) {
+			// set the owning side to null (unless already changed)
+			if ($code->getUser() === $this) {
+				$code->setUser(null);
+			}
+		}
+
+		return $this;
+	}
 }

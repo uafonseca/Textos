@@ -7,6 +7,7 @@ use App\Entity\Book;
 use App\Entity\Company;
 use App\Form\BookType;
 use App\Repository\BookRepository;
+use App\Repository\CodeRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 /**
  * @Route("/book")
@@ -23,22 +25,30 @@ class BookController extends AbstractController
 
 
     /** @var DatatableFactory */
-	private $datatableFactory;
-	
-	/** @var DatatableResponse */
-	private $datatableResponse;
-	
-	/**
-	 * UserController constructor.
-	 *
-	 * @param DatatableFactory  $datatableFactory
-	 * @param DatatableResponse $datatableResponse
-	 */
-	public function __construct (DatatableFactory $datatableFactory, DatatableResponse $datatableResponse)
-	{
-		$this->datatableFactory = $datatableFactory;
-		$this->datatableResponse = $datatableResponse;
-	}
+    private $datatableFactory;
+
+    /** @var DatatableResponse */
+    private $datatableResponse;
+
+    /** @var CodeRepository */
+    private $codeRepository;
+
+    /**
+     * UserController constructor.
+     *
+     * @param DatatableFactory  $datatableFactory
+     * @param DatatableResponse $datatableResponse
+     * @param CodeRepository $CodeRepository
+     */
+    public function __construct(
+        DatatableFactory $datatableFactory,
+        DatatableResponse $datatableResponse,
+        CodeRepository $codeRepository
+    ) {
+        $this->datatableFactory = $datatableFactory;
+        $this->datatableResponse = $datatableResponse;
+        $this->codeRepository = $codeRepository;
+    }
 
     /**
      * @Route("/", name="book_index", methods={"GET", "POST"})
@@ -49,18 +59,18 @@ class BookController extends AbstractController
     {
 
         $datatable = $this->datatableFactory->create(BookDatatable::class);
-    	
-    	$datatable->buildDatatable ([
-    		'url' => $this->generateUrl ('book_index')
-	    ]);
-    	
-    	if ($request->isXmlHttpRequest () && $request->isMethod ('POST')){
-    		$this->datatableResponse->setDatatable($datatable);
-		    $this->datatableResponse->getDatatableQueryBuilder();
 
-        return $this->datatableResponse->getResponse();
-	    }
-    	
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('book_index')
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($datatable);
+            $this->datatableResponse->getDatatableQueryBuilder();
+
+            return $this->datatableResponse->getResponse();
+        }
+
         return $this->render('book/index.html.twig', [
             'datatable' => $datatable
         ]);
@@ -77,8 +87,7 @@ class BookController extends AbstractController
         $form = $this->createForm(BookType::class, $book);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) 
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $book->setCompany($this->getCompany());
             $entityManager->persist($book);
@@ -100,8 +109,45 @@ class BookController extends AbstractController
      */
     public function show(Book $book): Response
     {
-        return $this->render('book/show.html.twig', [
-            'book' => $book,
+        if(null != $code = $this->codeRepository->isBookActive($book,$this->getUser())){
+            return $this->render('book/show.html.twig', [
+                'book' => $book,
+            ]);
+        }
+        return $this->redirectToRoute('book_activate',[
+            'uuid' => $book->getUuid(),
+        ]);
+    }
+
+     /**
+     * @Route("/activate/{uuid}", name="book_activate", methods={"GET","POST"}, options={"expose" = true})
+     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function activateBook(Book $book, Request $request){
+
+        if($request->isXmlHttpRequest()){
+            $key = $request->request->get('code');
+            $loggedUser = $this->getUser();
+            $code = $this->codeRepository->isBookActive($book,$loggedUser);
+            if($code && strtolower($code->getCode()) === strtolower($key)){
+                $em = $this->getDoctrine ()->getManager ();
+
+                $code->setUser($loggedUser);
+                $em->flush ();
+                return new JsonResponse([
+                    'type' => 'success',
+                    'message' => 'El libro se ha activado correctamente'
+                ]);
+            }
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => 'El código de activación no es correcto'
+            ]);
+        }
+
+        return $this->render('book/activate.html.twig',[
+            'book' => $book
         ]);
     }
 
@@ -134,7 +180,7 @@ class BookController extends AbstractController
      */
     public function delete(Request $request, Book $book): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$book->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($book);
             $entityManager->flush();
@@ -144,7 +190,7 @@ class BookController extends AbstractController
     }
 
 
-    public function getCompany():Company
+    public function getCompany(): Company
     {
         return $this->getUser()->getCompany();
     }

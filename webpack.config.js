@@ -83,6 +83,7 @@ Encore
     $: "jquery",
     jQuery: "jquery",
     "window.jQuery": "jquery",
+    toastr: 'toastr',
   })
   .copyFiles([
     {
