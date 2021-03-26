@@ -28,7 +28,7 @@
 					<div class="card-body">
 						<form id="form" class="row g-3 needs-validation" novalidate>
 							<div class="input-group mb-3">
-								<input type="text" required class="form-control" placeholder="Pegue aquí su código de activacion" aria-label="Recipient's username" aria-describedby="basic-addon2">
+								<input id="code" type="text" required class="form-control" placeholder="Pegue aquí su código de activacion" aria-label="Recipient's username" aria-describedby="basic-addon2">
 								 <div class="invalid-feedback">
 									Introduzca su código de activación
 								</div>
@@ -50,7 +50,7 @@
 				event.preventDefault();
 				 $('#form').addClass('was-validated')
 				const scope = $(this);
-				let code = scope.val()
+				let code = $('#code').val()
 				let uuid = '{{ book.uuid }}';
 				 $.ajax({
 					 url: Routing.generate('book_activate',{uuid: uuid }),

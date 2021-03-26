@@ -32,10 +32,20 @@ class CodeRepository extends ServiceEntityRepository
     public function isBookActive(Book $book, User $user)
     {
         return $this->createQueryBuilder('c')
-            ->andWhere('c.uuid = :uuid')
+            ->andWhere('c.book = :book')
             ->andWhere('c.user = :user')
-            ->setParameter('uuid', $book->getUuid())
+            ->setParameter('book', $book)
             ->setParameter('user', $user)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function findCode(Book $book, string $code) {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.book = :book')
+            ->andWhere('c.code = :code')
+            ->setParameter('book', $book)
+            ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult();
     }

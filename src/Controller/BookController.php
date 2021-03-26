@@ -129,8 +129,8 @@ class BookController extends AbstractController
         if($request->isXmlHttpRequest()){
             $key = $request->request->get('code');
             $loggedUser = $this->getUser();
-            $code = $this->codeRepository->isBookActive($book,$loggedUser);
-            if($code && strtolower($code->getCode()) === strtolower($key)){
+            $code = $this->codeRepository->findCode($book,$key);
+            if($code){
                 $em = $this->getDoctrine ()->getManager ();
 
                 $code->setUser($loggedUser);
