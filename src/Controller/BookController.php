@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Datatables\Tables\BookDatatable;
+use App\Entity\Activity;
 use App\Entity\Book;
 use App\Entity\Company;
 use App\Form\BookType;
@@ -116,6 +117,18 @@ class BookController extends AbstractController
         }
         return $this->redirectToRoute('book_activate',[
             'uuid' => $book->getUuid(),
+        ]);
+    }
+
+    /**
+     * @Route("/resource/{id}", name="show_resource", methods={"GET","POST"}, options={"expose" = true})
+     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     */
+    public function showActivity(Activity $activity): Response 
+    {
+        return $this->render('activity/show.html.twig',[
+            'activity' => $activity
         ]);
     }
 

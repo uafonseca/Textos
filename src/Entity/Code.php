@@ -41,7 +41,7 @@ class Code
     private $endDate;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="user")
+     * @ORM\ManyToOne(targetEntity=Book::class, inversedBy="codes")
      * @ORM\JoinColumn(nullable=false)
      */
     private $book;

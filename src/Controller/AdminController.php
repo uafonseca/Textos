@@ -22,46 +22,45 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class AdminController extends AbstractController
 {
-	
-    /**
-     * @Route("/dashboard", name="admin")
-     */
-    public function index(BookRepository $bookRepository): Response
-    {
 
-        return $this->render('admin/index.html.twig', [
-            'books' => $bookRepository->findAll(),
-        ]);
-    }
-	
+	/**
+	 * @Route("/dashboard", name="admin")
+	 */
+	public function index(BookRepository $bookRepository): Response
+	{
+		return $this->render('admin/index.html.twig', [
+			'books' => $bookRepository->findAll(),
+		]);
+	}
+
 	/**
 	 * @return Response
 	 * @Route("/terms", name="system_config")
 	 *
 	 */
-    public function termsConfig(Request $request, TermsRepository $termsRepository){
-    	$all = $termsRepository->findAll ();
-	    $terms =  new Terms();
-    	if (count ($all) > 0){
-    		$terms =  $all[0];
-	    }
-    	$form = $this->createForm (TermsType::class, $terms);
-    	
-    	$form->handleRequest ($request);
-    	
-    	if($form->isSubmitted () && $form->isValid ()){
-    		$em = $this->getDoctrine ()->getManager ();
-    		
-    		$em->persist ($terms);
-    		$em->flush ();
-	    }
-    	
-    	return $this->render ('system/index.html.twig',[
-    		'formTerms' => $form->createView ()
-	    ]);
-    }
-	
-	
+	public function termsConfig(Request $request, TermsRepository $termsRepository){
+		$all = $termsRepository->findAll ();
+		$terms =  new Terms();
+		if (count ($all) > 0){
+			$terms =  $all[0];
+		}
+		$form = $this->createForm (TermsType::class, $terms);
+
+		$form->handleRequest ($request);
+
+		if($form->isSubmitted () && $form->isValid ()){
+			$em = $this->getDoctrine ()->getManager ();
+
+			$em->persist ($terms);
+			$em->flush ();
+		}
+
+		return $this->render ('system/index.html.twig',[
+			'formTerms' => $form->createView ()
+		]);
+	}
+
+
 	/**
 	 * @param Request           $request
 	 * @param CompanyRepository $repository
@@ -70,25 +69,25 @@ class AdminController extends AbstractController
 	 *
 	 *@Route("/system", name="system_company")
 	 */
-    public function systemConfig(Request $request, CompanyRepository $repository){
-    	$all = $repository->findAll ();
-    	$company = new Company();
-    	if (count ($all) > 0)
-    		$company = $all[0];
-    	
-    	$form = $this->createForm (CompanyType::class, $company);
-    	
-    	$form->handleRequest ($request);
-    	
-    	if($form->isSubmitted () && $form->isValid ()){
-		    $em = $this->getDoctrine ()->getManager ();
+	public function systemConfig(Request $request, CompanyRepository $repository){
+		$all = $repository->findAll ();
+		$company = new Company();
+		if (count ($all) > 0)
+			$company = $all[0];
+
+		$form = $this->createForm (CompanyType::class, $company);
+
+		$form->handleRequest ($request);
+
+		if($form->isSubmitted () && $form->isValid ()){
+			$em = $this->getDoctrine ()->getManager ();
 			$this->getUser ()->setCompany($company);
-		    $em->persist ($company);
-		    $em->flush ();
-	    }
-	    return $this->render ('system/systemConfig.html.twig',[
-		    'formCompany' => $form->createView (),
-		    'company' => $company
-	    ]);
-    }
+			$em->persist ($company);
+			$em->flush ();
+		}
+		return $this->render ('system/systemConfig.html.twig',[
+			'formCompany' => $form->createView (),
+			'company' => $company
+		]);
+	}
 }
