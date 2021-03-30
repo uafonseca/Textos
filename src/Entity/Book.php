@@ -79,6 +79,11 @@ class Book
      */
     private $codes;
 
+    /**
+     * @ORM\OneToOne(targetEntity=BookMetadata::class, cascade={"persist", "remove"})
+     */
+    private $metadata;
+
 
     public function __construct()
     {
@@ -249,6 +254,18 @@ class Book
                 $code->setBook(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getMetadata(): ?BookMetadata
+    {
+        return $this->metadata;
+    }
+
+    public function setMetadata(?BookMetadata $metadata): self
+    {
+        $this->metadata = $metadata;
 
         return $this;
     }

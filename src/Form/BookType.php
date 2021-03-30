@@ -57,6 +57,9 @@ class BookType extends AbstractType
             ->add('htmlCode' ,HtmlCodeType::class,[
                 'label' => false,
             ])
+            ->add('metadata',BookMetadataType::class,[
+                'label' => false,
+            ])
         ;
     }
 

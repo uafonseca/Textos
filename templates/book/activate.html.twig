@@ -8,18 +8,19 @@
 	<div class="container">
 		<h1>{{ book.title }}</h1>
 		<div class="row">
-			<div class="col-12 col-md-6 col-lg-4">
+			<div class="col-4 col-md-4">
 				<div class="card">
 					<img class="card-img-top" src="{{ vich_uploader_asset(book.portada , 'imagenFile') }}" alt="Unsplash">
 					<div class="card-header">
 						<h5 class="card-title mb-0">{{ book.title }}</h5>
 					</div>
 					<div class="card-body">
-						<p class="card-text">{{ book.level }}</p>
+						<h3>Dirigido a</h3>
+						<p class="card-text">{{ book.source|join(', ')}}</p>
 					</div>
 				</div>
 			</div>
-			<div class="col-12 col-md-6 col-lg-6">
+			<div class="col-5 col-md-5">
 				<div class="card">
 					<div class="card-header">
 						<h1 class="card-text">Activación del libro
@@ -37,6 +38,67 @@
 								</a>
 							</div>
 						</form>
+						<hr class="m-2">
+						<h3 class="text-center">Introducción</h3>
+						{{book.metadata ? book.metadata.introduction|raw : ''}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6">
+								<p> <i class="fa fa-home"></i> Dedicación</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{book.metadata ? book.metadata.dedication : ''}}
+							 </div>
+
+							 <div class="col-md-6">
+								<p> <i class="fa fa-university"></i> Intitución</p>
+							 </div>
+							 <div class="col-md-6">
+							 	<a href="{{ book.metadata ? book.metadata.intitution.web | external_link : '#'}}" >
+								 {{  book.metadata ? book.metadata.intitution.name : ''}}
+								 </a>
+							 </div>
+
+							<div class="col-md-6">
+								<p> <i class="fa fa-list-alt"></i> Categoría</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{book.category}}
+							 </div>
+
+							<div class="col-md-6">
+								<p> <i class="fa fa-arrow-up"></i> Nivel</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{book.level}}
+							 </div>
+
+							<div class="col-md-6">
+								<p> <i class="fa fa-language"></i> Lenguage</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.language : ''}} 
+							 </div>
+
+							 <div class="col-md-6">
+								<p> <i class="fa fa-video"></i> Tipo de transcripción de vide</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.transcription :''}} 
+							 </div>
+
+							 <div class="col-md-6">
+								<p> <i class="fa fa-user"></i> Tipo de curso</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.learning : ''}} 
+							 </div>
+						</div>
 					</div>
 				</div>
 			</div>
