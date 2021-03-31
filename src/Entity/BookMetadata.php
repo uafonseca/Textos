@@ -48,6 +48,11 @@ class BookMetadata
      */
     private $introduction;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $author;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -121,6 +126,18 @@ class BookMetadata
     public function setIntroduction(string $introduction): self
     {
         $this->introduction = $introduction;
+
+        return $this;
+    }
+
+    public function getAuthor(): ?string
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(string $author): self
+    {
+        $this->author = $author;
 
         return $this;
     }

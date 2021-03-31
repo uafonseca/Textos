@@ -14,8 +14,12 @@ class BookMetadataType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+            ->add('author', null, ['label' => 'Autor'])
             ->add('introduction', CKEditorType::class, ['label' => 'Introducción'])
-            ->add('dedication', null, ['label' => 'Dedicación'])
+            ->add('dedication', null, [
+                'label' => 'Dedicación',
+                'attr' => ['placeholder' => 'Ejm: 4 a 5 horas semanales'],
+            ])
             ->add('language', ChoiceType::class, [
                 'label' => 'Idioma',
                 'choices' => [
@@ -36,7 +40,7 @@ class BookMetadataType extends AbstractType
                     'Mandarín' => 'Mandarín'
                 ]
 
-                ])
+            ])
             ->add('learning', ChoiceType::class, [
                 'label' => 'Aprendizaje',
                 'choices' => [
@@ -46,7 +50,7 @@ class BookMetadataType extends AbstractType
                     'Según el docente' => 'Según el docente',
                 ]
 
-                ])
+            ])
             ->add('intitution', IntitutionType::class, [
                 'label' => false,
             ]);

@@ -7,7 +7,7 @@
 {% block body %}
 	<h1>{{ book.title }}</h1>
 	<div class="row">
-		<div class="col-12 col-md-6 col-lg-4">
+		<div class="col-4 col-md-4">
 			<div class="card">
 				<img class="card-img-top" src="{{ vich_uploader_asset(book.portada , 'imagenFile') }}" alt="Unsplash">
 				<div class="card-header">
@@ -18,7 +18,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-12 col-md-6 col-lg-6">
+		<div class="col-4 col-md-5">
 			<div id="accordion">
 				{% for item in book.units %}
 					<div class="card">
@@ -42,11 +42,13 @@
 						<div id="e{{item.id}}" class="collapse" aria-labelledby="heading-{{item.uuid}}" data-parent="#accordion">
 							<div class="card-body">
 								{% for activity in item.activities %}
-								{%if activity.file %}
+								{% if activity.file %}
 									<h6 class="">
 										<a href="{{path('show_resource',{id:activity.id})}}" class="show-details"> <i class="fa {{getIcon(activity.file.mimeType)}}"> </i>
 										{{activity.name}}
 										</a>
+
+										Pag. {{activity.page}}
 									</h6>
 								{%endif %}
 								{% endfor %}
@@ -55,7 +57,75 @@
 					</div>
 				{% endfor %}
 			</div>
+			<hr class="m-2">
+			<h3 class="text-center">Introducción</h3>
+			{{book.metadata ? book.metadata.introduction|raw : ''}}
 		</div>
+		<div class="col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6">
+								<p> <i class="fa fa-home"></i> Dedicación</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{book.metadata ? book.metadata.dedication : ''}}
+							 </div>
+
+							 <div class="col-md-6">
+								<p> <i class="fa fa-university"></i> Institución</p>
+							 </div>
+							 <div class="col-md-6">
+							 	<a href="{{ book.metadata ? book.metadata.intitution.web | external_link : '#'}}" >
+								 {{  book.metadata ? book.metadata.intitution.name : ''}}
+								 </a>
+							 </div>
+
+							<div class="col-md-6">
+								<p> <i class="fa fa-list-alt"></i> Categoría</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{book.category}}
+							 </div>
+
+							<div class="col-md-6">
+								<p> <i class="fa fa-arrow-up"></i> Nivel</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{book.level}}
+							 </div>
+
+							<div class="col-md-6">
+								<p> <i class="fa fa-language"></i> Lenguaje</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.language : ''}} 
+							 </div>
+
+							 <div class="col-md-6">
+								<p> <i class="fa fa-video"></i> Tipo de transcripción de video</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.transcription :''}} 
+							 </div>
+
+							 <div class="col-md-6">
+								<p> <i class="fa fa-users"></i> Tipo de curso</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.learning : ''}} 
+							 </div>
+
+							  <div class="col-md-6">
+								<p> <i class="fa fa-user"></i> Autor</p>
+							 </div>
+							 <div class="col-md-6">
+							 	{{ book.metadata ? book.metadata.author : ''}} 
+							 </div>
+						</div>
+					</div>
+				</div>
+			</div>
 	</div>
 {% endblock %}
 

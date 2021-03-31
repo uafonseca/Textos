@@ -12,8 +12,14 @@ class IntitutionType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('name', null,[ 'label' => 'Institución' ])
-            ->add('web', null,[ 'label' => 'Página web' ])
+            ->add('name', null,[ 
+                'label' => 'Institución',
+                'attr' => ['placeholder' => 'Nombre de la institución']
+                 ])
+            ->add('web', null,[ 
+                'label' => 'Página web',
+                'attr' => ['placeholder' => 'Url de la página web']
+             ])
         ;
     }
 
