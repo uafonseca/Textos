@@ -1,4 +1,9 @@
 <nav class="navbar navbar-expand navbar-light navbar-bg">
+    {% if page is defined %}
+     <a class="mr-5 d-flex" href="{{ url('app_home_page') }}">
+        <i class="fa fa-home mt-1 mr-1"></i> INICIO 
+    </a>
+    {% endif %}
     <a class="sidebar-toggle d-flex">
         <i class="hamburger align-self-center"></i>
     </a>

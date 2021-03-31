@@ -53,6 +53,16 @@ class BookMetadata
      */
     private $author;
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $curriculum;
+
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $aboutAuthor;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -138,6 +148,30 @@ class BookMetadata
     public function setAuthor(string $author): self
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    public function getCurriculum(): ?string
+    {
+        return $this->curriculum;
+    }
+
+    public function setCurriculum(string $curriculum): self
+    {
+        $this->curriculum = $curriculum;
+
+        return $this;
+    }
+
+    public function getAboutAuthor(): ?string
+    {
+        return $this->aboutAuthor;
+    }
+
+    public function setAboutAuthor(string $aboutAuthor): self
+    {
+        $this->aboutAuthor = $aboutAuthor;
 
         return $this;
     }

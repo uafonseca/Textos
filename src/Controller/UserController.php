@@ -7,6 +7,7 @@ use App\Entity\Role;
 use App\Entity\User;
 use App\Form\User1Type;
 use App\Form\UserPromoteType;
+use App\Repository\BookRepository;
 use App\Repository\UserRepository;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
@@ -28,16 +29,20 @@ class UserController extends AbstractController
     /** @var DatatableResponse */
     private $datatableResponse;
 
+    /** @var BookRepository */
+    private $bookRepository;
+
     /**
      * UserController constructor.
      *
      * @param DatatableFactory  $datatableFactory
      * @param DatatableResponse $datatableResponse
      */
-    public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse)
+    public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse, BookRepository $bookRepository)
     {
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
+        $this->bookRepository = $bookRepository;
     }
 
 
@@ -182,11 +187,13 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"})
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("ROLE_USER")
      */
     public function userDashboard(){
+        $loggedUser = $this->getUser();
+        
         return $this->render('user/dashboard.html.twig', [
-            
+            'books' => $this->bookRepository->getBooks($loggedUser)
         ]);
     }
 }

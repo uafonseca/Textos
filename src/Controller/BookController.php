@@ -106,11 +106,17 @@ class BookController extends AbstractController
     /**
      * @Route("/{uuid}", name="book_show", methods={"GET"})
      * 
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * 
      */
     public function show(Book $book): Response
     {
-        if(null != $code = $this->codeRepository->isBookActive($book,$this->getUser())){
+        $loggedUser = $this->getUser();
+        if(!$loggedUser){
+            return $this->render('book/annony.html.twig', [
+                'book' => $book,
+            ]);
+        }
+        if( $loggedUser && null != $code = $this->codeRepository->isBookActive($book,$this->getUser())){
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);

@@ -16,6 +16,8 @@ class BookMetadataType extends AbstractType
         $builder
             ->add('author', null, ['label' => 'Autor'])
             ->add('introduction', CKEditorType::class, ['label' => 'Introducción'])
+            ->add('curriculum', CKEditorType::class, ['label' => 'Plan de estudios'])
+            ->add('aboutAuthor', CKEditorType::class, ['label' => 'Sobre el autor'])
             ->add('dedication', null, [
                 'label' => 'Dedicación',
                 'attr' => ['placeholder' => 'Ejm: 4 a 5 horas semanales'],

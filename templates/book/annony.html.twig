@@ -1,0 +1,163 @@
+{% extends 'layout.html.twig' %}
+
+{% block main %}
+{% include 'partials/top-menu.html.twig' ignore missing with {'page': 'annoni'}  %}
+
+	<main class="container pt-2">
+	
+		<div class="row">
+			<div class="col-md-12">
+				<div class="card">
+					<img class="card-img-top" src="{{ vich_uploader_asset(book.portada , 'imagenFile') }}"  style="height:350px!important">
+					<div class="card-header">
+						<h5 class="card-title mb-0">{{ book.title }}</h5>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-8">
+				<div id="accordion">
+					{% for item in book.units %}
+						<div class="card">
+							<div id="heading-{{item.uuid}}" class="card-header">
+								<h5 class="mb-0">
+
+									<button class="btn btn-link">
+										<i class="fa fa-book-open"></i>
+										{{ item.name }}
+									</button>
+
+									<button class="btn btn-warning btn-sm pull-right ml-3 mt-1" data-toggle="collapse" data-target="#e{{item.id}}" aria-expanded="true" aria-controls="e{{item.id}}">
+										<i class="fa fa-list"></i>
+										Recursos
+									</button>
+								</h5>
+							</div>
+							<div id="e{{item.id}}" class="collapse" aria-labelledby="heading-{{item.uuid}}" data-parent="#accordion">
+								<div class="card-body">
+									{% for activity in item.activities %}
+										{% if activity.file %}
+											<h6 class="">
+												<a href="#" class="show-details">
+													<i class="fa {{getIcon(activity.file.mimeType)}}"></i>
+													{{activity.name}}
+												</a>
+
+												Pag.
+												{{activity.page}}
+											</h6>
+										{%endif %}
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Introducción</h3>
+					</div>
+					<div class="card-body">
+					{{book.metadata ? book.metadata.introduction|raw : ''}}
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Plan de estudios</h3>
+					</div>
+					<div class="card-body">
+					{{book.metadata ? book.metadata.curriculum|raw : ''}}
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Sobre el autor</h3>
+					</div>
+					<div class="card-body">
+					{{book.metadata ? book.metadata.aboutAuthor|raw : ''}}
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-home"></i>
+									Dedicación</p>
+							</div>
+							<div class="col-md-6">
+								{{book.metadata ? book.metadata.dedication : ''}}
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-university"></i>
+									Institución</p>
+							</div>
+							<div class="col-md-6">
+								<a href="{{ book.metadata ? book.metadata.intitution.web | external_link : '#'}}">
+									{{  book.metadata ? book.metadata.intitution.name : ''}}
+								</a>
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-list-alt"></i>
+									Categoría</p>
+							</div>
+							<div class="col-md-6">
+								{{book.category}}
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-arrow-up"></i>
+									Nivel</p>
+							</div>
+							<div class="col-md-6">
+								{{book.level}}
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-language"></i>
+									Lenguaje</p>
+							</div>
+							<div class="col-md-6">
+								{{ book.metadata ? book.metadata.language : ''}}
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-video"></i>
+									Tipo de transcripción de video</p>
+							</div>
+							<div class="col-md-6">
+								{{ book.metadata ? book.metadata.transcription :''}}
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-users"></i>
+									Tipo de curso</p>
+							</div>
+							<div class="col-md-6">
+								{{ book.metadata ? book.metadata.learning : ''}}
+							</div>
+
+							<div class="col-md-6">
+								<p>
+									<i class="fa fa-user"></i>
+									Autor</p>
+							</div>
+							<div class="col-md-6">
+								{{ book.metadata ? book.metadata.author : ''}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}
