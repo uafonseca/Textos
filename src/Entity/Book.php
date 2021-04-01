@@ -60,6 +60,11 @@ class Book
     private $portada;
 
     /**
+     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+     */
+    private $banner;
+
+    /**
      * @ORM\OneToOne(targetEntity=Link::class, inversedBy="book", cascade={"persist", "remove"})
      */
     private $link;
@@ -166,6 +171,18 @@ class Book
     public function setPortada(?Image $portada): self
     {
         $this->portada = $portada;
+
+        return $this;
+    }
+
+    public function getBanner(): ?Image
+    {
+        return $this->banner;
+    }
+
+    public function setBanner(?Image $banner): self
+    {
+        $this->banner = $banner;
 
         return $this;
     }

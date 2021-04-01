@@ -51,6 +51,9 @@ class BookType extends AbstractType
             ->add('portada',ImageType::class,[
                 'label' => 'Portada'
             ])
+            ->add('banner',ImageType::class,[
+                'label' => 'Baner'
+            ])
             ->add('link',LinkType::class,[
                 'label' => false,
             ])

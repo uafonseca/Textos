@@ -5,46 +5,67 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<h1>{{ book.title }}</h1>
+	<div class="container ">
 		<div class="row">
-			<div class="col-4 col-md-4">
+			<div class="col-md-12">
 				<div class="card">
-					<img class="card-img-top" src="{{ vich_uploader_asset(book.portada , 'imagenFile') }}" alt="Unsplash">
+					<img class="card-img-top" src="{{ vich_uploader_asset(book.banner , 'imagenFile') }}"  style="height:350px!important">
 					<div class="card-header">
 						<h5 class="card-title mb-0">{{ book.title }}</h5>
 					</div>
 					<div class="card-body">
-						<h3>Dirigido a</h3>
-						<p class="card-text">{{ book.source|join(', ')}}</p>
+						<div class="row">
+							<div class="col-md-6">
+								<h3>Dirigido a</h3>
+								<p class="card-text">{{ book.source|join(', ')}}</p>
+							</div>
+							<div class="col-md-6">
+								<h3 class="card-text">Activación del libro
+								<strong>{{ book.title }}</strong></h3>
+								<form id="form" class="row g-3 needs-validation" novalidate>
+									<div class="input-group mb-3">
+										<input id="code" type="text" required class="form-control" placeholder="Pegue aquí su código de activacion" aria-label="Recipient's username" aria-describedby="basic-addon2">
+										<div class="invalid-feedback">
+											Introduzca su código de activación
+										</div>
+										<a href="#" id="activate" class="input-group-append">
+											<span class="input-group-text" id="basic-addon2">Activar</span>
+										</a>
+									</div>
+								</form>
+							</div>
+						</div>
+						
 					</div>
 				</div>
 			</div>
-			<div class="col-5 col-md-5">
+			<div class="col-md-8">
 				<div class="card">
 					<div class="card-header">
-						<h1 class="card-text">Activación del libro
-							<strong>{{ book.title }}</strong></h1>
+						<h3 class="card-title">Introducción</h3>
 					</div>
 					<div class="card-body">
-						<form id="form" class="row g-3 needs-validation" novalidate>
-							<div class="input-group mb-3">
-								<input id="code" type="text" required class="form-control" placeholder="Pegue aquí su código de activacion" aria-label="Recipient's username" aria-describedby="basic-addon2">
-								 <div class="invalid-feedback">
-									Introduzca su código de activación
-								</div>
-								<a href="#" id="activate" class="input-group-append">
-									<span class="input-group-text" id="basic-addon2">Activar</span>
-								</a>
-							</div>
-						</form>
-						<hr class="m-2">
-						<h3 class="text-center">Introducción</h3>
 						{{book.metadata ? book.metadata.introduction|raw : ''}}
 					</div>
 				</div>
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Plan de estudios</h3>
+					</div>
+					<div class="card-body">
+					{{book.metadata ? book.metadata.curriculum|raw : ''}}
+					</div>
+				</div>
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Sobre el autor</h3>
+					</div>
+					<div class="card-body">
+					{{book.metadata ? book.metadata.aboutAuthor|raw : ''}}
+					</div>
+				</div>
 			</div>
-			<div class="col-md-3">
+			<div class="col-md-4">
 				<div class="card">
 					<div class="card-body">
 						<div class="row">
