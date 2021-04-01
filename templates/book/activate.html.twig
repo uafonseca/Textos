@@ -9,7 +9,9 @@
 		<div class="row">
 			<div class="col-md-12">
 				<div class="card">
-					<img class="card-img-top" src="{{ vich_uploader_asset(book.banner , 'imagenFile') }}"  style="height:350px!important">
+					{% if book.banner %}
+						<img class="card-img-top" src="{{ vich_uploader_asset(book.banner , 'imagenFile') }}"  style="height:350px!important">
+					{% endif %}
 					<div class="card-header">
 						<h5 class="card-title mb-0">{{ book.title }}</h5>
 					</div>
