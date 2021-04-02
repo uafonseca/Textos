@@ -6,34 +6,80 @@
 	</div>
 	<div class="card-body">
 		{{ form_start(form) }}
-		<div class="row">
-			<div class="col-md-12 mb-3">{{ form_row(form.book)}}</div>
-			<div class="col-md-6">{{ form_row(form.starDate)}}</div>
-			<div class="col-md-6">{{ form_row(form.totalDays)}}</div>
-            <div class="col-md-6">{{ form_row(form.total)}}</div>
-			<div class="col-md-6 pt-4">{{ form_row(form.unlimited)}}</div>
-            <div class="col-md-12 pt-4">
-                <button type="submit" class="btn btn-primary"> <i class="fa fa-plus-circle"></i> Generar</button>
+		<!-- Nav tabs -->
+		<ul class="nav nav-tabs">
+
+			<li class="nav-item">
+				<a class="nav-link active" data-toggle="tab" href="#menu1">Datos de los Códigos</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" data-toggle="tab" href="#menu2">Datos financieros</a>
+			</li>
+		</ul>
+
+		<!-- Tab panes -->
+		<div class="tab-content">
+			<div class="tab-pane active container" id="menu1">
+				<div class="row">
+					<div class="col-md-12 mb-3">{{ form_row(form.book)}}</div>
+					<div class="col-md-6">{{ form_row(form.starDate)}}</div>
+					<div class="col-md-6">{{ form_row(form.totalDays)}}</div>
+					<div class="col-md-6">{{ form_row(form.total)}}</div>
+					<div class="col-md-6 pt-4">{{ form_row(form.unlimited)}}</div>
+					<div class="col-md-12 pt-4">
+						<button type="submit" class="btn btn-primary">
+							<i class="fa fa-plus-circle"></i>
+							Generar</button>
+					</div>
+				</div>
+			</div>
+			<div class="tab-pane container" id="menu2">
+				<div class="row">
+				<div class="col-md-12 mt-3"><h3>Principal</h3> <hr> </div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.details)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.value)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.iva)}}</div>
+					<div class="col-md-2 mb-3">{{ form_row(form.salesData.currency)}}</div>
+					<div class="col-md-2 mb-3">{{ form_row(form.salesData.total)}}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12"><h3>Transferencia</h3> <hr> </div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.acountName)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.acountNumber)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.dni)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.intitution)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.acountType)}}</div>
+					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.contact)}}</div>
+				</div>
+				<div class="row">
+					<div class="col-md-12"><h3>Tarjeta de crédito</h3> <hr> </div>
+					<div class="col-md-12"><h4>PayPal</h4> </div>
+					<div class="col-md-12 mb-3">{{ form_row(form.salesData.financialDetails.paypalUrlComplete)}}</div>
+					<div class="col-md-12 mb-3">{{ form_row(form.salesData.financialDetails.PaypalUrlCancel)}}</div>
+					<div class="col-md-12 mb-3">{{ form_row(form.salesData.financialDetails.paypalHtmlCode)}}</div>
+					
+				</div>
+                {{ form_rest(form) }}
             </div>
 		</div>
+
+
 		{{ form_end(form) }}
 	</div>
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-        $("#form_starDate").datepicker({format: "DD/MM/YYYY", changeYear: true, yearRange: "-100:+0"});
+$("#form_starDate").datepicker({format: "DD/MM/YYYY", changeYear: true, yearRange: "-100:+0"});
 
-        $('form[name="form"]').on('submit', function (event) {
-            const form = $(this)
-            app.forms.submit(form, function (response) {
-                if (response.type === 'success') {
-                   toastr.success(response.message);
-                    app.dialogs.close(form);
-                    $('#sg-datatables-code-datatable').DataTable().ajax.reload();
-                } else {
-
-                }
-            }, event);
-        })
-    })
+$('form[name="form"]').on('submit', function (event) {
+const form = $(this)
+app.forms.submit(form, function (response) {
+if (response.type === 'success') {
+toastr.success(response.message);
+app.dialogs.close(form);
+$('#sg-datatables-code-datatable').DataTable().ajax.reload();
+} else {}
+}, event);
+})
+})
 </script>

@@ -62,6 +62,11 @@ class Code
      */
     private $unlimited;
 
+    /**
+     * @ORM\OneToOne(targetEntity=CodeSalesData::class, cascade={"persist", "remove"})
+     */
+    private $salesData;
+
     public function __construct ()
     {
         $this->uuid = Uuid::v1 ();
@@ -152,6 +157,18 @@ class Code
     public function setUnlimited(bool $unlimited): self
     {
         $this->unlimited = $unlimited;
+
+        return $this;
+    }
+
+    public function getSalesData(): ?CodeSalesData
+    {
+        return $this->salesData;
+    }
+
+    public function setSalesData(?CodeSalesData $salesData): self
+    {
+        $this->salesData = $salesData;
 
         return $this;
     }

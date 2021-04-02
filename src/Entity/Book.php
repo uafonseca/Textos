@@ -9,6 +9,7 @@ use App\Traits\UuidEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\Uuid;
 
 
@@ -285,5 +286,22 @@ class Book
         $this->metadata = $metadata;
 
         return $this;
+    }
+    
+    /**
+     * Method getCodeByUser
+     *
+     * @param UserInterface $user [explicite description]
+     *
+     * @return Code
+     */
+    public function getCodeByUser(UserInterface $user): Code
+    {
+        foreach ($this->codes as $code){
+            if($code->getUser() === $user)
+                return $code;
+        }
+
+        return null;
     }
 }

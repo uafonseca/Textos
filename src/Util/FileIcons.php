@@ -23,9 +23,9 @@ class FileIcons
         // List of official MIME Types: http://www.iana.org/assignments/media-types/media-types.xhtml
         $icon_classes = array(
             // Media
-            'image' => 'fa-file-image',
-            'audio' => 'fa-file-audio',
-            'video' => 'fa-file-video',
+            'image' => 'fa-image',
+            'audio' => 'fa-audio',
+            'video' => 'fa-video',
             // Documents
             'application/pdf' => 'fa-file-pdf',
             'application/msword' => 'fa-file-word',

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Datatables\Tables\CodeDatatable;
 use App\Entity\Book;
 use App\Entity\Code;
+use App\Form\CodeSalesType;
 use App\Form\CodeType;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
@@ -111,6 +112,7 @@ class CodeController extends AbstractController
 			->add('totalDays', NumberType::class, ['label' => 'Días de activación'])
 			->add('total', NumberType::class, ['label' => 'Cantidad de códigos a generar'])
 			->add('unlimited', CheckboxType::class, ['label' => 'Activación ilimitada', 'required' => false])
+			->add('salesData',CodeSalesType::class, ['label' => false])
 			->getForm();
 
 		$form->handleRequest($request);
