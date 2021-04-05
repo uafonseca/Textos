@@ -21,6 +21,7 @@ class BookType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        
         $builder
             ->add('title',TextType::class,[
                 'label' => 'Título'
@@ -49,17 +50,19 @@ class BookType extends AbstractType
                 'class'=> Level::class,
             ])
             ->add('portada',ImageType::class,[
-                'label' => 'Portada'
+                'label' => 'Portada',
+                'required' => !$options['edit']
             ])
             ->add('banner',ImageType::class,[
-                'label' => 'Baner'
+                'label' => 'Baner',
+                'required' => !$options['edit']
             ])
-            ->add('link',LinkType::class,[
-                'label' => false,
-            ])
-            ->add('htmlCode' ,HtmlCodeType::class,[
-                'label' => false,
-            ])
+            // ->add('link',LinkType::class,[
+            //     'label' => false,
+            // ])
+            // ->add('htmlCode' ,HtmlCodeType::class,[
+            //     'label' => false,
+            // ])
             ->add('metadata',BookMetadataType::class,[
                 'label' => false,
             ])
@@ -71,5 +74,6 @@ class BookType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Book::class,
         ]);
+        $resolver->setRequired('edit');
     }
 }

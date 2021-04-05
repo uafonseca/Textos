@@ -110,7 +110,7 @@
 						var reader = new FileReader();
 						 var input = this;
 						reader.onload = function (e) {
-							var newElement = "<video style='width:100%; height:100%'  src='"+e.target.result+"'></video>";
+							var newElement = "<video controls style='width:100%; height:100%'  src='"+e.target.result+"'></video>";
 							$('#preview').html('').append(newElement);
 						}
 						try{
@@ -122,7 +122,7 @@
 						var reader = new FileReader();
 						 var input = this;
 						reader.onload = function (e) {
-							var newElement = "<audio style='width:100%; height:100%'  src='"+e.target.result+"'></audio>";
+							var newElement = "<audio controls style='width:100%; height:100%'  src='"+e.target.result+"'></audio>";
 							$('#preview').html('').append(newElement);
 						}
 						try{

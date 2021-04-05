@@ -85,7 +85,9 @@ class BookController extends AbstractController
     public function new(Request $request): Response
     {
         $book = new Book();
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookType::class, $book,[
+            'edit' => false,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -177,7 +179,9 @@ class BookController extends AbstractController
      */
     public function edit(Request $request, Book $book): Response
     {
-        $form = $this->createForm(BookType::class, $book);
+        $form = $this->createForm(BookType::class, $book,[
+            'edit' => true,
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

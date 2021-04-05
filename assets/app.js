@@ -13,7 +13,6 @@ import './custon-theme/css/app.css'
 import './core/jQuery'
 require('webpack-jquery-ui');
 require('webpack-jquery-ui/css');
-import './core/tippy'
 import ('toastr');
 import('toastr/build/toastr.css');
 window.toastr = toastr;
@@ -37,6 +36,7 @@ import './datatables/index'
 import './core/plugins'
 import './core/dialogs'
 import './core/forms'
+import './core/tippy'
 
 import '@fortawesome/fontawesome-free'
 
