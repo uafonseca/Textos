@@ -13,19 +13,24 @@ class CodeSalesType extends AbstractType
     {
         $builder
             ->add('details',null,[
-                'label' => 'Detalles'
+                'label' => 'Detalles',
+                'required' => true,
             ])
             ->add('value',null,[
-                'label' => 'Valor'
+                'label' => 'Valor',
+                'required' => true,
             ])
             ->add('iva',null,[
-                'label' => 'Impuesto IVA'
+                'label' => 'Impuesto IVA',
+                'required' => true,
             ])
             ->add('currency',null,[
-                'label' => 'Moneda'
+                'label' => 'Moneda',
+                'required' => true,
             ])
             ->add('total',null,[
-                'label' => 'Total'
+                'label' => 'Total',
+                'required' => true,
             ])
             ->add('financialDetails', FinancialDetailsType::class,[
                 'label' => false,

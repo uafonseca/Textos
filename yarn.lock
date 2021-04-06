@@ -4015,10 +4015,10 @@ jquery-ui@>=1.0, jquery-ui@^1.12.1:
   resolved "https://registry.yarnpkg.com/jquery-ui/-/jquery-ui-1.12.1.tgz#bcb4045c8dd0539c134bc1488cdd3e768a7a9e51"
   integrity sha1-vLQEXI3QU5wTS8FIjN0+dop6nlE=
 
-jquery-validation@1.14.0:
-  version "1.14.0"
-  resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.14.0.tgz#b8c04c9da19292fc33e2dc059b624c593715b23a"
-  integrity sha1-uMBMnaGSkvwz4twFm2JMWTcVsjo=
+jquery-validation@^1.19.3:
+  version "1.19.3"
+  resolved "https://registry.yarnpkg.com/jquery-validation/-/jquery-validation-1.19.3.tgz#50b350eba8b02bcfd119ba15f199487b7eb64086"
+  integrity sha512-iXxCS5W7STthSTMFX/NDZfWHBLbJ1behVK3eAgHXAV8/0vRa9M4tiqHvJMr39VGWHMGdlkhrtrkBuaL2UlE8yw==
 
 "jquery@>= 1.7", "jquery@>= 1.7.2", jquery@>=1.12.0, jquery@>=1.6:
   version "3.6.0"

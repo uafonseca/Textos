@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 
 namespace App\Form;
 
@@ -14,31 +14,40 @@ class FinancialDetailsType extends AbstractType
     {
         $builder
             ->add('acountName',null,[
-                'label' => 'Nombre de la cuenta'
+                'label' => 'Nombre de la cuenta',
+                'required' => true,
             ])
             ->add('dni',null,[
-                'label' => 'Documento de identidad'
+                'label' => 'Documento de identidad',
+                'required' => true,
             ])
             ->add('acountNumber',null,[
-                'label' => 'Número de cuenta'
+                'label' => 'Número de cuenta',
+                'required' => true,
             ])
             ->add('intitution',null,[
-                'label' => 'Institución financiera'
+                'label' => 'Institución financiera',
+                'required' => true,
             ])
             ->add('acountType',null,[
-                'label' => 'Tipo de cuenta'
+                'label' => 'Tipo de cuenta',
+                'required' => true,
             ])
             ->add('contact',null,[
-                'label' => 'Contacto'
+                'label' => 'Contacto',
+                'required' => true,
             ])
             ->add('paypalUrlComplete',TextType::class,[
-                'label' => 'Url de pago finalizado'
+                'label' => 'Url de pago finalizado',
+                'required' => true,
             ])
             ->add('PaypalUrlCancel',TextType::class,[
-                'label' => 'Url de pago cancelado'
+                'label' => 'Url de pago cancelado',
+                'required' => true,
             ])
             ->add('paypalHtmlCode',null,[
-                'label' => 'Código del botón de PayPal'
+                'label' => 'Código del botón de PayPal',
+                'required' => true,
             ])
         ;
     }

@@ -39,4 +39,4 @@ import './core/forms'
 import './core/tippy'
 
 import '@fortawesome/fontawesome-free'
-
+import 'jquery-validation'

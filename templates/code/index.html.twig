@@ -8,13 +8,13 @@
 				Adicionar</a>
 		</div>
 		<div class="card-body">
-			{{sg_datatables_render_html(datatable)}}
+			{{ sg_datatables_render_html(datatable) }}
 		</div>
 	</div>
 {% endblock %}
 
 {% block javascripts %}
-	{{sg_datatables_render_js(datatable)}}
+	{{ sg_datatables_render_js(datatable) }}
 	<script type="text/javascript">
 		$(document).ready(function () {
             $('.add-new').on('click', function (event) {
@@ -24,7 +24,6 @@
                     url: scope.attr('href'),
 					containerFluid: true,
 					columnClass: 'col-md-8 col-md-offset-2'
-                    
                 })
             })
         })

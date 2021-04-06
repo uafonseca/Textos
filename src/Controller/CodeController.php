@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\Datatables\Tables\CodeDatatable;
 use App\Entity\Book;
 use App\Entity\Code;
+use App\Entity\CodeSalesData;
+use App\Entity\FinancialDetails;
 use App\Form\CodeSalesType;
 use App\Form\CodeType;
 use DateTime;
@@ -24,8 +26,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
-
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * CodeController
@@ -92,13 +93,20 @@ class CodeController extends AbstractController
 	 */
 	public function create(Request $request)
 	{
+        $salesData = new CodeSalesData();
+        $financeDetails = new FinancialDetails() ;
+        $financeDetails
+            ->setPaypalUrlComplete($this->generateUrl('paymentSuccess',[],UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setPaypalUrlCancel($this->generateUrl('paymentCancel',[],UrlGeneratorInterface::ABSOLUTE_URL));
 
+        $salesData->setFinancialDetails($financeDetails);
 		$defaultData = [
-			'message' => 'Type your message here'
+			'salesData' => $salesData
 		];
 
 		$form = $this->createFormBuilder($defaultData, [
-			'action' => $this->generateUrl('code_create')
+			'action' => $this->generateUrl('code_create'),
+			'attr' => ['novalidate' => 'novalidate']
 		])
 			->add('book', EntityType::class, [
 				'label' => 'libro',
@@ -106,7 +114,8 @@ class CodeController extends AbstractController
 				'query_builder' => function (EntityRepository $repository) {
 					return $repository->createQueryBuilder('book');
 				},
-				'choice_label' => 'title'
+				'choice_label' => 'title',
+				'placeholder' => '--SELECCIONE--'                        
 			])
 			->add('starDate', null, ['label' => 'Fecha inicio'])
 			->add('totalDays', NumberType::class, ['label' => 'Días de activación'])
@@ -125,6 +134,7 @@ class CodeController extends AbstractController
 				$code->setCode(uniqid());
 				$date = new DateTime($form->getData()['starDate']);
 				$code
+					->setSalesData($salesData)
 					->setBook($em->getRepository(Book::class)->find($form->getData()['book']))
 					->setCompany($this->getUser()->getCompany())
 					->setStarDate(new DateTime($form->getData()['starDate']))
@@ -149,8 +159,28 @@ class CodeController extends AbstractController
 			'form' => $form->createView(),
 		]);
 	}
-
 	
+	/**
+	 * Method onPaymentSuccess
+	 *
+	 * @return Response
+     * 
+     * @Route("/paymentSuccess", name="paymentSuccess")
+	 */
+	public function onPaymentSuccess():Response{
+		return new Response('payment success');
+	}
+		
+	/**
+	 * Method onPaymentCancel
+	 *
+	 * @return Response
+	 * 
+	 * @Route("/paymentCancel", name="paymentCancel")
+	 */
+	public function onPaymentCancel():Response{
+		return new Response('payment cancel');
+	}
 	
 	/**
 	 * Method removeCode

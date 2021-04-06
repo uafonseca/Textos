@@ -13,7 +13,7 @@
 				<a class="nav-link active" data-toggle="tab" href="#menu1">Datos de los Códigos</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" data-toggle="tab" href="#menu2">Datos financieros</a>
+				<a class="nav-link" id="next" data-toggle="tab" href="#menu2">Datos financieros</a>
 			</li>
 		</ul>
 
@@ -27,15 +27,18 @@
 					<div class="col-md-6">{{ form_row(form.total)}}</div>
 					<div class="col-md-6 pt-4">{{ form_row(form.unlimited)}}</div>
 					<div class="col-md-12 pt-4">
-						<button type="submit" class="btn btn-primary">
-							<i class="fa fa-plus-circle"></i>
-							Generar</button>
+						<button type="button" class="btn btn-info next">
+							<i class="fa fa-arrow-right"></i>
+							Siguiente</button>
 					</div>
 				</div>
 			</div>
 			<div class="tab-pane container" id="menu2">
 				<div class="row">
-				<div class="col-md-12 mt-3"><h3>Principal</h3> <hr> </div>
+					<div class="col-md-12 mt-3">
+						<h3>Principal</h3>
+						<hr>
+					</div>
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.details)}}</div>
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.value)}}</div>
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.iva)}}</div>
@@ -43,7 +46,10 @@
 					<div class="col-md-2 mb-3">{{ form_row(form.salesData.total)}}</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12"><h3>Transferencia</h3> <hr> </div>
+					<div class="col-md-12">
+						<h3>Transferencia</h3>
+						<hr>
+					</div>
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.acountName)}}</div>
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.acountNumber)}}</div>
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.dni)}}</div>
@@ -52,15 +58,39 @@
 					<div class="col-md-4 mb-3">{{ form_row(form.salesData.financialDetails.contact)}}</div>
 				</div>
 				<div class="row">
-					<div class="col-md-12"><h3>Tarjeta de crédito</h3> <hr> </div>
-					<div class="col-md-12"><h4>PayPal</h4> </div>
-					<div class="col-md-12 mb-3">{{ form_row(form.salesData.financialDetails.paypalUrlComplete)}}</div>
-					<div class="col-md-12 mb-3">{{ form_row(form.salesData.financialDetails.PaypalUrlCancel)}}</div>
+					<div class="col-md-12">
+						<h3>Tarjeta de crédito</h3>
+						<hr>
+					</div>
+					<div class="col-md-12">
+						<h4>PayPal</h4>
+					</div>
+					<div class="col-md-6 mb-3">
+						<div class="input-group">
+							{{ form_widget(form.salesData.financialDetails.paypalUrlComplete,{'attr': {'readonly': 'readonly'}})}}
+							<div class="input-group-prepend">
+								<button id="pago-finalizdo" type="button" class="btn btn-primary">Copiar</button>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-6 mb-3">
+						<div class="input-group">
+							{{ form_widget(form.salesData.financialDetails.PaypalUrlCancel,{'attr': {'readonly': 'readonly'}})}}
+							<div class="input-group-prepend">
+								<button id="pago-cancelado" type="button" class="btn btn-primary">Copiar</button>
+							</div>
+						</div>
+					</div>
 					<div class="col-md-12 mb-3">{{ form_row(form.salesData.financialDetails.paypalHtmlCode)}}</div>
-					
+					<div class="col-md-12 pt-4">
+						<button type="submit" class="btn btn-primary">
+							<i class="fa fa-plus-circle"></i>
+							Generar</button>
+					</div>
+
 				</div>
-                {{ form_rest(form) }}
-            </div>
+				{{ form_rest(form) }}
+			</div>
 		</div>
 
 
@@ -69,17 +99,37 @@
 </div>
 <script type="text/javascript">
 	$(document).ready(function () {
-$("#form_starDate").datepicker({format: "DD/MM/YYYY", changeYear: true, yearRange: "-100:+0"});
+		$('#form_salesData_details').prop('readonly', true);
+		$("#form_starDate").datepicker({format: "DD/MM/YYYY", changeYear: true, yearRange: "-100:+0"});
+		 $('form[name="form"]').validate({
+			submitHandler: function(form) {
+			app.forms.submit($('form[name="form"]'), function (response) {
+				if (response.type === 'success') {
+				toastr.success(response.message);
+				app.dialogs.close($('form[name="form"]'));
+				$('#sg-datatables-code-datatable').DataTable().ajax.reload();
+				} else {}
+			}, event);
+			}
+		});
+			
+		$('#form_book').on('change', function(){
+			$('#form_salesData_details').val($('#form_book option:selected').text());
+		})
 
-$('form[name="form"]').on('submit', function (event) {
-const form = $(this)
-app.forms.submit(form, function (response) {
-if (response.type === 'success') {
-toastr.success(response.message);
-app.dialogs.close(form);
-$('#sg-datatables-code-datatable').DataTable().ajax.reload();
-} else {}
-}, event);
-})
-})
+		$('#pago-finalizdo').click(function(){
+            $('#form_salesData_financialDetails_paypalUrlComplete').select();
+            document.execCommand("copy");
+			toastr.success('Texto copiado al portapapeles')
+        });
+
+		$('#pago-cancelado').click(function(){
+            $('#form_salesData_financialDetails_PaypalUrlCancel').select();
+            document.execCommand("copy");
+			toastr.success('Texto copiado al portapapeles')
+        });
+		$('.next').on('click',function(){
+			$('#next').tab('show');
+		})
+	})
 </script>
