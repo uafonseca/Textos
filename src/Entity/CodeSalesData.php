@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\CodeSalesDataRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -46,6 +47,20 @@ class CodeSalesData
      * @ORM\OneToOne(targetEntity=FinancialDetails::class, cascade={"persist", "remove"})
      */
     private $financialDetails;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="salesData", orphanRemoval=true,  cascade={"persist", "remove"})
+     */
+    private $codes;
+
+    /**
+     * CodeSalesData constructor.
+     */
+    public function __construct()
+    {
+        $this->codes =  new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -123,4 +138,24 @@ class CodeSalesData
 
         return $this;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getCodes(): ?ArrayCollection
+    {
+        return $this->codes;
+    }
+
+    /**
+     * @param ArrayCollection $codes
+     * @return $this
+     */
+    public function setCodes(ArrayCollection $codes): self
+    {
+        $this->codes = $codes;
+        return $this;
+    }
+
+
 }

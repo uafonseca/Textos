@@ -17,15 +17,15 @@
 	{{ sg_datatables_render_js(datatable) }}
 	<script type="text/javascript">
 		$(document).ready(function () {
-            $('.add-new').on('click', function (event) {
-                const scope = $(this)
-                event.preventDefault();
-                app.dialogs.create({
-                    url: scope.attr('href'),
-					containerFluid: true,
-					columnClass: 'col-md-8 col-md-offset-2'
-                })
-            })
+            // $('.add-new').on('click', function (event) {
+            //     const scope = $(this)
+            //     event.preventDefault();
+            //     app.dialogs.create({
+            //         url: scope.attr('href'),
+			// 		containerFluid: true,
+			// 		columnClass: 'col-md-8 col-md-offset-2'
+            //     })
+            // })
         })
 	</script>
 {% endblock %}

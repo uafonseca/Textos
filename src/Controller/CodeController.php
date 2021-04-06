@@ -11,6 +11,7 @@ use App\Form\CodeSalesType;
 use App\Form\CodeType;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -82,17 +83,19 @@ class CodeController extends AbstractController
 		]);
 	}
 
-	/**
-	 * Method create
-	 *
-	 * @param Request $request [explicite description]
-	 *
-	 * @return void
-	 * 
-	 * @Route("/new", name="code_create")
-	 */
-	public function create(Request $request)
-	{
+    /**
+     * Method create
+     *
+     * @param Request $request [explicit description]
+     *
+     * @return JsonResponse
+     *
+     * @throws Exception
+     * @Route("/new", name="code_create")
+     *
+     */
+	public function create(Request $request): Response
+    {
         $salesData = new CodeSalesData();
         $financeDetails = new FinancialDetails() ;
         $financeDetails
@@ -115,11 +118,12 @@ class CodeController extends AbstractController
 					return $repository->createQueryBuilder('book');
 				},
 				'choice_label' => 'title',
-				'placeholder' => '--SELECCIONE--'                        
+				'placeholder' => '--SELECCIONE--',
+                'required' => true
 			])
-			->add('starDate', null, ['label' => 'Fecha inicio'])
-			->add('totalDays', NumberType::class, ['label' => 'Días de activación'])
-			->add('total', NumberType::class, ['label' => 'Cantidad de códigos a generar'])
+			->add('starDate', null, ['label' => 'Fecha inicio', 'required' => true])
+			->add('totalDays', NumberType::class, ['label' => 'Días de activación', 'required' => true])
+			->add('total', NumberType::class, ['label' => 'Cantidad de códigos a generar', 'required' => true])
 			->add('unlimited', CheckboxType::class, ['label' => 'Activación ilimitada', 'required' => false])
 			->add('salesData',CodeSalesType::class, ['label' => false])
 			->getForm();
@@ -148,11 +152,7 @@ class CodeController extends AbstractController
 			}
 
 			$em->flush();
-
-			return new JsonResponse([
-				'type' => 'success',
-				'message' => 'Se generaron ' . (int)$form->getData()['total'] . ' códigos'
-			]);
+            return $this->redirectToRoute('code_index');
 		}
 
 		return $this->render('code/new.html.twig', [

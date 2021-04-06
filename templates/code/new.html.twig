@@ -1,47 +1,46 @@
+{% extends 'layout.html.twig' %}
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
-
+{% block stylesheets %}
+	<style>
+		input.help-block, select.help-block{
+			border: 1px solid #f80229;
+		}
+		span.help-block{
+			color: #f80229;
+			font-size: 13px;
+		}
+		.required:after {
+			content:" *";
+			color: red;
+		}
+	</style>
+{% endblock %}
+{% block body %}
 <div class="card">
 	<div class="card-header">
 		<h1 class="card-title">Registro de activación</h1>
 	</div>
 	<div class="card-body">
 		{{ form_start(form) }}
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs">
-
-			<li class="nav-item">
-				<a class="nav-link active" data-toggle="tab" href="#menu1">Datos de los Códigos</a>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" id="next" data-toggle="tab" href="#menu2">Datos financieros</a>
-			</li>
-		</ul>
-
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div class="tab-pane active container" id="menu1">
+		<div class="col-md-12">
+			<h4>Datos de los Códigos</h4>
+		</div>
 				<div class="row">
-					<div class="col-md-12 mb-3">{{ form_row(form.book)}}</div>
-					<div class="col-md-6">{{ form_row(form.starDate)}}</div>
-					<div class="col-md-6">{{ form_row(form.totalDays)}}</div>
-					<div class="col-md-6">{{ form_row(form.total)}}</div>
-					<div class="col-md-6 pt-4">{{ form_row(form.unlimited)}}</div>
-					<div class="col-md-12 pt-4">
-						<button type="button" class="btn btn-info next">
-							<i class="fa fa-arrow-right"></i>
-							Siguiente</button>
-					</div>
+					<div class="col-md-3 mb-3">{{ form_row(form.book)}}</div>
+					<div class="col-md-2">{{ form_row(form.starDate)}}</div>
+					<div class="col-md-2">{{ form_row(form.totalDays)}}</div>
+					<div class="col-md-3">{{ form_row(form.total)}}</div>
+					<div class="col-md-2 pt-4">{{ form_row(form.unlimited)}}</div>
 				</div>
-			</div>
-			<div class="tab-pane container" id="menu2">
+
 				<div class="row">
 					<div class="col-md-12 mt-3">
-						<h3>Principal</h3>
+						<h3>Datos financieros</h3>
 						<hr>
 					</div>
-					<div class="col-md-4 mb-3">{{ form_row(form.salesData.details)}}</div>
-					<div class="col-md-4 mb-3">{{ form_row(form.salesData.value)}}</div>
-					<div class="col-md-4 mb-3">{{ form_row(form.salesData.iva)}}</div>
+					<div class="col-md-3 mb-3">{{ form_row(form.salesData.details)}}</div>
+					<div class="col-md-1 mb-3">{{ form_row(form.salesData.value)}}</div>
+					<div class="col-md-2 mb-3">{{ form_row(form.salesData.iva)}}</div>
 					<div class="col-md-2 mb-3">{{ form_row(form.salesData.currency)}}</div>
 					<div class="col-md-2 mb-3">{{ form_row(form.salesData.total)}}</div>
 				</div>
@@ -89,40 +88,26 @@
 					</div>
 
 				</div>
-				{{ form_rest(form) }}
-			</div>
-		</div>
-
 
 		{{ form_end(form) }}
 	</div>
 </div>
+{% endblock %}
+
+{% block javascripts %}
 <script type="text/javascript">
 	$(document).ready(function () {
 		$('#form_salesData_details').prop('readonly', true);
+		$('#form_salesData_total').prop('readonly', true);
 		$("#form_starDate").datepicker({format: "DD/MM/YYYY", changeYear: true, yearRange: "-100:+0"});
-		 $('form[name="form"]').validate({
-			submitHandler: function(form) {
-			app.forms.submit($('form[name="form"]'), function (response) {
-				if (response.type === 'success') {
-				toastr.success(response.message);
-				app.dialogs.close($('form[name="form"]'));
-				$('#sg-datatables-code-datatable').DataTable().ajax.reload();
-				} else {}
-			}, event);
-			}
-		});
-			
 		$('#form_book').on('change', function(){
 			$('#form_salesData_details').val($('#form_book option:selected').text());
 		})
-
 		$('#pago-finalizdo').click(function(){
             $('#form_salesData_financialDetails_paypalUrlComplete').select();
             document.execCommand("copy");
 			toastr.success('Texto copiado al portapapeles')
         });
-
 		$('#pago-cancelado').click(function(){
             $('#form_salesData_financialDetails_PaypalUrlCancel').select();
             document.execCommand("copy");
@@ -130,6 +115,133 @@
         });
 		$('.next').on('click',function(){
 			$('#next').tab('show');
-		})
+		});
+
+		$('#form_salesData_value').on('change', function (){
+			const  scope = $(this);
+			let iva = $('#form_salesData_iva').val();
+			$('#form_salesData_total').val(parseInt(scope.val()) - parseInt(iva));
+		});
+		$('#form_salesData_iva').on('change', function (){
+			const  scope = $(this);
+			let iva = $('#form_salesData_value').val();
+			$('#form_salesData_total').val(parseInt(iva) - parseInt(scope.val()));
+		});
+		var form = $('form[name="form"]');
+
+		var validator = form.validate({
+			doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
+			errorElement: 'span', //default input error message container
+			errorClass: 'help-block', // default input error message class
+			onkeyup: function (element, event) {
+				form.validate().element($(element));
+
+			},
+			rules: {
+				"form[book]": {
+					required: true
+				},
+				"form[starDate]":{
+					required: true
+				},
+				"form[salesData][value]":{
+					required: true,
+					digits: true
+				},
+				'form[totalDays]':{
+					required: true,
+					digits: true
+				},
+				'form[salesData][iva]':{
+					required: true,
+					digits: true
+				},
+				'form[total]':{
+					required: true,
+					digits: true
+				},
+				"form[salesData][currency]":{
+					required: true
+				},
+				"form[salesData][financialDetails][paypalHtmlCode]":{
+					required: true
+				},
+			},
+			messages: {
+				"form[book]": {
+					valueNotEquals: "Debe seleccionar un libro",
+				},
+				"form[starDate]":{
+					required : 'Debe seleccionar una fecha'
+				},
+				"form[salesData][value]":{
+					required: 'Debe seleccionar un valor',
+					digits: "Solo se permiten numeros"
+				},
+				'form[totalDays]':{
+					required: 'Este campo no puede estar en blanco',
+					digits: "Solo se permiten numeros"
+				},
+				'form[salesData][iva]':{
+					required: 'Este campo no puede estar en blanco',
+					digits: "Solo se permiten numeros"
+				},
+				'form[total]':{
+					required: 'Este campo no puede estar en blanco',
+					digits: "Solo se permiten numeros"
+				},
+				"form[salesData][currency]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][total]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][details]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+                "form[salesData][financialDetails][acountName]":{
+                    required :  'Este campo no puede estar en blanco',
+                },
+				"form[salesData][financialDetails][acountNumber]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][financialDetails][dni]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][financialDetails][intitution]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][financialDetails][acountType]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][financialDetails][contact]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+				"form[salesData][financialDetails][paypalHtmlCode]":{
+					required :  'Este campo no puede estar en blanco',
+				},
+			},
+			errorPlacement: function (error, element) {
+				if ($(element).get(0).type == 'text' || $(element).get(0).type == 'email') {
+					error.insertAfter(element.parent());
+				} else if ($(element).get(0).type == 'radio') {
+					error.insertAfter(element.closest('div.radio-inline').parent());
+				} else {
+					error.insertAfter(element.next());
+				}
+			},
+
+			invalidHandler: function (event, validator) {
+				var errors = validator.numberOfInvalids();
+				if (errors) {
+					validator.errorList[0].element.focus();
+				}
+			},
+			submitHandler: function (form) {
+				form.submit();
+			}
+		});
+
 	})
 </script>
+{% endblock %}

@@ -63,7 +63,8 @@ class Code
     private $unlimited;
 
     /**
-     * @ORM\OneToOne(targetEntity=CodeSalesData::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=CodeSalesData::class, inversedBy="codes", cascade={"persist", "remove"})
+     *
      */
     private $salesData;
 
