@@ -13,7 +13,10 @@ use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 
-
+/**
+ * Class CategoryDatatable
+ * @package App\Datatables\Tables
+ */
 class CategoryDatatable extends AbstractDatatable
 {
 
@@ -30,7 +33,10 @@ class CategoryDatatable extends AbstractDatatable
 	// 		return $row;
 	// 	};
 	// }
-
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
 	public function buildDatatable(array $options = [])
 	{
 		$this->ajax->set([
@@ -68,11 +74,17 @@ class CategoryDatatable extends AbstractDatatable
 		;
 	}
 
+    /**
+     * @return string
+     */
 	public function getEntity()
 	{
 		return Category::class;
 	}
 
+    /**
+     * @return string
+     */
 	public function getName()
 	{
 		return 'book-datatable';

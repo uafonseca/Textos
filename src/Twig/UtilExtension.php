@@ -15,13 +15,17 @@ use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
 
+/**
+ * Class UtilExtension
+ * @package App\Twig
+ */
 class UtilExtension extends AbstractExtension
 {
 
     /**
      * @return array|TwigFunction[]
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
             new TwigFunction('getIcon', [$this, 'getIcon']),
@@ -31,7 +35,7 @@ class UtilExtension extends AbstractExtension
     /**
      * @return array|TwigFilter[]
      */
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('external_link', array($this, 'externalLinkFilter')),
@@ -43,11 +47,12 @@ class UtilExtension extends AbstractExtension
      * @param $mime_type
      * @return string
      */
-    public function getIcon ($mime_type) {
+    public function getIcon ($mime_type): string
+    {
         return FileIcons::getIcon($mime_type);
     }
 
-    public function externalLinkFilter($url)
+    public function externalLinkFilter($url): string
     {
         if (!preg_match("~^(?:f|ht)tps?://~i", $url)) {
             $url = "http://" . $url;

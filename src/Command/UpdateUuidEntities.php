@@ -21,13 +21,13 @@
 	
 	class UpdateUuidEntities extends Command
 	{
-		/**
-		 * @var EntityManagerInterface
-		 */
+		/**  @var EntityManagerInterface */
 		private $entityManager;
-		
+
+		/** @var Finder  */
 		private $finder;
-		
+
+		/** @var UuidGenerator|UuidV1Generator  */
 		private $uuid;
 		
 		/**
@@ -44,7 +44,6 @@
 			
 			parent::__construct();
 		}
-		
 		protected function configure()
 		{
 			$this
@@ -52,7 +51,12 @@
 				->addOption('target', 't', InputOption::VALUE_REQUIRED, 'Declare la entidad a actualizar')
 				->setDescription('Comando para generar UUID para la entidad seleccionada');
 		}
-		
+
+        /**
+         * @param InputInterface $input
+         * @param OutputInterface $output
+         * @return int
+         */
 		protected function execute(InputInterface $input, OutputInterface $output)
 		{
 			$io = new SymfonyStyle($input, $output);
@@ -69,7 +73,13 @@
 			
 			return 0;
 		}
-		
+
+        /**
+         * @param SymfonyStyle $io
+         * @param InputInterface $input
+         * @param false $all
+         * @throws \Doctrine\ORM\ORMException
+         */
 		private function generateUuidForEntities(SymfonyStyle $io, InputInterface $input, $all = false)
 		{
 			$class = str_replace('/', '\\', $input->getOption('target'));

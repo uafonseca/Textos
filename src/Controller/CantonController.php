@@ -18,6 +18,8 @@ class CantonController extends AbstractController
 {
     /**
      * @Route("/", name="canton_index", methods={"GET"})
+     * @param CantonRepository $cantonRepository
+     * @return Response
      */
     public function index(CantonRepository $cantonRepository): Response
     {
@@ -25,13 +27,16 @@ class CantonController extends AbstractController
             'cantons' => $cantonRepository->findAll(),
         ]);
     }
-	
-	
-	/**
-     * @param \Symfony\Component\HttpFoundation\Request $request
-	 * @Route("/all", name="canton_all")
-	 */
-    public function finAll(CantonRepository $cantonRepository, Request $request){
+
+
+    /**
+     * @param CantonRepository $cantonRepository
+     * @param Request $request
+     * @return Response
+     * @Route("/all", name="canton_all")
+     */
+    public function finAll(CantonRepository $cantonRepository, Request $request): Response
+    {
         $em = $this->getDoctrine()->getManager();
         $id = $request->request->get('id');
         $canton = $em->getRepository(Canton::class)->findBy(['provincia'=>$id]);
@@ -48,6 +53,8 @@ class CantonController extends AbstractController
 
     /**
      * @Route("/new", name="canton_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -71,6 +78,8 @@ class CantonController extends AbstractController
 
     /**
      * @Route("/{id}", name="canton_show", methods={"GET"})
+     * @param Canton $canton
+     * @return Response
      */
     public function show(Canton $canton): Response
     {
@@ -81,6 +90,9 @@ class CantonController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="canton_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Canton $canton
+     * @return Response
      */
     public function edit(Request $request, Canton $canton): Response
     {
@@ -101,6 +113,9 @@ class CantonController extends AbstractController
 
     /**
      * @Route("/{id}", name="canton_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Canton $canton
+     * @return Response
      */
     public function delete(Request $request, Canton $canton): Response
     {

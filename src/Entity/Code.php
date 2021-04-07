@@ -63,10 +63,15 @@ class Code
     private $unlimited;
 
     /**
-     * @ORM\ManyToOne(targetEntity=CodeSalesData::class, inversedBy="codes", cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=CodeSalesData::class, inversedBy="codes", cascade={"persist"})
      *
      */
     private $salesData;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $token;
 
     public function __construct ()
     {
@@ -170,6 +175,18 @@ class Code
     public function setSalesData(?CodeSalesData $salesData): self
     {
         $this->salesData = $salesData;
+
+        return $this;
+    }
+
+    public function getToken(): ?string
+    {
+        return $this->token;
+    }
+
+    public function setToken(string $token): self
+    {
+        $this->token = $token;
 
         return $this;
     }

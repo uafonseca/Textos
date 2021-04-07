@@ -8,8 +8,16 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+/**
+ * Class ActivityFormType
+ * @package App\Form
+ */
 class ActivityFormType extends AbstractType
 {
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $type = $options['type'];
@@ -56,6 +64,9 @@ class ActivityFormType extends AbstractType
         }
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
@@ -64,6 +75,10 @@ class ActivityFormType extends AbstractType
 
         $resolver->setRequired('type');
     }
+
+    /**
+     * @return string
+     */
     public function getBlockPrefix()
     {
         return 'activity';

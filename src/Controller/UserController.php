@@ -9,9 +9,11 @@ use App\Form\User1Type;
 use App\Form\UserPromoteType;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
+use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -35,8 +37,9 @@ class UserController extends AbstractController
     /**
      * UserController constructor.
      *
-     * @param DatatableFactory  $datatableFactory
+     * @param DatatableFactory $datatableFactory
      * @param DatatableResponse $datatableResponse
+     * @param BookRepository $bookRepository
      */
     public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse, BookRepository $bookRepository)
     {
@@ -48,7 +51,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/", name="user_index", methods={"GET","POST"})
-     *  @IsGranted("ROLE_SUPER_ADMIN")
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @return Response
+     * @throws Exception
      */
     public function index(Request $request): Response
     {
@@ -72,7 +78,9 @@ class UserController extends AbstractController
 
     /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
-     *  @IsGranted("ROLE_SUPER_ADMIN")
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -97,6 +105,9 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}/edit", name="user_edit", methods={"GET","POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
     public function edit(Request $request, User $user): Response
     {
@@ -118,7 +129,9 @@ class UserController extends AbstractController
     /**
      * @Route("/{uuid}/promote", name="user_promote", methods={"GET","POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
-     * 
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
     public function promote(Request $request, User $user): Response
     {
@@ -147,7 +160,9 @@ class UserController extends AbstractController
     /**
      * @Route("/{id}", name="user_delete", methods={"DELETE"})
      * IsGranted("ROLE_SUPER_ADMIN")
-     *  
+     * @param Request $request
+     * @param User $user
+     * @return Response
      */
     public function delete(Request $request, User $user): Response
     {
@@ -162,7 +177,8 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
-     *
+     * @param Request $request
+     * @return RedirectResponse|Response
      * @Route("/{uuid}/profile", name="user_profile", methods={"POST","GET"})
      * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
@@ -189,7 +205,8 @@ class UserController extends AbstractController
      * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"})
      * @IsGranted("ROLE_USER")
      */
-    public function userDashboard(){
+    public function userDashboard(): Response
+    {
         $loggedUser = $this->getUser();
         
         return $this->render('user/dashboard.html.twig', [

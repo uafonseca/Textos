@@ -10,10 +10,12 @@ use App\Form\ActivityFormType;
 use App\Form\UnitType;
 use App\Repository\ActivityRepository;
 use App\Repository\UnitRepository;
+use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -44,6 +46,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/", name="unit_index", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     * @throws Exception
      */
     public function index(Request $request): Response
     {
@@ -67,6 +72,8 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/new", name="unit_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -99,6 +106,8 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/show/{uuid}", name="unit_show", methods={"GET"})
+     * @param Unit $unit
+     * @return Response
      */
     public function show(Unit $unit): Response
     {
@@ -109,6 +118,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/{uuid}/edit", name="unit_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Unit $unit
+     * @return Response
      */
     public function edit(Request $request, Unit $unit): Response
     {
@@ -135,6 +147,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="unit_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Unit $unit
+     * @return Response
      */
     public function delete(Request $request, Unit $unit): Response
     {
@@ -150,6 +165,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/activities/{uuid}", name="unit_activities", methods={"POST","GET"})
+     * @param Unit $unit
+     * @param Request $request
+     * @return RedirectResponse|Response
      */
     public function addActivities(Unit $unit, Request $request)
     {
@@ -177,6 +195,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/create-activity/{uuid}", name="create-activity", methods={"POST","GET"}, options={"expose" = true})
+     * @param Unit $unit
+     * @param Request $request
+     * @return JsonResponse|Response
      */
     public function createActivity(Unit $unit,Request $request)
     {
@@ -220,6 +241,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/update-activity/{id}", name="update-activity", methods={"POST","GET"}, options={"expose" = true})
+     * @param Activity $activity
+     * @param Request $request
+     * @return JsonResponse|Response
      */
     public function updateActivity(Activity $activity, Request $request)
     {
@@ -257,6 +281,9 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/all-activites/{uuid}", name="all-activites", methods={"POST","GET"}, options={"expose" = true})
+     * @param Unit $unit
+     * @param ActivityRepository $activityRepository
+     * @return Response
      */
     public function loadActivities(Unit $unit, ActivityRepository $activityRepository)
     {    
@@ -271,6 +298,8 @@ class UnitController extends AbstractController
 
     /**
      * @Route("/remove-activity/{id}", name="remove-activity", methods={"POST","GET"}, options={"expose" = true})
+     * @param Activity $activity
+     * @return JsonResponse
      */
     public function removeActivity(Activity $activity){
         $em = $this->getDoctrine ()->getManager ();

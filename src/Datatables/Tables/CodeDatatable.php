@@ -12,10 +12,17 @@ use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 
-
+/**
+ * Class CodeDatatable
+ * @package App\Datatables\Tables
+ */
 class CodeDatatable extends AbstractDatatable
 {
 
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
     public function buildDatatable(array $options = [])
     {
         $this->ajax->set([
@@ -61,11 +68,17 @@ class CodeDatatable extends AbstractDatatable
             ]);
     }
 
+    /**
+     * @return string
+     */
     public function getEntity()
     {
         return Code::class;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
     {
         return 'code-datatable';

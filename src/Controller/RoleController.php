@@ -6,6 +6,7 @@ use App\Datatables\Tables\RoleDatatable;
 use App\Entity\Role;
 use App\Form\RoleType;
 use App\Repository\RoleRepository;
+use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -37,9 +38,12 @@ class RoleController extends AbstractController
 		$this->datatableResponse = $datatableResponse;
 	}
 
-    
+
     /**
      * @Route("/", name="role_index", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     * @throws Exception
      */
     public function index(Request $request): Response
     {
@@ -64,6 +68,8 @@ class RoleController extends AbstractController
 
     /**
      * @Route("/new", name="role_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -87,6 +93,8 @@ class RoleController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="role_show", methods={"GET"})
+     * @param Role $role
+     * @return Response
      */
     public function show(Role $role): Response
     {
@@ -97,6 +105,9 @@ class RoleController extends AbstractController
 
     /**
      * @Route("/{uuid}/edit", name="role_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Role $role
+     * @return Response
      */
     public function edit(Request $request, Role $role): Response
     {
@@ -117,6 +128,9 @@ class RoleController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="role_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Role $role
+     * @return Response
      */
     public function delete(Request $request, Role $role): Response
     {

@@ -29,35 +29,39 @@
 										<h5 class="mb-0">
 
 											<button class="btn btn-link">
-												<i class="fa fa-book-open"></i>
-												{{ item.name }}
+												<a href="{{ path('unit_show', {'uuid': item.uuid}) }}" target="_blank" >
+													<i class="fas fa-file-pdf"></i>
+													{{ item.name }}
+												</a>
 											</button>
 
 											<button class="btn btn-warning btn-sm pull-right ml-3 mt-1" data-toggle="collapse" data-target="#e{{item.id}}" aria-expanded="true" aria-controls="e{{item.id}}">
 												<i class="fa fa-list"></i>
 												Recursos
 											</button>
-											<a href="{{ path('unit_show', {'uuid': item.uuid}) }}" target="_blank" class="btn btn-success btn-sm pull-right mt-1">
-												<i class="fas fa-file-pdf"></i>
-												Ingresar
-											</a>
-
 										</h5>
 									</div>
 									<div id="e{{item.id}}" class="collapse" aria-labelledby="heading-{{item.uuid}}" data-parent="#accordion">
 										<div class="card-body">
 											{% for activity in item.activities %}
-												{% if activity.file %}
+												{% if activity.file or activity.type == 'Youtube' or activity.type == 'Genially' %}
 													<h6 class="">
 														<a href="{{path('show_resource',{id:activity.id})}}" class="show-details">
-															<i class="fa {{getIcon(activity.file.mimeType)}}"></i>
+															{% if activity.type == 'Youtube' %}
+																<img src="{{ asset('build/images/icons/youtube.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+															{% elseif activity.type == 'Audio' %}
+																<img src="{{ asset('build/images/icons/audio.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+															{% elseif activity.type == 'Genially' %}
+																<img src="{{ asset('build/images/icons/url.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+															{% elseif activity.type == 'Video' %}
+																<img src="{{ asset('build/images/icons/video.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+															{% endif %}
 															{{activity.name}}
 														</a>
-
 														Pág.
 														{{activity.page}}
 													</h6>
-												{%endif %}
+												{% endif %}
 											{% endfor %}
 										</div>
 									</div>

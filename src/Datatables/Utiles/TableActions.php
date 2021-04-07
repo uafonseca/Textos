@@ -7,8 +7,11 @@
 	 */
 	
 	namespace App\Datatables\Utiles;
-	
-	
+
+    /**
+     * Class TableActions
+     * @package App\Datatables\Utiles
+     */
 	class TableActions
 	{
 		/**

@@ -18,6 +18,8 @@ class LevelController extends AbstractController
 {
     /**
      * @Route("/", name="level_index", methods={"GET"})
+     * @param LevelRepository $levelRepository
+     * @return Response
      */
     public function index(LevelRepository $levelRepository): Response
     {
@@ -28,6 +30,8 @@ class LevelController extends AbstractController
 
     /**
      * @Route("/new", name="level_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -52,6 +56,8 @@ class LevelController extends AbstractController
 
     /**
      * @Route("/{id}", name="level_show", methods={"GET"})
+     * @param Level $level
+     * @return Response
      */
     public function show(Level $level): Response
     {
@@ -62,6 +68,9 @@ class LevelController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="level_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Level $level
+     * @return Response
      */
     public function edit(Request $request, Level $level): Response
     {
@@ -82,6 +91,9 @@ class LevelController extends AbstractController
 
     /**
      * @Route("/{id}", name="level_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Level $level
+     * @return Response
      */
     public function delete(Request $request, Level $level): Response
     {

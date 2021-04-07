@@ -37,7 +37,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 				width: 100%;
 				height: 100%;
 				z-index: 9999;
-				background: url('pics/loader.gif') center no-repeat #fff;
+				background: url('build/plugins/pics/loader.gif') center no-repeat #fff;
 			}
 		</style>
 	</head>
@@ -89,7 +89,6 @@ See https://github.com/adobe-type-tools/cmap-resources
 				<span id="findMsg" class="toolbarLabel"></span>
 			</div>
 			<!-- findbar -->
-
 			<div id="secondaryToolbar" class="secondaryToolbar hidden doorHangerRight">
 				<div id="secondaryToolbarButtonContainer">
 					<button id="secondaryPresentationMode" class="secondaryToolbarButton presentationMode visibleLargeView" title="Switch to Presentation Mode" tabindex="51" data-l10n-id="presentation_mode">
@@ -382,7 +381,7 @@ See https://github.com/adobe-type-tools/cmap-resources
 	</div>
 	<script>
 		const pdfUrl = "{{ vich_uploader_asset(unit.pdf,'pdfFile') }}"
-const workerSrc = "{{ asset('build/plugins/pdfjs/build/pdf.worker.js') }}";
+		const workerSrc = "{{ asset('build/plugins/pdfjs/build/pdf.worker.js') }}";
 	</script>
 	<script src="{{asset('build/plugins/pdfjs/compatibility.js')}}"></script>
 	<!-- This snippet is used in production (included from viewer.html) -->
@@ -397,7 +396,8 @@ const workerSrc = "{{ asset('build/plugins/pdfjs/build/pdf.worker.js') }}";
 	<script src="{{asset('build/plugins/pdf-flip.js?v=1.1.1.1.1.1')}}"></script>
 	<script type="text/javascript">
 		$(document).ready(function () {
-PdfFlip.init();
-});
+			PdfFlip.init();
+		});
 	</script>
-</html></body></html>
+	</body>
+</html>

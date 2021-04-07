@@ -12,24 +12,17 @@ use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 
-
+/**
+ * Class RoleDatatable
+ * @package App\Datatables\Tables
+ */
 class RoleDatatable extends AbstractDatatable
 {
 
-	// public function getLineFormatter()
-	// {
-	// 	return function ($row) {
-	// 		$book = $this->getEntityManager()->getRepository('App:Book')->find($row['id']);
-	// 		$html = '<ul>';
-	// 		foreach ($book->getUnits() as $unit) {
-	// 			$html .= '<li>' . $unit->getName() . '</li>';
-	// 		}
-	// 		$html .= '</ul>';
-	// 		$row['units'] = $html;
-	// 		return $row;
-	// 	};
-	// }
-
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
 	public function buildDatatable(array $options = [])
 	{
 		$this->ajax->set([
@@ -67,11 +60,17 @@ class RoleDatatable extends AbstractDatatable
 		;
 	}
 
+    /**
+     * @return string
+     */
 	public function getEntity()
 	{
 		return Role::class;
 	}
 
+    /**
+     * @return string
+     */
 	public function getName()
 	{
 		return 'book-datatable';

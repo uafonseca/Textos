@@ -6,9 +6,12 @@ use App\Entity\Role;
 use App\Entity\User;
 	use App\Form\UserType;
 	use App\Repository\RoleRepository;
-	use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-	use Symfony\Component\HttpFoundation\Request;
-	use Symfony\Component\Routing\Annotation\Route;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 	use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 	
 	class RegistrationController extends AbstractController
@@ -19,10 +22,14 @@ use App\Entity\User;
 		{
 			$this->passwordEncoder = $passwordEncoder;
 		}
-		
-		/**
-		 * @Route("/registration", name="registration")
-		 */
+
+        /**
+         * @Route("/registration", name="registration")
+         * @param Request $request
+         * @param RoleRepository $repository
+         * @return RedirectResponse|Response
+         * @throws NonUniqueResultException
+         */
 		public function index (Request $request, RoleRepository $repository)
 		{
 			$user = new User();

@@ -1,7 +1,7 @@
 <table class="table table-hover">
 	{% for a in all %}
 		<tr>
-			<td class="trext-center">
+			<td style="width: 60px!important;"  class="trext-center">
 				<a href="{{path('remove-activity',{id:a.id})}}" class="remove text-danger">
 					<i class="fa fa-times-circle"></i>
 				</a>
@@ -9,7 +9,18 @@
 					<i class="fa fa-edit"></i>
 				</a>
 			</td>
-			<td class="trext-left">{{a.name}}</td>
+			<td  style="width: 50px!important;" class="trext-left">
+				{% if a.type == 'Youtube' %}
+					<img src="{{ asset('build/images/icons/youtube.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+				{% elseif a.type == 'Audio' %}
+					<img src="{{ asset('build/images/icons/audio.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+				{% elseif a.type == 'Genially' %}
+					<img src="{{ asset('build/images/icons/url.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+				{% elseif a.type == 'Video' %}
+					<img src="{{ asset('build/images/icons/video.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+				{% endif %}
+			</td>
+			<td class="trext-left">{{ a.name }}</td>
 		</tr>
 	{% endfor %}
 </table>

@@ -9,6 +9,7 @@ use App\Entity\Company;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\CodeRepository;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,9 +38,9 @@ class BookController extends AbstractController
     /**
      * UserController constructor.
      *
-     * @param DatatableFactory  $datatableFactory
+     * @param DatatableFactory $datatableFactory
      * @param DatatableResponse $datatableResponse
-     * @param CodeRepository $CodeRepository
+     * @param CodeRepository $codeRepository
      */
     public function __construct(
         DatatableFactory $datatableFactory,
@@ -53,8 +54,11 @@ class BookController extends AbstractController
 
     /**
      * @Route("/", name="book_index", methods={"GET", "POST"})
-     * 
+     *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @param Request $request
+     * @return Response
+     * @throws Exception
      */
     public function index(Request $request): Response
     {
@@ -79,8 +83,10 @@ class BookController extends AbstractController
 
     /**
      * @Route("/new", name="book_new", methods={"GET","POST"})
-     * 
+     *
      * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -107,8 +113,9 @@ class BookController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="book_show", methods={"GET"})
-     * 
-     * 
+     *
+     * @param Book $book
+     * @return Response
      */
     public function show(Book $book): Response
     {
@@ -118,7 +125,7 @@ class BookController extends AbstractController
                 'book' => $book,
             ]);
         }
-        if( $loggedUser && null != $code = $this->codeRepository->isBookActive($book,$this->getUser())){
+        if(null != $code = $this->codeRepository->isBookActive($book,$this->getUser())){
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);
@@ -130,8 +137,10 @@ class BookController extends AbstractController
 
     /**
      * @Route("/resource/{id}", name="show_resource", methods={"GET","POST"}, options={"expose" = true})
-     * 
+     *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @param Activity $activity
+     * @return Response
      */
     public function showActivity(Activity $activity): Response 
     {
@@ -140,10 +149,13 @@ class BookController extends AbstractController
         ]);
     }
 
-     /**
+    /**
      * @Route("/activate/{uuid}", name="book_activate", methods={"GET","POST"}, options={"expose" = true})
-     * 
+     *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @param Book $book
+     * @param Request $request
+     * @return JsonResponse|Response
      */
     public function activateBook(Book $book, Request $request){
 
@@ -174,8 +186,11 @@ class BookController extends AbstractController
 
     /**
      * @Route("/{uuid}/edit", name="book_edit", methods={"GET","POST"})
-     * 
+     *
      * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @param Book $book
+     * @return Response
      */
     public function edit(Request $request, Book $book): Response
     {
@@ -198,8 +213,11 @@ class BookController extends AbstractController
 
     /**
      * @Route("/{id}", name="book_delete", methods={"DELETE"})
-     * 
+     *
      * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @param Book $book
+     * @return Response
      */
     public function delete(Request $request, Book $book): Response
     {

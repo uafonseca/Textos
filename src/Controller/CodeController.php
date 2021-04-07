@@ -53,15 +53,16 @@ class CodeController extends AbstractController
 		$this->datatableResponse = $datatableResponse;
 	}
 
-	/**
-	 * Method index
-	 *
-	 * @param Request $request [explicite description]
-	 *
-	 * @return Response
-	 * 
-	 * @Route("/", name="code_index")
-	 */
+    /**
+     * Method index
+     *
+     * @param Request $request [explicit description]
+     *
+     * @return Response
+     *
+     * @Route("/", name="code_index")
+     * @throws Exception
+     */
 	public function index(Request $request): Response
 	{
 
@@ -96,11 +97,13 @@ class CodeController extends AbstractController
      */
 	public function create(Request $request): Response
     {
+
+        $token = uniqid();
         $salesData = new CodeSalesData();
         $financeDetails = new FinancialDetails() ;
         $financeDetails
-            ->setPaypalUrlComplete($this->generateUrl('paymentSuccess',[],UrlGeneratorInterface::ABSOLUTE_URL))
-            ->setPaypalUrlCancel($this->generateUrl('paymentCancel',[],UrlGeneratorInterface::ABSOLUTE_URL));
+            ->setPaypalUrlComplete($this->generateUrl('paymentSuccess',['token'=> $token],UrlGeneratorInterface::ABSOLUTE_URL))
+            ->setPaypalUrlCancel($this->generateUrl('paymentCancel',['token'=> $token],UrlGeneratorInterface::ABSOLUTE_URL));
 
         $salesData->setFinancialDetails($financeDetails);
 		$defaultData = [
@@ -132,10 +135,10 @@ class CodeController extends AbstractController
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
-
 			for ($i = 0; $i < (int)$form->getData()['total']; $i++) {
 				$code = new Code();
 				$code->setCode(uniqid());
+				$code->setToken($token);
 				$date = new DateTime($form->getData()['starDate']);
 				$code
 					->setSalesData($salesData)
@@ -178,20 +181,22 @@ class CodeController extends AbstractController
 	 * 
 	 * @Route("/paymentCancel", name="paymentCancel")
 	 */
-	public function onPaymentCancel():Response{
+	public function onPaymentCancel():Response
+    {
 		return new Response('payment cancel');
 	}
 	
 	/**
 	 * Method removeCode
 	 *
-	 * @param Code $code [explicite description]
+	 * @param Code $code [explicit description]
 	 *
-	 * @return JsonResponse
+	 * @return Response
 	 * 
 	 *  @Route("/{uuid}/remove", name="code_delete")
 	 */
-	public function removeCode(Code $code){
+	public function removeCode(Code $code): Response
+    {
 		$em =$this->getDoctrine ()->getManager ();
 
 		$em->remove($code);

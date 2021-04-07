@@ -15,7 +15,11 @@
 	use Symfony\Component\Translation\TranslatorInterface;
 	use Twig_Environment;
 	use Exception;
-	
+
+    /**
+     * Class AbstractDatatable
+     * @package App\Datatables\Utiles
+     */
 	abstract class AbstractDatatable extends \Sg\DatatablesBundle\Datatable\AbstractDatatable
 	{
 		/**

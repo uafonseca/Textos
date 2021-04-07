@@ -11,7 +11,10 @@ use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 
-
+/**
+ * Class UnitDatatable
+ * @package App\Datatables\Tables
+ */
 class UnitDatatable extends AbstractDatatable{
 
     public function getLineFormatter()
@@ -34,6 +37,10 @@ class UnitDatatable extends AbstractDatatable{
 	}
 
 
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
     public function buildDatatable(array $options = []){
         $this->ajax->set([
 			'url' => $options['url'],
@@ -83,10 +90,16 @@ class UnitDatatable extends AbstractDatatable{
             ;
     }
 
+    /**
+     * @return string
+     */
     public function getEntity(){
         return Unit::class;
     }
 
+    /**
+     * @return string
+     */
     public function getName()
 	{
 		return 'unit-datatable';

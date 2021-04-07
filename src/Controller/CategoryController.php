@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Company;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -41,6 +42,9 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/", name="category_index", methods={"GET", "POST"})
+     * @param Request $request
+     * @return Response
+     * @throws Exception
      */
     public function index(Request $request): Response
     {
@@ -66,6 +70,8 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/new", name="category_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -90,6 +96,8 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="category_show", methods={"GET"})
+     * @param Category $category
+     * @return Response
      */
     public function show(Category $category): Response
     {
@@ -100,6 +108,9 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/{uuid}/edit", name="category_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Category $category
+     * @return Response
      */
     public function edit(Request $request, Category $category): Response
     {
@@ -120,6 +131,9 @@ class CategoryController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="category_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Category $category
+     * @return Response
      */
     public function delete(Request $request, Category $category): Response
     {

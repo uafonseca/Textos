@@ -16,8 +16,16 @@ use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Style;
 
+/**
+ * Class UserDatatable
+ * @package App\Datatables\Tables
+ */
 class UserDatatable extends AbstractDatatable
 {
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
 	public function buildDatatable(array $options = [])
 	{
 		$this->ajax->set([
@@ -71,11 +79,17 @@ class UserDatatable extends AbstractDatatable
 			]);
 	}
 
+    /**
+     * @return string
+     */
 	public function getEntity()
 	{
 		return User::class;
 	}
 
+    /**
+     * @return string
+     */
 	public function getName()
 	{
 		return 'user-datatable';

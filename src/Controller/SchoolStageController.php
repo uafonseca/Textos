@@ -18,6 +18,8 @@ class SchoolStageController extends AbstractController
 {
     /**
      * @Route("/", name="school_stage_index", methods={"GET"})
+     * @param SchoolStageRepository $schoolStageRepository
+     * @return Response
      */
     public function index(SchoolStageRepository $schoolStageRepository): Response
     {
@@ -28,6 +30,8 @@ class SchoolStageController extends AbstractController
 
     /**
      * @Route("/new", name="school_stage_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -52,6 +56,8 @@ class SchoolStageController extends AbstractController
 
     /**
      * @Route("/{id}", name="school_stage_show", methods={"GET"})
+     * @param SchoolStage $schoolStage
+     * @return Response
      */
     public function show(SchoolStage $schoolStage): Response
     {
@@ -62,6 +68,9 @@ class SchoolStageController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="school_stage_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param SchoolStage $schoolStage
+     * @return Response
      */
     public function edit(Request $request, SchoolStage $schoolStage): Response
     {
@@ -82,6 +91,9 @@ class SchoolStageController extends AbstractController
 
     /**
      * @Route("/{id}", name="school_stage_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param SchoolStage $schoolStage
+     * @return Response
      */
     public function delete(Request $request, SchoolStage $schoolStage): Response
     {

@@ -17,6 +17,8 @@ class ProvinciaController extends AbstractController
 {
     /**
      * @Route("/", name="provincia_index", methods={"GET"})
+     * @param ProvinciaRepository $provinciaRepository
+     * @return Response
      */
     public function index(ProvinciaRepository $provinciaRepository): Response
     {
@@ -27,6 +29,8 @@ class ProvinciaController extends AbstractController
 
     /**
      * @Route("/new", name="provincia_new", methods={"GET","POST"})
+     * @param Request $request
+     * @return Response
      */
     public function new(Request $request): Response
     {
@@ -50,6 +54,8 @@ class ProvinciaController extends AbstractController
 
     /**
      * @Route("/{id}", name="provincia_show", methods={"GET"})
+     * @param Provincia $provincium
+     * @return Response
      */
     public function show(Provincia $provincium): Response
     {
@@ -60,6 +66,9 @@ class ProvinciaController extends AbstractController
 
     /**
      * @Route("/{id}/edit", name="provincia_edit", methods={"GET","POST"})
+     * @param Request $request
+     * @param Provincia $provincium
+     * @return Response
      */
     public function edit(Request $request, Provincia $provincium): Response
     {
@@ -80,6 +89,9 @@ class ProvinciaController extends AbstractController
 
     /**
      * @Route("/{id}", name="provincia_delete", methods={"DELETE"})
+     * @param Request $request
+     * @param Provincia $provincium
+     * @return Response
      */
     public function delete(Request $request, Provincia $provincium): Response
     {

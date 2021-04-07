@@ -23,9 +23,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class AdminController extends AbstractController
 {
 
-	/**
-	 * @Route("/dashboard", name="admin")
-	 */
+    /**
+     * @Route("/dashboard", name="admin")
+     * @param BookRepository $bookRepository
+     * @return Response
+     */
 	public function index(BookRepository $bookRepository): Response
 	{
 		return $this->render('admin/index.html.twig', [
@@ -33,12 +35,14 @@ class AdminController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @return Response
-	 * @Route("/terms", name="system_config")
-	 *
-	 */
-	public function termsConfig(Request $request, TermsRepository $termsRepository){
+    /**
+     * @param Request $request
+     * @param TermsRepository $termsRepository
+     * @return Response
+     * @Route("/terms", name="system_config")
+     */
+	public function termsConfig(Request $request, TermsRepository $termsRepository): Response
+    {
 		$all = $termsRepository->findAll ();
 		$terms =  new Terms();
 		if (count ($all) > 0){
@@ -69,7 +73,8 @@ class AdminController extends AbstractController
 	 *
 	 *@Route("/system", name="system_company")
 	 */
-	public function systemConfig(Request $request, CompanyRepository $repository){
+	public function systemConfig(Request $request, CompanyRepository $repository): Response
+    {
 		$all = $repository->findAll ();
 		$company = new Company();
 		if (count ($all) > 0)

@@ -15,6 +15,9 @@ use Sg\DatatablesBundle\Datatable\Style;
 class BookDatatable extends AbstractDatatable
 {
 
+    /**
+     * @return \Closure
+     */
 	public function getLineFormatter()
 	{
 		return function ($row) {
@@ -28,6 +31,11 @@ class BookDatatable extends AbstractDatatable
 			return $row;
 		};
 	}
+
+    /**
+     * @param array $options
+     * @throws \Exception
+     */
 	public function buildDatatable(array $options = [])
 	{
 		$this->ajax->set([
@@ -79,11 +87,17 @@ class BookDatatable extends AbstractDatatable
 		;
 	}
 
+    /**
+     * @return string
+     */
 	public function getEntity()
 	{
 		return Book::class;
 	}
 
+    /**
+     * @return string
+     */
 	public function getName()
 	{
 		return 'book-datatable';

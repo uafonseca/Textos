@@ -17,9 +17,11 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DefaultController extends AbstractController
 {
-	/**
-	 * @Route("/", name="app_home_page")
-	 */
+    /**
+     * @Route("/", name="app_home_page")
+     * @param BookRepository $bookRepository
+     * @return Response
+     */
 	public function home(BookRepository $bookRepository): Response
 	{
 	
@@ -28,10 +30,13 @@ class DefaultController extends AbstractController
 		]);
 	}
 
-	/**
-	 * @Route("/app_cpmpany_name", name="app_cpmpany_name")
-	 */
-	public function getCompanyName(CompanyRepository $repository){
+    /**
+     * @Route("/app_cpmpany_name", name="app_cpmpany_name")
+     * @param CompanyRepository $repository
+     * @return Response
+     */
+	public function getCompanyName(CompanyRepository $repository): Response
+    {
 		$all = $repository->findAll ();
 
 		$name = '';
