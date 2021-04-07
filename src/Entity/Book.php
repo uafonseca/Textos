@@ -295,7 +295,7 @@ class Book
      *
      * @return Code
      */
-    public function getCodeByUser(UserInterface $user): Code
+    public function getCodeByUser(UserInterface $user)
     {
         foreach ($this->codes as $code){
             if($code->getUser() === $user)

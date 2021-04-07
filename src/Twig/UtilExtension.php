@@ -29,6 +29,7 @@ class UtilExtension extends AbstractExtension
     {
         return [
             new TwigFunction('getIcon', [$this, 'getIcon']),
+            new TwigFunction('youtube_embed', [$this, 'youtube_embed']),
         ];
     }
 
@@ -39,6 +40,21 @@ class UtilExtension extends AbstractExtension
     {
         return array(
             new TwigFilter('external_link', array($this, 'externalLinkFilter')),
+        );
+    }
+
+    /**
+     * @param $string
+     * @param int $width
+     * @param float $height
+     * @return string|string[]|null
+     */
+    public function youtube_embed($string, $width = 400, $height = 152.5)
+    {
+        return preg_replace(
+            "/\s*[a-zA-Z\/\/:\.]*youtu(be.com\/watch\?v=|.be\/)([a-zA-Z0-9\-_]+)([a-zA-Z0-9\/\*\-\_\?\&\;\%\=\.]*)/i",
+            '<iframe class="responsive-iframe" src="//www.youtube.com/embed/$2" width="100%" height="100%"  allowfullscreen></iframe>',
+            $string
         );
     }
 
