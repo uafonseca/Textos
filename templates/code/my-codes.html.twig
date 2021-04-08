@@ -1,0 +1,23 @@
+{% extends 'layout.html.twig' %}
+
+{% block body %}
+	<div class="card">
+		<div class="card-header">
+			Mis códigos
+		</div>
+		<div class="card-body">
+			{% for code in codes %}
+				[ <strong>{{ code.code |upper}}</strong> ]
+			{% endfor %}
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+
+	<script type="text/javascript">
+		$(document).ready(function () {
+
+        })
+	</script>
+{% endblock %}

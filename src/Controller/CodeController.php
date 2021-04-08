@@ -9,6 +9,7 @@ use App\Entity\CodeSalesData;
 use App\Entity\FinancialDetails;
 use App\Form\CodeSalesType;
 use App\Form\CodeType;
+use App\Repository\CodeRepository;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Exception;
@@ -41,16 +42,21 @@ class CodeController extends AbstractController
 	/** @var DatatableResponse */
 	private $datatableResponse;
 
-	/**
-	 * UserController constructor.
-	 *
-	 * @param DatatableFactory  $datatableFactory
-	 * @param DatatableResponse $datatableResponse
-	 */
-	public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse)
+	/** @var CodeRepository */
+	private $codeRepository;
+
+    /**
+     * UserController constructor.
+     *
+     * @param DatatableFactory $datatableFactory
+     * @param DatatableResponse $datatableResponse
+     * @param CodeRepository $codeRepository
+     */
+	public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse, CodeRepository $codeRepository)
 	{
 		$this->datatableFactory = $datatableFactory;
 		$this->datatableResponse = $datatableResponse;
+		$this->codeRepository = $codeRepository;
 	}
 
     /**
@@ -193,7 +199,7 @@ class CodeController extends AbstractController
 	 *
 	 * @return Response
 	 * 
-	 *  @Route("/{uuid}/remove", name="code_delete")
+	 * @Route("/{uuid}/remove", name="code_delete")
 	 */
 	public function removeCode(Code $code): Response
     {
@@ -207,4 +213,16 @@ class CodeController extends AbstractController
 			'message' => 'Código eliminado'
 		]);
 	}
+
+    /**
+     * @return Response
+     *
+     * @Route("/myCodes", name="my_codes")
+     */
+	public function myCodes(): Response
+    {
+        return $this->render('code/my-codes.html.twig',[
+            'codes' => $this->codeRepository->myCodes($this->getUser())
+        ]);
+    }
 }

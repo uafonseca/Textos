@@ -6,7 +6,9 @@ use App\Entity\Book;
 use App\Entity\Code;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Code|null find($id, $lockMode = null, $lockVersion = null)
@@ -24,12 +26,13 @@ class CodeRepository extends ServiceEntityRepository
     /**
      * Method isBookActive
      *
-     * @param Book $book [explicite description]
-     * @param User $user [explicite description]
+     * @param Book $book [explicit description]
+     * @param User $user [explicit description]
      *
      * @return Code
+     * @throws NonUniqueResultException
      */
-    public function isBookActive(Book $book, User $user)
+    public function isBookActive(Book $book, User $user): Code
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.book = :book')
@@ -40,6 +43,12 @@ class CodeRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    /**
+     * @param Book $book
+     * @param string $code
+     * @return int|mixed|string|null
+     * @throws NonUniqueResultException
+     */
     public function findCode(Book $book, string $code) {
         return $this->createQueryBuilder('c')
             ->andWhere('c.book = :book')
@@ -48,6 +57,18 @@ class CodeRepository extends ServiceEntityRepository
             ->setParameter('code', $code)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+
+    /**
+     * @param UserInterface $user
+     * @return int|mixed|string
+     */
+    public function myCodes(UserInterface $user){
+        return $this->createQueryBuilder('c')
+            ->where('c.user =:user')
+            ->setParameter('user',$user)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

@@ -22,7 +22,14 @@
 				<li class="sidebar-item {% if currentPath == path('user_dashboard') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_dashboard') }}">
 						<i class="align-middle" data-feather="sliders"></i>
-						<span class="align-middle">Catálogo</span>
+						<span class="align-middle">Mis Textos</span>
+					</a>
+				</li>
+
+				<li class="sidebar-item {% if currentPath == path('my_codes') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('my_codes') }}">
+						<i class="align-middle" data-feather="shopping-cart"></i>
+						<span class="align-middle">Mis Códigos</span>
 					</a>
 				</li>
 
