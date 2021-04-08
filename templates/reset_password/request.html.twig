@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% form_theme requestForm 'bootstrap_4_layout.html.twig'  %}
+{% block title %}Reset your password{% endblock %}
+
+
+{% block stylesheets %}
+    <style type="text/css">
+        .content{
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <main class="content">
+        {{ include('partials/top-menu.html.twig') }}
+        <div class="main">
+            <div class="container pt-5 mt-5 ">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-4">
+                        {% for flashError in app.flashes('reset_password_error') %}
+                            <div class="alert alert-danger" role="alert">{{ flashError }}</div>
+                        {% endfor %}
+                        <h1>Restablecer contraseña</h1>
+
+                        {{ form_start(requestForm) }}
+                        {{ form_row(requestForm.email) }}
+                        <div>
+                            <small>
+                                Ingrese su dirección de correo electrónico y le enviaremos un
+                                enlace para restablecer su contraseña.
+                            </small>
+                        </div>
+
+                        <button class="btn btn-primary"><i class="fa fa-paper-plane"></i> Restablecer contraseña</button>
+                        {{ form_end(requestForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+

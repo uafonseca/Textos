@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Restablecer su contraseña{% endblock %}
+{% block stylesheets %}
+    <style type="text/css">
+        .content{
+            padding: 0;
+        }
+    </style>
+{% endblock %}
+{% block main %}
+    <main class="content">
+        {{ include('partials/top-menu.html.twig') }}
+        <div class="main">
+            <div class="container pt-5 mt-5 ">
+                <div class="row justify-content-md-center">
+                    <div class="col-md-4">
+                        <h1>Restablecer su contraseña</h1>
+
+                        {{ form_start(resetForm) }}
+                        {{ form_row(resetForm.plainPassword) }}
+                        <button class="btn btn-primary">Restablecer la contraseña</button>
+                        {{ form_end(resetForm) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}

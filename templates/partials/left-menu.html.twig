@@ -26,15 +26,14 @@
 					</a>
 				</li>
 
+				<li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
+						<i class="align-middle" data-feather="user"></i>
+						<span class="align-middle">Perfil</span>
+					</a>
+				</li>
+
 			{% endif %}
-
-			<li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
-				<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
-					<i class="align-middle" data-feather="user"></i>
-					<span class="align-middle">Perfil</span>
-				</a>
-			</li>
-
 
 			{% if is_granted('ROLE_SUPER_ADMIN') %}
 

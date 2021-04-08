@@ -19,7 +19,9 @@
 					{% for item in books %}
 						<div class="col-12 col-md-4 col-lg-3">
 							<div class="card">
-								<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
+								<a href="{{ path('book_show', { 'uuid': item.uuid }) }}">
+									<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="{{ item.title }}">
+								</a>
 								<div class="card-header">
 									<h3 class="mb-0"><strong>{{ item.title }}</strong></h3>
 								</div>
@@ -28,6 +30,7 @@
 									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
                                      Detalles </a>
+									<a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>
 								</div>
 							</div>
 						</div>

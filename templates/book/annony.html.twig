@@ -12,10 +12,11 @@
 					{% endif %}
 					<div class="card-header">
 						<h3 class="mb-0">
-							<strong>{{ book.title|upper }}<strong></h3>
-							</div>
-						</div>
+							<strong>{{ book.title|upper }}</strong>
+						</h3>
 					</div>
+				</div>
+			</div>
 					<div class="row">
 						<div class="col-md-8">
 							<div class="card">
@@ -125,6 +126,11 @@
 										</div>
 										<div class="col-md-6">
 											{{ book.metadata ? book.metadata.author : ''}}
+										</div>
+
+										<div class="col-md-12 text-center">
+											<hr>
+											<a href="{{ path('book_activate', {'uuid': book.uuid}) }}" class="btn btn-success"> <i class="fa fa-shopping-cart"></i> Adquirir</a>
 										</div>
 									</div>
 								</div>
