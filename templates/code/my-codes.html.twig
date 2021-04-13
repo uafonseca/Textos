@@ -1,15 +1,22 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
-	<div class="card">
-		<div class="card-header">
-			Mis códigos
-		</div>
-		<div class="card-body">
-			{% for code in codes %}
-				[ <strong>{{ code.code |upper}}</strong> ]
-			{% endfor %}
-		</div>
+	<h1>Mis códigos </h1>
+	<div class="row">
+		{% for code in codes %}
+			<div class="col-md-3">
+				<div class="card {% if code.endDate < 'now'|date %} bg-success {% else %} bg-warning-dark {% endif %}">
+					<div class="card-header">
+						{{ code.book.title|upper }}
+					</div>
+					<div class="card-body">
+						<input readonly class="form-control text-center" value="{{ code.code |upper}}" >
+						<hr>
+						<p class="text-white"><i class="fa fa-calendar-check"></i> <strong>Fecha fin:</strong> {{ code.endDate|date('d/m/Y') }}</p>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
 	</div>
 {% endblock %}
 

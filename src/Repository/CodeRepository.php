@@ -32,7 +32,7 @@ class CodeRepository extends ServiceEntityRepository
      * @return Code
      * @throws NonUniqueResultException
      */
-    public function isBookActive(Book $book, User $user): Code
+    public function isBookActive(Book $book, User $user)
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.book = :book')

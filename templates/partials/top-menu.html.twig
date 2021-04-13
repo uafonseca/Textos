@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand navbar-light navbar-bg">
     {% if page is defined %}
-     <a class="mr-5 d-flex" href="{{ url('app_home_page') }}">
-        <i class="fa fa-home mt-1 mr-1"></i> INICIO 
-    </a>
+         <a class="mr-5 d-flex" href="{{ url('app_home_page') }}">
+            <i class="fa fa-home mt-1 mr-1"></i> INICIO
+        </a>
     {% endif %}
     <a class="sidebar-toggle d-flex">
         <i class="hamburger align-self-center"></i>
@@ -163,10 +163,10 @@
 
                     <div class="dropdown-menu dropdown-menu-right">
                         <a class="dropdown-item" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}"><i class="align-middle mr-1" data-feather="user"></i> Perfil</a>
-                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="pie-chart"></i> Analytics</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="settings"></i> Settings & Privacy</a>
-                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="help-circle"></i> Help Center</a>
+{#                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="pie-chart"></i> Analytics</a>#}
+{#                        <div class="dropdown-divider"></div>#}
+{#                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="settings"></i> Settings & Privacy</a>#}
+{#                        <a class="dropdown-item" href="#"><i class="align-middle mr-1" data-feather="help-circle"></i> Help Center</a>#}
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ path('app_logout') }}">Salir</a>
                     </div>

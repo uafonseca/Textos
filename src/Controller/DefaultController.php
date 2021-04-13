@@ -11,6 +11,7 @@ namespace App\Controller;
 
 use App\Repository\BookRepository;
 use App\Repository\CompanyRepository;
+use App\Repository\SlideRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,13 +21,15 @@ class DefaultController extends AbstractController
     /**
      * @Route("/", name="app_home_page")
      * @param BookRepository $bookRepository
+     * @param SlideRepository $slideRepository
      * @return Response
      */
-	public function home(BookRepository $bookRepository): Response
+	public function home(BookRepository $bookRepository,SlideRepository $slideRepository): Response
 	{
 	
 		return $this->render('home.html.twig',[
 			'books' => $bookRepository->findAll(),
+            'slides' => $slideRepository->findAll()
 		]);
 	}
 

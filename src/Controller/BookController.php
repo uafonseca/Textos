@@ -9,6 +9,7 @@ use App\Entity\Company;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\CodeRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -116,6 +117,7 @@ class BookController extends AbstractController
      *
      * @param Book $book
      * @return Response
+     * @throws NonUniqueResultException
      */
     public function show(Book $book): Response
     {
@@ -156,6 +158,7 @@ class BookController extends AbstractController
      * @param Book $book
      * @param Request $request
      * @return JsonResponse|Response
+     * @throws NonUniqueResultException
      */
     public function activateBook(Book $book, Request $request){
 

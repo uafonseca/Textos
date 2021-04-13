@@ -1,0 +1,16 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+{% block title %}New Slide{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            <h1>Nueva diapositiva</h1>
+        </div>
+        <div class="card-body">
+            {{ include('slide/_form.html.twig') }}
+            <br>
+            <a href="{{ path('slide_index') }}" class="btn btn-secondary"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
+        </div>
+    </div>
+{% endblock %}

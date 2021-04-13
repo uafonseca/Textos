@@ -38,7 +38,50 @@
 							</div>
 							<div class="col-md-5 text-center">
 								<h3 class="card-text">¿No tienes un código de activación?</h3>
-								{{ book.codes|length > 0 ? book.codes[0].salesData.financialDetails.paypalHtmlCode|raw }}
+								{% if book.codes|length > 0  %}
+									{% if book.codes[0].salesData is defined  %}
+										{% if book.codes[0].salesData.financialDetails is defined  %}
+											{% if book.codes[0].salesData.financialDetails.paypalHtmlCode is defined  %}
+												{% set details = book.codes[0].salesData.financialDetails %}
+												{{ book.codes[0].salesData.financialDetails.paypalHtmlCode|raw  }}
+											{% endif %}
+										{% endif %}
+									{% endif %}
+								{% endif %}
+
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<hr>
+								<h4>Otras opciones de pago</h4>
+								<h5><i class="fa fa-check-circle text-success"></i> Transferencia</h5>
+								<table>
+									<tr>
+										<td><strong>Nombre de la cuenta :</strong></td>
+										<td>{{ details is defined ? details.acountName }}</td>
+
+										<td class="pl-5"><strong>Número de la cuenta :</strong></td>
+										<td>{{ details is defined ? details.acountNumber }}</td>
+
+										<td class="pl-5"><strong>Documento de identidad :</strong></td>
+										<td>{{ details is defined ? details.dni }}</td>
+									</tr>
+									<tr>
+										<td><strong>Institución financiera :</strong></td>
+										<td>{{ details is defined ? details.intitution }}</td>
+
+										<td class="pl-5"><strong>Tipo de cuenta :</strong></td>
+										<td>{{ details is defined ? details.acountType }}</td>
+
+										<td class="pl-5"><strong>Contacto :</strong></td>
+										<td>{{ details is defined ? details.contact }}</td>
+									</tr>
+								</table>
+								<p class="text-muted mt-3"><i class="fa fa-check text-info"></i> La transferencia deberá ser enviada al correo de contacto.
+									<br>
+									El código será enviado una vez cofirmada la transferencia en un máximo de 24 horas laborables
+								</p>
 							</div>
 						</div>
 						

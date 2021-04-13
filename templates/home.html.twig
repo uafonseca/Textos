@@ -14,6 +14,27 @@
 	<main class="content">
     {{ include('partials/top-menu.html.twig') }}
 		<div class="main">
+			<div class="container">
+				<div id="carousel" class="carousel slide" data-ride="carousel">
+					<ol class="carousel-indicators">
+						{% for slide in slides %}
+							<li data-target="#carousel" data-slide-to="{{ loop.index }}" class="{% if loop.index == 1 %}active{% endif %}"></li>
+						{% endfor %}
+					</ol>
+
+					<div class="carousel-inner">
+						{% for slide in slides %}
+						<div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+							<img class="d-block w-100" src="{{ vich_uploader_asset(slide.image,'imagenFile') }}" alt="" />
+							<div class="carousel-caption d-none d-md-block">
+								<h5>{{ slide.title ? slide.title : '' }}</h5>
+								<p>{{ slide.shortDescription ? slide.shortDescription : '' }}</p>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
 			<div class="container pt-5">
 				<div class="row">
 					{% for item in books %}
@@ -39,4 +60,5 @@
 			</div>
 		</div>
 	</main>
+	{{ include('partials/footer.html.twig') }}
 {% endblock %}
