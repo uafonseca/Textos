@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\SchoolStage;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,6 +18,20 @@ class SchoolStageRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SchoolStage::class);
+    }
+
+    /**
+     * @param \App\Entity\Company|null $company
+     * @return int|mixed|string
+     */
+    public function findByCompany(Company $company = null){
+        $qb = $this->createQueryBuilder('stage');
+        if ($company){
+            $qb->where('stage.company =:copmpany')
+                ->setParameter('copmpany',$company);
+        }
+        return $qb->getQuery()
+            ->getResult();
     }
 
     // /**

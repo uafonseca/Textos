@@ -14,50 +14,65 @@
 	<main class="content">
     {{ include('partials/top-menu.html.twig') }}
 		<div class="main">
-			<div class="container">
-				<div id="carousel" class="carousel slide" data-ride="carousel">
-					<ol class="carousel-indicators">
-						{% for slide in slides %}
-							<li data-target="#carousel" data-slide-to="{{ loop.index }}" class="{% if loop.index == 1 %}active{% endif %}"></li>
-						{% endfor %}
-					</ol>
+			<section>
+				<div class="container-fluid pt-1">
+					<div id="carousel" class="carousel slide" data-ride="carousel">
+						<ol class="carousel-indicators">
+							{% for slide in slides %}
+								<li data-target="#carousel" data-slide-to="{{ loop.index }}" class="{% if loop.index == 1 %}active{% endif %}"></li>
+							{% endfor %}
+						</ol>
 
-					<div class="carousel-inner">
-						{% for slide in slides %}
-						<div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
-							<img class="d-block w-100" src="{{ vich_uploader_asset(slide.image,'imagenFile') }}" alt="" />
-							<div class="carousel-caption d-none d-md-block">
-								<h5>{{ slide.title ? slide.title : '' }}</h5>
-								<p>{{ slide.shortDescription ? slide.shortDescription : '' }}</p>
+						<div class="carousel-inner">
+							{% for slide in slides %}
+								<div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
+									<img class="d-block w-100" style="max-height: 400px" src="{{ vich_uploader_asset(slide.image,'imagenFile') }}" alt="" />
+									<div class="carousel-caption d-none d-md-block">
+										<h5>{{ slide.title ? slide.title : '' }}</h5>
+										<p>{{ slide.shortDescription ? slide.shortDescription : '' }}</p>
+									</div>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<div class="container pt-5">
+					<div class="row justify-content-center pb-5">
+						<div class="col-lg-8">
+							<div class="text-center mb-10">
+								<div class="badge badge-pill badge-primary-soft text-primary badge-marketing mb-3">{{ count[0]['count'] }} Títulos</div>
+								<h2>Últimas publicaciones</h2>
+								<a href="{{ path('book_list') }}" class="btn btn-info"> Ver todas</a>
+								{#							<p class="lead">When you purchase this UI Kit, you get access to a robust suite of powerful landing page demos to help you get started.</p>#}
 							</div>
 						</div>
+					</div>
+					<div class="row">
+						{% for item in books %}
+							<div class="col-12 col-md-4 col-lg-3">
+								<div class="card">
+									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}">
+										<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="{{ item.title }}">
+									</a>
+									<div class="card-header">
+										<h3 class="mb-0"><strong>{{ item.title }}</strong></h3>
+									</div>
+									<div class="card-body">
+										<p class="card-text">{{ item.level }}</p>
+										<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+											Detalles </a>
+										<a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>
+									</div>
+								</div>
+							</div>
 						{% endfor %}
 					</div>
 				</div>
-			</div>
-			<div class="container pt-5">
-				<div class="row">
-					{% for item in books %}
-						<div class="col-12 col-md-4 col-lg-3">
-							<div class="card">
-								<a href="{{ path('book_show', { 'uuid': item.uuid }) }}">
-									<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="{{ item.title }}">
-								</a>
-								<div class="card-header">
-									<h3 class="mb-0"><strong>{{ item.title }}</strong></h3>
-								</div>
-								<div class="card-body">
-									<p class="card-text">{{ item.level }}</p>
-									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                     Detalles </a>
-									<a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>
-								</div>
-							</div>
-						</div>
-					{% endfor %}
-				</div>
-			</div>
+			</section>
 		</div>
 	</main>
 	{{ include('partials/footer.html.twig') }}

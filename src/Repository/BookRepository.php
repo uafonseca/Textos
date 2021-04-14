@@ -39,6 +39,28 @@ class BookRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param int $limit
+     * @return int|mixed|string
+     */
+    public  function getBoksByLimit(int $limit = 1){
+        return $this->createQueryBuilder('book')
+            ->orderBy('book.createdAt','DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    /**
+     * @return int|mixed|string
+     */
+    public function getTotalBooks(){
+        return $this->createQueryBuilder('book')
+            ->select('count(book.id) as count')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Book[] Returns an array of Book objects
     //  */

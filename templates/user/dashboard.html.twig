@@ -22,19 +22,19 @@
 					<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
 					<div class="card-body">
 						<div class="row">
-							<div class="col-md-5">
+							<div class="col-md-12">
 								<h3 class="mb-3">
 									<strong>{{ item.title }}</strong>
 								</h3>
+
+							</div>
+							<div class="col-md-12">
+								{% set code = item.getCodeByUser(app.user) %}
+								<p><strong>Activación</strong></p>
+								<p class="text-muted">Inicio: {{code.starDate|date('d/m/Y')}} | Fin: {{code.endDate|date('d/m/Y')}}</p>
 								<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success btn-sm">
 									Ingresar
 								</a>
-							</div>
-							<div class="col-md-7">
-								{% set code = item.getCodeByUser(app.user) %}
-								<p>Activación</p>
-								<p class="text-muted">Inicio: {{code.starDate|date('d/m/Y')}}</p>
-								<p class="text-muted">Fin: {{code.endDate|date('d/m/Y')}}</p>
 							</div>
 						</div>
 					</div>

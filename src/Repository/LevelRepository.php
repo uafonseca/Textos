@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Company;
 use App\Entity\Level;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,19 @@ class LevelRepository extends ServiceEntityRepository
         parent::__construct($registry, Level::class);
     }
 
+    /**
+     * @param \App\Entity\Company|null $company
+     * @return int|mixed|string
+     */
+    public function findByCompany(Company $company = null){
+        $qb = $this->createQueryBuilder('level');
+        if ($company){
+            $qb->where('level.company =:copmpany')
+                ->setParameter('copmpany',$company);
+        }
+        return $qb->getQuery()
+            ->getResult();
+    }
     // /**
     //  * @return Level[] Returns an array of Level objects
     //  */

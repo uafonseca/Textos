@@ -5,7 +5,10 @@ namespace App\Controller;
 use App\Datatables\Tables\BookDatatable;
 use App\Entity\Activity;
 use App\Entity\Book;
+use App\Entity\Category;
 use App\Entity\Company;
+use App\Entity\Level;
+use App\Entity\SchoolStage;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\CodeRepository;
@@ -36,21 +39,27 @@ class BookController extends AbstractController
     /** @var CodeRepository */
     private $codeRepository;
 
+    /** @var BookRepository  */
+    private $bookRepository;
+
     /**
      * UserController constructor.
      *
      * @param DatatableFactory $datatableFactory
      * @param DatatableResponse $datatableResponse
      * @param CodeRepository $codeRepository
+     * @param BookRepository $bookRepository
      */
     public function __construct(
         DatatableFactory $datatableFactory,
         DatatableResponse $datatableResponse,
-        CodeRepository $codeRepository
+        CodeRepository $codeRepository,
+        BookRepository $bookRepository
     ) {
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
         $this->codeRepository = $codeRepository;
+        $this->bookRepository = $bookRepository;
     }
 
     /**
@@ -79,6 +88,21 @@ class BookController extends AbstractController
 
         return $this->render('book/index.html.twig', [
             'datatable' => $datatable
+        ]);
+    }
+
+    /**
+     * @Route("/list", name="book_list", methods={"GET","POST"})
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function list(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        return $this->render('book/list.html.twig',[
+            'default' => $this->bookRepository->getBoksByLimit(8),
+            'categories' => $em->getRepository(Category::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany(): null),
+            'stages' => $em->getRepository(SchoolStage::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany(): null),
+            'levels' => $em->getRepository(Level::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany(): null),
         ]);
     }
 

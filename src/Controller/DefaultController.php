@@ -28,7 +28,8 @@ class DefaultController extends AbstractController
 	{
 	
 		return $this->render('home.html.twig',[
-			'books' => $bookRepository->findAll(),
+			'books' => $bookRepository->getBoksByLimit(8),
+            'count' => $bookRepository->getTotalBooks(),
             'slides' => $slideRepository->findAll()
 		]);
 	}
@@ -40,11 +41,11 @@ class DefaultController extends AbstractController
      */
 	public function getCompanyName(CompanyRepository $repository): Response
     {
-		$all = $repository->findAll ();
+		$all = $repository->findAll();
 
-		$name = '';
-		if (count ($all) > 0) $name = $all[0];
+		$company = '';
+		if (count ($all) > 0) $company = $all[0];
 
-		return new Response($name->getName (), 200);
+		return new Response($company, 200);
 	}
 }

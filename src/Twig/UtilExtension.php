@@ -10,6 +10,7 @@
 namespace App\Twig;
 
 
+use App\Repository\CompanyRepository;
 use App\Util\FileIcons;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -22,6 +23,19 @@ use Twig\TwigFunction;
 class UtilExtension extends AbstractExtension
 {
 
+    /** @var CompanyRepository  */
+    private $companyRepository;
+
+    /**
+     * UtilExtension constructor.
+     * @param CompanyRepository $companyRepository
+     */
+    public function __construct(CompanyRepository  $companyRepository)
+    {
+        $this->companyRepository = $companyRepository;
+    }
+
+
     /**
      * @return array|TwigFunction[]
      */
@@ -30,6 +44,7 @@ class UtilExtension extends AbstractExtension
         return [
             new TwigFunction('getIcon', [$this, 'getIcon']),
             new TwigFunction('youtube_embed', [$this, 'youtube_embed']),
+            new TwigFunction('getCompany', [$this, 'getCompany']),
         ];
     }
 
@@ -75,5 +90,14 @@ class UtilExtension extends AbstractExtension
         }
 
         return $url;
+    }
+
+    /**
+     * @return \App\Entity\Company|null
+     */
+    public function getCompany()
+    {
+        $all = $this->companyRepository->findAll();
+        return count($all) > 0 ? $all[0] : null;
     }
 }
