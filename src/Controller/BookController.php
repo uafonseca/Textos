@@ -39,7 +39,7 @@ class BookController extends AbstractController
     /** @var CodeRepository */
     private $codeRepository;
 
-    /** @var BookRepository  */
+    /** @var BookRepository */
     private $bookRepository;
 
     /**
@@ -55,7 +55,8 @@ class BookController extends AbstractController
         DatatableResponse $datatableResponse,
         CodeRepository $codeRepository,
         BookRepository $bookRepository
-    ) {
+    )
+    {
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
         $this->codeRepository = $codeRepository;
@@ -92,17 +93,30 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/list", name="book_list", methods={"GET","POST"})
+     * @Route("/list", name="book_list", methods={"GET","POST"}, options={"expose" = true})
      *
+     * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function list(Request $request){
+    public function list(Request $request): Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            $categories = $request->request->get('categories');
+            $stages = $request->request->get('stages');
+            $levels = $request->request->get('levels');
+
+            $books = $this->bookRepository->findByFilters($categories, $stages, $levels);
+
+            return $this->render('book/ajax-list.html.twig',[
+                'books' => $books
+            ]);
+        }
         $em = $this->getDoctrine()->getManager();
-        return $this->render('book/list.html.twig',[
+        return $this->render('book/list.html.twig', [
             'default' => $this->bookRepository->getBoksByLimit(8),
-            'categories' => $em->getRepository(Category::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany(): null),
-            'stages' => $em->getRepository(SchoolStage::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany(): null),
-            'levels' => $em->getRepository(Level::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany(): null),
+            'categories' => $em->getRepository(Category::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany() : null),
+            'stages' => $em->getRepository(SchoolStage::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany() : null),
+            'levels' => $em->getRepository(Level::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany() : null),
         ]);
     }
 
@@ -116,7 +130,7 @@ class BookController extends AbstractController
     public function new(Request $request): Response
     {
         $book = new Book();
-        $form = $this->createForm(BookType::class, $book,[
+        $form = $this->createForm(BookType::class, $book, [
             'edit' => false,
         ]);
         $form->handleRequest($request);
@@ -146,17 +160,17 @@ class BookController extends AbstractController
     public function show(Book $book): Response
     {
         $loggedUser = $this->getUser();
-        if(!$loggedUser){
+        if (!$loggedUser) {
             return $this->render('book/annony.html.twig', [
                 'book' => $book,
             ]);
         }
-        if(null != $code = $this->codeRepository->isBookActive($book,$this->getUser())){
+        if (null != $code = $this->codeRepository->isBookActive($book, $this->getUser())) {
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);
         }
-        return $this->redirectToRoute('book_activate',[
+        return $this->redirectToRoute('book_activate', [
             'uuid' => $book->getUuid(),
         ]);
     }
@@ -168,9 +182,9 @@ class BookController extends AbstractController
      * @param Activity $activity
      * @return Response
      */
-    public function showActivity(Activity $activity): Response 
+    public function showActivity(Activity $activity): Response
     {
-        return $this->render('activity/show.html.twig',[
+        return $this->render('activity/show.html.twig', [
             'activity' => $activity
         ]);
     }
@@ -184,17 +198,18 @@ class BookController extends AbstractController
      * @return JsonResponse|Response
      * @throws NonUniqueResultException
      */
-    public function activateBook(Book $book, Request $request){
+    public function activateBook(Book $book, Request $request)
+    {
 
-        if($request->isXmlHttpRequest()){
+        if ($request->isXmlHttpRequest()) {
             $key = $request->request->get('code');
             $loggedUser = $this->getUser();
-            $code = $this->codeRepository->findCode($book,$key);
-            if($code){
-                $em = $this->getDoctrine ()->getManager ();
+            $code = $this->codeRepository->findCode($book, $key);
+            if ($code) {
+                $em = $this->getDoctrine()->getManager();
 
                 $code->setUser($loggedUser);
-                $em->flush ();
+                $em->flush();
                 return new JsonResponse([
                     'type' => 'success',
                     'message' => 'El libro se ha activado correctamente'
@@ -206,7 +221,7 @@ class BookController extends AbstractController
             ]);
         }
 
-        return $this->render('book/activate.html.twig',[
+        return $this->render('book/activate.html.twig', [
             'book' => $book
         ]);
     }
@@ -221,7 +236,7 @@ class BookController extends AbstractController
      */
     public function edit(Request $request, Book $book): Response
     {
-        $form = $this->createForm(BookType::class, $book,[
+        $form = $this->createForm(BookType::class, $book, [
             'edit' => true,
         ]);
         $form->handleRequest($request);

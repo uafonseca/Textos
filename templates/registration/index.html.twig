@@ -6,8 +6,8 @@
 		{{ form_start(form) }}
         <div class="row">
         	<div class="offset-3 col-md-6 justify-center">
-				<div class="card text-center mx-auto">
-					<img class="card-img-top mx-auto"  style="width: 18rem;" src="{{asset('build/images/logo.png')}}" alt="Card image cap">
+				<div class="card text-center  pt-4 mx-auto">
+					<img class="card-img-top mx-auto"  style="width: 18rem;" src="{{ vich_uploader_asset(getCompany().logo,'imagenFile') }}" alt="Card image cap">
 					<div class="card-body">
 						<h5 class="card-title">Registro</h5>
 					</div>
@@ -16,7 +16,7 @@
         </div>
 		<div class="row">
 			<div class="offset-3 col-md-6 justify-center">
-				<div class="card bg-light mb-3 mt-3">
+				<div class="card bg-light mb-3 ">
 					<div class="card-body">
 						<div class="card-header mb-3">Datos personales</div>
 						<div class="form_group">

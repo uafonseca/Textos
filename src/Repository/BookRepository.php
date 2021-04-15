@@ -61,6 +61,30 @@ class BookRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * @param array $categories
+     * @param array $stages
+     * @param array $levels
+     * @return int|mixed|string
+     */
+    public function findByFilters($categories = array(), $stages = array(), $levels = array()){
+        $qb = $this->createQueryBuilder('book')
+            ->join('book.category','category')
+            ->where('category IN (:cat)')
+            ->setParameter('cat',$categories)
+            ->join('book.stage','stage')
+            ->orWhere('stage IN (:stage)')
+            ->setParameter('stage',$stages)
+            ->join('book.level','level')
+            ->orWhere('level IN (:level)')
+            ->setParameter('level',$levels)
+        ;
+        return $qb
+            ->orderBy('book.createdAt','DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
     // /**
     //  * @return Book[] Returns an array of Book objects
     //  */

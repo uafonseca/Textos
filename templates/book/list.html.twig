@@ -3,96 +3,144 @@
 
 {% block title %}Libros{% endblock %}
 {% block stylesheets %}
-    <style type="text/css">
-        .content{
+    <style type="text/css" xmlns="">
+        .content {
             padding: 0;
+        }
+        .img-resized{
+            height: 200px;
         }
     </style>
 {% endblock %}
 
 {% block main %}
-<main class="content">
-    {{ include('partials/top-menu.html.twig') }}
-    <div class="main">
-        <section class="pt-5">
-            <div class="container">
-                <div class="row">
-                    <div class="col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 card" id="sidebar">
-                       <div class="card-header">
-                           Categorías
-                       </div>
-                        <ul class="nav flex-column flex-nowrap overflow-hidden">
-                            {% for category in categories %}
-                            <li class="nav-item pl-4">
-                                <input class="form-check-input filer" type="checkbox" value="{{ category.uuid }}" id="{{ category.uuid }}">
-                                <label class="form-check-label" for="{{ category.uuid }}">
-                                    {{ category }}
-                                </label>
-                            </li>
-                            {% endfor %}
-                        </ul>
-                        <div class="card-header">
-                            Etapa escolar
+    <main class="content">
+        {% include 'partials/top-menu.html.twig' ignore missing with {'page': 'annoni'}  %}
+        <div class="main">
+            <section class="pt-5">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-2 collapse show d-md-flex bg-light pt-2 pl-0 min-vh-100 card" id="sidebar">
+                            <div class="card-header">
+                                Categorías
+                            </div>
+                            <ul class="nav flex-column flex-nowrap overflow-hidden">
+                                {% for category in categories %}
+                                    <li class="nav-item pl-4">
+                                        <input class="form-check-input filer" data-type="category" type="checkbox"
+                                               value="{{ category.id }}" id="{{ category.uuid }}">
+                                        <label class="form-check-label" for="{{ category.uuid }}">
+                                            {{ category }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="card-header">
+                                Etapa escolar
+                            </div>
+                            <ul class="nav flex-column flex-nowrap overflow-hidden">
+                                {% for stage in stages %}
+                                    <li class="nav-item pl-4">
+                                        <input class="form-check-input filer" data-type="stage" type="checkbox"
+                                               value="{{ stage.id }}" id="{{ stage.uuid }}">
+                                        <label class="form-check-label" for="{{ stage.uuid }}">
+                                            {{ stage }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            <div class="card-header">
+                                Nivel
+                            </div>
+                            <ul class="nav flex-column flex-nowrap overflow-hidden">
+                                {% for level in levels %}
+                                    <li class="nav-item pl-4">
+                                        <input class="form-check-input filer" data-type="level" type="checkbox"
+                                               value="{{ level.id }}" id="{{ level.uuid }}">
+                                        <label class="form-check-label" for="{{ level.uuid }}">
+                                            {{ level }}
+                                        </label>
+                                    </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        <ul class="nav flex-column flex-nowrap overflow-hidden">
-                            {% for stage in stages %}
-                                <li class="nav-item pl-4">
-                                    <input class="form-check-input filer" type="checkbox" value="{{ stage.uuid }}" id="{{ stage.uuid }}">
-                                    <label class="form-check-label" for="{{ stage.uuid }}">
-                                        {{ stage }}
-                                    </label>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                        <div class="card-header">
-                            Nivel
-                        </div>
-                        <ul class="nav flex-column flex-nowrap overflow-hidden">
-                            {% for level in levels %}
-                                <li class="nav-item pl-4">
-                                    <input class="form-check-input filer" type="checkbox" value="{{ level.uuid }}" id="{{ level.uuid }}">
-                                    <label class="form-check-label" for="{{ level.uuid }}">
-                                        {{ level }}
-                                    </label>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                    <div class="col-md-10">
-                        <div class="text-center justify-content-center pb-2">
-                            <h2>Busqueda personalizada</h2>
-{#                            <a href="{{ path('book_list') }}" class="btn btn-info"> Ver todas</a>#}
-                        </div>
-                        <div class="row">
-                            {% for item in default %}
-                                <div class="col-md-4">
-                                    <div class="card">
-                                        <a href="{{ path('book_show', { 'uuid': item.uuid }) }}">
-                                            <img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="{{ item.title }}">
-                                        </a>
-                                        <div class="card-header">
-                                            <h3 class="mb-0"><strong>{{ item.title }}</strong></h3>
-                                        </div>
-                                        <div class="card-body">
-                                            <p class="card-text">{{ item.level }}</p>
-                                            <a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                                                Detalles </a>
-                                            <a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>
+                        <div class="col-md-10">
+                            <div class="text-center justify-content-center pb-2">
+                                <h2>Búsqueda personalizada</h2>
+                            </div>
+                            <div id="list" class="row">
+                                {% for item in default %}
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <a href="{{ path('book_show', { 'uuid': item.uuid }) }}">
+                                                <img class="card-img-top img-resized"
+                                                     src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}"
+                                                     alt="{{ item.title }}">
+                                            </a>
+                                            <div class="card-header">
+                                                <h3 class="mb-0"><strong>{{ item.title }}</strong></h3>
+                                            </div>
+                                            <div class="card-body">
+                                                <p class="card-text">{{ item.level }}</p>
+                                                <a href="{{ path('book_show', { 'uuid': item.uuid }) }}"
+                                                   class="btn btn-pill btn-success">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                         class="feather feather-eye align-middle mr-2">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                                        <circle cx="12" cy="12" r="3"></circle>
+                                                    </svg>
+                                                    Detalles </a>
+                                                <a href="{{ path('book_activate', {'uuid': item.uuid}) }}"
+                                                   class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            {% endfor %}
+                                {% endfor %}
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        </section>
-    </div>
-</main>
+            </section>
+        </div>
+    </main>
     {{ include('partials/footer.html.twig') }}
 {% endblock %}
 
 {% block javascripts %}
+    <script>
+        $(function () {
+            $('.filer').on('change', function (e) {
+                let categories = $('.filer[data-type="category"]:checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                let stages = $('.filer[data-type="stage"]:checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
+                let levels = $('.filer[data-type="level"]:checkbox:checked').map(function () {
+                    return $(this).val();
+                }).get();
 
+                $.ajax({
+                    url: Routing.generate('book_list'),
+                    data: {
+                        'categories': categories,
+                        'stages': stages,
+                        'levels': levels
+                    },
+                    type: 'POST',
+                    beforeSend : () => {
+                        app.dom.lock('#list')
+                    },
+                    success: (response) => {
+                        $('#list').html(response);
+                    },
+                    complete : () =>{
+                        app.dom.unlock('#list')
+                    }
+                })
+            })
+        })
+    </script>
 {% endblock %}
