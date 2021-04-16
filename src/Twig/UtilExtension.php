@@ -13,6 +13,7 @@ namespace App\Twig;
 use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Util\FileIcons;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
@@ -28,13 +29,13 @@ class UtilExtension extends AbstractExtension
     /** @var CompanyRepository */
     private $companyRepository;
 
-    /** @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface */
+    /** @var TokenStorageInterface */
     private $token;
 
     /**
      * UtilExtension constructor.
      * @param CompanyRepository $companyRepository
-     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorage
+     * @param TokenStorage $tokenStorage
      */
     public function __construct(CompanyRepository $companyRepository, TokenStorageInterface $tokenStorage)
     {
@@ -137,8 +138,12 @@ class UtilExtension extends AbstractExtension
 
     public function getCurrentCompany()
     {
-        if( $user = $this->token->getToken() instanceof User)
-            return $user->getCompany();
-        return  null;
+        try{
+            if ($this->token->getToken()->getUser() instanceof User)
+                return $this->token->getToken()->getUser()->getCompany();
+            return null;
+        }catch (\Exception $exception){
+            return null;
+        }
     }
 }
