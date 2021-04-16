@@ -20,9 +20,27 @@
             </div>
         </div>
         <div class="col-md-6 col-sm-12 pt-3">{{ form_row(formCompany.visible) }}</div>
+        <div class="col-md-12 col-sm-12 pt-3">
+            <div class="row">
+                <div class="col-md-2">{{ form_row(formCompany.identity.colorPrimary, {'help_attr': {'class': 'text-primary'}}) }}</div>
+                <div class="col-md-2">{{ form_row(formCompany.identity.colorSecondary, {'help_attr': {'class': 'text-secondary'}}) }}</div>
+                <div class="col-md-2">{{ form_row(formCompany.identity.colorSuccess, {'help_attr': {'class': 'text-success'}}) }}</div>
+                <div class="col-md-2">{{ form_row(formCompany.identity.colorWarning, {'help_attr': {'class': 'text-warning'}}) }}</div>
+                <div class="col-md-2">{{ form_row(formCompany.identity.colorInfo, {'help_attr': {'class': 'text-info'}}) }}</div>
+            </div>
+        </div>
         <div class="col-md-6 pt-3">
             <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
         </div>
     </div>
     {{ form_end(formCompany) }}
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $(function (){
+            $('.text-muted').map(function (){
+                $(this).removeClass('text-muted');
+            })
+        })
+    </script>
 {% endblock %}

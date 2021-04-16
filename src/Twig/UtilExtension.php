@@ -10,8 +10,10 @@
 namespace App\Twig;
 
 
+use App\Entity\User;
 use App\Repository\CompanyRepository;
 use App\Util\FileIcons;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 use Twig\TwigFunction;
@@ -23,16 +25,21 @@ use Twig\TwigFunction;
 class UtilExtension extends AbstractExtension
 {
 
-    /** @var CompanyRepository  */
+    /** @var CompanyRepository */
     private $companyRepository;
+
+    /** @var \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface */
+    private $token;
 
     /**
      * UtilExtension constructor.
      * @param CompanyRepository $companyRepository
+     * @param \Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface $tokenStorage
      */
-    public function __construct(CompanyRepository  $companyRepository)
+    public function __construct(CompanyRepository $companyRepository, TokenStorageInterface $tokenStorage)
     {
         $this->companyRepository = $companyRepository;
+        $this->token = $tokenStorage;
     }
 
 
@@ -45,6 +52,7 @@ class UtilExtension extends AbstractExtension
             new TwigFunction('getIcon', [$this, 'getIcon']),
             new TwigFunction('youtube_embed', [$this, 'youtube_embed']),
             new TwigFunction('getCompany', [$this, 'getCompany']),
+            new TwigFunction('colors', [$this, 'getColors']),
         ];
     }
 
@@ -78,7 +86,7 @@ class UtilExtension extends AbstractExtension
      * @param $mime_type
      * @return string
      */
-    public function getIcon ($mime_type): string
+    public function getIcon($mime_type): string
     {
         return FileIcons::getIcon($mime_type);
     }
@@ -97,7 +105,40 @@ class UtilExtension extends AbstractExtension
      */
     public function getCompany()
     {
+        if ($this->getCurrentCompany())
+            return $this->getCurrentCompany();
+
         $all = $this->companyRepository->findAll();
         return count($all) > 0 ? $all[0] : null;
+    }
+
+    public function getColors()
+    {
+        /** @var \App\Entity\Company $company */
+        if (null != $company = $this->getCurrentCompany()) {
+            return [
+                'primary' => $company->getIdentity()->getColorPrimary() ? $company->getIdentity()->getColorPrimary() : '#3b7ddd',
+                'secondary' => $company->getIdentity()->getColorSecondary() ? $company->getIdentity()->getColorSecondary() : '#6c757d',
+                'success' => $company->getIdentity()->getColorSuccess() ? $company->getIdentity()->getColorSuccess() : '#28a745',
+                'warning' => $company->getIdentity()->getColorWarning() ? $company->getIdentity()->getColorWarning() : '#ffc107',
+                'info' => $company->getIdentity()->getColorInfo() ? $company->getIdentity()->getColorInfo() : '#17a2b8',
+            ];
+        }
+
+        return [
+            'primary' => '#3b7ddd',
+            'secondary' => '#6c757d',
+            'success' => '#28a745',
+            'warning' => '#ffc107',
+            'info' => '#17a2b8',
+        ];
+    }
+
+
+    public function getCurrentCompany()
+    {
+        if( $user = $this->token->getToken() instanceof User)
+            return $user->getCompany();
+        return  null;
     }
 }

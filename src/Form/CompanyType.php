@@ -42,6 +42,9 @@ class CompanyType extends AbstractType
 	            'label'=>'Logo',
 	            'required' => false
             ])
+            ->add('identity',IdentityType::class,[
+                'label' => 'Identidad'
+            ])
         ;
     }
 

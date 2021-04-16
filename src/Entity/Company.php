@@ -67,6 +67,11 @@ class Company
      */
     private $users;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Identity::class, cascade={"persist", "remove"})
+     */
+    private $identity;
+
 
     public function __construct (){
         $this->users = new ArrayCollection();
@@ -205,5 +210,17 @@ class Company
 
     public function __toString(){
         return $this->name;
+    }
+
+    public function getIdentity(): ?Identity
+    {
+        return $this->identity;
+    }
+
+    public function setIdentity(?Identity $identity): self
+    {
+        $this->identity = $identity;
+
+        return $this;
     }
 }
