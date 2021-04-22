@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Evaluation{% endblock %}
+
+{% block body %}
+    <h1>Evaluation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ evaluation.id }}</td>
+            </tr>
+            <tr>
+                <th>Title</th>
+                <td>{{ evaluation.title }}</td>
+            </tr>
+            <tr>
+                <th>Objective</th>
+                <td>{{ evaluation.objective }}</td>
+            </tr>
+            <tr>
+                <th>Attempts</th>
+                <td>{{ evaluation.attempts }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ evaluation.email }}</td>
+            </tr>
+            <tr>
+                <th>Requirements</th>
+                <td>{{ evaluation.requirements ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Percentage</th>
+                <td>{{ evaluation.percentage }}</td>
+            </tr>
+            <tr>
+                <th>Time</th>
+                <td>{{ evaluation.time }}</td>
+            </tr>
+            <tr>
+                <th>Uuid</th>
+                <td>{{ evaluation.uuid }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ evaluation.createdAt ? evaluation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ evaluation.updatedAt ? evaluation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('evaluation_index') }}">back to list</a>
+
+    <a href="{{ path('evaluation_edit', {'id': evaluation.id}) }}">edit</a>
+
+    {{ include('evaluation/_delete_form.html.twig') }}
+{% endblock %}

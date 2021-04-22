@@ -1,0 +1,17 @@
+{{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6">{{ form_row(form.title) }}</div>
+        <div class="col-md-6">{{ form_row(form.objective) }}</div>
+
+        <div class="col-md-4">{{ form_row(form.attempts) }}</div>
+        <div class="col-md-4">{{ form_row(form.percentage) }}</div>
+        <div class="col-md-4">{{ form_row(form.time) }}</div>
+
+        <div class="col-md-4">{{ form_row(form.email) }}</div>
+        <div class="col-md-4">{{ form_row(form.requirements) }}</div>
+
+        <div class="col-md-12">
+            <button class="btn">{{ button_label|default('Guardar') }}</button>
+        </div>
+    </div>
+{{ form_end(form) }}

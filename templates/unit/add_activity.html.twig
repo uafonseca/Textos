@@ -2,84 +2,111 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' 'jquery.collection.html.twig' 'theme_templates/theme.unit.html.twig' %}
 {% import "macros/card-macro.html.twig" as card_macro %}
 {% block stylesheets %}
-	<style type="text/css">
-		.file-default-preview {
-			height: 248px !important;
-		}
-		.youtube{
-			background-image: url("{{ asset('build/images/icons/youtube.png') }}") left top; ;
-			width: 24px;
-			height: 24px;
-			display:block;
-			float: left;
-		}
-	</style>
+    <style type="text/css">
+        .file-default-preview {
+            height: 248px !important;
+        }
+
+        .youtube {
+            background-image: url("{{ asset('build/images/icons/youtube.png') }}") left top;;
+            width: 24px;
+            height: 24px;
+            display: block;
+            float: left;
+        }
+    </style>
 {% endblock %}
 {% block title %}New Unit
 {% endblock %}
 {% block body %}
-	<h2>Datos de la unidad:{{ unit.name }}</h2>
+    <h2>Datos de la unidad:{{ unit.name }}</h2>
 
-	{{form_start(form) }}
+    {{ form_start(form) }}
 
-	<div class="container">
-		<div class="row">
-			<div class="col-md-8">
-				<div class="card">
-					<div class="card-body">
-						<div class="row">
-							<div class="col-md-6 mb-3">
-								<div class="col-md-12 mb-3">
-									{{ form_row(form.pdf) }}
-								</div>
-							</div>
-							<div class="col-md-6 mb-3 pt-5">
-								<div class="col-md-12 mb-3">
-									{{ form_row(form.name) }}
-								</div>
-								<div class="col-md-12 mb-3">
-									{{ form_row(form.book) }}
-								</div>
-								<div class="col-md-12 mb-3">
-									<div class="btn-group">
-										<button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<i class="fa fa-plus-circle"></i>
-											Adicionar recurso
-										</button>
-										<div class="dropdown-menu" style="">
-											<a class="dropdown-item add-entry" data-type="Video" href="#"><i class="fa fa-video"></i> Video</a>
-											<a class="dropdown-item add-entry" data-type="Audio" href="#"><i class="fa fa-microphone"></i> Audio</a>
-											<div class="dropdown-divider"></div>
-											<a class="dropdown-item add-entry" data-type="Genially" href="#"><i class="fa fa-globe"></i> Enlace url</a>
-											<a class="dropdown-item add-entry" data-type="Youtube" href="#"><i class="fa fa-play"></i> Youtube</a>
-										</div>
-									</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="col-md-12 mb-3">
+                                    {{ form_row(form.pdf) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3 pt-5">
+                                <div class="col-md-12 mb-3">
+                                    {{ form_row(form.name) }}
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    {{ form_row(form.book) }}
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <div class="btn-group">
+                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-plus-circle"></i>
+                                            Adicionar recurso
+                                        </button>
+                                        <div class="dropdown-menu" style="">
+                                            <a class="dropdown-item add-entry" data-type="Video" href="#"><i
+                                                        class="fa fa-video"></i> Video</a>
+                                            <a class="dropdown-item add-entry" data-type="Audio" href="#"><i
+                                                        class="fa fa-microphone"></i> Audio</a>
+                                            <div class="dropdown-divider"></div>
+                                            <a class="dropdown-item add-entry" data-type="Genially" href="#"><i
+                                                        class="fa fa-globe"></i> Enlace url</a>
+                                            <a class="dropdown-item add-entry" data-type="Youtube" href="#"><i
+                                                        class="fa fa-play"></i> Youtube</a>
+                                        </div>
+                                    </div>
+                                    <a href="{{ path('evaluation_new',{'unit': unit.id }) }}"
+                                       class="add-evaluation btn btn-primary">
+                                        <i class="fa fa-school"></i>
+                                        Adicionar evaluación
+                                    </a>
+                                </div>
+                                <div class="col-md-12">
+                                    <a href="{{ path('unit_index') }}" class="btn btn-secondary mt-2"> <i
+                                                class="fa fa-arrow-left"></i> Regresar</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div id="evaluations" class="col-md-12">
 
-									<a href="{{ path('unit_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left" ></i> Regresar</a>
-								</div>
-							</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Recursos</h2>
+                    </div>
+                    <div id="all-activites" class="card-body"></div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="col-md-4">
-				<div class="card">
-					<div class="card-header">
-						<h2 class="card-title">Recursos</h2>
-					</div>
-					<div id="all-activites" class="card-body"></div>
-				</div>
-			</div>
-		</div>
-	</div>
-
-	{{ form_end(form) }}
+    {{ form_end(form) }}
 {% endblock %}
 {% block javascripts %}
-	<script>
-		const image_url_defaultPreview = '{{ vich_uploader_asset(unit.pdf, 'pdfFile') }}';
-const unit_uuid = '{{ unit.uuid }}'
-	</script>
-	{{ encore_entry_script_tags('unit.form') }}
+    <script>
+        const image_url_defaultPreview = '{{ vich_uploader_asset(unit.pdf, 'pdfFile') }}';
+        const unit_uuid = '{{ unit.uuid }}'
+        $(document).ready(function (){
+            $('.add-evaluation').on('click', function (event){
+                event.preventDefault();
+                const scope = $(this)
+                app.dialogs.create({
+                    url: scope.attr('href'),
+                    columnClass : 'col-md-10 offset-md-1'
+                })
+            })
+        })
+    </script>
+    {{ encore_entry_script_tags('unit.form') }}
 {% endblock %}

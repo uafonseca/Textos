@@ -28,6 +28,7 @@ Encore
   .addEntry("profile.form", "./assets/profile/index.js")
 
   .addEntry("unit.show", "./assets/unit/layout.js")
+  .addEntry("questions.index", "./assets/questions/index.js")
 
   // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
   .enableStimulusBridge("./assets/controllers.json")

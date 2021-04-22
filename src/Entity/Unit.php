@@ -47,10 +47,16 @@ class Unit
      */
     private $activities;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="unit")
+     */
+    private $evaluations;
+
     public function __construct()
     {
         $this->uuid = Uuid::v1();
         $this->activities = new ArrayCollection();
+        $this->evaluations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -127,5 +133,35 @@ class Unit
     public function __toString()
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection|Evaluation[]
+     */
+    public function getEvaluations(): Collection
+    {
+        return $this->evaluations;
+    }
+
+    public function addEvaluation(Evaluation $evaluation): self
+    {
+        if (!$this->evaluations->contains($evaluation)) {
+            $this->evaluations[] = $evaluation;
+            $evaluation->setUnit($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEvaluation(Evaluation $evaluation): self
+    {
+        if ($this->evaluations->removeElement($evaluation)) {
+            // set the owning side to null (unless already changed)
+            if ($evaluation->getUnit() === $this) {
+                $evaluation->setUnit(null);
+            }
+        }
+
+        return $this;
     }
 }
