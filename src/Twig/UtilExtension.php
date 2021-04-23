@@ -115,24 +115,29 @@ class UtilExtension extends AbstractExtension
 
     public function getColors()
     {
-        /** @var \App\Entity\Company $company */
-        if (null != $company = $this->getCurrentCompany()) {
-            return [
-                'primary' => $company->getIdentity()->getColorPrimary() ? $company->getIdentity()->getColorPrimary() : '#3b7ddd',
-                'secondary' => $company->getIdentity()->getColorSecondary() ? $company->getIdentity()->getColorSecondary() : '#6c757d',
-                'success' => $company->getIdentity()->getColorSuccess() ? $company->getIdentity()->getColorSuccess() : '#28a745',
-                'warning' => $company->getIdentity()->getColorWarning() ? $company->getIdentity()->getColorWarning() : '#ffc107',
-                'info' => $company->getIdentity()->getColorInfo() ? $company->getIdentity()->getColorInfo() : '#17a2b8',
-            ];
-        }
-
-        return [
+        $defalt = [
             'primary' => '#3b7ddd',
             'secondary' => '#6c757d',
             'success' => '#28a745',
             'warning' => '#ffc107',
             'info' => '#17a2b8',
         ];
+        /** @var \App\Entity\Company $company */
+        if (null != $company = $this->getCurrentCompany() && $company->getIdentity()) {
+            try{
+                return [
+                    'primary' => $company->getIdentity()->getColorPrimary() ? $company->getIdentity()->getColorPrimary() : '#3b7ddd',
+                    'secondary' => $company->getIdentity()->getColorSecondary() ? $company->getIdentity()->getColorSecondary() : '#6c757d',
+                    'success' => $company->getIdentity()->getColorSuccess() ? $company->getIdentity()->getColorSuccess() : '#28a745',
+                    'warning' => $company->getIdentity()->getColorWarning() ? $company->getIdentity()->getColorWarning() : '#ffc107',
+                    'info' => $company->getIdentity()->getColorInfo() ? $company->getIdentity()->getColorInfo() : '#17a2b8',
+                ];
+            }catch (\Exception $exception){
+                return $defalt;
+            }
+        }
+
+        return $defalt;
     }
 
 
