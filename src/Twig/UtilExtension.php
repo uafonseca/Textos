@@ -123,17 +123,19 @@ class UtilExtension extends AbstractExtension
             'info' => '#17a2b8',
         ];
         /** @var \App\Entity\Company $company */
-        if (null != $company = $this->getCurrentCompany() && $company->getIdentity()) {
-            try{
-                return [
-                    'primary' => $company->getIdentity()->getColorPrimary() ? $company->getIdentity()->getColorPrimary() : '#3b7ddd',
-                    'secondary' => $company->getIdentity()->getColorSecondary() ? $company->getIdentity()->getColorSecondary() : '#6c757d',
-                    'success' => $company->getIdentity()->getColorSuccess() ? $company->getIdentity()->getColorSuccess() : '#28a745',
-                    'warning' => $company->getIdentity()->getColorWarning() ? $company->getIdentity()->getColorWarning() : '#ffc107',
-                    'info' => $company->getIdentity()->getColorInfo() ? $company->getIdentity()->getColorInfo() : '#17a2b8',
-                ];
-            }catch (\Exception $exception){
-                return $defalt;
+        if (null != $company = $this->getCurrentCompany() ) {
+            if (null != $identity = $company->getIdentity()){
+                try{
+                    return [
+                        'primary' => $identity->getColorPrimary() ? $identity->getColorPrimary() : $defalt['primary'],
+                        'secondary' => $identity->getColorSecondary() ? $identity->getColorSecondary() : $defalt['secondary'],
+                        'success' => $identity->getColorSuccess() ? $identity->getColorSuccess() : $defalt['success'],
+                        'warning' => $identity->getColorWarning() ? $identity->getColorWarning() : $defalt['warning'],
+                        'info' => $identity->getColorInfo() ? $identity->getColorInfo() : $defalt['info'],
+                    ];
+                }catch (\Exception $exception){
+                    return $defalt;
+                }
             }
         }
 
