@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Question;
 use App\Entity\SingleQuestion;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -19,6 +20,19 @@ class SingleQuestionRepository extends ServiceEntityRepository
         parent::__construct($registry, SingleQuestion::class);
     }
 
+    /**
+     * @param \App\Entity\Question $question
+     */
+    public function updateQuestion(Question $question){
+        $qb = $this->createQueryBuilder('singleQuestion');
+        $q = $qb
+            ->update(SingleQuestion::class,'s')
+            ->set('singleQuestion.question',null)
+            ->where('singleQuestion.question=:q')
+            ->setParameter('q',$question)
+            ->getQuery();
+        $q->execute();
+    }
     // /**
     //  * @return SingleQuestion[] Returns an array of SingleQuestion objects
     //  */

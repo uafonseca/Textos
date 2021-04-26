@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Choice;
 use App\Entity\Evaluation;
 use App\Entity\Question;
+use App\Entity\SingleQuestion;
 use App\Entity\Unit;
 use App\Form\EvaluationType;
 use App\Form\QuestionType;
@@ -106,10 +108,21 @@ class EvaluationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             /** @var \App\Entity\Choice $choice */
+            foreach ($em->getRepository(Choice::class)->findBy([
+                'question' => $question
+            ]) as $choice){
+                $choice->setQuestion(null);
+            }
             foreach ($question->getChoices() as $choice) {
                 $choice->setQuestion($question);
             }
 
+
+            foreach ($em->getRepository(SingleQuestion::class)->findBy([
+                'question' => $question
+            ]) as $singleQuestion){
+                $singleQuestion->setQuestion(null);
+            }
             /** @var \App\Entity\SingleQuestion $singleQuestion */
             foreach ($question->getSingleQuestions() as $singleQuestion) {
                 $singleQuestion->setQuestion($question);

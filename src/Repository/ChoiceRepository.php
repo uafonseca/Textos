@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Choice;
+use App\Entity\Question;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -18,6 +19,21 @@ class ChoiceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Choice::class);
     }
+
+    /**
+     * @param \App\Entity\Question $question
+     */
+    public function updateQuestion(Question $question){
+        $qb = $this->createQueryBuilder('choice');
+        $q = $qb
+            ->update(Choice::class,'c')
+            ->set('c.question',NULL)
+            ->where('c.question=:q')
+            ->setParameter('q',$question)
+            ->getQuery();
+        $q->execute();
+    }
+
 
     // /**
     //  * @return Choice[] Returns an array of Choice objects
