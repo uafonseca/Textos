@@ -1,0 +1,119 @@
+{% form_theme form 'bootstrap_4_layout.html.twig'  'evaluation/_form_theme.html.twig' 'jquery.collection.html.twig' %}
+<div class="card">
+    <div class="card-header"></div>
+    <div class="card-body">
+        {{ form_start(form) }}
+        <div class="row">
+            <div class="col-md-8">{{ form_row(form.title) }}</div>
+            <div class="col-md-4">{{ form_row(form.type) }}</div>
+            <div id="choices-container"
+                 class="col-md-12">{{ form.choices is defined ? form_row(form.choices) : '' }}</div>
+            <div id="single-container"
+                 class="col-md-12">{{ form.singleQuestions is defined ? form_row(form.singleQuestions) : '' }}</div>
+            <div class="col-md-12 mt-4">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+                <a href="{{ path('remove-question', {'id': question.id}) }}" class="remove-question btn btn-danger"><i
+                            class="fa fa-trash"></i> Eliminar</a>
+            </div>
+        </div>
+        {{ form_end(form) }}
+    </div>
+</div>
+<script>
+    $(function () {
+        $('.remove-question').on('click', function (event) {
+            event.preventDefault();
+            const scope = $(this);
+            app.dialogs.confirm({
+                event: event,
+                onAccept: function (){
+                    $.ajax({
+                        url: scope.attr('href'),
+                        success: (response) => {
+                            if (response.type === 'success') {
+                                toastr.success(response.message)
+                                app.unit.form.updateActivities();
+                                app.dialogs.close(scope);
+                            }
+                        },
+                        fail:() =>{
+                            alert('Ha ocurrido un error!')
+                        }
+                    })
+                }
+            })
+
+        })
+        $('form[name="ChoiceForm"]').on('submit', function (event) {
+            const form = $(this)
+            app.forms.submit(form, function (response) {
+                if (response.type === 'success') {
+                    $.alert({
+                        title: 'Información',
+                        content: response.message,
+                    });
+                    app.unit.form.updateActivities();
+                    app.dialogs.close(form);
+                } else {
+                }
+            }, event);
+        })
+        $('.choice-collection').collection({
+            add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
+            remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
+            allow_up: false,
+            allow_down: false,
+            allow_duplicate: false,
+            add_at_the_end: true,
+            position_field_selector: '.choice-counter',
+        });
+        $('.singleQuestion-collection').collection({
+            add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
+            remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
+            allow_up: false,
+            allow_down: false,
+            allow_duplicate: false,
+            add_at_the_end: true,
+            position_field_selector: '.single-counter',
+        });
+        $('#ChoiceForm_type').change(function () {
+            // ... retrieve the corresponding form.
+            var $form = $(this).closest('form');
+            // Simulate form data, but only include the selected sport value.
+            var data = {};
+            data[$(this).attr('name')] = $(this).val();
+            // Submit data via AJAX to the form's action path.
+            $.ajax({
+                url: $form.attr('action'),
+                type: $form.attr('method'),
+                data: data,
+                success: function (html) {
+                    $('#choices-container').replaceWith(
+                        $(html).find('#choices-container')
+                    );
+                    $('#single-container').replaceWith(
+                        $(html).find('#single-container')
+                    );
+                    $('.choice-collection').collection({
+                        add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
+                        remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
+                        allow_up: false,
+                        allow_down: false,
+                        allow_duplicate: false,
+                        add_at_the_end: true,
+                        position_field_selector: '.choice-counter',
+                    });
+                    $('.singleQuestion-collection').collection({
+                        add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
+                        remove: `<a class="btn btn-link pull-right cortex-collection-icon" href="#"><i class="fa fa-trash text-red"></i></a>`,
+                        allow_up: false,
+                        allow_down: false,
+                        allow_duplicate: false,
+                        add_at_the_end: true,
+                        position_field_selector: '.single-counter',
+                    });
+                }
+            });
+        });
+    })
+</script>

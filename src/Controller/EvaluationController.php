@@ -34,9 +34,10 @@ class EvaluationController extends AbstractController
      * @return \Symfony\Component\HttpFoundation\Response
      * @Route("/table/{uuid}", name="evaluation_table", methods={"GET"}, options={"expose" = true})
      */
-    public function evaluationsByUnit(Unit $unit): Response{
+    public function evaluationsByUnit(Unit $unit): Response
+    {
         $em = $this->getDoctrine()->getManager();
-        return $this->render('evaluation/table.html.twig',[
+        return $this->render('evaluation/table.html.twig', [
             'evaluations' => $em->getRepository(Evaluation::class)->findBy([
                 'unit' => $unit
             ])
@@ -50,25 +51,26 @@ class EvaluationController extends AbstractController
      *
      * @Route("/add-question/{uuid}", name="evaluation_add_question", methods={"GET","POST"}, options={"expose" = true})
      */
-    public function addQuestion(Evaluation $evaluation,Request $request): Response
+    public function addQuestion(Evaluation $evaluation, Request $request): Response
     {
         $question = new Question();
-        $form = $this->createForm(QuestionType::class,$question,[
-            'action' => $this->generateUrl('evaluation_add_question',[
-                'uuid'=>$evaluation->getUuid()
-            ])
+        $form = $this->createForm(QuestionType::class, $question, [
+            'action' => $this->generateUrl('evaluation_add_question', [
+                'uuid' => $evaluation->getUuid()
+            ]),
+            'edit' => false
         ]);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             /** @var \App\Entity\Choice $choice */
-            foreach ($question->getChoices() as $choice){
+            foreach ($question->getChoices() as $choice) {
                 $choice->setQuestion($question);
             }
 
             /** @var \App\Entity\SingleQuestion $singleQuestion */
-            foreach ($question->getSingleQuestions() as $singleQuestion){
+            foreach ($question->getSingleQuestions() as $singleQuestion) {
                 $singleQuestion->setQuestion($question);
             }
             $em->persist($question);
@@ -80,9 +82,67 @@ class EvaluationController extends AbstractController
                 'message' => 'Pregunta guardada correctamente'
             ]);
         }
-        return $this->render('evaluation/add-question.html.twig',[
+        return $this->render('evaluation/add-question.html.twig', [
             'evaluation' => $evaluation,
             'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param \App\Entity\Question $question
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @Route("/questions/{id}/edit", name="edit-question", methods={"GET","POST"})
+     */
+    public function editQuestions(Question $question, Request $request): Response
+    {
+        $form = $this->createForm(QuestionType::class, $question, [
+            'edit' => true,
+            'action' => $this->generateUrl('edit-question', [
+                'id' => $question->getId()
+            ])
+        ]);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            /** @var \App\Entity\Choice $choice */
+            foreach ($question->getChoices() as $choice) {
+                $choice->setQuestion($question);
+            }
+
+            /** @var \App\Entity\SingleQuestion $singleQuestion */
+            foreach ($question->getSingleQuestions() as $singleQuestion) {
+                $singleQuestion->setQuestion($question);
+            }
+            $em->persist($question);
+            $em->flush();
+
+            return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Pregunta guardada correctamente'
+            ]);
+        }
+        return $this->render('evaluation/edit-question.html.twig', [
+            'question' => $question,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param \App\Entity\Question $question
+     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     *
+     * @Route("/remove/question/{id}", name="remove-question", methods={"GET","POST"})
+     */
+    public function removeQuestion(Question $question): Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        $question->getEvaluation()->removeQuestion($question);
+        $em->remove($question);
+        $em->flush();
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Pregunta eliminada correctamente'
         ]);
     }
 
@@ -96,8 +156,8 @@ class EvaluationController extends AbstractController
         if (null != $request->query->get('unit')) {
             $evaluation->setUnit($entityManager->getRepository(Unit::class)->find($request->query->get('unit')));
         }
-        $form = $this->createForm(EvaluationType::class, $evaluation,[
-            'action' => $this->generateUrl('evaluation_new',[
+        $form = $this->createForm(EvaluationType::class, $evaluation, [
+            'action' => $this->generateUrl('evaluation_new', [
                 'unit' => $request->query->get('unit')
             ])
         ]);
@@ -130,17 +190,24 @@ class EvaluationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}/edit", name="evaluation_edit", methods={"GET","POST"})
+     * @Route("/{uuid}/edit", name="evaluation_edit", methods={"GET","POST"})
      */
     public function edit(Request $request, Evaluation $evaluation): Response
     {
-        $form = $this->createForm(EvaluationType::class, $evaluation);
+        $form = $this->createForm(EvaluationType::class, $evaluation, [
+            'action' => $this->generateUrl('evaluation_edit', [
+                'uuid' => $evaluation->getUuid()
+            ])
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('evaluation_index');
+            return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Datos modificados correctamente',
+            ]);
         }
 
         return $this->render('evaluation/edit.html.twig', [
@@ -150,16 +217,18 @@ class EvaluationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="evaluation_delete", methods={"DELETE"})
+     * @Route("/delete/{id}", name="evaluation_delete", methods={"DELETE"})
      */
     public function delete(Request $request, Evaluation $evaluation): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $evaluation->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($evaluation);
-            $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('evaluation_index');
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($evaluation);
+        $entityManager->flush();
+
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos eliminados',
+        ]);
     }
 }

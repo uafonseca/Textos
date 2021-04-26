@@ -8,7 +8,7 @@
             <tr>
                 <th>Título</th>
                 <th>Correo</th>
-                <th>No. Preguntas</th>
+                <th>Preguntas</th>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -18,9 +18,17 @@
                     <td>{{ evaluation.title }}</td>
 
                     <td>{{ evaluation.email }}</td>
-                    <td>{{ evaluation.questions|length }}</td>
                     <td>
-                        <a href="{{ path('evaluation_add_question', {'uuid': evaluation.uuid}) }}" class="text-info add-question" data-tippy-content="Gestionar preguntas"><i class="fa fa-plus-circle"></i></a>
+                        <u>
+                            {% for question in evaluation.questions %}
+                                <li><i class="fa fa-edit"></i><a class="edit-question" href="{{ path('edit-question', {'id': question.id}) }}">{{ question.title }}</a></li>
+                            {% endfor %}
+                        </u>
+                    </td>
+                    <td>
+                        <a href="{{ path('evaluation_add_question', {'uuid': evaluation.uuid}) }}" class="text-primary add-question" data-tippy-content="Adicionar preguntas"><i class="fa fa-plus-circle"></i></a>
+                        <a href="{{ path('evaluation_edit', {'uuid': evaluation.uuid}) }}" class="text-info edit-question" data-tippy-content="Editar"><i class="fa fa-edit"></i></a>
+                        <a href="{{ path('evaluation_delete', {'id': evaluation.id}) }}" class="delete-question text-danger" data-tippy-content="Eliminar"><i class="fa fa-trash"></i></a>
                     </td>
                 </tr>
             {% else %}
@@ -34,7 +42,25 @@
 </div>
 <script>
     $(function (){
-        $('.add-question').on('click',function (event){
+        $('.delete-question').on('click', function (event){
+            const scope = $(this)
+            app.dialogs.confirm({
+                event: event,
+                onAccept : function (){
+                    $.ajax({
+                        url : scope.attr('href'),
+                        type: 'DELETE',
+                        success: (response) => {
+                            if (response.type === 'success') {
+                                toastr.success(response.message)
+                                app.unit.form.updateActivities();
+                            }
+                        }
+                    })
+                }
+            })
+        })
+        $('.add-question, .edit-question').on('click',function (event){
             event.preventDefault();
             const scope = $(this)
             app.dialogs.create({

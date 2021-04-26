@@ -15,8 +15,10 @@ use Symfony\Component\Validator\Constraints\Valid;
 
 class QuestionType extends AbstractType
 {
+    private $action;
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->action = $options['edit'];
         $builder
             ->add('title',null,[
                 'label' => 'Título'
@@ -32,7 +34,12 @@ class QuestionType extends AbstractType
                     'class' => 'selector'
                 ]
             ])
-            ->addEventListener(FormEvents::PRE_SUBMIT,[$this, 'onPreSetData'])
+            ;
+            if ($this->action){
+                $builder->addEventListener(FormEvents::PRE_SET_DATA,[$this, 'onPreSetData']);
+            }else{
+                $builder->addEventListener(FormEvents::PRE_SUBMIT,[$this, 'onPreSetData']);
+            }
         ;
     }
     public function onPreSetData(FormEvent $event): void
@@ -44,7 +51,12 @@ class QuestionType extends AbstractType
         if (!$question) {
             return;
         }
-        if ($question['type'] == Question::QUESTION_TYPE_TRUE_OR_FALSE) {
+        if ($this->action){
+            $type = $question->getType();
+        }else{
+            $type = $question['type'];
+        }
+        if ($type == Question::QUESTION_TYPE_TRUE_OR_FALSE) {
             $form->add('choices',CollectionType::class,[
                 'entry_type' => ChoicesType::class,
                 'constraints' => [new Valid()],
@@ -61,7 +73,7 @@ class QuestionType extends AbstractType
                     'class' => 'choice-collection row',
                 ),
             ]);
-        } else if ($question['type'] == Question::QUESTION_TYPE_OPEN_TEXT){
+        } else if ($type == Question::QUESTION_TYPE_OPEN_TEXT){
             $form->add('singleQuestions',CollectionType::class,[
                 'entry_type' => SingleQuestionType::class,
                 'constraints' => [new Valid()],
@@ -98,5 +110,6 @@ class QuestionType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Question::class,
         ]);
+        $resolver->setRequired('edit');
     }
 }
