@@ -1,62 +1,85 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}Evaluation{% endblock %}
 
 {% block body %}
-    <h1>Evaluation</h1>
+    <div class="card" xmlns="">
+        <div class="card-header">
+            {{ evaluation.title |upper }}
+        </div>
+        <div class="card-body">
+            {% for question in evaluation.questions %}
+                <div class="card">
+                    <div class="card-title">
+                        {{ question.title }}
+                    </div>
+                    <div class="card-body">
+                        <form id="answerForm" action="#">
+                            <ul class="navbar-nav">
+                                {% set answerQuestion = answer.answerQuestions[loop.index - 1] %}
+                                {% for choice in question.choices %}
+                                    <li class="nav-item">
+                                        <div class="form-check">
+                                            {% if exist and answerQuestion.choicesAnswers[loop.index - 1].isSelected and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                                <i class="fa fa-check-circle text-success"></i>
+                                            {% elseif exist
+                                                and answerQuestion.choicesAnswers[loop.index - 1].isSelected
+                                                and not answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                                <i class="fa fa-times-circle text-danger"></i>
+                                            {% elseif exist
+                                                and not answerQuestion.choicesAnswers[loop.index - 1].isSelected
+                                                and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                            {% endif %}
+                                            <input data-choice-answer-id="{{ answerQuestion.choicesAnswers[loop.index - 1].id }}"
+                                                   class="choice-check form-check-input" type="checkbox"
+                                                   value="{{ choice.value }}"
+                                                    {% if exist %}
+                                                        disabled="disabled"
+                                                        {% if answerQuestion.choicesAnswers[loop.index - 1].isSelected %}
+                                                            checked
+                                                        {% endif %}
+                                                    {% endif %}
+                                                   id="choice-{{ choice.id }}">
+                                            <label class="form-check-label" for="choice-{{ choice.id }}">
+                                                {{ choice.name }}
+                                            </label>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                                {% for singleQuestion in question.singleQuestions %}
+                                    <li class="nav-item">
+                                        <div class="form-group">
+                                            <label for="single-{{ singleQuestion.id }}">{{ singleQuestion.text }}</label>
+                                            <textarea
+                                                    data-choice-answer-id="{{ answerQuestion.choicesAnswers[loop.index - 1].id }}"
+                                                    required
+                                                    {% if exist %}
+                                                        disabled="disabled"
+                                                    {% endif %}
+                                                    class="form-control choice-text"
+                                                    id="single-{{ singleQuestion.id }}"
+                                                    rows="3"> {% if exist %}{{ answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText ? answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText:'' }}{% endif %}</textarea>
+                                        </div>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        </form>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="card-footer">
+            {% if not exist %}
+                <a href="#" class="send btn btn-success"><i class="fa fa-paper-plane"></i> Enviar</a>
+            {% endif %}
+        </div>
+    </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ evaluation.id }}</td>
-            </tr>
-            <tr>
-                <th>Title</th>
-                <td>{{ evaluation.title }}</td>
-            </tr>
-            <tr>
-                <th>Objective</th>
-                <td>{{ evaluation.objective }}</td>
-            </tr>
-            <tr>
-                <th>Attempts</th>
-                <td>{{ evaluation.attempts }}</td>
-            </tr>
-            <tr>
-                <th>Email</th>
-                <td>{{ evaluation.email }}</td>
-            </tr>
-            <tr>
-                <th>Requirements</th>
-                <td>{{ evaluation.requirements ? 'Yes' : 'No' }}</td>
-            </tr>
-            <tr>
-                <th>Percentage</th>
-                <td>{{ evaluation.percentage }}</td>
-            </tr>
-            <tr>
-                <th>Time</th>
-                <td>{{ evaluation.time }}</td>
-            </tr>
-            <tr>
-                <th>Uuid</th>
-                <td>{{ evaluation.uuid }}</td>
-            </tr>
-            <tr>
-                <th>CreatedAt</th>
-                <td>{{ evaluation.createdAt ? evaluation.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-            <tr>
-                <th>UpdatedAt</th>
-                <td>{{ evaluation.updatedAt ? evaluation.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <a href="{{ path('evaluation_index') }}">back to list</a>
-
-    <a href="{{ path('evaluation_edit', {'id': evaluation.id}) }}">edit</a>
-
-    {{ include('evaluation/_delete_form.html.twig') }}
+{% endblock %}
+{% block javascripts %}
+    <script>
+        const EVALUATION_ID = '{{ evaluation.id }}'
+        const ANSWER_ID = '{{ answer.id }}'
+    </script>
+    {{ encore_entry_script_tags('answers.index') }}
 {% endblock %}

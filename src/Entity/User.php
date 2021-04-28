@@ -118,34 +118,40 @@ class User implements UserInterface, Serializable
 	 */
 	private $codes;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="owner")
+     */
+    private $answers;
+
 
 
 	/**
 	 * User constructor.
 	 */
 	public function __construct()
-	{
-		$this->rolesObject = new ArrayCollection();
-		$this->codes = new ArrayCollection();
-	}
+               	{
+               		$this->rolesObject = new ArrayCollection();
+               		$this->codes = new ArrayCollection();
+                 $this->answers = new ArrayCollection();
+               	}
 
 
 	public function getId(): ?int
-	{
-		return $this->id;
-	}
+               	{
+               		return $this->id;
+               	}
 
 	public function getEmail(): ?string
-	{
-		return $this->email;
-	}
+               	{
+               		return $this->email;
+               	}
 
 	public function setEmail(string $email): self
-	{
-		$this->email = $email;
-
-		return $this;
-	}
+               	{
+               		$this->email = $email;
+               
+               		return $this;
+               	}
 
 	/**
 	 * A visual identifier that represents this user.
@@ -153,22 +159,22 @@ class User implements UserInterface, Serializable
 	 * @see UserInterface
 	 */
 	public function getusername(): string
-	{
-		return (string)$this->username;
-	}
+               	{
+               		return (string)$this->username;
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getRoles(): array
-	{
-		$rolenames = [];
-		foreach ($this->rolesObject as $role)
-			if ($role instanceof Role)
-				$rolenames[] = $role->getRolename();
-
-		return count($rolenames) > 0 ? array_unique($rolenames) : ['ROLE_USER'];
-	}
+               	{
+               		$rolenames = [];
+               		foreach ($this->rolesObject as $role)
+               			if ($role instanceof Role)
+               				$rolenames[] = $role->getRolename();
+               
+               		return count($rolenames) > 0 ? array_unique($rolenames) : ['ROLE_USER'];
+               	}
 
 	/**
 	 * @param Role $role
@@ -176,15 +182,15 @@ class User implements UserInterface, Serializable
 	 * @return User
 	 */
 	public function addRoleObj(Role $role): self
-	{
-		if ($this->rolesObject instanceof Collection && !$this->rolesObject->contains($role)) {
-
-			die;
-			$this->rolesObject->add($role);
-		} else if (is_array($this->rolesObject))
-			$this->rolesObject[] = $role;
-		return $this;
-	}
+               	{
+               		if ($this->rolesObject instanceof Collection && !$this->rolesObject->contains($role)) {
+               
+               			die;
+               			$this->rolesObject->add($role);
+               		} else if (is_array($this->rolesObject))
+               			$this->rolesObject[] = $role;
+               		return $this;
+               	}
 
 	/**
 	 * @param $rolesObject
@@ -192,26 +198,26 @@ class User implements UserInterface, Serializable
 	 * @return User
 	 */
 	public function setRoles($rolesObject): self
-	{
-		$this->rolesObject = $rolesObject;
-
-		return $this;
-	}
+               	{
+               		$this->rolesObject = $rolesObject;
+               
+               		return $this;
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function getPassword(): string
-	{
-		return (string)$this->password;
-	}
+               	{
+               		return (string)$this->password;
+               	}
 
 	public function setPassword(string $password): self
-	{
-		$this->password = $password;
-
-		return $this;
-	}
+               	{
+               		$this->password = $password;
+               
+               		return $this;
+               	}
 
 	/**
 	 * Returning a salt is only needed, if you are not using a modern
@@ -220,42 +226,42 @@ class User implements UserInterface, Serializable
 	 * @see UserInterface
 	 */
 	public function getSalt(): ?string
-	{
-		return null;
-	}
+               	{
+               		return null;
+               	}
 
 	/**
 	 * @see UserInterface
 	 */
 	public function eraseCredentials()
-	{
-		// If you store any temporary, sensitive data on the user, clear it here
-		// $this->plainPassword = null;
-	}
+               	{
+               		// If you store any temporary, sensitive data on the user, clear it here
+               		// $this->plainPassword = null;
+               	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getCountry()
-	{
-		return $this->country;
-	}
+               	{
+               		return $this->country;
+               	}
 
 	/**
 	 * @param mixed $country
 	 */
 	public function setCountry($country): void
-	{
-		$this->country = $country;
-	}
+               	{
+               		$this->country = $country;
+               	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getName()
-	{
-		return $this->name;
-	}
+               	{
+               		return $this->name;
+               	}
 
 	/**
 	 * @param mixed $name
@@ -263,25 +269,25 @@ class User implements UserInterface, Serializable
 	 * @return User
 	 */
 	public function setName($name)
-	{
-		$this->name = $name;
-		return $this;
-	}
+               	{
+               		$this->name = $name;
+               		return $this;
+               	}
 
 	public function setusername($username)
-	{
-		$this->username = $username;
-		return $this;
-	}
+               	{
+               		$this->username = $username;
+               		return $this;
+               	}
 
 
 	/**
 	 * @return mixed
 	 */
 	public function getFirstName()
-	{
-		return $this->firstName;
-	}
+               	{
+               		return $this->firstName;
+               	}
 
 	/**
 	 * @param mixed $firstName
@@ -289,198 +295,228 @@ class User implements UserInterface, Serializable
 	 * @return User
 	 */
 	public function setFirstName($firstName)
-	{
-		$this->firstName = $firstName;
-		return $this;
-	}
+               	{
+               		$this->firstName = $firstName;
+               		return $this;
+               	}
 
 	/**
 	 * @return mixed
 	 */
 	public function getCity()
-	{
-		return $this->city;
-	}
+               	{
+               		return $this->city;
+               	}
 
 	/**
 	 * @param mixed $city
 	 */
 	public function setCity($city): void
-	{
-		$this->city = $city;
-	}
+               	{
+               		$this->city = $city;
+               	}
 
 	public function getStudent(): ?Estudiante
-	{
-		return $this->student;
-	}
+               	{
+               		return $this->student;
+               	}
 
 	public function setStudent(?Estudiante $student): self
-	{
-		$this->student = $student;
-
-		return $this;
-	}
+               	{
+               		$this->student = $student;
+               
+               		return $this;
+               	}
 
 	public function getProfesor(): ?Profesor
-	{
-		return $this->profesor;
-	}
+               	{
+               		return $this->profesor;
+               	}
 
 	public function setProfesor(?Profesor $profesor): self
-	{
-		$this->profesor = $profesor;
-
-		return $this;
-	}
+               	{
+               		$this->profesor = $profesor;
+               
+               		return $this;
+               	}
 
 	public function getScoholName(): ?string
-	{
-		return $this->scoholName;
-	}
+               	{
+               		return $this->scoholName;
+               	}
 
 	public function setScoholName(string $scoholName): self
-	{
-		$this->scoholName = $scoholName;
-
-		return $this;
-	}
+               	{
+               		$this->scoholName = $scoholName;
+               
+               		return $this;
+               	}
 
 
 	public function getScoholLocality(): ?string
-	{
-		return $this->scoholLocality;
-	}
+               	{
+               		return $this->scoholLocality;
+               	}
 
 	public function setScoholLocality(string $scoholLocality): self
-	{
-		$this->scoholLocality = $scoholLocality;
-
-		return $this;
-	}
+               	{
+               		$this->scoholLocality = $scoholLocality;
+               
+               		return $this;
+               	}
 
 	public function getProvincia(): ?string
-	{
-		return $this->provincia;
-	}
+               	{
+               		return $this->provincia;
+               	}
 
 	public function setProvincia($provincia): self
-	{
-		$this->provincia = $provincia;
-
-		return $this;
-	}
+               	{
+               		$this->provincia = $provincia;
+               
+               		return $this;
+               	}
 
 	public function getCanton()
-	{
-		return $this->canton;
-	}
+               	{
+               		return $this->canton;
+               	}
 
 	public function setCanton($canton): self
-	{
-		$this->canton = $canton;
-
-		return $this;
-	}
+               	{
+               		$this->canton = $canton;
+               
+               		return $this;
+               	}
 
 	public function getAvatar(): ?Image
-	{
-		return $this->avatar;
-	}
+               	{
+               		return $this->avatar;
+               	}
 
 	public function setAvatar(?Image $avatar): self
-	{
-		$this->avatar = $avatar;
-
-		return $this;
-	}
+               	{
+               		$this->avatar = $avatar;
+               
+               		return $this;
+               	}
 
 
 	public function __toString()
-	{
-		return $this->name;
-	}
+               	{
+               		return $this->name;
+               	}
 
 	/**
 	 * @return Collection|Role[]
 	 */
 	public function getRolesObject(): Collection
-	{
-		return $this->rolesObject;
-	}
+               	{
+               		return $this->rolesObject;
+               	}
 
 	public function addRolesObject(Role $rolesObject): self
-	{
-		if (!$this->rolesObject->contains($rolesObject)) {
-			$this->rolesObject[] = $rolesObject;
-		}
-
-		return $this;
-	}
+               	{
+               		if (!$this->rolesObject->contains($rolesObject)) {
+               			$this->rolesObject[] = $rolesObject;
+               		}
+               
+               		return $this;
+               	}
 
 	public function removeRolesObject(Role $rolesObject): self
-	{
-		$this->rolesObject->removeElement($rolesObject);
-
-		return $this;
-	}
+               	{
+               		$this->rolesObject->removeElement($rolesObject);
+               
+               		return $this;
+               	}
 
 	public function serialize()
-	{
-		$this->avatar = base64_encode($this->avatar);
-		return serialize(array(
-			$this->id,
-			$this->uuid,
-			$this->username,
-			$this->email,
-			$this->password,
-			$this->avatar = base64_encode($this->avatar)
-
-		));
-	}
+               	{
+               		$this->avatar = base64_encode($this->avatar);
+               		return serialize(array(
+               			$this->id,
+               			$this->uuid,
+               			$this->username,
+               			$this->email,
+               			$this->password,
+               			$this->avatar = base64_encode($this->avatar)
+               
+               		));
+               	}
 
 	public function unserialize($serialized)
-	{
-
-		list(
-			$this->id,
-			$this->uuid,
-			$this->username,
-			$this->email,
-			$this->password,
-			$this->avatar,
-		) = unserialize($serialized);
-
-		$this->avatar = base64_decode($this->avatar);
-	}
+               	{
+               
+               		list(
+               			$this->id,
+               			$this->uuid,
+               			$this->username,
+               			$this->email,
+               			$this->password,
+               			$this->avatar,
+               		) = unserialize($serialized);
+               
+               		$this->avatar = base64_decode($this->avatar);
+               	}
 
 	/**
 	 * @return Collection|Code[]
 	 */
 	public function getCodes(): Collection
-	{
-		return $this->codes;
-	}
+               	{
+               		return $this->codes;
+               	}
 
 	public function addCode(Code $code): self
-	{
-		if (!$this->codes->contains($code)) {
-			$this->codes[] = $code;
-			$code->setUser($this);
-		}
-
-		return $this;
-	}
+               	{
+               		if (!$this->codes->contains($code)) {
+               			$this->codes[] = $code;
+               			$code->setUser($this);
+               		}
+               
+               		return $this;
+               	}
 
 	public function removeCode(Code $code): self
-	{
-		if ($this->codes->removeElement($code)) {
-			// set the owning side to null (unless already changed)
-			if ($code->getUser() === $this) {
-				$code->setUser(null);
-			}
-		}
+               	{
+               		if ($this->codes->removeElement($code)) {
+               			// set the owning side to null (unless already changed)
+               			if ($code->getUser() === $this) {
+               				$code->setUser(null);
+               			}
+               		}
+               
+               		return $this;
+               	}
 
-		return $this;
-	}
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getAnswers(): Collection
+    {
+        return $this->answers;
+    }
+
+    public function addAnswer(Answer $answer): self
+    {
+        if (!$this->answers->contains($answer)) {
+            $this->answers[] = $answer;
+            $answer->setOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getOwner() === $this) {
+                $answer->setOwner(null);
+            }
+        }
+
+        return $this;
+    }
 }

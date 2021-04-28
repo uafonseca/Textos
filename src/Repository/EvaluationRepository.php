@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Evaluation;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @method Evaluation|null find($id, $lockMode = null, $lockVersion = null)
@@ -17,6 +18,20 @@ class EvaluationRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Evaluation::class);
+    }
+
+    /**
+     * @param \Symfony\Component\Security\Core\User\UserInterface $user
+     * @return int|mixed|string|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function findByUser(UserInterface $user){
+        return $this->createQueryBuilder('evaluation')
+            ->join('evaluation.answers', 'answer')
+            ->where('answer.owner =:user')
+            ->setParameter('user',$user)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     // /**

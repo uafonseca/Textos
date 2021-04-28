@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ChoiceRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +44,18 @@ class Choice
      * @ORM\Column(type="boolean")
      */
     private $isCorrect;
+
+
+    /**
+     * @ORM\OneToMany(targetEntity=ChoiceAnswer::class, mappedBy="choice")
+     */
+    private $choiceAnswers;
+
+    public function __construct()
+    {
+
+        $this->choiceAnswers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -104,6 +118,36 @@ class Choice
     public function setIsCorrect(bool $isCorrect): self
     {
         $this->isCorrect = $isCorrect;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChoiceAnswer[]
+     */
+    public function getChoiceAnswers(): Collection
+    {
+        return $this->choiceAnswers;
+    }
+
+    public function addChoiceAnswer(ChoiceAnswer $choiceAnswer): self
+    {
+        if (!$this->choiceAnswers->contains($choiceAnswer)) {
+            $this->choiceAnswers[] = $choiceAnswer;
+            $choiceAnswer->setChoice($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChoiceAnswer(ChoiceAnswer $choiceAnswer): self
+    {
+        if ($this->choiceAnswers->removeElement($choiceAnswer)) {
+            // set the owning side to null (unless already changed)
+            if ($choiceAnswer->getChoice() === $this) {
+                $choiceAnswer->setChoice(null);
+            }
+        }
 
         return $this;
     }

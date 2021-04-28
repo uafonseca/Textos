@@ -202,7 +202,7 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"})
+     * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"},options={"expose" = true})
      * @IsGranted("ROLE_USER")
      */
     public function userDashboard(): Response

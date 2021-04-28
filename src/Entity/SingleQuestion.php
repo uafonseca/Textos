@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SingleQuestionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -27,6 +29,16 @@ class SingleQuestion
      */
     private $question;
 
+    /**
+     * @ORM\OneToMany(targetEntity=ChoiceAnswer::class, mappedBy="singleAnswer")
+     */
+    private $choiceAnswers;
+
+
+    public function __construct()
+    {
+        $this->choiceAnswers = new ArrayCollection();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -52,6 +64,36 @@ class SingleQuestion
     public function setQuestion(?Question $question): self
     {
         $this->question = $question;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|ChoiceAnswer[]
+     */
+    public function getChoiceAnswers(): Collection
+    {
+        return $this->choiceAnswers;
+    }
+
+    public function addChoiceAnswer(ChoiceAnswer $choiceAnswer): self
+    {
+        if (!$this->choiceAnswers->contains($choiceAnswer)) {
+            $this->choiceAnswers[] = $choiceAnswer;
+            $choiceAnswer->setSingleAnswer($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChoiceAnswer(ChoiceAnswer $choiceAnswer): self
+    {
+        if ($this->choiceAnswers->removeElement($choiceAnswer)) {
+            // set the owning side to null (unless already changed)
+            if ($choiceAnswer->getSingleAnswer() === $this) {
+                $choiceAnswer->setSingleAnswer(null);
+            }
+        }
 
         return $this;
     }

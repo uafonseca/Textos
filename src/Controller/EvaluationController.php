@@ -2,11 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Answer;
+use App\Entity\AnswerQuestion;
 use App\Entity\Choice;
+use App\Entity\ChoiceAnswer;
 use App\Entity\Evaluation;
 use App\Entity\Question;
 use App\Entity\SingleQuestion;
 use App\Entity\Unit;
+use App\Exception\AnswerRewriteException;
 use App\Form\EvaluationType;
 use App\Form\QuestionType;
 use App\Repository\EvaluationRepository;
@@ -110,7 +114,7 @@ class EvaluationController extends AbstractController
             /** @var \App\Entity\Choice $choice */
             foreach ($em->getRepository(Choice::class)->findBy([
                 'question' => $question
-            ]) as $choice){
+            ]) as $choice) {
                 $choice->setQuestion(null);
             }
             foreach ($question->getChoices() as $choice) {
@@ -120,7 +124,7 @@ class EvaluationController extends AbstractController
 
             foreach ($em->getRepository(SingleQuestion::class)->findBy([
                 'question' => $question
-            ]) as $singleQuestion){
+            ]) as $singleQuestion) {
                 $singleQuestion->setQuestion(null);
             }
             /** @var \App\Entity\SingleQuestion $singleQuestion */
@@ -193,13 +197,115 @@ class EvaluationController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="evaluation_show", methods={"GET"})
+     * @Route("/{uuid}", name="evaluation_show", methods={"GET"})
+     * @throws \App\Exception\AnswerRewriteException
      */
     public function show(Evaluation $evaluation): Response
     {
+        /** @var \App\Entity\User $loggedUser */
+        $loggedUser = $this->getUser();
+
+        $exist = false;
+        $userAnswer = null;
+        /** @var \App\Entity\Answer $answer */
+        foreach ($evaluation->getAnswers() as $answer)
+            if ($answer->getOwner() === $loggedUser && $answer->getEndDate()) {
+                throw new AnswerRewriteException();
+            } else if ($answer->getOwner() === $loggedUser) {
+                $exist = true;
+                $userAnswer = $answer;
+            }
+
+        if (!$exist) {
+            $userAnswer = $this->buildAnswer($evaluation);
+        }
+
         return $this->render('evaluation/show.html.twig', [
             'evaluation' => $evaluation,
+            'answer' => $userAnswer,
+            'exist' => $exist
         ]);
+    }
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/save-answer", name="save-answer", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function saveAnswer(Request $request): Response
+    {
+        $choicesAnswers = $request->request->get('choicesAnswers');
+        $choicesValues = $request->request->get('choicesValues');
+        $choicesTextAnswers = $request->request->get('choicesTextAnswers');
+        $choicesTextValues = $request->request->get('choicesTextValues');
+
+        $em = $this->getDoctrine()->getManager();
+        foreach ($choicesAnswers as $key => $id){
+            /** @var ChoiceAnswer $choiceObj */
+            $choiceObj = $em->getRepository(ChoiceAnswer::class)->find($id);
+            $choiceObj->setIsSelected($choicesValues[$key] != 0);
+        }
+        foreach ($choicesTextAnswers as $key => $id){
+            /** @var ChoiceAnswer $choiceObj */
+            $choiceObj = $em->getRepository(ChoiceAnswer::class)->find($id);
+            $choiceObj->setSingleAnswerText($choicesTextValues[$key]);
+        }
+        $em->flush();
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos enviados'
+        ]);
+    }
+
+    /**
+     * @param \App\Entity\Evaluation $evaluation
+     * @return \App\Entity\Answer
+     */
+    public function buildAnswer(Evaluation $evaluation): Answer
+    {
+        /** @var \App\Entity\User $loggedUser */
+        $loggedUser = $this->getUser();
+        $userAnswer = new Answer();
+        $userAnswer
+            ->setOwner($loggedUser)
+            ->setStartDate(new \DateTime())
+            ->setCompany($loggedUser->getCompany())
+            ->setOwner($loggedUser)
+            ->setEvaluation($evaluation);
+        $evaluation->addAnswer($userAnswer);
+        $loggedUser->addAnswer($userAnswer);
+        $em = $this->getDoctrine()->getManager();
+        $em->persist($userAnswer);
+
+        /** @var Question $question */
+        foreach ($evaluation->getQuestions() as $question) {
+            $answerQuestion = new AnswerQuestion();
+            $answerQuestion
+                ->setQuestion($question)
+                ->setAnswer($userAnswer)
+                ->setCompany($userAnswer->getCompany());
+            $em->persist($answerQuestion);
+            $userAnswer->addAnswerQuestion($answerQuestion);
+            foreach ($question->getChoices() as $choice) {
+                $choiceAnswer = new ChoiceAnswer();
+                $choiceAnswer
+                    ->setChoice($choice)
+                    ->setAnswerQuestion($answerQuestion);
+                $answerQuestion->addChoicesAnswer($choiceAnswer);
+            }
+            foreach ($question->getSingleQuestions() as $singleQuestion) {
+                $choiceAnswer = new ChoiceAnswer();
+                $choiceAnswer
+                    ->setSingleAnswer($singleQuestion)
+                    ->setAnswerQuestion($answerQuestion);
+                $answerQuestion->addChoicesAnswer($choiceAnswer);
+                $em->persist($answerQuestion);
+            }
+        }
+        $em->flush();
+
+        return $userAnswer;
     }
 
     /**
