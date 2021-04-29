@@ -251,6 +251,8 @@ class EvaluationController extends AbstractController
             $choiceObj = $em->getRepository(ChoiceAnswer::class)->find($id);
             $choiceObj->setSingleAnswerText($choicesTextValues[$key]);
         }
+        $answer = $em->getRepository(Answer::class)->find($request->request->get('ANSWER_ID'));
+        $answer->setAttemptsMade($answer->getAttemptsMade() + 1);
         $em->flush();
         return new JsonResponse([
             'type' => 'success',

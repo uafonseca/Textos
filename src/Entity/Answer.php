@@ -47,6 +47,11 @@ class Answer
     private $evaluation;
 
     /**
+     * @ORM\Column(type="integer")
+     */
+    private $attemptsMade = 0;
+
+    /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="answers")
      */
     private $owner;
@@ -162,4 +167,22 @@ class Answer
     {
         $this->progress = (int) ($this->answerQuestions->count() * 100 / $this->evaluation->getQuestions()->count());
     }
+
+    /**
+     * @return int
+     */
+    public function getAttemptsMade(): ?int
+    {
+        return $this->attemptsMade;
+    }
+
+    /**
+     * @param int $attemptsMade
+     */
+    public function setAttemptsMade(int $attemptsMade): void
+    {
+        $this->attemptsMade = $attemptsMade;
+    }
+
+
 }

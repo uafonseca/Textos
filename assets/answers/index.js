@@ -38,7 +38,8 @@ app.answers = {
                         choicesAnswers: choicesAnswers,
                         choicesValues : choicesValues,
                         choicesTextAnswers : choicesTextAnswers,
-                        choicesTextValues : choicesTextValues
+                        choicesTextValues : choicesTextValues,
+                        ANSWER_ID :ANSWER_ID
                     },
                     success : (response) => {
                         if (response.type === 'success'){

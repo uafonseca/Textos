@@ -3,9 +3,24 @@
 {% block title %}Evaluation{% endblock %}
 
 {% block body %}
+    {% set points = getPoints(evaluation) %}
     <div class="card" xmlns="">
         <div class="card-header">
-            {{ evaluation.title |upper }}
+            <div class="row">
+                <div class="col-md-4">
+                    {{ evaluation.title |upper }}
+                </div>
+                <div class="col-md-4 text-center">
+                    {% set is_writable = answer.attemptsMade < evaluation.attempts %}
+                    {% if exist %}
+                        <h3>Puntos: {{ points['result'] }}</h3>
+                        <h3>{{ points['status'] | raw }}</h3>
+                    {% endif %}
+                </div>
+                <div class="col-md-4">
+                    <h4>Intentos disponibles: {{ evaluation.attempts - answer.attemptsMade }}</h4>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             {% for question in evaluation.questions %}
@@ -20,23 +35,30 @@
                                 {% for choice in question.choices %}
                                     <li class="nav-item">
                                         <div class="form-check">
-                                            {% if exist and answerQuestion.choicesAnswers[loop.index - 1].isSelected and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                            {% if
+                                                not is_writable
+                                                and exist
+                                                and answerQuestion.choicesAnswers[loop.index - 1].isSelected
+                                                and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
                                                 <i class="fa fa-check-circle text-success"></i>
-                                            {% elseif exist
+                                                +{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos
+                                            {% elseif
+                                                not is_writable
+                                                and exist
                                                 and answerQuestion.choicesAnswers[loop.index - 1].isSelected
                                                 and not answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
                                                 <i class="fa fa-times-circle text-danger"></i>
-                                            {% elseif exist
-                                                and not answerQuestion.choicesAnswers[loop.index - 1].isSelected
-                                                and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+{#                                                -{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos#}
                                             {% endif %}
                                             <input data-choice-answer-id="{{ answerQuestion.choicesAnswers[loop.index - 1].id }}"
                                                    class="choice-check form-check-input" type="checkbox"
                                                    value="{{ choice.value }}"
                                                     {% if exist %}
-                                                        disabled="disabled"
                                                         {% if answerQuestion.choicesAnswers[loop.index - 1].isSelected %}
                                                             checked
+                                                        {% endif %}
+                                                        {% if not is_writable %}
+                                                            disabled="disabled"
                                                         {% endif %}
                                                     {% endif %}
                                                    id="choice-{{ choice.id }}">
@@ -53,7 +75,7 @@
                                             <textarea
                                                     data-choice-answer-id="{{ answerQuestion.choicesAnswers[loop.index - 1].id }}"
                                                     required
-                                                    {% if exist %}
+                                                    {% if exist  and not is_writable %}
                                                         disabled="disabled"
                                                     {% endif %}
                                                     class="form-control choice-text"
@@ -69,7 +91,7 @@
             {% endfor %}
         </div>
         <div class="card-footer">
-            {% if not exist %}
+            {% if is_writable %}
                 <a href="#" class="send btn btn-success"><i class="fa fa-paper-plane"></i> Enviar</a>
             {% endif %}
         </div>
