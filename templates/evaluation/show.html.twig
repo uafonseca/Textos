@@ -4,6 +4,7 @@
 
 {% block body %}
     {% set points = getPoints(evaluation) %}
+    {% set approved = points['points'] >= points['max'] %}
     <div class="card" xmlns="">
         <div class="card-header">
             <div class="row">
@@ -11,9 +12,9 @@
                     {{ evaluation.title |upper }}
                 </div>
                 <div class="col-md-4 text-center">
-                    {% set is_writable = answer.attemptsMade < evaluation.attempts %}
+                    {% set is_writable = answer.attemptsMade < evaluation.attempts and not approved %}
                     {% if exist %}
-                        <h3>Puntos: {{ points['result'] }}</h3>
+                        <h3>Puntos: {{ points['points'] }}/{{ points['max'] }}</h3>
                         <h3>{{ points['status'] | raw }}</h3>
                     {% endif %}
                 </div>
@@ -54,7 +55,7 @@
                                                    class="choice-check form-check-input" type="checkbox"
                                                    value="{{ choice.value }}"
                                                     {% if exist %}
-                                                        {% if answerQuestion.choicesAnswers[loop.index - 1].isSelected %}
+                                                        {% if answerQuestion.choicesAnswers[loop.index - 1].isSelected and not is_writable and not approved %}
                                                             checked
                                                         {% endif %}
                                                         {% if not is_writable %}
@@ -75,12 +76,12 @@
                                             <textarea
                                                     data-choice-answer-id="{{ answerQuestion.choicesAnswers[loop.index - 1].id }}"
                                                     required
-                                                    {% if exist  and not is_writable %}
+                                                    {% if not is_writable %}
                                                         disabled="disabled"
                                                     {% endif %}
                                                     class="form-control choice-text"
                                                     id="single-{{ singleQuestion.id }}"
-                                                    rows="3"> {% if exist %}{{ answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText ? answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText:'' }}{% endif %}</textarea>
+                                                    rows="3"> {% if exist  and not is_writable and not approved %}{{ answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText ? answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText:'' }}{% endif %}</textarea>
                                         </div>
                                     </li>
                                 {% endfor %}

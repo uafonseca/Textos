@@ -43,7 +43,8 @@ class EvaluationsExtension extends AbstractExtension
         }
 
         return [
-            'result' => "$points/$max",
+            'max' => $max,
+            'points' => $points,
             'status' => $points >= $max ? '<span class="text-success">APROBADO</span>' : '<span class="text-danger">NO APROBADO</span>'
         ];
     }
