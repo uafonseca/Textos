@@ -16,7 +16,6 @@ class IdentityType extends AbstractType
             ->add('colorPrimary',ColorType::class,[
                 'label' => 'Color primario',
                 'help' => 'Recomendación: #3b7ddd ',
-
             ])
             ->add('colorSecondary',ColorType::class,[
                 'label' => 'Color secundario',

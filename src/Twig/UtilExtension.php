@@ -123,7 +123,8 @@ class UtilExtension extends AbstractExtension
             'info' => '#17a2b8',
         ];
         /** @var \App\Entity\Company $company */
-        if (null != $company = $this->getCurrentCompany() ) {
+        if (null != $company = $this->getCompany() ) {
+
             if (null != $identity = $company->getIdentity()){
                 try{
                     return [

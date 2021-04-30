@@ -51,18 +51,14 @@ class BookType extends AbstractType
             ])
             ->add('portada',ImageType::class,[
                 'label' => 'Portada',
-                'required' => !$options['edit']
+                'required' => !$options['edit'],
+                'help' => 'Dimensiones de 312 x 232 píxeles',
             ])
             ->add('banner',ImageType::class,[
                 'label' => 'Baner',
-                'required' => !$options['edit']
+                'required' => !$options['edit'],
+                'help' => 'Dimensiones de 1180 x 350 píxeles',
             ])
-            // ->add('link',LinkType::class,[
-            //     'label' => false,
-            // ])
-            // ->add('htmlCode' ,HtmlCodeType::class,[
-            //     'label' => false,
-            // ])
             ->add('metadata',BookMetadataType::class,[
                 'label' => false,
             ])
