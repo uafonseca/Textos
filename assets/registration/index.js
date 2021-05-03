@@ -1,6 +1,10 @@
 app.registration = {
   index: {
     initComponents: () => {
+      app.plugins.initSelect2("#user_country");
+      app.plugins.initSelect2("#user_provincia");
+      $('#user_canton').prop('disabled',true)
+
       $("#user_student_brithday").datepicker({
         format: "DD/MM/YYYY",
         changeYear: true,
@@ -65,91 +69,42 @@ app.registration = {
       );
     },
     loadAddress: () => {
-      var currentCities = [];
-      
-      var BATTUTA_KEY = "d1852eb18710a5342c07a673014fc9c9";
-      
-      url =
-        "https://geo-battuta.net/api/country/all/?key=" +
-        BATTUTA_KEY +
-        "&callback=?";
-      app.plugins.initSelect2("#user_country");
-      app.plugins.initSelect2("#user_provincia");
-      app.plugins.initSelect2("#user_canton");
-
-      $("<option></option>")
-      .append('--SELECCIONE--')
-      .appendTo($("#user_country"));
-
-      $("<option></option>")
-      .append('--SELECCIONE--')
-      .appendTo($("#user_provincia"));
-
-      $("<option></option>")
-      .append('--SELECCIONE--')
-      .appendTo($("#user_canton"));
-
-      $.getJSON(url, function (countries) {
-        $.each(countries, function (key, country) {
-          $("<option></option>")
-            .attr("value", country.code)
-            .append(country.name)
-            .appendTo($("#user_country"));
-        });
-
-        $("#user_country").trigger("change");
-      });
-
-      $("#user_country").on("change", function () {
-        countryCode = $("#user_country").val();
-
-        url =
-          "https://geo-battuta.net/api/region/" +
-          countryCode +
-          "/all/?key=" +
-          BATTUTA_KEY +
-          "&callback=?";
-
-        $.getJSON(url, function (regions) {
-          $("#user_provincia option").remove();
-
-          $.each(regions, function (key, region) {
-            $("<option></option>")
-              .attr("value", region.region)
-              .append(region.region)
-              .appendTo($("#user_provincia"));
-          });
-
-          $("#user_provincia").trigger("change");
+      $('#user_country').change(function() {
+        // ... retrieve the corresponding form.
+        var $form = $(this).closest('form');
+        // Simulate form data, but only include the selected sport value.
+        var data = {};
+        data[$(this).attr('name')] = $(this).val();
+        // Submit data via AJAX to the form's action path.
+        $.ajax({
+          url : $form.attr('action'),
+          type: $form.attr('method'),
+          data : data,
+          success: function(html) {
+            $('#user_city').replaceWith(
+                $(html).find('#user_city')
+            );
+            app.plugins.initSelect2('#user_city');
+            if($('#user_city').val()){
+              $('#user_canton').prop('disabled',false);
+            }
+            else{
+              $('#user_canton').prop('disabled',true)
+            }
+            $('#user_city').on('change',function (e){
+              console.log($(this).val())
+              if($(this).val()){
+                $('#user_canton').prop('disabled',false);
+              }
+              else{
+                $('#user_canton').prop('disabled',true)
+              }
+            });
+          }
         });
       });
-      $("#user_provincia").on("change", function () {
-        countryCode = $("#user_country").val();
-        region = $("#user_provincia").val();
-        url =
-          "http://geo-battuta.net/api/city/" +
-          countryCode +
-          "/search/?region=" +
-          region +
-          "&key=" +
-          BATTUTA_KEY +
-          "&callback=?";
+    }
 
-        $.getJSON(url, function (cities) {
-          currentCities = cities;
-          var i = 0;
-          $("#user_canton option").remove();
-
-          $.each(cities, function (key, city) {
-            $("<option></option>")
-              .attr("value", i++)
-              .append(city.city)
-              .appendTo($("#user_canton"));
-          });
-          $("#user_canton").trigger("change");
-        });
-      });
-    },
   },
 };
 

@@ -42,7 +42,7 @@
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.name) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.firstName) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.country) }}</div>
-                                <div class="col-md-6 col-sm-12">{{ form_row(form.provincia) }}</div>
+                                <div class="col-md-6 col-sm-12">{{ form_row(form.city) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.canton) }}</div>
                                 <div class="col-md-6 col-sm-12">{{ form_row(form.scoholName) }}</div>
                             </div>
@@ -61,4 +61,5 @@
         const image_url_defaultPreview = '{{ user.avatar.imagenFile is defined ? vich_uploader_asset(user.avatar , 'imagenFile'):'' }}';
     </script>
 	{{ encore_entry_script_tags('profile.form') }}
+
 {% endblock %}

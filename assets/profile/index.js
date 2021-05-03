@@ -1,99 +1,38 @@
 app.profile = {
     index: {
       loadAddress: () => {
-        var currentCities = [];
-    
-        var BATTUTA_KEY = "d1852eb18710a5342c07a673014fc9c9";
-        
-        url =
-          "https://geo-battuta.net/api/country/all/?key=" +
-          BATTUTA_KEY +
-          "&callback=?";
-        app.plugins.initSelect2("#user1_country");
-        app.plugins.initSelect2("#user1_provincia");
-        app.plugins.initSelect2("#user1_canton");
-  
-        $("<option></option>")
-        .append('--SELECCIONE--')
-        .appendTo($("#user1_country"));
-  
-        $("<option></option>")
-        .append('--SELECCIONE--')
-        .appendTo($("#user1_provincia"));
-  
-        $("<option></option>")
-        .append('--SELECCIONE--')
-        .appendTo($("#user1_canton"));
-  
-        $.getJSON(url, function (countries) {
-          $.each(countries, function (key, country) {
-            let select = $("#user1_country");
-            let choice = select.val() === country.code;
-            var newOption = new Option(country.name, country.code, choice, choice);
-            $(newOption).appendTo(select);
-          });
-  
-          $("#user1_country").trigger("change");
-        });
-  
-        $("#user1_country").on("change", function () {
-          countryCode = $("#user1_country").val();
-        
-          url =
-            "https://geo-battuta.net/api/region/" +
-            countryCode +
-            "/all/?key=" +
-            BATTUTA_KEY +
-            "&callback=?";
-  
-          $.getJSON(url, function (regions) {
-            $("#user1_provincia option").remove();
-  
-            $.each(regions, function (key, region) {
-
-                let select = $("#user1_provincia");
-                let choice = select.val() === region.region;
-                var newOption = new Option(region.region, region.region, choice, choice);
-                $(newOption).appendTo(select);
-            });
-  
-            $("#user1_provincia").trigger("change");
-
-          });
-        });
-
-        $("#user1_provincia").on("change", function () {
-          countryCode = $("#user1_country").val();
-          region = $("#user1_provincia").val();
-          url =
-            "http://geo-battuta.net/api/city/" +
-            countryCode +
-            "/search/?region=" +
-            region +
-            "&key=" +
-            BATTUTA_KEY +
-            "&callback=?";
-  
-          $.getJSON(url, function (cities) {
-            currentCities = cities;
-            var i = 0;
-            $("#user1_canton option").remove();
-  
-            $.each(cities, function (key, city) {
-
-                let select = $("#user1_canton");
-                let choice = select.val() == i;
-
-                if(choice){
-                    $('#liveIn').html(city.city)
+        $('#user1_country').change(function() {
+          // ... retrieve the corresponding form.
+          var $form = $(this).closest('form');
+          // Simulate form data, but only include the selected sport value.
+          var data = {};
+          data[$(this).attr('name')] = $(this).val();
+          // Submit data via AJAX to the form's action path.
+          $.ajax({
+            url : $form.attr('action'),
+            type: $form.attr('method'),
+            data : data,
+            success: function(html) {
+              $('#user1_city').replaceWith(
+                  $(html).find('#user1_city')
+              );
+              app.plugins.initSelect2('#user_city');
+              if($('#user1_city').val()){
+                $('#user1_canton').prop('disabled',false);
+              }
+              else{
+                $('#user1_canton').prop('disabled',true)
+              }
+              $('#user1_city').on('change',function (e){
+                console.log($(this).val())
+                if($(this).val()){
+                  $('#user1_canton').prop('disabled',false);
                 }
-               
-                var newOption = new Option(city.city, i++, choice, choice);
-                $(newOption).appendTo(select);
-
-    
-            });
-            $("#user1_canton").trigger("change");
+                else{
+                  $('#user1_canton').prop('disabled',true)
+                }
+              });
+            }
           });
         });
       },

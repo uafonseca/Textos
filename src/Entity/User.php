@@ -25,470 +25,438 @@ use Serializable;
  */
 class User implements UserInterface, Serializable
 {
-	use UuidEntityTrait;
-	use TimestampableTrait;
-	use CompanyEntityTrait;
-	/**
-	 * @ORM\Id
-	 * @ORM\GeneratedValue
-	 * @ORM\Column(type="integer")
-	 */
-	private $id;
+    use UuidEntityTrait;
+    use TimestampableTrait;
+    use CompanyEntityTrait;
 
-	/**
-	 * @ORM\Column(type="string", length=180, unique=true)
-	 */
-	private $email;
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    private $id;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180)
-	 */
-	protected $country;
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private $email;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180, nullable=true)
-	 */
-	protected $city;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180)
-	 */
-	protected $name;
+    /**
+     *
+     * @ORM\Column(type="string", length=180)
+     */
+    protected $name;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180)
-	 */
-	protected $username;
+    /**
+     *
+     * @ORM\Column(type="string", length=180)
+     */
+    protected $username;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180)
-	 */
-	protected $firstName;
+    /**
+     *
+     * @ORM\Column(type="string", length=180)
+     */
+    protected $firstName;
 
-	/**
-	 * @var string The hashed password
-	 * @ORM\Column(type="string")
-	 */
-	private $password;
+    /**
+     * @var string The hashed password
+     * @ORM\Column(type="string")
+     */
+    private $password;
 
-	/**
-	 * @ORM\Column(type="string", length=255)
-	 */
-	private $scoholName;
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $scoholName;
 
-	/**
-	 * @ORM\OneToOne(targetEntity=Estudiante::class, cascade={"persist", "remove"})
-	 */
-	private $student;
+    /**
+     * @ORM\OneToOne(targetEntity=Estudiante::class, cascade={"persist", "remove"})
+     */
+    private $student;
 
-	/**
-	 * @ORM\OneToOne(targetEntity=Profesor::class, cascade={"persist", "remove"})
-	 */
-	private $profesor;
+    /**
+     * @ORM\OneToOne(targetEntity=Profesor::class, cascade={"persist", "remove"})
+     */
+    private $profesor;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180)
-	 */
-	private $provincia;
+    /**
+     *
+     * @ORM\Column(type="string", length=180, nullable=true)
+     */
+    private $provincia;
 
-	/**
-	 *
-	 * @ORM\Column(type="string", length=180)
-	 */
-	private $canton;
+    /**
+     *
+     * @ORM\Column(type="string", length=180, nullable=true)
+     */
+    private $canton;
 
-	/**
-	 * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
-	 */
-	private $avatar;
+    /**
+     * @ORM\OneToOne(targetEntity=Image::class, cascade={"persist", "remove"})
+     */
+    private $avatar;
 
-	/**
-	 * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
-	 */
-	private $rolesObject;
+    /**
+     * @ORM\ManyToMany(targetEntity=Role::class, inversedBy="users")
+     */
+    private $rolesObject;
 
-	/**
-	 * @ORM\OneToMany(targetEntity=Code::class, mappedBy="user", orphanRemoval=true)
-	 */
-	private $codes;
+    /**
+     * @ORM\OneToMany(targetEntity=Code::class, mappedBy="user", orphanRemoval=true)
+     */
+    private $codes;
 
     /**
      * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="owner")
      */
     private $answers;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Country::class)
+     */
+    private $country;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=State::class)
+     */
+    private $city;
 
 
-	/**
-	 * User constructor.
-	 */
-	public function __construct()
-               	{
-               		$this->rolesObject = new ArrayCollection();
-               		$this->codes = new ArrayCollection();
-                 $this->answers = new ArrayCollection();
-               	}
+    /**
+     * User constructor.
+     */
+    public function __construct()
+    {
+        $this->rolesObject = new ArrayCollection();
+        $this->codes = new ArrayCollection();
+        $this->answers = new ArrayCollection();
+    }
 
 
-	public function getId(): ?int
-               	{
-               		return $this->id;
-               	}
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-	public function getEmail(): ?string
-               	{
-               		return $this->email;
-               	}
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
 
-	public function setEmail(string $email): self
-               	{
-               		$this->email = $email;
-               
-               		return $this;
-               	}
+    public function setEmail(?string $email): self
+    {
+        $this->email = $email;
 
-	/**
-	 * A visual identifier that represents this user.
-	 *
-	 * @see UserInterface
-	 */
-	public function getusername(): string
-               	{
-               		return (string)$this->username;
-               	}
+        return $this;
+    }
 
-	/**
-	 * @see UserInterface
-	 */
-	public function getRoles(): array
-               	{
-               		$rolenames = [];
-               		foreach ($this->rolesObject as $role)
-               			if ($role instanceof Role)
-               				$rolenames[] = $role->getRolename();
-               
-               		return count($rolenames) > 0 ? array_unique($rolenames) : ['ROLE_USER'];
-               	}
+    /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getusername(): string
+    {
+        return (string)$this->username;
+    }
 
-	/**
-	 * @param Role $role
-	 *
-	 * @return User
-	 */
-	public function addRoleObj(Role $role): self
-               	{
-               		if ($this->rolesObject instanceof Collection && !$this->rolesObject->contains($role)) {
-               
-               			die;
-               			$this->rolesObject->add($role);
-               		} else if (is_array($this->rolesObject))
-               			$this->rolesObject[] = $role;
-               		return $this;
-               	}
+    /**
+     * @see UserInterface
+     */
+    public function getRoles(): array
+    {
+        $rolenames = [];
+        foreach ($this->rolesObject as $role)
+            if ($role instanceof Role)
+                $rolenames[] = $role->getRolename();
 
-	/**
-	 * @param $rolesObject
-	 *
-	 * @return User
-	 */
-	public function setRoles($rolesObject): self
-               	{
-               		$this->rolesObject = $rolesObject;
-               
-               		return $this;
-               	}
+        return count($rolenames) > 0 ? array_unique($rolenames) : ['ROLE_USER'];
+    }
 
-	/**
-	 * @see UserInterface
-	 */
-	public function getPassword(): string
-               	{
-               		return (string)$this->password;
-               	}
+    /**
+     * @param Role $role
+     *
+     * @return User
+     */
+    public function addRoleObj(Role $role): self
+    {
+        if ($this->rolesObject instanceof Collection && !$this->rolesObject->contains($role)) {
 
-	public function setPassword(string $password): self
-               	{
-               		$this->password = $password;
-               
-               		return $this;
-               	}
+            die;
+            $this->rolesObject->add($role);
+        } else if (is_array($this->rolesObject))
+            $this->rolesObject[] = $role;
+        return $this;
+    }
 
-	/**
-	 * Returning a salt is only needed, if you are not using a modern
-	 * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-	 *
-	 * @see UserInterface
-	 */
-	public function getSalt(): ?string
-               	{
-               		return null;
-               	}
+    /**
+     * @param $rolesObject
+     *
+     * @return User
+     */
+    public function setRoles($rolesObject): self
+    {
+        $this->rolesObject = $rolesObject;
 
-	/**
-	 * @see UserInterface
-	 */
-	public function eraseCredentials()
-               	{
-               		// If you store any temporary, sensitive data on the user, clear it here
-               		// $this->plainPassword = null;
-               	}
+        return $this;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getCountry()
-               	{
-               		return $this->country;
-               	}
+    /**
+     * @see UserInterface
+     */
+    public function getPassword(): string
+    {
+        return (string)$this->password;
+    }
 
-	/**
-	 * @param mixed $country
-	 */
-	public function setCountry($country): void
-               	{
-               		$this->country = $country;
-               	}
+    public function setPassword(?string $password): self
+    {
+        $this->password = $password;
 
-	/**
-	 * @return mixed
-	 */
-	public function getName()
-               	{
-               		return $this->name;
-               	}
+        return $this;
+    }
 
-	/**
-	 * @param mixed $name
-	 *
-	 * @return User
-	 */
-	public function setName($name)
-               	{
-               		$this->name = $name;
-               		return $this;
-               	}
+    /**
+     * Returning a salt is only needed, if you are not using a modern
+     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
+     *
+     * @see UserInterface
+     */
+    public function getSalt(): ?string
+    {
+        return null;
+    }
 
-	public function setusername($username)
-               	{
-               		$this->username = $username;
-               		return $this;
-               	}
+    /**
+     * @see UserInterface
+     */
+    public function eraseCredentials()
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
 
 
-	/**
-	 * @return mixed
-	 */
-	public function getFirstName()
-               	{
-               		return $this->firstName;
-               	}
+    /**
+     * @return mixed
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
 
-	/**
-	 * @param mixed $firstName
-	 *
-	 * @return User
-	 */
-	public function setFirstName($firstName)
-               	{
-               		$this->firstName = $firstName;
-               		return $this;
-               	}
+    /**
+     * @param mixed $name
+     *
+     * @return User
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+        return $this;
+    }
 
-	/**
-	 * @return mixed
-	 */
-	public function getCity()
-               	{
-               		return $this->city;
-               	}
-
-	/**
-	 * @param mixed $city
-	 */
-	public function setCity($city): void
-               	{
-               		$this->city = $city;
-               	}
-
-	public function getStudent(): ?Estudiante
-               	{
-               		return $this->student;
-               	}
-
-	public function setStudent(?Estudiante $student): self
-               	{
-               		$this->student = $student;
-               
-               		return $this;
-               	}
-
-	public function getProfesor(): ?Profesor
-               	{
-               		return $this->profesor;
-               	}
-
-	public function setProfesor(?Profesor $profesor): self
-               	{
-               		$this->profesor = $profesor;
-               
-               		return $this;
-               	}
-
-	public function getScoholName(): ?string
-               	{
-               		return $this->scoholName;
-               	}
-
-	public function setScoholName(string $scoholName): self
-               	{
-               		$this->scoholName = $scoholName;
-               
-               		return $this;
-               	}
+    public function setusername($username)
+    {
+        $this->username = $username;
+        return $this;
+    }
 
 
-	public function getScoholLocality(): ?string
-               	{
-               		return $this->scoholLocality;
-               	}
+    /**
+     * @return mixed
+     */
+    public function getFirstName()
+    {
+        return $this->firstName;
+    }
 
-	public function setScoholLocality(string $scoholLocality): self
-               	{
-               		$this->scoholLocality = $scoholLocality;
-               
-               		return $this;
-               	}
+    /**
+     * @param mixed $firstName
+     *
+     * @return User
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+        return $this;
+    }
 
-	public function getProvincia(): ?string
-               	{
-               		return $this->provincia;
-               	}
+    public function getStudent(): ?Estudiante
+    {
+        return $this->student;
+    }
 
-	public function setProvincia($provincia): self
-               	{
-               		$this->provincia = $provincia;
-               
-               		return $this;
-               	}
+    public function setStudent(?Estudiante $student): self
+    {
+        $this->student = $student;
 
-	public function getCanton()
-               	{
-               		return $this->canton;
-               	}
+        return $this;
+    }
 
-	public function setCanton($canton): self
-               	{
-               		$this->canton = $canton;
-               
-               		return $this;
-               	}
+    public function getProfesor(): ?Profesor
+    {
+        return $this->profesor;
+    }
 
-	public function getAvatar(): ?Image
-               	{
-               		return $this->avatar;
-               	}
+    public function setProfesor(?Profesor $profesor): self
+    {
+        $this->profesor = $profesor;
 
-	public function setAvatar(?Image $avatar): self
-               	{
-               		$this->avatar = $avatar;
-               
-               		return $this;
-               	}
+        return $this;
+    }
+
+    public function getScoholName(): ?string
+    {
+        return $this->scoholName;
+    }
+
+    public function setScoholName(?string $scoholName): self
+    {
+        $this->scoholName = $scoholName;
+
+        return $this;
+    }
 
 
-	public function __toString()
-               	{
-               		return $this->name;
-               	}
+    public function getScoholLocality(): ?string
+    {
+        return $this->scoholLocality;
+    }
 
-	/**
-	 * @return Collection|Role[]
-	 */
-	public function getRolesObject(): Collection
-               	{
-               		return $this->rolesObject;
-               	}
+    public function setScoholLocality(?string $scoholLocality): self
+    {
+        $this->scoholLocality = $scoholLocality;
 
-	public function addRolesObject(Role $rolesObject): self
-               	{
-               		if (!$this->rolesObject->contains($rolesObject)) {
-               			$this->rolesObject[] = $rolesObject;
-               		}
-               
-               		return $this;
-               	}
+        return $this;
+    }
 
-	public function removeRolesObject(Role $rolesObject): self
-               	{
-               		$this->rolesObject->removeElement($rolesObject);
-               
-               		return $this;
-               	}
+    public function getProvincia(): ?string
+    {
+        return $this->provincia;
+    }
 
-	public function serialize()
-               	{
-               		$this->avatar = base64_encode($this->avatar);
-               		return serialize(array(
-               			$this->id,
-               			$this->uuid,
-               			$this->username,
-               			$this->email,
-               			$this->password,
-               			$this->avatar = base64_encode($this->avatar)
-               
-               		));
-               	}
+    public function setProvincia($provincia): self
+    {
+        $this->provincia = $provincia;
 
-	public function unserialize($serialized)
-               	{
-               
-               		list(
-               			$this->id,
-               			$this->uuid,
-               			$this->username,
-               			$this->email,
-               			$this->password,
-               			$this->avatar,
-               		) = unserialize($serialized);
-               
-               		$this->avatar = base64_decode($this->avatar);
-               	}
+        return $this;
+    }
 
-	/**
-	 * @return Collection|Code[]
-	 */
-	public function getCodes(): Collection
-               	{
-               		return $this->codes;
-               	}
+    public function getCanton()
+    {
+        return $this->canton;
+    }
 
-	public function addCode(Code $code): self
-               	{
-               		if (!$this->codes->contains($code)) {
-               			$this->codes[] = $code;
-               			$code->setUser($this);
-               		}
-               
-               		return $this;
-               	}
+    public function setCanton($canton): self
+    {
+        $this->canton = $canton;
 
-	public function removeCode(Code $code): self
-               	{
-               		if ($this->codes->removeElement($code)) {
-               			// set the owning side to null (unless already changed)
-               			if ($code->getUser() === $this) {
-               				$code->setUser(null);
-               			}
-               		}
-               
-               		return $this;
-               	}
+        return $this;
+    }
+
+    public function getAvatar(): ?Image
+    {
+        return $this->avatar;
+    }
+
+    public function setAvatar(?Image $avatar): self
+    {
+        $this->avatar = $avatar;
+
+        return $this;
+    }
+
+
+    public function __toString()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return Collection|Role[]
+     */
+    public function getRolesObject(): Collection
+    {
+        return $this->rolesObject;
+    }
+
+    public function addRolesObject(Role $rolesObject): self
+    {
+        if (!$this->rolesObject->contains($rolesObject)) {
+            $this->rolesObject[] = $rolesObject;
+        }
+
+        return $this;
+    }
+
+    public function removeRolesObject(Role $rolesObject): self
+    {
+        $this->rolesObject->removeElement($rolesObject);
+
+        return $this;
+    }
+
+    public function serialize()
+    {
+        $this->avatar = base64_encode($this->avatar);
+        return serialize(array(
+            $this->id,
+            $this->uuid,
+            $this->username,
+            $this->email,
+            $this->password,
+            $this->avatar = base64_encode($this->avatar)
+
+        ));
+    }
+
+    public function unserialize($serialized)
+    {
+
+        list(
+            $this->id,
+            $this->uuid,
+            $this->username,
+            $this->email,
+            $this->password,
+            $this->avatar,
+            ) = unserialize($serialized);
+
+        $this->avatar = base64_decode($this->avatar);
+    }
+
+    /**
+     * @return Collection|Code[]
+     */
+    public function getCodes(): Collection
+    {
+        return $this->codes;
+    }
+
+    public function addCode(Code $code): self
+    {
+        if (!$this->codes->contains($code)) {
+            $this->codes[] = $code;
+            $code->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCode(Code $code): self
+    {
+        if ($this->codes->removeElement($code)) {
+            // set the owning side to null (unless already changed)
+            if ($code->getUser() === $this) {
+                $code->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 
     /**
      * @return Collection|Answer[]
@@ -516,6 +484,30 @@ class User implements UserInterface, Serializable
                 $answer->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCountry(): ?Country
+    {
+        return $this->country;
+    }
+
+    public function setCountry(?Country $country): self
+    {
+        $this->country = $country;
+
+        return $this;
+    }
+
+    public function getCity(): ?State
+    {
+        return $this->city;
+    }
+
+    public function setCity(?State $city): self
+    {
+        $this->city = $city;
 
         return $this;
     }

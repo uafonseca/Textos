@@ -33,10 +33,18 @@ add('writable_dirs', ['var/log','var/cache','var/sessions', 'public/']);
 
 // Hosts
 
-host('23.239.26.54')
+host('v2')
+    ->hostname('23.239.26.54')
     ->set('branch', 'main')
     ->user('deploy')
     ->set('deploy_path', '/var/www/html/v2Lideres');
+
+host('connect')
+    ->hostname('23.239.26.54')
+    ->set('branch', 'main')
+    ->user('deploy')
+    ->set('deploy_path', '/var/www/html/connect');
+
 
 set('release_name', function () {
     return date('YmdHis');
