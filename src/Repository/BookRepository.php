@@ -43,7 +43,7 @@ class BookRepository extends ServiceEntityRepository
      * @param int $limit
      * @return int|mixed|string
      */
-    public  function getBoksByLimit(int $limit = 1){
+    public  function getBoksByLimit(int $limit = PHP_INT_MAX){
         return $this->createQueryBuilder('book')
             ->orderBy('book.createdAt','DESC')
             ->setMaxResults($limit)

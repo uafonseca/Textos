@@ -113,7 +113,7 @@ class BookController extends AbstractController
         }
         $em = $this->getDoctrine()->getManager();
         return $this->render('book/list.html.twig', [
-            'default' => $this->bookRepository->getBoksByLimit(8),
+            'default' => $this->bookRepository->getBoksByLimit(),
             'categories' => $em->getRepository(Category::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany() : null),
             'stages' => $em->getRepository(SchoolStage::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany() : null),
             'levels' => $em->getRepository(Level::class)->findByCompany($this->getUser() ? $this->getUser()->getCompany() : null),
