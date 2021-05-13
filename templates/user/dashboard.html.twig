@@ -36,11 +36,11 @@
                                     <p class="text-muted">Inicio: {{ code.starDate|date('d/m/Y') }} |
                                         Fin: {{ code.endDate|date('d/m/Y') }}</p>
                                     <a href="{{ path('book_show', { 'uuid': item.uuid }) }}"
-                                       class="btn btn-pill btn-success btn-sm">
+                                       class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
                                         Ingresar
                                     </a>
                                 {% else %}
-                                    <a href="#" class="btn btn-warning"><i class="fa fa-exclamation-triangle"></i> Activación vencida</a>
+                                    <a href="#" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fa fa-exclamation-triangle"></i> Activación vencida</a>
                                 {% endif %}
                             </div>
                         </div>
@@ -51,7 +51,7 @@
             <div class="col-12 text-center">
                 <h1 class="text-center">UPS!</h1>
                 <p class="text-center">No tienes ningún texto activado</p>
-                <a href="{{ path('app_home_page') }}" class="btn btn-primary">
+                <a href="{{ path('app_home_page') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
                     Ver catálogo</a>
             </div>
         {% endfor %}

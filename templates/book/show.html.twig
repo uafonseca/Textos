@@ -36,12 +36,13 @@
                                         </a>
                                     </button>
                                     {% if item.evaluations|length > 0 %}
-                                        <a href="{{ path('evaluation_show', {'uuid': item.evaluations[0].uuid}) }}" class="btn btn-info btn-sm pull-right ml-3 mt-1">
+                                        <a href="{{ path('evaluation_show', {'uuid': item.evaluations[0].uuid}) }}"  style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
                                             <i class="fa fa-graduation-cap"></i>
-                                            Evaluacion
+                                            Evaluación
                                         </a>
                                     {% endif %}
-                                    <button class="btn btn-warning btn-sm pull-right ml-3 mt-1" data-toggle="collapse"
+                                    <button class="btn btn-sm pull-right ml-3 mt-1" data-toggle="collapse"
+                                            style="background-color: {{ colors()['warning'] }}; color:white;"
                                             data-target="#e{{ item.id }}" aria-expanded="true"
                                             aria-controls="e{{ item.id }}">
                                         <i class="fa fa-list"></i>

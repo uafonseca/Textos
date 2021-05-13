@@ -27,6 +27,9 @@ class Activity
     /** @Var string */
     const TYPE_YOUTUBE = 'Youtube';
 
+    /** @var string  */
+    const TYPE_FILE = 'Archivo';
+
     use TimestampableTrait;
     use CompanyEntityTrait;
     /**

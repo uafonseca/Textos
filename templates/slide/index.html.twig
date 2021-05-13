@@ -22,8 +22,8 @@
                         <td>{{ slide.title }}</td>
                         <td>{{ slide.shortDescription }}</td>
                         <td>
-                            <a href="{{ path('slide_show', {'id': slide.id}) }}" class="btn btn-success"><i class="fa fa-eye"></i></a>
-                            <a href="{{ path('slide_edit', {'id': slide.id}) }}" class="btn btn-primary"><i class="fa fa-edit"></i></a>
+                            <a href="{{ path('slide_show', {'id': slide.id}) }}" class="btn" style="background-color: {{ colors()['success'] }}; color:white;"><i class="fa fa-eye"></i></a>
+                            <a href="{{ path('slide_edit', {'id': slide.id}) }}" class="btn "  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-edit"></i></a>
                         </td>
                     </tr>
                 {% else %}
@@ -34,7 +34,7 @@
                 </tbody>
             </table>
 
-            <a href="{{ path('slide_new') }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i> Adicionar</a>
+            <a href="{{ path('slide_new') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-plus-circle"></i> Adicionar</a>
         </div>
     </div>
 {% endblock %}

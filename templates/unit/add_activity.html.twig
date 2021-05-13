@@ -43,7 +43,7 @@
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <div class="btn-group">
-                                        <button type="button" class="btn btn-primary dropdown-toggle"
+                                        <button type="button" class="btn dropdown-toggle"  style="background-color: {{ colors()['primary'] }}; color:white;"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fa fa-plus-circle"></i>
                                             Adicionar recurso
@@ -58,16 +58,18 @@
                                                         class="fa fa-globe"></i> Enlace url</a>
                                             <a class="dropdown-item add-entry" data-type="Youtube" href="#"><i
                                                         class="fa fa-play"></i> Youtube</a>
+                                            <a class="dropdown-item add-entry" data-type="Archivo" href="#"><i
+                                                        class="fa fa-file"></i> Documento</a>
                                         </div>
                                     </div>
                                     <a href="{{ path('evaluation_new',{'unit': unit.id }) }}"
-                                       class="add-evaluation btn btn-primary">
+                                       class="add-evaluation btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
                                         <i class="fa fa-school"></i>
                                         Adicionar evaluación
                                     </a>
                                 </div>
                                 <div class="col-md-12">
-                                    <a href="{{ path('unit_index') }}" class="btn btn-secondary mt-2"> <i
+                                    <a href="{{ path('unit_index') }}" class="btn mt-2" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i
                                                 class="fa fa-arrow-left"></i> Regresar</a>
                                 </div>
                             </div>

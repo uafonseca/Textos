@@ -14,6 +14,24 @@
      */
 	class TableActions
 	{
+
+        /**
+         * @param array $columns
+         * @return array
+         */
+        public static function buttonPRINT(array $columns = []): array
+        {
+            return [
+                'extend' => 'print',
+                'text' => 'Imprimir',
+                'class_name' => 'fa fa-print m-1 btn btn-primary',
+                'button_options' => [
+                    'exportOptions' => [
+                        'columns' => $columns,
+                    ],
+                ],
+            ];
+        }
 		/**
 		 * @param $route
 		 * @param $icon

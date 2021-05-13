@@ -6,7 +6,7 @@
         <div class="col-12">{{ form_row(formTerms.terms) }}</div>
         <div class="col-12">{{ form_row(formTerms.privacy) }}</div>
         <div class="col-12 pt-3">
-            <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Guardar</button>
+            <button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-save"></i> Guardar</button>
         </div>
     </div>
     {{ form_end(formTerms)}}

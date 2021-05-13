@@ -53,6 +53,13 @@ class ActivityFormType extends AbstractType
                         'attr' => ['class' => 'youtube'],
                     ]);
                 break;
+            case Activity::TYPE_FILE:
+                $builder
+                    ->add('file', ImageType::class, [
+                        'label' => 'Archivo',
+                        'attr' => ['class' => 'file'],
+                    ]);
+                break;
             default:
                 $builder
                     ->add('file', ImageType::class, [

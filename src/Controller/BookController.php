@@ -203,9 +203,27 @@ class BookController extends AbstractController
 
         if ($request->isXmlHttpRequest()) {
             $key = $request->request->get('code');
+            /** @var \App\Entity\User $loggedUser */
             $loggedUser = $this->getUser();
+            /** @var \App\Entity\Code $code */
             $code = $this->codeRepository->findCode($book, $key);
+
             if ($code) {
+
+                if ($code->getEndDate() < new \DateTime('now'))
+                {
+                    return new JsonResponse([
+                        'type' => 'error',
+                        'message' => 'El periodo de vigencia del código ha expirado'
+                    ]);
+                }
+
+                if ($loggedUser->getCodes()->contains($code))
+                    return new JsonResponse([
+                        'type' => 'error',
+                        'message' => 'No puede activar dos veces el mismo código'
+                    ]);
+
                 $em = $this->getDoctrine()->getManager();
 
                 $code->setUser($loggedUser);

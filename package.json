@@ -27,6 +27,7 @@
         "country-state-city": "^2.0.0",
         "datatables.net": "^1.10.23",
         "datatables.net-bs4": "^1.10.23",
+        "datatables.net-buttons": "^1.7.0",
         "datatables.net-buttons-bs4": "^1.6.5",
         "datatables.net-editor": "^1.6.5",
         "datatables.net-editor-jqui": "^1.6.3",

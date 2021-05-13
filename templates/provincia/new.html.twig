@@ -7,5 +7,5 @@
 
     {{ include('provincia/_form.html.twig') }}
 
-    <a href="{{ path('provincia_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+    <a href="{{ path('provincia_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
 {% endblock %}

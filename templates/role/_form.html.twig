@@ -2,6 +2,6 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
 <br>
-    <button class="btn btn-success"><i class="fas fa-save"></i> {{ button_label|default('Guardar') }}</button>
+    <button class="btn" style="background-color: {{ colors()['success'] }}; color:white;"><i class="fas fa-save"></i> {{ button_label|default('Guardar') }}</button>
 <hr>
 {{ form_end(form) }}

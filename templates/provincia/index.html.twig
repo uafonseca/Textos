@@ -17,7 +17,7 @@
             <tr>
                 <td>{{ provincium.nombre }}</td>
                 <td>
-                    <a href="{{ path('provincia_edit', {'id': provincium.id}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                    <a href="{{ path('provincia_edit', {'id': provincium.id}) }}" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fas fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -28,5 +28,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('provincia_new') }}" class="btn btn-primary"><i class="fa fa-plus"></i> Nueva provincia</a>
+    <a href="{{ path('provincia_new') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-plus"></i> Nueva provincia</a>
 {% endblock %}

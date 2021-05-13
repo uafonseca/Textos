@@ -26,6 +26,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-editable'
 import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css'
+import 'datatables.net-buttons/js/buttons.print.min';
 import 'popper.js'
 import 'select2'
 import 'bootstrap-fileinput'

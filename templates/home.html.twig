@@ -45,7 +45,7 @@
 							<div class="text-center mb-10">
 								<div class="badge badge-pill badge-primary-soft text-primary badge-marketing mb-3">{{ count[0]['count'] }} Títulos</div>
 								<h2>Últimas publicaciones</h2>
-								<a href="{{ path('book_list') }}" class="btn btn-info"> Ver todas</a>
+								<a href="{{ path('book_list') }}" class="btn" style="background-color: {{ colors()['info'] }}; color:white;"> Ver todas</a>
 								{#							<p class="lead">When you purchase this UI Kit, you get access to a robust suite of powerful landing page demos to help you get started.</p>#}
 							</div>
 						</div>
@@ -62,7 +62,7 @@
 									</div>
 									<div class="card-body">
 										<p class="card-text">{{ item.level }}</p>
-										<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-success">
+										<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill" style="background-color: {{ colors()['success'] }}; color:white;">
 											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 											Detalles </a>
 										<a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>

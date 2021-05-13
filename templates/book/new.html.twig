@@ -10,7 +10,7 @@
     <div class="card">
 		<div class="card-body">
          {{ include('book/_form.html.twig') }}<br>
-         <a href="{{ path('book_index') }}" class="btn btn-secondary"> <i class="fa fa-arrow-left"></i> Regresar</a>
+         <a href="{{ path('book_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
         </div>
     </div>
 {% endblock %}

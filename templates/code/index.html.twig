@@ -3,12 +3,41 @@
 {% block body %}
 	<div class="card">
 		<div class="card-header">
-			<a href="{{ path('code_create') }}" class="add-new btn btn-primary">
+			<a href="{{ path('code_create') }}" class="add-new btn " style="background-color: {{ colors()['primary'] }}; color:white;">
 				<i class="fa fa-plus-circle"></i>
 				Adicionar</a>
 		</div>
 		<div class="card-body">
-			{{ sg_datatables_render_html(datatable) }}
+			<ul class="nav nav-tabs" id="myTab" role="tablist">
+				<li class="nav-item">
+					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+						Disponibles
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" id="code-tab" data-toggle="tab" href="#code-users" role="tab" aria-controls="profile" aria-selected="false">
+						En uso
+					</a>
+				</li>
+
+			</ul>
+			<div class="tab-content" id="myTabContent">
+				<div class="tab-pane fade show active p-1" id="home" role="tabpanel" aria-labelledby="home-tab">
+					<div class="card">
+						<div class="card-body">
+							{{ sg_datatables_render_html(datatable) }}
+						</div>
+					</div>
+				</div>
+				<div class="tab-pane fade p-1" id="code-users" role="tabpanel" aria-labelledby="profile-tab">
+					<div class="card">
+						<div id="tab-2" class="card-body">
+
+						</div>
+					</div>
+				</div>
+			</div>
+
 		</div>
 	</div>
 {% endblock %}
@@ -17,15 +46,15 @@
 	{{ sg_datatables_render_js(datatable) }}
 	<script type="text/javascript">
 		$(document).ready(function () {
-            // $('.add-new').on('click', function (event) {
-            //     const scope = $(this)
-            //     event.preventDefault();
-            //     app.dialogs.create({
-            //         url: scope.attr('href'),
-			// 		containerFluid: true,
-			// 		columnClass: 'col-md-8 col-md-offset-2'
-            //     })
-            // })
+			$('#code-tab').on('click',function (){
+				$.ajax({
+					url :Routing.generate('code_users',{'first':true}),
+					type: 'GET',
+					success : (response)=>{
+						$('#tab-2').html(response);
+					}
+				})
+			})
         })
 	</script>
 {% endblock %}

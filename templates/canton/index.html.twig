@@ -17,7 +17,7 @@
             <tr>
                 <td>{{ canton.nombre }}</td>
                 <td>
-                    <a href="{{ path('canton_edit', {'id': canton.id}) }}" class="btn btn-warning"><i class="fa fa-edit"></i></a>
+                    <a href="{{ path('canton_edit', {'id': canton.id}) }}" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fa fa-edit"></i></a>
                 </td>
             </tr>
         {% else %}
@@ -28,5 +28,5 @@
         </tbody>
     </table>
 
-    <a href="{{ path('canton_new') }}" class="btn btn-primary"><i class="fa fa-save"></i> Nuevo</a>
+    <a href="{{ path('canton_new') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-save"></i> Nuevo</a>
 {% endblock %}

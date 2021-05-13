@@ -21,8 +21,9 @@ class CodeSalesType extends AbstractType
                 'required' => true,
             ])
             ->add('iva',null,[
-                'label' => 'Impuesto IVA',
+                'label' => 'Impuesto IVA(%)',
                 'required' => true,
+                'attr' => ['placeholder' => 'Ej. 12']
             ])
             ->add('currency',null,[
                 'label' => 'Moneda',

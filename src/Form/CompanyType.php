@@ -36,7 +36,8 @@ class CompanyType extends AbstractType
 	            'label'=>'Correo eletrónico'
             ])
             ->add('visible',CheckboxType::class,[
-	            'label'=>'Mostrar datos de contacto en la página de inicio'
+	            'label'=>'Mostrar datos de contacto en la página de inicio',
+                'required' => false
             ])
             ->add('logo',ImageType::class,[
 	            'label'=>'Logo',

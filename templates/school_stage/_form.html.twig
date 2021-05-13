@@ -1,5 +1,5 @@
 {{ form_start(form) }}
     {{ form_widget(form) }}
     <br>
-    <button class="btn btn-primary"> <i class="fa fa-save"></i> {{ button_label|default('Guardar') }}</button>
+    <button class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"> <i class="fa fa-save"></i> {{ button_label|default('Guardar') }}</button>
 {{ form_end(form) }}

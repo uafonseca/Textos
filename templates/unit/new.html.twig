@@ -31,12 +31,12 @@
 						{{ form_row(form.book) }}
 					</div>
 					<div class="col-md-12 mb-3">
-						<button class="btn btn-primary">
+						<button class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
 								<i class="fa fa-plus-circle"></i>
 								{{ button_label|default('Guardar') }}
 							</button>
 
-							<a href="{{ path('unit_index') }}" class="btn btn-secondary">
+							<a href="{{ path('unit_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;">
 								<i class="fa fa-arrow-left"></i>
 								Regresar
 							</a>

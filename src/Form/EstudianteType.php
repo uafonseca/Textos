@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Regex;
 
-class EstudianteType extends AbstractType
+class               EstudianteType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

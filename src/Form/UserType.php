@@ -61,7 +61,7 @@ class UserType extends AbstractType
                     if (Role::ROLE_USER === $choice->getRolename()) {
                         return 'Estudiante';
                     } elseif (Role::ROLE_ADMIN === $choice->getRolename()) {
-                        return 'Docente';
+                        return 'Capacitador';
                     } else {
                         return '';
                     }
@@ -100,9 +100,9 @@ class UserType extends AbstractType
                 'label' => 'Cantón',
             ])
             ->add('scoholName', TextType::class, [
-                'label' => 'Nombre de la institución'
+                'label' => 'Institución o empresa que labora'
             ])
-            ->add('student', EstudianteType::class)
+//            ->add('student', EstudianteType::class)
             ->add('profesor', ProfesorType::class)
         ;
 

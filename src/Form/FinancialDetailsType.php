@@ -47,7 +47,7 @@ class FinancialDetailsType extends AbstractType
             ])
             ->add('paypalHtmlCode',null,[
                 'label' => 'Código del botón de PayPal',
-                'required' => true,
+                'required' => false,
             ])
         ;
     }

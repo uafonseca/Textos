@@ -15,12 +15,12 @@
 				<div class="col-md-12">{{ form_row(form.rolename)}}</div>
 
 				<div class="col-md-3 col-sm-12 mt-3">
-					<button class="btn btn-success">
+					<button class="btn" style="background-color: {{ colors()['success'] }}; color:white;">
 						<i class="fa fa-save"></i>
 						{{ button_label|default('Adicionar') }}</button>
 				</div>
 				<div class="col-md-3 col-sm-12 mt-3">
-					<a href="{{ path('role_index') }}" class="btn btn-secondary">
+					<a href="{{ path('role_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;">
 						<i class="fa fa-arrow-left"></i>
 						Regresar</a>
 				</div>

@@ -80,7 +80,12 @@ class CodeController extends AbstractController
 
 		if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
 			$this->datatableResponse->setDatatable($datatable);
-			$this->datatableResponse->getDatatableQueryBuilder();
+			$qb = $this->datatableResponse->getDatatableQueryBuilder();
+
+			$qb
+                ->getQb()
+                ->where('code.user is NULL');
+
 
 			return $this->datatableResponse->getResponse();
 		}
@@ -89,6 +94,40 @@ class CodeController extends AbstractController
 			'datatable' => $datatable
 		]);
 	}
+
+    /**
+     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Exception
+     *
+     * @Route("/code-users", name="code_users", options={"expose" = true})
+     */
+    public function codeUsers(Request $request): Response
+    {
+
+        $datatable = $this->datatableFactory->create(CodeDatatable::class);
+
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('code_users'),
+            'with_user' => true
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+
+            $qb
+                ->getQb()
+                ->where('code.user is not NULL');
+
+
+            return $this->datatableResponse->getResponse();
+        }
+
+        return $this->render('code/table.html.twig', [
+            'datatable' => $datatable
+        ]);
+    }
 
     /**
      * Method create
