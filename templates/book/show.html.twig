@@ -29,6 +29,12 @@
                             <div id="heading-{{ item.uuid }}" class="card-header">
                                 <h5 class="mb-0">
 
+                                    <a href="{{ path('show_details', {'uuid': item.uuid }) }}"
+                                       class="btn btn-sm btn-info pull-right ml-3 mt-1"
+                                       data-tippy-content="Detalles de la unidad">
+                                        <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                    </a>
+
                                     <button class="btn btn-link">
                                         <a href="{{ path('unit_show', {'uuid': item.uuid}) }}" target="_blank">
                                             <i class="fas fa-file-pdf"></i>
@@ -36,7 +42,9 @@
                                         </a>
                                     </button>
                                     {% if item.evaluations|length > 0 %}
-                                        <a href="{{ path('evaluation_show', {'uuid': item.evaluations[0].uuid}) }}"  style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
+                                        <a href="{{ path('evaluation_show', {'uuid': item.evaluations[0].uuid}) }}"
+                                           style="background-color: {{ colors()['info'] }}; color:white;"
+                                           class="btn btn-sm pull-right ml-3 mt-1">
                                             <i class="fa fa-graduation-cap"></i>
                                             Evaluación
                                         </a>

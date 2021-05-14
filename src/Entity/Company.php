@@ -72,6 +72,11 @@ class Company
      */
     private $identity;
 
+    /**
+     * @ORM\OneToOne(targetEntity=SocialNetworks::class, cascade={"persist", "remove"})
+     */
+    private $socialNetworks;
+
 
     public function __construct (){
         $this->users = new ArrayCollection();
@@ -220,6 +225,18 @@ class Company
     public function setIdentity(?Identity $identity): self
     {
         $this->identity = $identity;
+
+        return $this;
+    }
+
+    public function getSocialNetworks(): ?SocialNetworks
+    {
+        return $this->socialNetworks;
+    }
+
+    public function setSocialNetworks(?SocialNetworks $socialNetworks): self
+    {
+        $this->socialNetworks = $socialNetworks;
 
         return $this;
     }

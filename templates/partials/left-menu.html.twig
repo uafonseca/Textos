@@ -81,10 +81,10 @@
 							<a class="sidebar-link" href="{{ path('category_index') }}">Categorías</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('school_stage_index') }}">Etapa escolar</a>
+							<a class="sidebar-link" href="{{ path('school_stage_index') }}">Temas</a>
 						</li>
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('level_index') }}">Nivel</a>
+							<a class="sidebar-link" href="{{ path('level_index') }}">Tipos de cursos</a>
 						</li>
 					</ul>
 				</li>
@@ -97,11 +97,11 @@
 				<li class="sidebar-item {% if currentPath == path('book_index') %}active{% endif %}">
 					<a href="#textos" data-toggle="collapse" class="sidebar-link collapsed">
 						<i class="align-middle" data-feather="book"></i>
-						<span class="align-middle">Ingreso de textos</span>
+						<span class="align-middle">Ingreso de cursos</span>
 					</a>
 					<ul id="textos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
 						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('book_index') }}">Textos</a>
+							<a class="sidebar-link" href="{{ path('book_index') }}">Cursos</a>
 						</li>
 						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ path('unit_index') }}">Unidades</a>

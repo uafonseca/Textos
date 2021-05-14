@@ -107,7 +107,7 @@ class BookController extends AbstractController
 
             $books = $this->bookRepository->findByFilters($categories, $stages, $levels);
 
-            return $this->render('book/ajax-list.html.twig',[
+            return $this->render('book/ajax-list.html.twig', [
                 'books' => $books
             ]);
         }
@@ -210,8 +210,7 @@ class BookController extends AbstractController
 
             if ($code) {
 
-                if ($code->getEndDate() < new \DateTime('now'))
-                {
+                if ($code->getEndDate() < new \DateTime('now')) {
                     return new JsonResponse([
                         'type' => 'error',
                         'message' => 'El periodo de vigencia del código ha expirado'
@@ -272,7 +271,7 @@ class BookController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="book_delete", methods={"DELETE"})
+     * @Route("/delete/{uuid}", name="book_delete", methods={"GET","POST"})
      *
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @param Request $request
@@ -281,13 +280,13 @@ class BookController extends AbstractController
      */
     public function delete(Request $request, Book $book): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $book->getId(), $request->request->get('_token'))) {
-            $entityManager = $this->getDoctrine()->getManager();
-            $entityManager->remove($book);
-            $entityManager->flush();
-        }
-
-        return $this->redirectToRoute('book_index');
+        $entityManager = $this->getDoctrine()->getManager();
+        $entityManager->remove($book);
+        $entityManager->flush();
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos eliminados'
+        ]);
     }
 
 

@@ -4,9 +4,17 @@
 {% block title %}New SchoolStage{% endblock %}
 
 {% block body %}
-    <h1>Nueva etapa escolar</h1>
 
-    {{ include('school_stage/_form.html.twig') }}
-    <br>
-    <a href="{{ path('school_stage_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
+
+    <div class="card">
+        <div class="card-header">
+            <h1>Nuevo tema</h1>
+        </div>
+        <div class="card-body">
+            {{ include('school_stage/_form.html.twig') }}
+            <br>
+            <a href="{{ path('school_stage_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
+        </div>
+    </div>
+
 {% endblock %}

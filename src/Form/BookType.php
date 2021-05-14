@@ -42,11 +42,11 @@ class BookType extends AbstractType
                 'label' => 'Categoría'
             ])
             ->add('stage', EntityType::class,[
-                'label' => 'Sección escolar',
+                'label' => 'Grupo',
                 'class'=> SchoolStage::class,
             ])
             ->add('level', EntityType::class,[
-                'label' => 'Nivel',
+                'label' => 'Tipo de curso',
                 'class'=> Level::class,
             ])
             ->add('portada',ImageType::class,[
@@ -55,7 +55,7 @@ class BookType extends AbstractType
                 'help' => 'Dimensiones de 312 x 232 píxeles',
             ])
             ->add('banner',ImageType::class,[
-                'label' => 'Baner',
+                'label' => 'Baner del curso',
                 'required' => !$options['edit'],
                 'help' => 'Dimensiones de 1180 x 350 píxeles',
             ])

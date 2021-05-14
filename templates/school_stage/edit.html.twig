@@ -4,11 +4,16 @@
 {% block title %}Editar{% endblock %}
 
 {% block body %}
-    <h1>Editar Etapa escolar</h1>
-
-    {{ include('school_stage/_form.html.twig', {'button_label': 'Editar'}) }}
-    <br>
-    <a href="{{ path('school_stage_index') }}"class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
-    <br>
-    {{ include('school_stage/_delete_form.html.twig') }}
+    <div class="card">
+        <div class="card-header">
+            <h1>Editar tema</h1>
+        </div>
+        <div class="card-body">
+            {{ include('school_stage/_form.html.twig', {'button_label': 'Editar'}) }}
+            <br>
+            <a href="{{ path('school_stage_index') }}"class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
+            <br>
+            {{ include('school_stage/_delete_form.html.twig') }}
+        </div>
+    </div>
 {% endblock %}

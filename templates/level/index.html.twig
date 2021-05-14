@@ -4,30 +4,40 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Niveles</h1>
 
-	<table class="table table-bordered table-hover">
-		<thead>
-			<tr>
-				<th>Nombre</th>
-				<th>Acciones</th>
-			</tr>
-		</thead>
-		<tbody>
-			{% for level in levels %}
-				<tr>
-					<td>{{ level.name }}</td>
-					<td>
-						<a href="{{ path('level_edit', {'id': level.id}) }}" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fa fa-edit"></i></a>
-					</td>
-				</tr>
-			{% else %}
-				<tr>
-					<td colspan="4">no records found</td>
-				</tr>
-			{% endfor %}
-		</tbody>
-	</table>
 
-	<a href="{{ path('level_new') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-plus"></i> Adicionar</a>
+	<div class="card">
+		<div class="card-header">
+			<h1>Tipo de cursos</h1>
+		</div>
+		<div class="card-body">
+			<table class="table table-bordered table-hover">
+				<thead>
+				<tr>
+					<th>Nombre</th>
+					<th>Acciones</th>
+				</tr>
+				</thead>
+				<tbody>
+				{% for level in levels %}
+					<tr>
+						<td>{{ level.name }}</td>
+						<td>
+							<a href="{{ path('level_edit', {'id': level.id}) }}" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fa fa-edit"></i></a>
+							<a href="{{ path('level_delete', {'id': level.id}) }}" class="btn btn-danger" ><i class="fa fa-trash"></i></a>
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="4">no records found</td>
+					</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+
+			<a href="{{ path('level_new') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-plus"></i> Adicionar</a>
+		</div>
+	</div>
+
+
 {% endblock %}

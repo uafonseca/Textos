@@ -4,11 +4,19 @@
 {% block title %}Edit Level{% endblock %}
 
 {% block body %}
-    <h1>Editar nivel</h1>
 
-    {{ include('level/_form.html.twig', {'button_label': 'Guardar'}) }}
-    <br />
-    <a href="{{ path('level_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
 
-    {{ include('level/_delete_form.html.twig') }}
+    <div class="card">
+        <div class="card-header">
+            <h1>Editar nivel</h1>
+        </div>
+        <div class="card-body">
+            {{ include('level/_form.html.twig', {'button_label': 'Guardar'}) }}
+            <br />
+            <a href="{{ path('level_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
+
+            {{ include('level/_delete_form.html.twig') }}
+        </div>
+    </div>
+
 {% endblock %}

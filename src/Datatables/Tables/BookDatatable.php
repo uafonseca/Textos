@@ -18,8 +18,8 @@ class BookDatatable extends AbstractDatatable
     /**
      * @return \Closure
      */
-	public function getLineFormatter()
-	{
+	public function getLineFormatter(): \Closure
+    {
 		return function ($row) {
 			$book = $this->getEntityManager()->getRepository('App:Book')->find($row['id']);
 			$html = '<ul>';
@@ -67,10 +67,10 @@ class BookDatatable extends AbstractDatatable
 				'title' => 'Categoría',
 			])
 			->add('stage.name', Column::class, [
-				'title' => 'Etapa escolar',
+				'title' => 'Grupo',
 			])
 			->add('level.name', Column::class, [
-				'title' => 'Nivel',
+				'title' => 'Tipo de curso',
 			])
 			->add('source', Column::class, [
 				'title' => 'Dirigido a',
@@ -81,7 +81,8 @@ class BookDatatable extends AbstractDatatable
 			->add(null, ActionColumn::class, [
 				'title' => $this->translator->trans('sg.datatables.actions.title'),
 				'actions' => [
-					TableActions::edit('book_edit')
+					TableActions::edit('book_edit'),
+					TableActions::delete('book_delete'),
 				],
 			])
 		;

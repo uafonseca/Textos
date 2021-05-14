@@ -313,8 +313,24 @@ class UnitController extends AbstractController
         ]);
     }
 
+    /**
+     * @return \App\Entity\Company
+     */
     public function getCompany():Company
     {
         return $this->getUser()->getCompany();
+    }
+
+    /**
+     * @param \App\Entity\Unit $unit
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @Route("/details/{uuid}", name="show_details", methods={"POST","GET"})
+     */
+    public function showDetails(Unit $unit): Response
+    {
+        return $this->render('unit/show_details.html.twig',[
+            'unit' => $unit
+        ]);
     }
 }

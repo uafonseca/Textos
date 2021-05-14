@@ -29,6 +29,13 @@
                 <div class="col-md-2">{{ form_row(formCompany.identity.colorInfo, {'help_attr': {'class': 'text-info'}}) }}</div>
             </div>
         </div>
+        <div class="col-md-12 col-sm-12 pt-3">
+            <div class="row">
+                <div class="col-md-4">{{ form_row(formCompany.socialNetworks.facebook) }}</div>
+                <div class="col-md-4">{{ form_row(formCompany.socialNetworks.twitter) }}</div>
+                <div class="col-md-4">{{ form_row(formCompany.socialNetworks.instagram) }}</div>
+            </div>
+        </div>
         <div class="col-md-6 pt-3">
             <button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-save"></i> Guardar</button>
         </div>

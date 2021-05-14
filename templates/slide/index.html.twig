@@ -5,12 +5,13 @@
 {% block body %}
     <div class="card">
         <div class="card-header">
-            <h1>Diapositivas</h1>
+            <h1>Banners publicitarios</h1>
         </div>
         <div class="card-body">
             <table class="table">
                 <thead>
                 <tr>
+                    <th>Miniatura</th>
                     <th>Título</th>
                     <th>Descripción</th>
                     <th>Acciones</th>
@@ -19,6 +20,7 @@
                 <tbody>
                 {% for slide in slides %}
                     <tr>
+                        <td style="max-width: 200px"><img class="img-thumbnail img-responsive" src="{{ vich_uploader_asset(slide.image,'imagenFile') }}" alt=""></td>
                         <td>{{ slide.title }}</td>
                         <td>{{ slide.shortDescription }}</td>
                         <td>

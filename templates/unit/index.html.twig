@@ -6,9 +6,9 @@
 {% block body %}
     {% set path = path('unit_new') %}
 
-    {{ card_macro.card_default('Listado de unidades',sg_datatables_render_html(datatable),'<a href="'~path~'" class="btn btn-primary">
+    {{ card_macro.card_default('Listado de unidades <a href="'~path~'" class="btn btn-primary pull-right">
 				<i class="fa fa-plus"></i>
-				Adicionar</a>') }}
+				Adicionar</a>',sg_datatables_render_html(datatable),'') }}
 {% endblock %}
 
 {% block javascripts %}

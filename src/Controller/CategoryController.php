@@ -11,6 +11,7 @@ use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -95,7 +96,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="category_show", methods={"GET"})
+     * @Route("/show/{uuid}", name="category_show", methods={"GET"})
      * @param Category $category
      * @return Response
      */
@@ -107,7 +108,7 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}/edit", name="category_edit", methods={"GET","POST","DELETE"})
+     * @Route("/{uuid}/edit", name="category_edit", methods={"GET","POST"})
      * @param Request $request
      * @param Category $category
      * @return Response
@@ -130,20 +131,23 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="category_delete", methods={"DELETE"})
+     * @Route("/{uuid}", name="category_delete", methods={"DELETE","GET"})
      * @param Request $request
      * @param Category $category
      * @return Response
      */
     public function delete(Request $request, Category $category): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$category->getId(), $request->request->get('_token'))) {
+
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();
-        }
 
-        return $this->redirectToRoute('category_index');
+
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos eliminados'
+        ]);
     }
 
     public function getCompany():Company

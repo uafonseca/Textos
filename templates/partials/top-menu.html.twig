@@ -41,15 +41,21 @@
             </li>
             {% if getCompany() is not null and getCompany().visible %}
                 <li class="nav-item">
-                    <a class="nav-link d-sm-inline-block" href="#">
+                    {% if getCompany().socialNetworks is not null and getCompany().socialNetworks.facebook is not null %}
+                    <a class="nav-link d-sm-inline-block" target="_blank" href="{{ getCompany().socialNetworks.facebook | external_link}}">
                         <span class="iconify" data-icon="feather:facebook" data-inline="false"></span>
                     </a>
-                    <a class="nav-link d-sm-inline-block" href="#">
+                    {% endif %}
+                    {% if getCompany().socialNetworks is not null and getCompany().socialNetworks.twitter is not null %}
+                    <a class="nav-link d-sm-inline-block" target="_blank" href="{{ getCompany().socialNetworks.twitter | external_link}}">
                         <span class="iconify" data-icon="feather:instagram" data-inline="false"></span>
                     </a>
-                    <a class="nav-link d-sm-inline-block" href="#">
+                    {% endif %}
+                    {% if getCompany().socialNetworks is not null and getCompany().socialNetworks.instagram is not null %}
+                    <a class="nav-link d-sm-inline-block" target="_blank" href="{{ getCompany().socialNetworks.instagram | external_link}}">
                         <span class="iconify" data-icon="feather:youtube" data-inline="false"></span>
                     </a>
+                    {% endif %}
                 </li>
             {% endif %}
             <li class="nav-item">

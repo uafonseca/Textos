@@ -65,7 +65,7 @@ class UnitDatatable extends AbstractDatatable{
 				'visible' => false,
 			])
             ->add('book.title', Column::class, [
-				'title' => 'Libro',
+				'title' => 'Curso',
 			])
             ->add('name', Column::class, [
 				'title' => 'Nombre de la unidad',

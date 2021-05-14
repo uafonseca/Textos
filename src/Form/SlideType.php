@@ -15,11 +15,11 @@ class SlideType extends AbstractType
         $builder
             ->add('title',null,[
                 'label' => 'Título',
-                'required' => true,
+                'required' => false,
             ])
             ->add('shortDescription',null,[
                 'label' => 'Descripción',
-                'required' => true
+                'required' => false
             ])
             ->add('image',ImageType::class,[
                 'label' => 'Diapositiva',

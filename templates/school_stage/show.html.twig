@@ -1,30 +1,29 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}SchoolStage{% endblock %}
 
 {% block body %}
-    <h1>SchoolStage</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ school_stage.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ school_stage.name }}</td>
-            </tr>
-            <tr>
-                <th>Uuid</th>
-                <td>{{ school_stage.uuid }}</td>
-            </tr>
-        </tbody>
-    </table>
+    <div class="card">
+        <div class="card-header">
+            <h1>Tema</h1>
+        </div>
+        <div class="card-body">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Nombre</th>
+                    <td>{{ school_stage.name }}</td>
+                </tr>
+                </tbody>
+            </table>
 
-    <a href="{{ path('school_stage_index') }}">back to list</a>
+            <a href="{{ path('school_stage_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"><i class="fa fa-arrow-left"></i> Regresar</a>
+            <br>
+            <a href="{{ path('school_stage_edit', {'id': school_stage.id}) }}" class="btn mt-3" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fa fa-edit"></i> Editar</a>
+            {{ include('school_stage/_delete_form.html.twig') }}
+        </div>
+    </div>
 
-    <a href="{{ path('school_stage_edit', {'id': school_stage.id}) }}">edit</a>
 
-    {{ include('school_stage/_delete_form.html.twig') }}
 {% endblock %}

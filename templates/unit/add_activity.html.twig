@@ -6,14 +6,6 @@
         .file-default-preview {
             height: 248px !important;
         }
-
-        .youtube {
-            background-image: url("{{ asset('build/images/icons/youtube.png') }}") left top;;
-            width: 24px;
-            height: 24px;
-            display: block;
-            float: left;
-        }
     </style>
 {% endblock %}
 {% block title %}New Unit
@@ -43,7 +35,7 @@
                                 </div>
                                 <div class="col-md-12 mb-3">
                                     <div class="btn-group">
-                                        <button type="button" class="btn dropdown-toggle"  style="background-color: {{ colors()['primary'] }}; color:white;"
+                                        <button type="button" class="btn dropdown-toggle mr-4"  style="background-color: {{ colors()['primary'] }}; color:white;"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                             <i class="fa fa-plus-circle"></i>
                                             Adicionar recurso
@@ -63,7 +55,7 @@
                                         </div>
                                     </div>
                                     <a href="{{ path('evaluation_new',{'unit': unit.id }) }}"
-                                       class="add-evaluation btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
+                                       class="add-evaluation btn btn-info mt-4">
                                         <i class="fa fa-school"></i>
                                         Adicionar evaluación
                                     </a>

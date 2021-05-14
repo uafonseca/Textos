@@ -4,9 +4,15 @@
 {% block title %}New Level{% endblock %}
 
 {% block body %}
-    <h1>Nuevo nivel</h1>
 
-    {{ include('level/_form.html.twig') }}
-        <br>
-    <a href="{{ path('level_index') }}" class="btn " style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
+    <div class="card">
+        <div class="card-header">
+            <h1>Nuevo tipo de curso</h1>
+        </div>
+        <div class="card-body">
+            {{ include('level/_form.html.twig') }}
+            <br>
+            <a href="{{ path('level_index') }}" class="btn " style="background-color: {{ colors()['secondary'] }}; color:white;"> <i class="fa fa-arrow-left"></i> Regresar</a>
+        </div>
+    </div>
 {% endblock %}

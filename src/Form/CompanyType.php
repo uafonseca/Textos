@@ -41,10 +41,14 @@ class CompanyType extends AbstractType
             ])
             ->add('logo',ImageType::class,[
 	            'label'=>'Logo',
-	            'required' => false
+	            'required' => false,
+                'help' => 'Dimensiones recomendadas 120 x 100'
             ])
             ->add('identity',IdentityType::class,[
                 'label' => 'Identidad'
+            ])
+            ->add('socialNetworks',SocialNetworkType::class,[
+                'label' => false
             ])
         ;
     }

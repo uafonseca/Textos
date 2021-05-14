@@ -7,9 +7,9 @@
 {% block body %}
 	{% set path = path('book_new') %}
 
-	{{ card_macro.card_default('Listado de textos',sg_datatables_render_html(datatable),'<a href="'~path~'" class="btn btn-primary">
+	{{ card_macro.card_default('Listado de cursos <a href="'~path~'" class="btn btn-primary pull-right">
 				<i class="fa fa-plus"></i>
-				Adicionar</a>') }}
+				Adicionar</a>',sg_datatables_render_html(datatable),'') }}
 {% endblock %}
 
 {% block javascripts %}

@@ -5,6 +5,7 @@
 {% block body %}
     <div class="card">
         <div class="card-body">
+            <img class="img-thumbnail img-responsive" src="{{ vich_uploader_asset(slide.image,'imagenFile') }}" alt="">
             {{ include('slide/_form.html.twig', {'button_label': 'Actualizar'}) }}
             <br>
             <a href="{{ path('slide_index') }}" class="btn " style="background-color: {{ colors()['secondary'] }}; color:white;"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
