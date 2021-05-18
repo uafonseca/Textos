@@ -6,7 +6,9 @@ use App\Entity\Company;
 use App\Entity\SchoolStage;
 use App\Form\SchoolStageType;
 use App\Repository\SchoolStageRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,7 +57,7 @@ class SchoolStageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="school_stage_show", methods={"GET"})
+     * @Route("show/{id}", name="school_stage_show", methods={"GET"})
      * @param SchoolStage $schoolStage
      * @return Response
      */
@@ -90,20 +92,29 @@ class SchoolStageController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="school_stage_delete", methods={"DELETE"})
+     * @Route("remove/{id}", name="school_stage_delete")
      * @param Request $request
      * @param SchoolStage $schoolStage
      * @return Response
      */
     public function delete(Request $request, SchoolStage $schoolStage): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$schoolStage->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($schoolStage);
             $entityManager->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => "El elemento que desea eliminar se encuantra en uso.",
+            ]);
         }
 
-        return $this->redirectToRoute('school_stage_index');
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos eliminados',
+            'no_reload' => true
+        ]);
     }
     
     public function getCompany():Company

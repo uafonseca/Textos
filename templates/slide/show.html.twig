@@ -24,7 +24,7 @@
 
             <a href="{{ path('slide_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;"><i class="fa fa-arrow-alt-circle-left"></i> Regresar</a>
 
-            <a href="{{ path('slide_edit', {'id': slide.id}) }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-edit"></i> Editar</a>
+            <a href="{{ path('slide_edit', {'id': slide.id}) }}" class="btn"  style="background-color: {{ colors()['info'] }}; color:white;"><i class="fa fa-edit"></i> Editar</a>
 
             {{ include('slide/_delete_form.html.twig') }}
         </div>

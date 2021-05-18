@@ -10,6 +10,7 @@ use App\Form\ActivityFormType;
 use App\Form\UnitType;
 use App\Repository\ActivityRepository;
 use App\Repository\UnitRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
@@ -146,20 +147,28 @@ class UnitController extends AbstractController
     }
 
     /**
-     * @Route("/{uuid}", name="unit_delete", methods={"DELETE"})
+     * @Route("delete/{uuid}", name="unit_delete")
      * @param Request $request
      * @param Unit $unit
      * @return Response
      */
-    public function delete(Request $request, Unit $unit): Response
+    public function delete(Request $request, Unit $unit): JsonResponse
     {
-        if ($this->isCsrfTokenValid('delete'.$unit->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($unit);
             $entityManager->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => "El elemento que desea eliminar se encuantra en uso.",
+            ]);
         }
-
-        return $this->redirectToRoute('unit_index');
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos eliminados',
+        ]);
+        
     }
 
 

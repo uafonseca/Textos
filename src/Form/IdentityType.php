@@ -21,12 +21,12 @@ class IdentityType extends AbstractType
             ->add('colorSecondary', ColorType::class, [
                 'label' => 'Color secundario',
                 'help' => 'Recomendación: #6c757d',
-                'attr' => ['data-tippy-content' => 'Se utiliza en los botones de acción secundaria']
+                'attr' => ['data-tippy-content' => 'Modifica el color del boton regresar']
             ])
             ->add('colorSuccess', ColorType::class, [
                 'label' => 'Color de éxito',
                 'help' => 'Recomendación: #28a745',
-                'attr' => ['data-tippy-content' => 'Se utiliza para mostrar información de éxito']
+                'attr' => ['data-tippy-content' => 'Modifica el color de los botones ver, banner y detalles']
             ])
             ->add('colorWarning', ColorType::class, [
                 'label' => 'Color de alerta',
@@ -36,7 +36,7 @@ class IdentityType extends AbstractType
             ->add('colorInfo', ColorType::class, [
                 'label' => 'Color de información',
                 'help' => 'Recomendación: #17a2b8',
-                'attr' => ['data-tippy-content' => 'Se utiliza para mostrar información de estandar']
+                'attr' => ['data-tippy-content' => 'Modifica iconos de editar y ver publicaciones']
             ]);
     }
 

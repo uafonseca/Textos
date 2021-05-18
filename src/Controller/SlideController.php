@@ -49,7 +49,7 @@ class SlideController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="slide_show", methods={"GET"})
+     * @Route("show/{id}", name="slide_show", methods={"GET"})
      */
     public function show(Slide $slide): Response
     {
@@ -79,7 +79,7 @@ class SlideController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="slide_delete", methods={"DELETE"})
+     * @Route("delete/{uuid}", name="slide_delete")
      */
     public function delete(Request $request, Slide $slide): Response
     {

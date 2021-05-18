@@ -22,7 +22,7 @@
                         <td>{{ school_stage.name }}</td>
                         <td>
                             <a href="{{ path('school_stage_edit', {'id': school_stage.id}) }}" class="btn" style="background-color: {{ colors()['info'] }}; color:white;"><i class="fa fa-edit"></i></a>
-                            <a href="{{ path('school_stage_delete', {'id': school_stage.id}) }}" class="btn btn-danger" ><i class="fa fa-trash"></i></a>
+                            <a href="{{ path('school_stage_delete', {'id': school_stage.id}) }}" class="btn btn-danger confirm action-delete" ><i class="fa fa-trash"></i></a>
                         </td>
                     </tr>
                 {% else %}
