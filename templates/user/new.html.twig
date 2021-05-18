@@ -1,11 +1,62 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
 
-{% block title %}New User{% endblock %}
+{% block title %}New User
+{% endblock %}
 
 {% block body %}
-    <h1>Create new User</h1>
 
-    {{ include('user/_form.html.twig') }}
+	<div class="card">
+		<div class="card-header">
+			<h1>Registrar usuario</h1>
+		</div>
+		<div class="card-body">
+			{{ form_start(form) }}
 
-    <a href="{{ path('user_index') }}">back to list</a>
+			<div class="row">
+				<div class="col-md-4 col-sm-6">
+					{{ form_row(form.email) }}
+				</div>
+				<div class="col-md-4 col-sm-6">
+					{{ form_row(form.name) }}
+				</div>
+				<div class="col-md-4 col-sm-6">
+					{{ form_row(form.firstName) }}
+				</div>
+
+				<div class="col-md-4 col-sm-6">
+					{{ form_row(form.username) }}
+				</div>
+				<div class="col-md-4 col-sm-6">
+					{{ form_row(form.password) }}
+				</div>
+				<div class="col-md-4 col-sm-6">
+					{{ form_row(form.rolesObject) }}
+				</div>
+
+				<div class="col-md-12 mt-5">
+					<button class="btn " style="background-color: {{ colors()['primary'] }}; color:white;">
+						<i class="fa fa-plus-circle"></i>
+						Guardar</button>
+			
+                    <a href="{{ path('user_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;">
+								<i class="fa fa-arrow-left"></i>
+								Regresar
+							</a>
+				</div>
+			</div>
+
+			{{ form_end(form) }}
+
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(function () {
+app.plugins.initSelect2('#user_creation_rolesObject');
+})
+	</script>
 {% endblock %}

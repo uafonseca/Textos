@@ -89,6 +89,21 @@
 					</ul>
 				</li>
 
+				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
+					<a href="#users" data-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="users"></i>
+						<span class="align-middle">Usuarios internos</span>
+					</a>
+					<ul id="users" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('user_new') }}">Adicionar usuario</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('user_index') }}">Listado de usuarios</a>
+						</li>
+					</ul>
+				</li>
+
 			{% endif %}
 
 

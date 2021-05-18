@@ -6,6 +6,7 @@ use App\Datatables\Tables\UserDatatable;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Form\User1Type;
+use App\Form\UserCreationType;
 use App\Form\UserPromoteType;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
@@ -85,13 +86,15 @@ class UserController extends AbstractController
     public function new(Request $request): Response
     {
         $user = new User();
-        $form = $this->createForm(User1Type::class, $user);
+        $form = $this->createForm(UserCreationType::class, $user);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
+
+            //TODO dispatch user creation
 
             return $this->redirectToRoute('user_index');
         }

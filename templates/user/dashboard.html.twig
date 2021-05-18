@@ -32,7 +32,7 @@
                             <div class="col-md-12">
                                 {% set code = item.getCodeByUser(app.user) %}
                                 <p><strong>Activación</strong></p>
-                                {% if code.endDate < 'now'|date %}
+                                {% if code.endDate > 'now'|date %}
                                     <p class="text-muted">Inicio: {{ code.starDate|date('d/m/Y') }} |
                                         Fin: {{ code.endDate|date('d/m/Y') }}</p>
                                     <a href="{{ path('book_show', { 'uuid': item.uuid }) }}"
