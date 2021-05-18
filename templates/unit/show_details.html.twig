@@ -12,7 +12,7 @@
 				{{ unit.name }}
 				<a href="{{ path('book_show', {'uuid': unit.book.uuid}) }}" class="btn btn-warning btn-sm pull-right ml-3 mt-1">Ver unidades</a>
 				{% if unit.evaluations|length > 0 %}
-					<a href="{{ path('evaluation_show', {'uuid': unit.evaluations[0].uuid}) }}"  style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
+					<a href="{{ path('evaluation_show', {'uuid': unit.evaluations[0].uuid}) }}" style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
 						<i class="fa fa-graduation-cap"></i>
 						Evaluación
 					</a>
@@ -22,44 +22,52 @@
 		<div class="card-body">
 			<section>
 				<div class="row">
-					<div class="col-md-12">
-						<iframe style="width: 100%; min-height: 300px;" src="{{ vich_uploader_asset(unit.pDF,'pdfFile') }}"></iframe>
+					<div class="col-md-8">
+						<iframe style="width: 100%; min-height: 900px;" src="{{ vich_uploader_asset(unit.pDF,'pdfFile') }}"></iframe>
 					</div>
-				</div>
-				<div class="row  mt-4">
-					<div class="col-md-12">
+					<div class="col-md-4">
 						<div class="card">
 							<div class="card-header">Recusros</div>
 							<div class="card-body">
 								{% for activity in unit.activities %}
-									{% if activity.file or activity.type == 'Youtube' or activity.type == 'Genially' %}
-{#										<h6 class="">#}
-											<a href="{{ path('show_resource',{id:activity.id}) }}"
-											   class="show-details mr-5">
-												{% if activity.type == 'Youtube' %}
-													<img src="{{ asset('build/images/icons/youtube.png') }}"
-														 width="24" height="24" style="margin-left: 0" alt="">
-												{% elseif activity.type == 'Audio' %}
-													<img src="{{ asset('build/images/icons/audio.png') }}"
-														 width="24" height="24" style="margin-left: 0" alt="">
-												{% elseif activity.type == 'Genially' %}
-													<img src="{{ asset('build/images/icons/url.png') }}" width="24"
-														 height="24" style="margin-left: 0" alt="">
-												{% elseif activity.type == 'Video' %}
-													<img src="{{ asset('build/images/icons/video.png') }}"
-														 width="24" height="24" style="margin-left: 0" alt="">
-												{% endif %}
-												{{ activity.name }}
-												Pág.
-												{{ activity.page }}
-											</a>
-{#										</h6>#}
-									{% endif %}
+									<div id="" class="card-body text-center" style="height:280px!important">
+										{% if activity.type == 'Youtube' %}
+											{{ youtube_embed(activity.url)|raw }}
+										{% elseif activity.type == 'Video' %}
+											<video controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></video>
+										{% elseif activity.type == 'Audio' %}
+											<audio controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></audio>
+										{% elseif activity.type == 'Genially' %}
+											<iframe style='width:100%; height:100%' src="{{ activity.url }}"></iframe>
+										{% elseif activity.type == 'Archivo' %}
+											<a class="btn btn-primary" download href="vich_uploader_asset(activity.file, 'imagenFile')}}"><i class="fa fa-download"></i> {{activity.name}}</a>
+										{% endif %}
+									</div>
+
+
+									{# {% if activity.file or activity.type == 'Youtube' or activity.type == 'Genially' %}
+										<a href="{{ path('show_resource',{id:activity.id}) }}" class="show-details mr-5">
+											{% if activity.type == 'Youtube' %}
+												<img src="{{ asset('build/images/icons/youtube.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+											{% elseif activity.type == 'Audio' %}
+												<img src="{{ asset('build/images/icons/audio.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+											{% elseif activity.type == 'Genially' %}
+												<img src="{{ asset('build/images/icons/url.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+											{% elseif activity.type == 'Video' %}
+												<img src="{{ asset('build/images/icons/video.png') }}" width="24" height="24" style="margin-left: 0" alt="">
+											{% endif %}
+											{{ activity.name }}
+											Pág.
+											{{ activity.page }}
+										</a>
+										{#										</h6>#}
+									{# {% endif %} #} 
 								{% endfor %}
 							</div>
 						</div>
 					</div>
 				</div>
+				<div class="row  mt-4"></div>
 			</section>
 		</div>
 	</div>
@@ -68,11 +76,11 @@
 {% block javascripts %}
 	<script type="text/javascript">
 		$(function () {
-			$('.show-details').on('click', function (event) {
-				event.preventDefault();
-				const scope = $(this);
-				app.dialogs.create({url: scope.attr('href')})
-			})
-		})
+$('.show-details').on('click', function (event) {
+event.preventDefault();
+const scope = $(this);
+app.dialogs.create({url: scope.attr('href')})
+})
+})
 	</script>
 {% endblock %}

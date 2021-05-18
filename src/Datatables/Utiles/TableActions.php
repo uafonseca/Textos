@@ -24,7 +24,7 @@
             return [
                 'extend' => 'print',
                 'text' => 'Imprimir',
-                'class_name' => 'fa fa-print m-1 btn btn-primary',
+                'class_name' => 'btn-primary fa fa-print mr-5 my-4 btn',
                 'button_options' => [
                     'exportOptions' => [
                         'columns' => $columns,

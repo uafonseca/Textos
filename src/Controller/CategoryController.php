@@ -7,6 +7,7 @@ use App\Entity\Category;
 use App\Entity\Company;
 use App\Form\CategoryType;
 use App\Repository\CategoryRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
@@ -138,15 +139,21 @@ class CategoryController extends AbstractController
      */
     public function delete(Request $request, Category $category): Response
     {
-
+        try {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($category);
             $entityManager->flush();
-
+        } catch (ForeignKeyConstraintViolationException $e) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => "El elemento que desea eliminar se encuantra en uso.",
+            ]);
+        }
 
         return new JsonResponse([
             'type' => 'success',
-            'message' => 'Datos eliminados'
+            'message' => 'Datos eliminados',
+            'no_reload' => true
         ]);
     }
 

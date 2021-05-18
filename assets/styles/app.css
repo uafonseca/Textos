@@ -327,3 +327,6 @@ h3.loading{
     width: auto!important;
     height: auto!important;
 }
+.dt-buttons{
+    float: right;
+}

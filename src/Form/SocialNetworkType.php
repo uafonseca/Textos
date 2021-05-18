@@ -15,15 +15,18 @@ class SocialNetworkType extends AbstractType
         $builder
             ->add('facebook',TextType::class,[
                 'label' => 'Facebook',
-                'attr' => ['placeholder' =>'https://www.facebook.com/[username]']
+                'attr' => ['placeholder' =>'https://www.facebook.com/[username]'],
+                'required' => false
             ])
             ->add('twitter',TextType::class,[
                 'label' => 'Twitter',
-                'attr' => ['placeholder' =>'https://www.twitter.com/[username]']
+                'attr' => ['placeholder' =>'https://www.twitter.com/[username]'],
+                'required' => false
             ])
             ->add('instagram',TextType::class,[
                 'label' => 'Instagram',
-                'attr' => ['placeholder' =>'https://www.instagram.com/[username]']
+                'attr' => ['placeholder' =>'https://www.instagram.com/[username]'],
+                'required' => false
             ])
         ;
     }

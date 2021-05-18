@@ -12,6 +12,7 @@ class SlideType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        
         $builder
             ->add('title',null,[
                 'label' => 'Título',
@@ -23,7 +24,7 @@ class SlideType extends AbstractType
             ])
             ->add('image',ImageType::class,[
                 'label' => 'Diapositiva',
-                'required' => true
+                'required' => !$options['edit']
             ])
         ;
     }
@@ -33,5 +34,6 @@ class SlideType extends AbstractType
         $resolver->setDefaults([
             'data_class' => Slide::class,
         ]);
+        $resolver->setRequired('edit');
     }
 }

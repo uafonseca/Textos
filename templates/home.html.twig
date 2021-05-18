@@ -28,8 +28,8 @@
 								<div class="carousel-item {% if loop.index == 1 %}active{% endif %}">
 									<img class="d-block w-100" style="max-height: 400px" src="{{ vich_uploader_asset(slide.image,'imagenFile') }}" alt="" />
 									<div class="carousel-caption d-none d-md-block">
-										<h5>{{ slide.title ? slide.title : '' }}</h5>
-										<p>{{ slide.shortDescription ? slide.shortDescription : '' }}</p>
+										{# <h5>{{ slide.title ? slide.title : '' }}</h5>
+										<p>{{ slide.shortDescription ? slide.shortDescription : '' }}</p> #}
 									</div>
 								</div>
 							{% endfor %}
