@@ -44,7 +44,9 @@ $(function () {
             if (response.type === "success") {
               toastr.success(response.message);
 
-              if (response.no_reload  === 'undefined') {
+              if (response.no_reload === true) {
+                location.reload();
+              }else {
                 if (response["datatableId"]) {
                   $(document).trigger("cortex.delete.complete", {
                     table: scope.data("table"),
@@ -56,9 +58,7 @@ $(function () {
                     $(table).DataTable().ajax.reload(null, false);
                   }
                 }
-              } else {
-                location.reload();
-              }
+              }  
 
               $(document).trigger("confirm-response.complete", {
                 response: response,

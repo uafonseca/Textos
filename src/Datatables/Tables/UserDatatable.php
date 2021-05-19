@@ -74,7 +74,8 @@ class UserDatatable extends AbstractDatatable
 							'style' => "color:  green;",
 							'data-tippy-content' => 'Promover'
 						]
-					]
+						],
+						TableActions::delete('user_delete')
 				],
 			]);
 	}

@@ -45,6 +45,45 @@ class TwigSwiftMailer
         $this->params = $params;
     }
 
-  
+      /**
+     * @param array               $context
+     * @param string              $to
+     * @param Address|string|null $from
+     */
+    public function sendMessage(string $templateName, $context, $to, $from = null)
+    {
+        if (!$from) {
+            $from = new Address(
+                $this->params->get('address'),
+                $this->params->get('sender_name')
+            );
+        }
+
+        $template = $this->twig->load($templateName);
+        $subject = $template->renderBlock('subject', $context);
+
+        $html = $this->twig->render($templateName, $context);
+        $htmlBody = CssInliner::fromHtml($html)->inlineCss()->render();
+
+        $message = (new Email())
+            ->subject($subject)
+            ->from($from)
+            ->to($to)
+            ->html($htmlBody);
+
+        $this->mailer->send($message);
+    }
+
+    
+    public function sendWelcomeEmailMessage(User $user)
+    {
+        $template = 'mail/user_data.html.twig';
+
+        $context = [
+            'user' => $user,
+        ];
+
+        $this->sendMessage($template, $context, $user->getEmail());
+    }
    
 }

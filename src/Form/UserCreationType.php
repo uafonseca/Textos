@@ -41,7 +41,7 @@ class UserCreationType extends AbstractType
             ->add ('username', TextType::class, [
 		        'label' => 'Usuario'
 	        ])
-            ->add ('password', PasswordType::class, [
+            ->add ('plainPassword', PasswordType::class, [
 		        'label' => 'Contraseña'
 	        ])
             ->add('rolesObject', null,[

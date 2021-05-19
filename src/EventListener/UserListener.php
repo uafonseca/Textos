@@ -2,7 +2,10 @@
 
 namespace App\EventListener;
 
+use App\AppEvents;
 use App\Entity\User;
+use App\Event\UserEvent;
+use App\Mailer\TwigSwiftMailer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Event\LifecycleEventArgs;
@@ -14,12 +17,15 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 class UserListener implements EventSubscriberInterface
 {
     private TokenStorageInterface $tokenStorage;
+    private TwigSwiftMailer $mailer;
 
 
     public function __construct(
-        TokenStorageInterface $tokenStorage
+        TokenStorageInterface $tokenStorage,
+        TwigSwiftMailer $mailer
     ) {
         $this->tokenStorage = $tokenStorage;
+        $this->mailer = $mailer;
     }
 
     /**
@@ -28,8 +34,7 @@ class UserListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            'prePersist',
-            'preUpdate',
+            AppEvents::SEND_DATA_REQUEST => 'onSendDataRequest',
         ];
     }
 
@@ -88,5 +93,10 @@ class UserListener implements EventSubscriberInterface
 
             return;
         }
+    }
+
+
+    public function onSendDataRequest(UserEvent $userEvent){
+        $this->mailer->sendWelcomeEmailMessage($userEvent->getUser());
     }
 }

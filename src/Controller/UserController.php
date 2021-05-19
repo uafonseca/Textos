@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
+use App\AppEvents;
 use App\Datatables\Tables\UserDatatable;
 use App\Entity\Role;
 use App\Entity\User;
+use App\Event\UserEvent;
 use App\Form\User1Type;
 use App\Form\UserCreationType;
 use App\Form\UserPromoteType;
 use App\Repository\BookRepository;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Exception;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
@@ -19,6 +22,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * @Route("/user")
@@ -35,6 +41,9 @@ class UserController extends AbstractController
     /** @var BookRepository */
     private $bookRepository;
 
+    private EventDispatcherInterface $dispatcher;
+    private UserPasswordEncoderInterface $passwordEncoder;
+
     /**
      * UserController constructor.
      *
@@ -42,11 +51,18 @@ class UserController extends AbstractController
      * @param DatatableResponse $datatableResponse
      * @param BookRepository $bookRepository
      */
-    public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse, BookRepository $bookRepository)
-    {
+    public function __construct(
+        DatatableFactory $datatableFactory,
+        DatatableResponse $datatableResponse,
+        BookRepository $bookRepository,
+        EventDispatcherInterface $eventDispatcher,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
         $this->bookRepository = $bookRepository;
+        $this->dispatcher = $eventDispatcher;
+        $this->passwordEncoder = $passwordEncoder;
     }
 
 
@@ -90,11 +106,14 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $user->setPassword($user->getPlainPassword());
+            $password = $this->passwordEncoder->encodePassword ($user, $user->getPassword());
+			$user->setPassword ($password);
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            //TODO dispatch user creation
+            $this->dispatcher->dispatch(new UserEvent($user), AppEvents::SEND_DATA_REQUEST);
 
             return $this->redirectToRoute('user_index');
         }
@@ -161,7 +180,7 @@ class UserController extends AbstractController
 
 
     /**
-     * @Route("/{id}", name="user_delete", methods={"DELETE"})
+     * @Route("remove/{uuid}", name="user_delete")
      * IsGranted("ROLE_SUPER_ADMIN")
      * @param Request $request
      * @param User $user
@@ -169,13 +188,21 @@ class UserController extends AbstractController
      */
     public function delete(Request $request, User $user): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $user->getId(), $request->request->get('_token'))) {
+        try {
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->remove($user);
             $entityManager->flush();
+        } catch (ForeignKeyConstraintViolationException $e) {
+            return new JsonResponse([
+                'type' => 'error',
+                'message' => "El elemento que desea eliminar se encuantra en uso.",
+            ]);
         }
 
-        return $this->redirectToRoute('user_index');
+        return new JsonResponse([
+            'type' => 'success',
+            'message' => 'Datos eliminados',
+        ]);
     }
 
     /**
@@ -211,7 +238,7 @@ class UserController extends AbstractController
     public function userDashboard(): Response
     {
         $loggedUser = $this->getUser();
-        
+
         return $this->render('user/dashboard.html.twig', [
             'books' => $this->bookRepository->getBooks($loggedUser)
         ]);

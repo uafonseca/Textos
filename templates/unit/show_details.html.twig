@@ -29,40 +29,78 @@
 						<div class="card">
 							<div class="card-header">Recusros</div>
 							<div class="card-body">
+								<h3>Videos de youtube</h3>
 								{% for activity in unit.activities %}
-									<div id="" class="card-body text-center" style="height:280px!important">
-										{% if activity.type == 'Youtube' %}
-											{{ youtube_embed(activity.url)|raw }}
-										{% elseif activity.type == 'Video' %}
-											<video controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></video>
-										{% elseif activity.type == 'Audio' %}
-											<audio controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></audio>
-										{% elseif activity.type == 'Genially' %}
-											<iframe style='width:100%; height:100%' src="{{ activity.url }}"></iframe>
-										{% elseif activity.type == 'Archivo' %}
-											<a class="btn btn-primary" download href="vich_uploader_asset(activity.file, 'imagenFile')}}"><i class="fa fa-download"></i> {{activity.name}}</a>
-										{% endif %}
-									</div>
-
-
-									{# {% if activity.file or activity.type == 'Youtube' or activity.type == 'Genially' %}
-										<a href="{{ path('show_resource',{id:activity.id}) }}" class="show-details mr-5">
-											{% if activity.type == 'Youtube' %}
-												<img src="{{ asset('build/images/icons/youtube.png') }}" width="24" height="24" style="margin-left: 0" alt="">
-											{% elseif activity.type == 'Audio' %}
-												<img src="{{ asset('build/images/icons/audio.png') }}" width="24" height="24" style="margin-left: 0" alt="">
-											{% elseif activity.type == 'Genially' %}
-												<img src="{{ asset('build/images/icons/url.png') }}" width="24" height="24" style="margin-left: 0" alt="">
-											{% elseif activity.type == 'Video' %}
-												<img src="{{ asset('build/images/icons/video.png') }}" width="24" height="24" style="margin-left: 0" alt="">
-											{% endif %}
-											{{ activity.name }}
-											Pág.
-											{{ activity.page }}
-										</a>
-										{#										</h6>#}
-									{# {% endif %} #} 
+									{% if activity.type == 'Youtube' %}
+										<div class="card">
+									
+											<div class="card-body">
+												{{ youtube_embed(activity.url)|raw }}
+											</div>
+											<div class="card-footer">
+												{{activity.name ~ ' Pag. '~activity.page}}
+											</div>
+										</div>
+									{% endif %}
 								{% endfor %}
+								<h3>Videos</h3>
+								{% for activity in unit.activities %}
+									{% if activity.type == 'Video' %}
+										<div class="card">
+						
+											<div class="card-body">
+												<video controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></video>
+											</div>
+											<div class="card-footer">
+												{{activity.name ~ ' Pag. '~activity.page}}
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+								<h3>Audios</h3>
+								{% for activity in unit.activities %}
+									{% if activity.type == 'Audio' %}
+										<div class="card">
+									
+											<div class="card-body">
+												<audio controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></audio>
+											</div>
+											<div class="card-footer">
+												{{activity.name ~ ' Pag. '~activity.page}}
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+								<h3>Archivos</h3>
+								{% for activity in unit.activities %}
+									{% if activity.type == 'Archivo' %}
+										<div class="card">
+											<div class="card-body">
+												<a class="btn btn-primary" download href="vich_uploader_asset(activity.file, 'imagenFile')}}">
+												<i class="fa fa-download"></i>
+												{{activity.name}}</a>
+											</div>
+												<div class="card-footer">
+												{{activity.name ~ ' Pag. '~activity.page}}
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
+								<h3>Enlaces</h3>
+								{% for activity in unit.activities %}
+									{% if activity.type == 'Genially' %}
+										<div class="card">
+											<div class="card-body">
+												<a href="{{activity.url}}" download >{{activity.url}}</a>
+											</div>
+											<div class="card-footer">
+												{{activity.name ~ ' Pag. '~activity.page}}
+											</div>
+
+										</div>
+									{% endif %}
+								{% endfor %}
+
 							</div>
 						</div>
 					</div>
@@ -72,7 +110,6 @@
 		</div>
 	</div>
 {% endblock %}
-
 {% block javascripts %}
 	<script type="text/javascript">
 		$(function () {

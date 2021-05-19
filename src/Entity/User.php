@@ -54,6 +54,13 @@ class User implements UserInterface, Serializable
      */
     protected $username;
 
+        /**
+     *
+     * @ORM\Column(type="string", length=180, nullable=true)
+     */
+    protected $plainPassword;
+
+
     /**
      *
      * @ORM\Column(type="string", length=180)
@@ -511,4 +518,14 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
+
+    public function getPlainPassword() {
+		return $this->plainPassword;
+	}
+
+	public function setPlainPassword( $plainPassword) {
+		$this->plainPassword = $plainPassword;
+	}
+   
+    
 }
