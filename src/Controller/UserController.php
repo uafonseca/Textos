@@ -42,6 +42,7 @@ class UserController extends AbstractController
     private $bookRepository;
 
     private EventDispatcherInterface $dispatcher;
+
     private UserPasswordEncoderInterface $passwordEncoder;
 
     /**

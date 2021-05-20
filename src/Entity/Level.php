@@ -37,10 +37,17 @@ class Level
      */
     private $books;
 
+    /**
+     * @ORM\OneToMany(targetEntity=UserGroup::class, mappedBy="modality")
+     */
+    private $userGroups;
+    
+
     public function __construct ()
     {
         $this->uuid = Uuid::v1 ();
         $this->books = new ArrayCollection();
+        $this->userGroups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -91,5 +98,35 @@ class Level
     }
     public function __toString(){
         return $this->name;
+    }
+
+    /**
+     * @return Collection|UserGroup[]
+     */
+    public function getUserGroups(): Collection
+    {
+        return $this->userGroups;
+    }
+
+    public function addUserGroup(UserGroup $userGroup): self
+    {
+        if (!$this->userGroups->contains($userGroup)) {
+            $this->userGroups[] = $userGroup;
+            $userGroup->setModality($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserGroup(UserGroup $userGroup): self
+    {
+        if ($this->userGroups->removeElement($userGroup)) {
+            // set the owning side to null (unless already changed)
+            if ($userGroup->getModality() === $this) {
+                $userGroup->setModality(null);
+            }
+        }
+
+        return $this;
     }
 }

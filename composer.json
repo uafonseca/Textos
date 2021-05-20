@@ -18,6 +18,7 @@
         "ninsuo/symfony-collection": "^2.1",
         "pelago/emogrifier": "^5.0",
         "phpdocumentor/reflection-docblock": "^5.2",
+        "phpoffice/phpspreadsheet": "^1.17",
         "sensio/framework-extra-bundle": "^5.1",
         "sg/datatablesbundle": "^1.2",
         "symfony/asset": "5.2.*",

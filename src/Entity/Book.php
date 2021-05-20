@@ -90,6 +90,21 @@ class Book
      */
     private $metadata;
 
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $initialDate;
+
+    /**
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $modality;
+
+    /**
+     * @ORM\OneToMany(targetEntity=UserGroup::class, mappedBy="course")
+     */
+    private $userGroups;
+
 
     public function __construct()
     {
@@ -97,6 +112,7 @@ class Book
         $this->source = [];
         $this->units = new ArrayCollection();
         $this->codes = new ArrayCollection();
+        $this->userGroups = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -303,5 +319,59 @@ class Book
         }
 
         return null;
+    }
+
+    public function getInitialDate(): ?\DateTimeInterface
+    {
+        return $this->initialDate;
+    }
+
+    public function setInitialDate(?\DateTimeInterface $initialDate): self
+    {
+        $this->initialDate = $initialDate;
+
+        return $this;
+    }
+
+    public function getModality(): ?string
+    {
+        return $this->modality;
+    }
+
+    public function setModality(string $modality): self
+    {
+        $this->modality = $modality;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|UserGroup[]
+     */
+    public function getUserGroups(): Collection
+    {
+        return $this->userGroups;
+    }
+
+    public function addUserGroup(UserGroup $userGroup): self
+    {
+        if (!$this->userGroups->contains($userGroup)) {
+            $this->userGroups[] = $userGroup;
+            $userGroup->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserGroup(UserGroup $userGroup): self
+    {
+        if ($this->userGroups->removeElement($userGroup)) {
+            // set the owning side to null (unless already changed)
+            if ($userGroup->getCourse() === $this) {
+                $userGroup->setCourse(null);
+            }
+        }
+
+        return $this;
     }
 }

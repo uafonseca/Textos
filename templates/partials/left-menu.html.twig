@@ -104,6 +104,22 @@
 					</ul>
 				</li>
 
+
+				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
+					<a href="#cusos" data-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="check-circle"></i>
+						<span class="align-middle">Cursos</span>
+					</a>
+					<ul id="cusos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('user_group_create') }}">Registro de invitados</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('user_group') }}">Listado de cursos</a>
+						</li>
+					</ul>
+				</li>
+
 			{% endif %}
 
 

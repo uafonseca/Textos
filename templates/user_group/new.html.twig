@@ -1,0 +1,61 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}New User Group
+{% endblock %}
+
+{% block body %}
+
+	<div class="card">
+		<div class="card-header">
+			<h1>Nuevo grupo de usuarios</h1>
+		</div>
+		<div class="card-body">
+			{{ form_start(form) }}
+			<div class="row">
+				<div class="col-md-3">{{ form_row(form.groupName) }}</div>
+				<div class="col-md-3">{{ form_row(form.startDate) }}</div>
+				<div class="col-md-3">{{ form_row(form.modality) }}</div>
+				<div class="col-md-3">{{ form_row(form.course) }}</div>
+				<div class="col-md-3">{{ form_row(form.file) }}</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-3">
+					<button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white">
+						<i class="fa fa-save"></i> 
+						Guardar
+					</button>
+				</div>
+			</div>
+			{{ form_end(form) }}
+
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+	<script>
+		$(function () {
+			app.plugins.initSelect2('#user_group_course');
+			app.plugins.initSelect2('#user_group_modality')
+			 $("#user_group_startDate").datepicker({
+				format: "DD/MM/YYYY",
+				changeYear: true,
+				yearRange: "-0:+100",
+			});
+			 $('#user_group_file_imagenFile_file').fileinput({
+				showCaption: true,
+				showPreview: false,
+				showUploadedThumbs: true,
+				showUpload: false,
+				showCancel: false,
+				showRemove: true,
+				allowedFileExtensions: ['xlsx', 'xlsm'],
+				browseLabel: '&nbsp;Importar',
+				browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+			});
+		})
+	</script>
+{% endblock %}

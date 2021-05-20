@@ -36,6 +36,14 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->_em->flush();
     }
 
+    public function findOneByCedula(string $cedula){
+        return $this->createQueryBuilder('user')
+            ->where('user.cedula = :val')
+            ->setParameter('val', $cedula)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
 
     
 

@@ -81,7 +81,7 @@ class Estudiante
 
     public function setBrithday( $brithday): self
     {
-        $this->brithday = new \DateTime($brithday);
+        $this->brithday = new \DateTime($brithday); 
 
         return $this;
     }

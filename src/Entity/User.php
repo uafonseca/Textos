@@ -130,6 +130,16 @@ class User implements UserInterface, Serializable
      */
     private $city;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=UserGroup::class, mappedBy="users", cascade={"persist"})
+     */
+    private $userGroups;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $cedula;
+
 
     /**
      * User constructor.
@@ -139,6 +149,7 @@ class User implements UserInterface, Serializable
         $this->rolesObject = new ArrayCollection();
         $this->codes = new ArrayCollection();
         $this->answers = new ArrayCollection();
+        $this->userGroups = new ArrayCollection();
     }
 
 
@@ -524,8 +535,47 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-		$this->plainPassword = $plainPassword;
-	}
+                        		$this->plainPassword = $plainPassword;
+                        	}
+
+    /**
+     * @return Collection|UserGroup[]
+     */
+    public function getUserGroups(): Collection
+    {
+        return $this->userGroups;
+    }
+
+    public function addUserGroup(UserGroup $userGroup): self
+    {
+        if (!$this->userGroups->contains($userGroup)) {
+            $this->userGroups[] = $userGroup;
+            $userGroup->addUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeUserGroup(UserGroup $userGroup): self
+    {
+        if ($this->userGroups->removeElement($userGroup)) {
+            $userGroup->removeUser($this);
+        }
+
+        return $this;
+    }
+
+    public function getCedula(): ?string
+    {
+        return $this->cedula;
+    }
+
+    public function setCedula(string $cedula): self
+    {
+        $this->cedula = $cedula;
+
+        return $this;
+    }
    
     
 }

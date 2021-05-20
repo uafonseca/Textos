@@ -36,7 +36,7 @@ class Code
     private $starDate;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable = true)
      */
     private $endDate;
 
@@ -69,7 +69,7 @@ class Code
     private $salesData;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable = true)
      */
     private $token;
 
