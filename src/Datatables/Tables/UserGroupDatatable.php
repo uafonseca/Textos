@@ -86,6 +86,13 @@ class UserGroupDatatable extends AbstractDatatable
             ->add('modality.name', Column::class, [
 				'title' => 'Modalidad',
 			])
+            ->add(null, ActionColumn::class, [
+                'title' => $this->translator->trans('sg.datatables.actions.title'),
+                'actions' => [
+                    TableActions::edit('user_group_edit'),
+                    TableActions::delete('users_group_remove')
+                ],
+            ])
         ;
     }
 

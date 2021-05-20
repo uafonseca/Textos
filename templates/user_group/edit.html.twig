@@ -17,16 +17,18 @@
 				<div class="col-md-3">{{ form_row(form.startDate) }}</div>
 				<div class="col-md-3">{{ form_row(form.modality) }}</div>
 				<div class="col-md-3">{{ form_row(form.course) }}</div>
-				<div class="col-md-3">{{ form_row(form.file) }}</div>
 			</div>
 
-			<div class="row">
+			<div class="row mt-4">
 				<div class="col-md-3">
 					<button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white">
 						<i class="fa fa-save"></i> 
 						Guardar
 					</button>
 				</div>
+			</div>
+			<div class="d-none">
+				{{form_rest(form) }}
 			</div>
 			{{ form_end(form) }}
 
@@ -41,20 +43,9 @@
 			app.plugins.initSelect2('#user_group_course');
 			app.plugins.initSelect2('#user_group_modality')
 			 $("#user_group_startDate").datepicker({
-				dateFormat: "d-m-yy",
+				format: "DD/MM/YYYY",
 				changeYear: true,
 				yearRange: "-0:+100",
-			});
-			 $('#user_group_file_imagenFile_file').fileinput({
-				showCaption: true,
-				showPreview: false,
-				showUploadedThumbs: true,
-				showUpload: false,
-				showCancel: false,
-				showRemove: true,
-				allowedFileExtensions: ['xlsx', 'xlsm'],
-				browseLabel: '&nbsp;Importar',
-				browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
 			});
 		})
 	</script>

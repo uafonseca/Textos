@@ -2,12 +2,15 @@
 
 namespace App\Services;
 
+use App\AppEvents;
 use App\Entity\Code;
 use App\Entity\Company;
 use App\Entity\Profile;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Entity\UserGroup;
+use App\Event\UserEvent;
+use App\Event\UserGroupEvent;
 use App\Mailer\TwigSwiftMailer;
 use Doctrine\ORM\EntityManagerInterface;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -21,6 +24,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class ExcelManagerService
 {
@@ -52,13 +56,14 @@ class ExcelManagerService
 
     private $profile;
 
-    private TwigSwiftMailer $mailer;
+    private EventDispatcherInterface $dispatcher;
 
     private $params;
 
     private UserPasswordEncoderInterface $passwordEncoder;
 
     private UserGroup $group;
+    
 
     /**
      * @param UserManagerInterface $userManager
@@ -71,7 +76,7 @@ class ExcelManagerService
     public function __construct(
 
         EntityManagerInterface $entityManager,
-        TwigSwiftMailer $mailer,
+        EventDispatcherInterface $eventDispatcher,
         UserPasswordEncoderInterface $passwordEncoder,
         ParameterBagInterface $params
     ) {
@@ -80,7 +85,7 @@ class ExcelManagerService
         $this->passwordEncoder = $passwordEncoder;
         $this->emails = [];
         $this->messages = [];
-        $this->mailer = $mailer;
+        $this->dispatcher = $eventDispatcher;
         $this->params = $params;
     }
 
@@ -91,7 +96,7 @@ class ExcelManagerService
      *
      * @throws Exception
      */
-    public function initializeArchivo($archivo, $company, $sendMail, $role, UserGroup $group): self
+    public function initializeArchivo($archivo, $company, $sendMail = true, $role, UserGroup $group): self
     {
         $inputFileType = IOFactory::identify($archivo);
 
@@ -145,7 +150,7 @@ class ExcelManagerService
             $user = null;
 
             if (!$this->checkIfNull($cedula, $indice, true, 'Cédula')) {
-                $user = $this->checkIfAlreadyExist($cedula, $indice, 'cédula', 'findOneByCedula');
+                $user = $this->checkIfAlreadyExist($cedula,$email, $indice, 'cédula', 'findOneByCedula');
             }
 
             $users[$cedula] = $this->convertRowToUserObjectinDatosPersonales($row, $user);
@@ -179,9 +184,9 @@ class ExcelManagerService
      * @param string $message_attribute
      * @param string $find_attribute
      */
-    public function checkIfAlreadyExist($value, $indice, $message_attribute = '', $find_attribute = '')
+    public function checkIfAlreadyExist($value,$email, $indice, $message_attribute = '', $find_attribute = '')
     {
-        $user = $this->entityManager->getRepository(User::class)->$find_attribute($value);
+        $user = $this->entityManager->getRepository(User::class)->$find_attribute($value,$email);
         if (null !== $user) {
             return $user;
         }
@@ -251,10 +256,7 @@ class ExcelManagerService
         $user->setPassword($user->getCedula());
         $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
-
-        if ('true' == $this->sendMail) {
-            $this->mailer->sendWelcomeEmailMessage($user);
-        }
+        $this->dispatcher->dispatch(new UserGroupEvent($this->group, $user), AppEvents::SEND_DATA_COURSE);
         $this->entityManager->persist($user);
     }
 

@@ -4,57 +4,68 @@
 {% block title %}Dashboard
 {% endblock %}
 {% block stylesheets %}
-    <style type="text/css">
-        .img-resized {
-            height: 200px;
-        }
-    </style>
+	<style type="text/css">
+		.img-resized {
+			height: 200px;
+		}
+	</style>
 {% endblock %}
 
 {% block body %}
-    <h3 class="text-center">
-        <strong>Mis textos</strong>
-    </h3>
-    <div class="row">
-        {% for item in books %}
-            <div class="col-12 col-md-4 col-lg-3">
-                <div class="card">
-                    <img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}"
-                         alt="Unsplash">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <h3 class="mb-3">
-                                    <strong>{{ item.title }}</strong>
-                                </h3>
+	<h3 class="text-center">
+		<strong>Mis textos</strong>
+	</h3>
+	<div class="row">
+		{% for item in books %}
+			<div class="col-12 col-md-4 col-lg-3">
+				<div class="card">
+					<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="mb-3">
+									<strong>{{ item.title }}</strong>
+								</h3>
 
-                            </div>
-                            <div class="col-md-12">
-                                {% set code = item.getCodeByUser(app.user) %}
-                                <p><strong>Activación</strong></p>
-                                {% if code.endDate > 'now'|date %}
-                                    <p class="text-muted">Inicio: {{ code.starDate|date('d/m/Y') }} |
-                                        Fin: {{ code.endDate|date('d/m/Y') }}</p>
-                                    <a href="{{ path('book_show', { 'uuid': item.uuid }) }}"
-                                       class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
-                                        Ingresar
-                                    </a>
-                                {% else %}
-                                    <a href="#" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;"><i class="fa fa-exclamation-triangle"></i> Activación vencida</a>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        {% else %}
-            <div class="col-12 text-center">
-                <h1 class="text-center">UPS!</h1>
-                <p class="text-center">No tienes ningún texto activado</p>
-                <a href="{{ path('app_home_page') }}" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
-                    Ver catálogo</a>
-            </div>
-        {% endfor %}
-    </div>
+							</div>
+							<div class="col-md-12">
+								{% set code = item.getCodeByUser(app.user) %}
+								<p>
+									<strong>Activación</strong>
+								</p>
+								{% if code.endDate is null %}
+									<p class="text-muted">Inicio:
+										{{ code.starDate|date('d/m/Y') }}</p>
+									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
+										Ingresar
+									</a>
+								{% elseif code.endDate > 'now'|date %}
+									<p class="text-muted">Inicio:
+										{{ code.starDate|date('d/m/Y') }}
+										|
+										                                        Fin:
+										{{ code.endDate|date('d/m/Y') }}</p>
+									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
+										Ingresar
+									</a>
+								{%else %}
+									<a href="#" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;">
+										<i class="fa fa-exclamation-triangle"></i>
+										Activación vencida</a>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		{% else %}
+			<div class="col-12 text-center">
+				<h1 class="text-center">UPS!</h1>
+				<p class="text-center">No tienes ningún texto activado</p>
+				<a href="{{ path('app_home_page') }}" class="btn" style="background-color: {{ colors()['primary'] }}; color:white;">
+					Ver catálogo</a>
+			</div>
+		{% endfor %}
+	</div>
 
 {% endblock %}

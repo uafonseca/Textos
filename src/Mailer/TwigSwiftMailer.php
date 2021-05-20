@@ -3,6 +3,7 @@
 namespace App\Mailer;
 
 use App\Entity\User;
+use App\Entity\UserGroup;
 use Pelago\Emogrifier\CssInliner;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Mailer\MailerInterface;
@@ -81,6 +82,18 @@ class TwigSwiftMailer
 
         $context = [
             'user' => $user,
+        ];
+
+        $this->sendMessage($template, $context, $user->getEmail());
+    }
+
+    public function sendCourseEmailMessage(User $user, UserGroup $group)
+    {
+        $template = 'mail/course_welcome.html.twig';
+
+        $context = [
+            'user' => $user,
+            'group' => $group
         ];
 
         $this->sendMessage($template, $context, $user->getEmail());

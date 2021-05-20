@@ -5,6 +5,7 @@ namespace App\EventListener;
 use App\AppEvents;
 use App\Entity\User;
 use App\Event\UserEvent;
+use App\Event\UserGroupEvent;
 use App\Mailer\TwigSwiftMailer;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -14,7 +15,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserListener implements EventSubscriberInterface
+class UserGroupListener implements EventSubscriberInterface
 {
     private TokenStorageInterface $tokenStorage;
     private TwigSwiftMailer $mailer;
@@ -34,12 +35,12 @@ class UserListener implements EventSubscriberInterface
     public static function getSubscribedEvents(): array
     {
         return [
-            AppEvents::SEND_DATA_REQUEST => 'onSendDataRequest',
+            AppEvents::SEND_DATA_COURSE => 'onSendDataCurse',
         ];
     }
 
 
-    public function onSendDataRequest(UserEvent $userEvent){
-        $this->mailer->sendWelcomeEmailMessage($userEvent->getUser());
+    public function onSendDataCurse(UserGroupEvent $userGroupEvent){
+        $this->mailer->sendCourseEmailMessage($userGroupEvent->getUser(), $userGroupEvent->getGroup());
     }
 }

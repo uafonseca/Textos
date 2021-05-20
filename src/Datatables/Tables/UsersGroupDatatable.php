@@ -27,7 +27,8 @@ use Twig\Environment;
  * Class UserDatatable
  * @package App\Datatables\Tables
  */
-class UsersGroupDatatable extends AbstractDatatable{
+class UsersGroupDatatable extends AbstractDatatable
+{
 
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $securityToken, $translator, RouterInterface $router, EntityManagerInterface $em, Environment $twig)
     {
@@ -35,7 +36,8 @@ class UsersGroupDatatable extends AbstractDatatable{
         $this->uniqueId = uniqid();
     }
 
-    public function buildDatatable(array $options = []){
+    public function buildDatatable(array $options = [])
+    {
         $this->ajax->set([
             'url' => $options['url'],
             'method' => 'POST',
@@ -54,30 +56,38 @@ class UsersGroupDatatable extends AbstractDatatable{
         ]);
 
         $this->columnBuilder
-			->add('uuid', Column::class, [
-				'title' => 'uuid',
-				'visible' => false,
-			])
+            ->add('uuid', Column::class, [
+                'title' => 'uuid',
+                'visible' => false,
+            ])
             ->add('name', Column::class, [
-				'title' => 'Nombre',
-			])
+                'title' => 'Nombre',
+            ])
             ->add('firstName', Column::class, [
-				'title' => 'Apellidos',
-			])
+                'title' => 'Apellidos',
+            ])
             ->add('cedula', Column::class, [
-				'title' => 'Cédula',
-			])
+                'title' => 'Cédula',
+            ])
             ->add('email', Column::class, [
-				'title' => 'Email',
-			])
+                'title' => 'Email',
+            ])
+            ->add(null, ActionColumn::class, [
+                'title' => $this->translator->trans('sg.datatables.actions.title'),
+                'actions' => [
+                    TableActions::delete('user_delete')
+                ],
+            ])
             ;
     }
 
-    public function getEntity(){
+    public function getEntity()
+    {
         return User::class;
     }
 
-    public function getName(){
+    public function getName()
+    {
         return 'users-datatable';
     }
 }

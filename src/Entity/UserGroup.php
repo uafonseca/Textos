@@ -42,7 +42,7 @@ class UserGroup
      */
     private $startDate;
 
-  
+
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="userGroups")
@@ -89,14 +89,18 @@ class UserGroup
         return $this;
     }
 
-    public function getStartDate(): ?\DateTimeInterface
+    public function getStartDate()
     {
+    
         return $this->startDate;
     }
 
-    public function setStartDate( $startDate): self
+    public function setStartDate($startDate): self
     {
-        $this->startDate = new \DateTime($startDate); 
+        if ($startDate instanceof \DateTimeInterface)
+            $this->startDate = $startDate;
+        else
+            $this->startDate = new \DateTime($startDate);
         return $this;
     }
 

@@ -100,9 +100,12 @@ class Code
         return $this->starDate;
     }
 
-    public function setStarDate(\DateTimeInterface $starDate): self
+    public function setStarDate( $starDate): self
     {
-        $this->starDate = $starDate;
+        if( $starDate instanceof \DateTimeInterface)
+            $this->starDate = $starDate;
+        else 
+            $this->starDate = new \DateTime($starDate);
 
         return $this;
     }
@@ -112,7 +115,7 @@ class Code
         return $this->endDate;
     }
 
-    public function setEndDate(\DateTimeInterface $endDate): self
+    public function setEndDate($endDate): self
     {
         $this->endDate = $endDate;
 
