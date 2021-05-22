@@ -4,11 +4,17 @@
 {% block title %}Unit index{% endblock %}
 
 {% block body %}
-    {% set path = path('unit_new') %}
-
-    {{ card_macro.card_default('Listado de unidades <a href="'~path~'" class="btn btn-primary pull-right">
+	<div class="card">
+		<div class="card-header">
+			Listado de unidades
+			<a href="{{path('unit_new')}}" class="btn btn-primary pull-right">
 				<i class="fa fa-plus"></i>
-				Adicionar</a>',sg_datatables_render_html(datatable),'') }}
+				Adicionar</a>
+		</div>
+		<div class="card-body">
+			{{sg_datatables_render_html(datatable)}}
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}

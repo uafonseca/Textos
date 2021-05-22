@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Company;
 use App\Entity\Terms;
+use App\Entity\User;
 use App\Form\CompanyType;
 use App\Form\TermsType;
 use App\Repository\BookRepository;
@@ -30,8 +31,20 @@ class AdminController extends AbstractController
      */
 	public function index(BookRepository $bookRepository): Response
 	{
+		$em = $this->getDoctrine()->getManager();
+		$books = $bookRepository->findAll();
+
+		$users = $em->getRepository(User::class)->findAll();
+
+		$booksActived = $bookRepository->booksActived();
+
+		$booksExpired = $bookRepository->booksExpired();
+
 		return $this->render('admin/index.html.twig', [
-			'books' => $bookRepository->findAll(),
+			'books' => count($books),
+			'users' => count($users),
+			'booksActived' => count($booksActived),
+			'booksExpired' => count($booksExpired),
 		]);
 	}
 

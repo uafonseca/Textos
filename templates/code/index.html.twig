@@ -1,6 +1,7 @@
 {% extends 'layout.html.twig' %}
 
 {% block body %}
+
 	<div class="card">
 		<div class="card-header">
 			<a href="{{ path('code_create') }}" class="add-new btn " style="background-color: {{ colors()['primary'] }}; color:white;">
@@ -10,26 +11,26 @@
 		<div class="card-body">
 			<ul class="nav nav-tabs" id="myTab" role="tablist">
 				<li class="nav-item">
-					<a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+					<a class="nav-link {% if page is null or page == 'active' %} active {% endif %}" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
 						Disponibles
 					</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" id="code-tab" data-toggle="tab" href="#code-users" role="tab" aria-controls="profile" aria-selected="false">
+					<a class="nav-link {% if page == 'expired' %} active {% endif %}" id="code-tab" data-toggle="tab" href="#code-users" role="tab" aria-controls="profile" aria-selected="false">
 						En uso
 					</a>
 				</li>
 
 			</ul>
 			<div class="tab-content" id="myTabContent">
-				<div class="tab-pane fade show active p-1" id="home" role="tabpanel" aria-labelledby="home-tab">
+				<div class="tab-pane fade  {% if page is null or page == 'active' %}show active {% endif %} p-1" id="home" role="tabpanel" aria-labelledby="home-tab">
 					<div class="card">
 						<div class="card-body">
 							{{ sg_datatables_render_html(datatable) }}
 						</div>
 					</div>
 				</div>
-				<div class="tab-pane fade p-1" id="code-users" role="tabpanel" aria-labelledby="profile-tab">
+				<div class="tab-pane fade  {% if page == 'expired' %}show active {% endif %} p-1" id="code-users" role="tabpanel" aria-labelledby="profile-tab">
 					<div class="card">
 						<div id="tab-2" class="card-body">
 
@@ -55,6 +56,9 @@
 					}
 				})
 			})
+			{% if page == 'expired' %} 
+				$('#code-tab').trigger('click');
+			 {% endif %}
         })
 	</script>
 {% endblock %}

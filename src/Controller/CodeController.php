@@ -90,8 +90,10 @@ class CodeController extends AbstractController
 			return $this->datatableResponse->getResponse();
 		}
 
+
 		return $this->render('code/index.html.twig', [
-			'datatable' => $datatable
+			'datatable' => $datatable,
+			'page' => $request->query->get('page')
 		]);
 	}
 

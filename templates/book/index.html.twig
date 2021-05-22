@@ -5,11 +5,17 @@
 {% endblock %}
 
 {% block body %}
-	{% set path = path('book_new') %}
-
-	{{ card_macro.card_default('Listado de cursos <a href="'~path~'" class="btn btn-primary pull-right">
+	<div class="card">
+		<div class="card-header">
+			Listado de cursos
+			<a href="{{path('book_new')}}" class="btn btn-primary pull-right">
 				<i class="fa fa-plus"></i>
-				Adicionar</a>',sg_datatables_render_html(datatable),'') }}
+				Adicionar</a>
+		</div>
+		<div class="card-body">
+			{{sg_datatables_render_html(datatable)}}
+		</div>
+	</div>
 {% endblock %}
 
 {% block javascripts %}

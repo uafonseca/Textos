@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use App\Entity\User;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -83,6 +84,24 @@ class BookRepository extends ServiceEntityRepository
             ->orderBy('book.createdAt','DESC')
             ->getQuery()
             ->getResult();
+    }
+
+
+    public function booksActived(){
+        return $this->createQueryBuilder('book')
+        ->join('book.codes','codes')
+        ->where('codes.endDate >= :now')
+        ->setParameter('now', new DateTime())
+        ->getQuery()
+        ->getResult();
+    }
+    public function booksExpired(){
+        return $this->createQueryBuilder('book')
+        ->join('book.codes','codes')
+        ->where('codes.endDate < :now')
+        ->setParameter('now', new DateTime())
+        ->getQuery()
+        ->getResult();
     }
 
     // /**
