@@ -60,9 +60,13 @@
 								{% for activity in unit.activities %}
 									{% if activity.type == 'Audio' %}
 										<div class="card">
-
 											<div class="card-body">
-												<audio controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile') }}"></audio>
+												<audio controls>
+												 <source src="{{ vich_uploader_asset(activity.file, 'imagenFile') }}"
+												  type="{{activity.file.mimeType}}" />
+												  Your browser does not support the
+            										code>audio</code> element.
+													</audio>
 											</div>
 											<div class="card-footer">
 												{{activity.name ~ ' Pag. '~activity.page}}
