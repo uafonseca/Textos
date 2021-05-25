@@ -41,8 +41,9 @@ app.books = {
             }
           })
       },
-      initInput: () => {
-        app.plugins.initializeEmpresaFileInput('#book_portada_imagenFile_file', image_url_defaultPreview);
+    initInput: () => {
+        if( 'undefined' != typeof image_url_defaultPreview )
+          app.plugins.initializeEmpresaFileInput('#book_portada_imagenFile_file', image_url_defaultPreview);
       }
   },
 };

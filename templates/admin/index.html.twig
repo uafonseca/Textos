@@ -75,4 +75,15 @@
 		</div>
 		<!-- ./col -->
 	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<canvas id="chart1"></canvas>
+		</div>
+		<div class="col-md-6">
+		</div>
+	</div>
+{% endblock %}
+
+{% block javascripts %}
+	{{ encore_entry_script_tags('admin.chart')}}
 {% endblock %}

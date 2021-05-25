@@ -30,6 +30,7 @@ Encore
     .addEntry("unit.show", "./assets/unit/layout.js")
     .addEntry("questions.index", "./assets/questions/index.js")
     .addEntry("answers.index", "./assets/answers/index.js")
+    .addEntry("admin.chart", "./assets/admin/chart.js")
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge("./assets/controllers.json")

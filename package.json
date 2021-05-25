@@ -22,6 +22,7 @@
         "bootstrap-editable": "^1.0.1",
         "bootstrap-fileinput": "^5.1.4",
         "buffer": "^6.0.3",
+        "chart.js": "^3.3.0",
         "ckeditor": "^4.5.6",
         "copy-webpack-plugin": "^7.0.0",
         "country-state-city": "^2.0.0",

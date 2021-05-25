@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Book;
 use App\Entity\Company;
 use App\Entity\Terms;
 use App\Entity\User;
@@ -11,6 +12,7 @@ use App\Repository\BookRepository;
 use App\Repository\CompanyRepository;
 use App\Repository\TermsRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -84,7 +86,7 @@ class AdminController extends AbstractController
 	 *
 	 * @return Response
 	 *
-	 *@Route("/system", name="system_company")
+	 * @Route("/system", name="system_company")
 	 */
 	public function systemConfig(Request $request, CompanyRepository $repository): Response
     {
@@ -106,6 +108,32 @@ class AdminController extends AbstractController
 		return $this->render ('system/systemConfig.html.twig',[
 			'formCompany' => $form->createView (),
 			'company' => $company
+		]);
+	}
+
+
+	/**
+	 * @Route("/chart1Datasets", name="chart1Datasets", options={"expose" = true})
+	 */
+	public function chart1Datasets(){
+		$courses = [];
+		$students = [];
+
+		$em = $this->getDoctrine ()->getManager ();
+		$list = $em->getRepository(Book::class)->findAll ();
+
+		foreach ($list as $course){
+			$courses[] = $course->getTitle ();
+			$couter = 0;
+			foreach ($course->getUserGroups() as $group){
+				$couter += $group->getUsers()->count();
+			}
+			$students[] = $couter;
+		}
+
+		return new JsonResponse([
+			'courses' => $courses,
+			'students' => $students
 		]);
 	}
 }
