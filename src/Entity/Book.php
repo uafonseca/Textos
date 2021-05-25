@@ -6,6 +6,7 @@ use App\Repository\BookRepository;
 use App\Traits\CompanyEntityTrait;
 use App\Traits\TimestampableTrait;
 use App\Traits\UuidEntityTrait;
+use App\Traits\BlameableEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -22,6 +23,7 @@ class Book
     use UuidEntityTrait;
     use TimestampableTrait;
     use CompanyEntityTrait;
+    use BlameableEntityTrait;
 
     /**
      * @ORM\Id

@@ -18,6 +18,6 @@ class AnswerRewriteException extends \Exception {
      */
     public function __construct()
     {
-        parent::__construct("No allow more answers",300);
+        parent::__construct("Not allowed more answers",300);
     }
 }
