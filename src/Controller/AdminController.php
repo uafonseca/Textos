@@ -120,14 +120,15 @@ class AdminController extends AbstractController
 		$students = [];
 
 		$em = $this->getDoctrine ()->getManager ();
-		$list = $em->getRepository(Book::class)->findAll ();
+		$list = $em->getRepository(Book::class)->findAll();
 
 		foreach ($list as $course){
-			$courses[] = $course->getTitle ();
 			$couter = 0;
 			foreach ($course->getUserGroups() as $group){
 				$couter += $group->getUsers()->count();
 			}
+
+			$courses[]  = $course->getTitle ();
 			$students[] = $couter;
 		}
 

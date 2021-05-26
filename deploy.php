@@ -43,7 +43,7 @@ host('connect')
     ->hostname('23.239.26.54')
     ->set('branch', 'main')
     ->user('deploy')
-    ->set('deploy_path', '/var/www/html/connect');
+    ->set('deploy_path', '/mnt/baboon/www/connect');
 
 
 set('release_name', function () {
