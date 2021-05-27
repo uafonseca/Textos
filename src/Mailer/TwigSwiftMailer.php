@@ -139,7 +139,12 @@ class TwigSwiftMailer
             'mail' => $mail
         ];
 
-        $this->sendMessage($template, $context, $user->getEmail(), null, $mail->getAttached());
+        $from = new Address(
+            $mail->getSender()->getEmail(),
+            'Comunicaciones de grupo'
+        );
+
+        $this->sendMessage($template, $context, $user->getEmail(), $from, $mail->getAttached());
     }
    
 }

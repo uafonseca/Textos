@@ -5,6 +5,7 @@ namespace App\Services;
 use App\AppEvents;
 use App\Entity\Code;
 use App\Entity\Company;
+use App\Entity\Estudiante;
 use App\Entity\Profile;
 use App\Entity\Role;
 use App\Entity\User;
@@ -254,6 +255,7 @@ class ExcelManagerService
 
         $user->setPlainPassword($user->getCedula());
         $user->setPassword($user->getCedula());
+        $user->setStudent( new Estudiante() );
         $password = $this->passwordEncoder->encodePassword($user, $user->getPassword());
         $user->setPassword($password);
         $this->dispatcher->dispatch(new UserGroupEvent($this->group, $user), AppEvents::SEND_DATA_COURSE);

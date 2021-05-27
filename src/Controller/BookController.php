@@ -3,12 +3,14 @@
 namespace App\Controller;
 
 use App\Datatables\Tables\BookDatatable;
+use App\Datatables\Tables\UserCourseDatatable;
 use App\Entity\Activity;
 use App\Entity\Book;
 use App\Entity\Category;
 use App\Entity\Company;
 use App\Entity\Level;
 use App\Entity\SchoolStage;
+use App\Entity\User;
 use App\Form\BookType;
 use App\Repository\BookRepository;
 use App\Repository\CodeRepository;
@@ -91,6 +93,46 @@ class BookController extends AbstractController
             'datatable' => $datatable
         ]);
     }
+
+
+     /**
+     * @Route("/listUser/{uuid}", name="book_user", methods={"GET", "POST"})
+     *
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function listByUser(Request $request, User $user): Response
+    {
+
+        $datatable = $this->datatableFactory->create(UserCourseDatatable::class);
+
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('book_user',[
+                'uuid' => $user->getUuid()
+            ])
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            // ->join('code.book', 'book')
+            ->where('code.user =:user')
+            ->setParameter('user', $user)
+            // ->groupBy('book.id')
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+
+        return $this->render('book/datatable.html.twig', [
+            'datatable' => $datatable
+        ]);
+    }
+
 
     /**
      * @Route("/list", name="book_list", methods={"GET","POST"}, options={"expose" = true})

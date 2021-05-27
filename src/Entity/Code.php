@@ -17,7 +17,7 @@ class Code
     use UuidEntityTrait;
     use TimestampableTrait;
     use CompanyEntityTrait;
-    
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -73,9 +73,9 @@ class Code
      */
     private $token;
 
-    public function __construct ()
+    public function __construct()
     {
-        $this->uuid = Uuid::v1 ();
+        $this->uuid = Uuid::v1();
     }
 
     public function getId(): ?int
@@ -100,11 +100,11 @@ class Code
         return $this->starDate;
     }
 
-    public function setStarDate( $starDate): self
+    public function setStarDate($starDate): self
     {
-        if( $starDate instanceof \DateTimeInterface)
+        if ($starDate instanceof \DateTimeInterface)
             $this->starDate = $starDate;
-        else 
+        else
             $this->starDate = new \DateTime($starDate);
 
         return $this;
@@ -192,5 +192,13 @@ class Code
         $this->token = $token;
 
         return $this;
+    }
+
+    public function getStatus(): string
+    {
+        if ($this->getUnlimited())
+            return '<span class="badge badge-success">Activo</span>';
+
+        return $this->endDate > new \DateTime('now') ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-warning">Vencido</span>';
     }
 }

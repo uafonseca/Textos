@@ -5,7 +5,7 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     address: 'proyecto.cortex@gmail.com'
-    sender_name: 'Sistem'
+    sender_name: 'Connect plus'
 
 services:
     # default configuration for services in *this* file

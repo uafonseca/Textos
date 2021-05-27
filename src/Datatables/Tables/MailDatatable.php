@@ -90,6 +90,8 @@ class MailDatatable extends AbstractDatatable
             ->add('createdAt', DateTimeColumn::class, [
                 'title' => 'Fecha',
                 'visible' => true,
+                'width' => '15%',
+                'date_format' => 'D-MM-yy hh:mm' 
             ])
             ->add('subject', Column::class, [
                 'title' => 'Asunto',

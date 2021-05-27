@@ -95,6 +95,41 @@ class UserController extends AbstractController
     }
 
     /**
+     * @Route("/control", name="user_control", methods={"GET","POST"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @param Request $request
+     * @return Response
+     * @throws Exception
+     */
+    public function userControl(Request $request): Response
+    {
+        $userDatatable = $this->datatableFactory->create(UserDatatable::class);
+
+        $userDatatable->buildDatatable([
+            'url' => $this->generateUrl('user_control'),
+            'details' => true,
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($userDatatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->join('user.student', 'estudiante')
+            ->where('estudiante is not NULL')
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+
+        return $this->render('user/index.html.twig', [
+            'datatable' => $userDatatable
+        ]);
+    }
+
+
+
+    /**
      * @Route("/new", name="user_new", methods={"GET","POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      * @param Request $request
