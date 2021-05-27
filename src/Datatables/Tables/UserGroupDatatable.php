@@ -90,7 +90,9 @@ class UserGroupDatatable extends AbstractDatatable
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => [
                     TableActions::edit('user_group_edit'),
-                    TableActions::delete('users_group_remove')
+                    TableActions::delete('users_group_remove'),
+                    TableActions::mailSend('mail_new'),
+                    
                 ],
             ])
         ;

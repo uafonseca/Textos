@@ -101,4 +101,13 @@
 		{
 			return self::default($route, 'fa-print text-warning', 'action-export', 'Exportar');
 		}
+
+		/**
+		 * @param $route
+		 * @return array
+		 */
+		public static function mailSend($route)
+		{
+			return self::default($route, 'fa-paper-plane text-info', 'sendMail', 'Enviar mensaje');
+		}
 	}

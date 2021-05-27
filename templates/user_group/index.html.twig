@@ -25,5 +25,17 @@
                 path: scope.attr('data-path')
             });
         });
+        $(document).on('click', '.sendMail', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this);
+
+            app.dialogs.create({
+                url: scope.attr('href'),
+                columnClass: 'col-md-6',
+                containerFluid : true
+            })
+        });
     </script>
 {% endblock %}

@@ -1,0 +1,47 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+<div class="card">
+	<div class="card-header">
+		<h4>Nuevo mensaje</h4>
+	</div>
+	<div class="card-body" style="padding-top: 0!important">
+		<div class="row">
+			<div class="col-md-12">
+				<h5 class="">Destinatarios</h5>
+				<div class="text-left">
+					{% for item in group.users %}
+						<span class="badge badge-info">{{item.email}}</span>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		{{ include('mail/_form.html.twig') }}
+	</div>
+</div>
+<script type="text/javascript">
+	$(function () {
+        app.plugins.initSelect2('#mail_recipients')
+        $('#mail_attached_imagenFile_file').fileinput({
+				showCaption: true,
+				showPreview: false,
+				showUploadedThumbs: true,
+				showUpload: false,
+				showCancel: false,
+				showRemove: true,
+				browseLabel: '&nbsp;Importar',
+				browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+			});
+        $('form[name="mail"]').on('submit', function (event) {
+            const form = $(this)
+            app.forms.submit(form, function (response) {
+                if (response.type === 'success') {
+                    $.alert({
+                        title: 'Información',
+                        content: response.message,
+                    });
+                    app.dialogs.close(form);
+                } else {
+                }
+            }, event);
+         })
+    })
+</script>

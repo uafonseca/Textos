@@ -140,6 +140,16 @@ class User implements UserInterface, Serializable
      */
     private $cedula;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Mail::class, mappedBy="sender", orphanRemoval=true)
+     */
+    private $mailsSend;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Mail::class, mappedBy="recipients")
+     */
+    private $mailsReceived;
+
 
     /**
      * User constructor.
@@ -150,6 +160,8 @@ class User implements UserInterface, Serializable
         $this->codes = new ArrayCollection();
         $this->answers = new ArrayCollection();
         $this->userGroups = new ArrayCollection();
+        $this->mailsSend = new ArrayCollection();
+        $this->mailsReceived = new ArrayCollection();
     }
 
 
@@ -535,8 +547,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-                        		$this->plainPassword = $plainPassword;
-                        	}
+                                                      		$this->plainPassword = $plainPassword;
+                                                      	}
 
     /**
      * @return Collection|UserGroup[]
@@ -573,6 +585,63 @@ class User implements UserInterface, Serializable
     public function setCedula(string $cedula): self
     {
         $this->cedula = $cedula;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mail[]
+     */
+    public function getMailsSend(): Collection
+    {
+        return $this->mailsSend;
+    }
+
+    public function addMailsSend(Mail $mailsSend): self
+    {
+        if (!$this->mailsSend->contains($mailsSend)) {
+            $this->mailsSend[] = $mailsSend;
+            $mailsSend->setSender($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailsSend(Mail $mailsSend): self
+    {
+        if ($this->mailsSend->removeElement($mailsSend)) {
+            // set the owning side to null (unless already changed)
+            if ($mailsSend->getSender() === $this) {
+                $mailsSend->setSender(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Mail[]
+     */
+    public function getMailsReceived(): Collection
+    {
+        return $this->mailsReceived;
+    }
+
+    public function addMailsReceived(Mail $mailsReceived): self
+    {
+        if (!$this->mailsReceived->contains($mailsReceived)) {
+            $this->mailsReceived[] = $mailsReceived;
+            $mailsReceived->addRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailsReceived(Mail $mailsReceived): self
+    {
+        if ($this->mailsReceived->removeElement($mailsReceived)) {
+            $mailsReceived->removeRecipient($this);
+        }
 
         return $this;
     }
