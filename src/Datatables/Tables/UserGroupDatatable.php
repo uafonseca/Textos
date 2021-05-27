@@ -92,6 +92,8 @@ class UserGroupDatatable extends AbstractDatatable
                     TableActions::edit('user_group_edit'),
                     TableActions::delete('users_group_remove'),
                     TableActions::mailSend('mail_new'),
+                    TableActions::default('mail_index','fa-envelope text-danger','show-mail', 'Ver listado'),
+                    
                     
                 ],
             ])

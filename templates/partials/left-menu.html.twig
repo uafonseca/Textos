@@ -17,6 +17,12 @@
 						<span class="align-middle">Dashboard</span>
 					</a>
 				</li>
+					<li class="sidebar-item {% if currentPath == path('user_index') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('user_index') }}">
+						<span class="iconify" data-icon="feather:user-check" data-inline="false"></span>
+						<span class="align-middle">Control de usuarios</span>
+					</a>
+				</li>
 			{% elseif is_granted('IS_AUTHENTICATED_FULLY')  %}
 
 				<li class="sidebar-item {% if currentPath == path('user_dashboard') %}active{% endif %}">
@@ -62,9 +68,9 @@
 						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ path('role_index') }}">Roles</a>
 						</li>
-						<li class="sidebar-item">
+						{# <li class="sidebar-item">
 							<a class="sidebar-link" href="{{ path('user_index') }}">Permisos</a>
-						</li>
+						</li> #}
 						<li class="sidebar-item">
 							<a class="sidebar-link" href="{{ path('code_index') }}">Códigos</a>
 						</li>

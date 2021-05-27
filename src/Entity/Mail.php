@@ -50,6 +50,11 @@ class Mail
      */
     private $attached;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=UserGroup::class, inversedBy="mails")
+     */
+    private $userGroup;
+
     public function __construct()
     {
         $this->recipients = new ArrayCollection();
@@ -128,6 +133,18 @@ class Mail
     public function setAttached(?Image $attached): self
     {
         $this->attached = $attached;
+
+        return $this;
+    }
+
+    public function getUserGroup(): ?UserGroup
+    {
+        return $this->userGroup;
+    }
+
+    public function setUserGroup(?UserGroup $userGroup): self
+    {
+        $this->userGroup = $userGroup;
 
         return $this;
     }

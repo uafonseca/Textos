@@ -1,43 +1,16 @@
-{% extends 'base.html.twig' %}
+{% extends 'layout.html.twig' %}
 
 {% block title %}Mail index{% endblock %}
 
 {% block body %}
-    <h1>Mail index</h1>
+   <div class="card">
+    <div class="card-header"></div>
+    <div class="card-body">
+        {{ sg_datatables_render_html(datatable) }}
+    </div>
+   </div>
+{% endblock %}
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Subject</th>
-                <th>Context</th>
-                <th>Uuid</th>
-                <th>CreatedAt</th>
-                <th>UpdatedAt</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for mail in mails %}
-            <tr>
-                <td>{{ mail.id }}</td>
-                <td>{{ mail.subject }}</td>
-                <td>{{ mail.context }}</td>
-                <td>{{ mail.uuid }}</td>
-                <td>{{ mail.createdAt ? mail.createdAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ mail.updatedAt ? mail.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
-                <td>
-                    <a href="{{ path('mail_show', {'id': mail.id}) }}">show</a>
-                    <a href="{{ path('mail_edit', {'id': mail.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('mail_new') }}">Create new</a>
+{% block javascripts %}
+    {{sg_datatables_render_js(datatable)}}
 {% endblock %}
