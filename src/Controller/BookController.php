@@ -16,6 +16,7 @@ use App\Repository\BookRepository;
 use App\Repository\CodeRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Exception;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,6 +25,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @Route("/book")
@@ -44,6 +46,8 @@ class BookController extends AbstractController
     /** @var BookRepository */
     private $bookRepository;
 
+ 
+
     /**
      * UserController constructor.
      *
@@ -57,12 +61,13 @@ class BookController extends AbstractController
         DatatableResponse $datatableResponse,
         CodeRepository $codeRepository,
         BookRepository $bookRepository
-    )
-    {
+       
+    ) {
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
         $this->codeRepository = $codeRepository;
         $this->bookRepository = $bookRepository;
+        
     }
 
     /**
@@ -95,7 +100,7 @@ class BookController extends AbstractController
     }
 
 
-     /**
+    /**
      * @Route("/listUser/{uuid}", name="book_user", methods={"GET", "POST"})
      *
      * @IsGranted("IS_AUTHENTICATED_FULLY")
@@ -109,21 +114,20 @@ class BookController extends AbstractController
         $datatable = $this->datatableFactory->create(UserCourseDatatable::class);
 
         $datatable->buildDatatable([
-            'url' => $this->generateUrl('book_user',[
+            'url' => $this->generateUrl('book_user', [
                 'uuid' => $user->getUuid()
-            ])
+            ]),
+            'user' => $user
         ]);
 
         if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            
             $qb
-            ->getQb()
-            // ->join('code.book', 'book')
-            ->where('code.user =:user')
-            ->setParameter('user', $user)
-            // ->groupBy('book.id')
-            ;   
+                ->getQb()
+                ->where('code.user =:user')
+                ->setParameter('user', $user);
 
             return $this->datatableResponse->getResponse();
         }
@@ -336,4 +340,6 @@ class BookController extends AbstractController
     {
         return $this->getUser()->getCompany();
     }
+
+
 }

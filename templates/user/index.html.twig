@@ -16,7 +16,7 @@
 {% block javascripts %}
     {{ sg_datatables_render_js(datatable) }}
     <script type="text/javascript">
-    $(document).on('click', '.show-details', function (event) {
+        $(document).on('click', '.show-details', function (event) {
 
             event.preventDefault();
 
@@ -25,6 +25,19 @@
             app.datatable.handleDetails(scope, {
                 path: scope.attr('data-path')
             });
+        });
+
+        $(document).on('click', '.action-export', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this);
+
+            app.dialogs.create({
+                url: scope.attr('href'),
+                'containerFluid': true,
+                'columnClass' : 'col-md-12'
+            })
         });
     </script>
 {% endblock %}

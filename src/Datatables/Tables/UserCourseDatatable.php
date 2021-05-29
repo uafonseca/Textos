@@ -31,6 +31,8 @@ use Twig\Environment;
  */
 class UserCourseDatatable extends AbstractDatatable
 {
+	private User $user;
+
 	public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $securityToken, $translator, RouterInterface $router, EntityManagerInterface $em, Environment $twig)
 	{
 		parent::__construct($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
@@ -42,6 +44,8 @@ class UserCourseDatatable extends AbstractDatatable
 		return function ($row) {
 			$obj = $this->getEntityManager()->getRepository('App:Code')->find($row['id']);
 			$row['status'] = $obj->getStatus();
+			$row['user'] = $this->user->getId();
+			$row['course'] = $obj->getBook()->getId();
 			return $row;
 		};
 	}
@@ -52,6 +56,7 @@ class UserCourseDatatable extends AbstractDatatable
 	 */
 	public function buildDatatable(array $options = [])
 	{
+		$this->user = $options['user'];
 		$this->ajax->set([
 			'url' => $options['url'],
 			'method' => 'POST',
@@ -69,9 +74,22 @@ class UserCourseDatatable extends AbstractDatatable
 			'processing' => true,
 		]);
 
+
 		$this->columnBuilder
 			->add('uuid', Column::class, [
 				'title' => 'uuid',
+				'visible' => false,
+			])
+			->add('id', Column::class, [
+				'title' => 'id',
+				'visible' => false,
+			])
+			->add('course', VirtualColumn::class, [
+				'title' => 'book',
+				'visible' => false,
+			])
+			->add('user', Column::class, [
+				'title' => 'user',
 				'visible' => false,
 			])
 			->add('book.title', Column::class, [
@@ -89,6 +107,15 @@ class UserCourseDatatable extends AbstractDatatable
 			->add('status', VirtualColumn::class, [
 				'title' => 'Estado',
 			])
+			->add(null, ActionColumn::class, [
+                'title' => $this->translator->trans('sg.datatables.actions.title'),
+                'actions' => [
+                    TableActions::default('visit_index','fa-history text-warning','action-details', 'Registro',[
+						'id' => 'course',
+						'user' => 'user'
+					]),
+                ],
+            ])	
 			;
 	}
 

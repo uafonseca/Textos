@@ -15,28 +15,51 @@ class UserGroupType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('groupName',TextType::class,[
+            ->add('groupName', TextType::class, [
                 'label' => 'Nombre del grupo'
             ])
-            ->add('startDate',DateTimePickerType::class,[
+            ->add('startDate', DateTimePickerType::class, [
                 'label' => 'Fecha de inicio',
                 'html5' => false,
                 'required' => true
             ])
-            ->add('modality',null,[
+            ->add('modality', null, [
                 'label' => 'Modalidad',
                 'required' => true
             ])
-            ->add('course',null,[
+            ->add('course', null, [
                 'label' => 'Curso',
                 'required' => true
             ])
-            ->add('file',ImageType::class,[
+            ->add('details', null, [
+                'label' => 'Detalles del curso',
+                'required' => false
+            ])
+            ->add('chatDate', null, [
+                'label' => 'Fecha',
+                'html5' => false,
+                'placeholder' => 'dd-mm-yyyy',
+                'format' => 'dd-MM-yyyy',
+                'widget' => 'single_text',
+                'required' => false
+            ])
+            ->add('hour', null, [
+                'label' => 'Hora',
+                // 'html5' => false,
+                // 'placeholder' => 'dd-mm-yyyy hh:mm',
+                // 'format' => 'hh:mm',
+                // 'widget' => 'single_text',
+                'required' => false
+            ])
+            ->add('videoLink', TextType::class, [
+                'label' => 'Incluir invitación',
+                'required' => false
+            ])
+            ->add('file', ImageType::class, [
                 'label' => 'Excel',
                 'mapped' => false,
                 'required' => !$options['edit']
-            ])
-        ;
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

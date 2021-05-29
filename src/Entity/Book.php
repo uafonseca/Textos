@@ -107,6 +107,11 @@ class Book
      */
     private $userGroups;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CourseVsit::class, mappedBy="course")
+     */
+    private $courseVsits;
+
 
     public function __construct()
     {
@@ -115,6 +120,7 @@ class Book
         $this->units = new ArrayCollection();
         $this->codes = new ArrayCollection();
         $this->userGroups = new ArrayCollection();
+        $this->courseVsits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -371,6 +377,36 @@ class Book
             // set the owning side to null (unless already changed)
             if ($userGroup->getCourse() === $this) {
                 $userGroup->setCourse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CourseVsit[]
+     */
+    public function getCourseVsits(): Collection
+    {
+        return $this->courseVsits;
+    }
+
+    public function addCourseVsit(CourseVsit $courseVsit): self
+    {
+        if (!$this->courseVsits->contains($courseVsit)) {
+            $this->courseVsits[] = $courseVsit;
+            $courseVsit->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourseVsit(CourseVsit $courseVsit): self
+    {
+        if ($this->courseVsits->removeElement($courseVsit)) {
+            // set the owning side to null (unless already changed)
+            if ($courseVsit->getCourse() === $this) {
+                $courseVsit->setCourse(null);
             }
         }
 

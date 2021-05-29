@@ -150,6 +150,21 @@ class User implements UserInterface, Serializable
      */
     private $mailsReceived;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $sessionId;
+
+    /**
+     * @ORM\Column(type="datetime", nullable = true)
+     */
+    private $lastLogin;
+
+    /**
+     * @ORM\OneToMany(targetEntity=CourseVsit::class, mappedBy="user")
+     */
+    private $courseVsits;
+
 
     /**
      * User constructor.
@@ -162,6 +177,7 @@ class User implements UserInterface, Serializable
         $this->userGroups = new ArrayCollection();
         $this->mailsSend = new ArrayCollection();
         $this->mailsReceived = new ArrayCollection();
+        $this->courseVsits = new ArrayCollection();
     }
 
 
@@ -431,14 +447,13 @@ class User implements UserInterface, Serializable
 
     public function serialize()
     {
-        $this->avatar = base64_encode($this->avatar);
         return serialize(array(
             $this->id,
             $this->uuid,
             $this->username,
             $this->email,
             $this->password,
-            $this->avatar = base64_encode($this->avatar)
+            // $this->avatar = base64_encode($this->avatar)
 
         ));
     }
@@ -452,10 +467,10 @@ class User implements UserInterface, Serializable
             $this->username,
             $this->email,
             $this->password,
-            $this->avatar,
+            // $this->avatar,
             ) = unserialize($serialized);
 
-        $this->avatar = base64_decode($this->avatar);
+        // $this->avatar = base64_decode($this->avatar);
     }
 
     /**
@@ -547,8 +562,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-                                                      		$this->plainPassword = $plainPassword;
-                                                      	}
+      $this->plainPassword = $plainPassword;
+    }
 
     /**
      * @return Collection|UserGroup[]
@@ -641,6 +656,60 @@ class User implements UserInterface, Serializable
     {
         if ($this->mailsReceived->removeElement($mailsReceived)) {
             $mailsReceived->removeRecipient($this);
+        }
+
+        return $this;
+    }
+
+    public function getSessionId(): ?string
+    {
+        return $this->sessionId;
+    }
+
+    public function setSessionId(string $sessionId): self
+    {
+        $this->sessionId = $sessionId;
+
+        return $this;
+    }
+
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(\DateTimeInterface $lastLogin): self
+    {
+        $this->lastLogin = $lastLogin;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|CourseVsit[]
+     */
+    public function getCourseVsits(): Collection
+    {
+        return $this->courseVsits;
+    }
+
+    public function addCourseVsit(CourseVsit $courseVsit): self
+    {
+        if (!$this->courseVsits->contains($courseVsit)) {
+            $this->courseVsits[] = $courseVsit;
+            $courseVsit->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourseVsit(CourseVsit $courseVsit): self
+    {
+        if ($this->courseVsits->removeElement($courseVsit)) {
+            // set the owning side to null (unless already changed)
+            if ($courseVsit->getUser() === $this) {
+                $courseVsit->setUser(null);
+            }
         }
 
         return $this;

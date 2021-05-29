@@ -60,6 +60,26 @@ class UserGroup
      */
     private $mails;
 
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $details;
+
+    /**
+     * @ORM\Column(type="date", nullable=true)
+     */
+    private $chatDate;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $videoLink;
+
+    /**
+     * @ORM\Column(type="time", nullable=true)
+     */
+    private $hour;
+
     public function __construct()
     {
         $this->users = new ArrayCollection();
@@ -173,6 +193,54 @@ class UserGroup
                 $mail->setUserGroup(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getDetails(): ?string
+    {
+        return $this->details;
+    }
+
+    public function setDetails(?string $details): self
+    {
+        $this->details = $details;
+
+        return $this;
+    }
+
+    public function getChatDate(): ?\DateTimeInterface
+    {
+        return $this->chatDate;
+    }
+
+    public function setChatDate(?\DateTimeInterface $chatDate): self
+    {
+        $this->chatDate = $chatDate;
+
+        return $this;
+    }
+
+    public function getVideoLink(): ?string
+    {
+        return $this->videoLink;
+    }
+
+    public function setVideoLink(?string $videoLink): self
+    {
+        $this->videoLink = $videoLink;
+
+        return $this;
+    }
+
+    public function getHour(): ?\DateTimeInterface
+    {
+        return $this->hour;
+    }
+
+    public function setHour(?\DateTimeInterface $hour): self
+    {
+        $this->hour = $hour;
 
         return $this;
     }

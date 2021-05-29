@@ -7,12 +7,14 @@ use App\Entity\Book;
 use App\Entity\Code;
 use App\Entity\CodeSalesData;
 use App\Entity\FinancialDetails;
+use App\Entity\User;
 use App\Form\CodeSalesType;
 use App\Form\CodeType;
 use App\Repository\CodeRepository;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Exception;
+use Knp\Snappy\Pdf;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
 use Sg\DatatablesBundle\Response\DatatableResponse;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -27,6 +29,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType as TypeTextType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
@@ -45,6 +48,11 @@ class CodeController extends AbstractController
 	/** @var CodeRepository */
 	private $codeRepository;
 
+	   /** @var Pdf */
+	   private $pdf;
+
+	   private $kernel;
+
     /**
      * UserController constructor.
      *
@@ -52,11 +60,19 @@ class CodeController extends AbstractController
      * @param DatatableResponse $datatableResponse
      * @param CodeRepository $codeRepository
      */
-	public function __construct(DatatableFactory $datatableFactory, DatatableResponse $datatableResponse, CodeRepository $codeRepository)
+	public function __construct(
+		DatatableFactory $datatableFactory,
+		 DatatableResponse $datatableResponse,
+		  CodeRepository $codeRepository,
+		  Pdf $pdf,
+		  KernelInterface $kernel
+		  )
 	{
 		$this->datatableFactory = $datatableFactory;
 		$this->datatableResponse = $datatableResponse;
 		$this->codeRepository = $codeRepository;
+		$this->pdf = $pdf;
+        $this->kernel = $kernel;
 	}
 
     /**
@@ -265,5 +281,40 @@ class CodeController extends AbstractController
         return $this->render('code/my-codes.html.twig',[
             'codes' => $this->codeRepository->myCodes($this->getUser())
         ]);
+    }
+
+
+	/**
+	 *@Route("print/user/{uuid}/", name="print_user_info")
+	 */
+	public function printAll(Request $request, User  $user)
+    {
+     
+        $web_uploads_Path = $this->kernel->getProjectDir() . '/public/uploads/';
+        $path = 'pdf/';
+        $documento_nombre = 'reporte.pdf';
+
+
+		$em = $this->getDoctrine()->getManager ();
+
+		$codes = $em->getRepository(Code::class)->findBy([
+			'user' => $user,
+		]);
+
+        $this->pdf->generateFromHtml(
+            $this->render(
+                'code/print.html.twig', [
+                    'codes' => $codes,
+					'user' => $user
+                ]
+            )->getContent(),
+            $web_uploads_Path . $path . $documento_nombre,
+            ['encoding' => 'utf-8'],
+            true);
+
+        return $this->render('pdf_templates/iframe.html.twig', [
+            'pdf' => '/uploads/' . $path . $documento_nombre,
+        ]);
+
     }
 }

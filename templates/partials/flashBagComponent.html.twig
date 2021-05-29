@@ -1,5 +1,7 @@
 {% set alert = {'success': 'success', 'error': 'error', 'info': 'info', 'warning': 'warning'} %}
 
+    
+
 {% for flashType in alert %}
     {% for flashMessage in app.session.flashbag.get(flashType) %}
 

@@ -94,23 +94,47 @@ class UserDatatable extends AbstractDatatable
 			->add('email', Column::class, [
 				'title' => 'Correo',
 			])
-			->add(null, ActionColumn::class, [
-				'title' => $this->translator->trans('sg.datatables.actions.title'),
-				'actions' => [
-					[
-						'route' => 'user_promote',
-						'route_parameters' => array_merge(array(
-							'uuid' => 'uuid'
-						)),
-						'icon' => 'fa fa-cog cortex-table-action-icon',
-						'attributes' => [
-							'style' => "color:  green;",
-							'data-tippy-content' => 'Promover'
-						]
-						],
-						TableActions::delete('user_delete')
-				],
-			]);
+			;
+			if(isset($options['details']) && $options['details'] === true){
+				$this->columnBuilder
+				->add(null, ActionColumn::class, [
+					'title' => $this->translator->trans('sg.datatables.actions.title'),
+					'actions' => [
+						[
+							'route' => 'user_promote',
+							'route_parameters' => array_merge(array(
+								'uuid' => 'uuid'
+							)),
+							'icon' => 'fa fa-cog cortex-table-action-icon',
+							'attributes' => [
+								'style' => "color:  green;",
+								'data-tippy-content' => 'Promover'
+							]
+							],
+							TableActions::delete('user_delete'),
+							TableActions::export('print_user_info'),
+					],
+				]);
+			}else{
+				$this->columnBuilder
+				->add(null, ActionColumn::class, [
+					'title' => $this->translator->trans('sg.datatables.actions.title'),
+					'actions' => [
+						[
+							'route' => 'user_promote',
+							'route_parameters' => array_merge(array(
+								'uuid' => 'uuid'
+							)),
+							'icon' => 'fa fa-cog cortex-table-action-icon',
+							'attributes' => [
+								'style' => "color:  green;",
+								'data-tippy-content' => 'Promover'
+							]
+							],
+							TableActions::delete('user_delete'),
+					],
+				]);
+			}
 	}
 
     /**

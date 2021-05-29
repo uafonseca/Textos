@@ -1,0 +1,32 @@
+<div class="card">
+	<div class="card-header">
+        <p class="text-primary">
+            Listado de cursos
+        </p>
+         <p class="text-primary">
+            {{user.name | upper ~ ' ' ~ user.firstName | upper }}
+        </p>
+    </div>
+	<div class="card-body">
+		<table class="table table-striped table-bordered no-footer" border="1" cellspacing="1" cellpadding="1" width="100%">
+			<thead>
+				<tr>
+					<th>Curso/Capacitación</th>
+					<th>Fecha de inicio</th>
+					<th>Fecha fin</th>
+					<th>Estado</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for code in codes %}
+					<tr>
+						<td>{{ code.book.title }}</td>
+						<td>{{ code.starDate | date('d-m-Y') }}</td>
+						<td>{{ code.endDate | date('d-m-Y') }}</td>
+						<td>{{ code.status |raw }}</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1595,6 +1595,11 @@ boolbase@^1.0.0, boolbase@~1.0.0:
   resolved "https://registry.yarnpkg.com/boolbase/-/boolbase-1.0.0.tgz#68dff5fbe60c51eb37725ea9e3ed310dcc1e776e"
   integrity sha1-aN/1++YMUes3cl6p4+0xDcwed24=
 
+bootstrap-datetimepicker@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/bootstrap-datetimepicker/-/bootstrap-datetimepicker-0.0.7.tgz#a98312648894b81915531b057ff742835843f971"
+  integrity sha1-qYMSZIiUuBkVUxsFf/dCg1hD+XE=
+
 bootstrap-editable@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/bootstrap-editable/-/bootstrap-editable-1.0.1.tgz#445a671b5ab5fed77e8c7f4e5ffbc796c60b5023"
@@ -1608,6 +1613,11 @@ bootstrap-fileinput@^5.1.4:
     bootstrap ">= 3.4.1"
     jquery ">= 1.9.0"
     opencollective-postinstall "^2.0.2"
+
+bootstrap-timepicker@^0.5.2:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/bootstrap-timepicker/-/bootstrap-timepicker-0.5.2.tgz#10ed9f2a2f0b8ccaefcde0fcf6a0738b919a3835"
+  integrity sha1-EO2fKi8LjMrvzeD89qBzi5GaODU=
 
 "bootstrap@>= 3.4.1":
   version "4.6.0"
