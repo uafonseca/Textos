@@ -151,7 +151,21 @@
                                                 </td>
                                             </tr>
                                         </table>
-
+                                        {% if group.details is not null%}
+                                         <table border="0" cellpadding="0" cellspacing="0" width="100%" class="tableDescription">
+                                            <tr>
+                                                <td align="center" valign="top" style="padding-bottom:20px;" class="description">
+                                                    <!-- Description Text// -->
+                                                    <p class="text" style="color:#666666; font-family:'Open Sans', Helvetica, Arial, sans-serif; font-size:14px; font-weight:400; font-style:normal; letter-spacing:normal; line-height:22px; text-transform:none; text-align:center; padding:0; margin:0">
+                                                        {{ group.details }}<br>
+                                                        {% if group.chatDate is not null %} Fecha: {{ group.chatDate|date('d/m/Y') }}<br>{% endif %}
+                                                        {% if group.hour is not null %} Hora: {{ group.hour|format_datetime('none', 'full', locale='es') }}<br>{% endif %}
+                                                        {% if group.videoLink is not null %} Link de invitación: <a href="{{group.videoLink}}"> {{group.videoLink}}</a><br>{% endif %}
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        </table>
+                                        {% endif %}
                                     </td>
                                 </tr>
 

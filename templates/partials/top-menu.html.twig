@@ -1,85 +1,101 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: {{ colors()['primary'] }}; color:white;">
-    <a class="navbar-brand" href="#"> {% if getCompany() is not null and getCompany().visible %}{{ getCompany() }}{% endif %}</a>
-    <button class="navbar-toggler collapsed sidebar-toggle" type="button" data-toggle="collapse"
-            data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false"
-            aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+	<a class="navbar-brand" href="#">
+		{% if getCompany() is not null and getCompany().visible %}
+			{{ getCompany() }}
+		{% endif %}
+	</a>
+	<button class="navbar-toggler collapsed sidebar-toggle" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 
-    <div class="navbar-collapse collapse" id="navbarColor03" style="">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item {% if currentPath == path('app_home_page') %}active{% endif %}">
-                <a class="nav-link" href="{{ url('app_home_page') }}">Inicio <span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-                {# <a class="nav-link" href="#">Features</a> #}
-            </li>
-            <li class="nav-item">
-                {# <a class="nav-link" href="#">Pricing</a> #}
-            </li>
-            <li class="nav-item">
-                {# <a class="nav-link" href="#">About</a> #}
-            </li>
-        </ul>
-        <ul class="navbar-nav pull-right">
-            <li class="nav-item">
-                {% if getCompany() is not null and getCompany().visible %}
-                    <a class="nav-link" href="#">
-                        <span class="iconify" data-icon="feather:map-pin"
-                              data-inline="false"></span> {{ getCompany() ? getCompany().city : '' }}
-                    </a>
-                {% endif %}
-            </li>
-            <li class="nav-item">
-                {% if getCompany() is not null and getCompany().visible %}
-                    <a class="nav-link" href="tel:{{ getCompany() ? getCompany().phone : '' }}">
-                        <span class="iconify" data-icon="feather:phone"
-                              data-inline="false"></span> {{ getCompany() ? getCompany().phone : '' }}
-                    </a>
-                {% endif %}
-            </li>
-            {% if getCompany() is not null and getCompany().visible %}
-                <li class="nav-item">
-                    {% if getCompany().socialNetworks is not null and getCompany().socialNetworks.facebook is not null %}
-                    <a class="nav-link d-sm-inline-block" data-tippy-content="Facebook" target="_blank" href="{{ getCompany().socialNetworks.facebook | external_link}}">
-                        <span class="iconify" data-icon="feather:facebook" data-inline="false"></span>
-                    </a>
-                    {% endif %}
-                    {% if getCompany().socialNetworks is not null and getCompany().socialNetworks.twitter is not null %}
-                    <a class="nav-link d-sm-inline-block" data-tippy-content="Twitter" target="_blank" href="{{ getCompany().socialNetworks.twitter | external_link}}">
-                        <span class="iconify" data-icon="feather:twitter" data-inline="false"></span>
-                    </a>
-                    {% endif %}
-                    {% if getCompany().socialNetworks is not null and getCompany().socialNetworks.instagram is not null %}
-                    <a class="nav-link d-sm-inline-block" data-tippy-content="Instagram" target="_blank" href="{{ getCompany().socialNetworks.instagram | external_link}}">
-                        <span class="iconify" data-icon="feather:instagram" data-inline="false"></span>
-                    </a>
-                    {% endif %}
-                </li>
-            {% endif %}
-            <li class="nav-item">
-                {% if app.user %}
-                    <a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
-                        <img src="{% if app.user.avatar %}{{ vich_uploader_asset(app.user.avatar, 'imagenFile') }}{% endif %}"
-                             class="avatar img-fluid rounded mr-1" alt="{{ app.user.username }}"/> <span
-                                class="text-dark">{{ app.user.username }}</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right">
-                        <a class="dropdown-item" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}"><i
-                                    class="align-middle mr-1" data-feather="user"></i> Perfil</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="{{ path('app_logout') }}">Salir</a>
-                    </div>
-                {% else %}
-                    <a class="nav-link d-sm-inline-block" href="{{ path('app_login') }}">
-                        <span class="iconify" data-icon="feather:user" data-inline="false"></span> Entrar
-                    </a>
-                    <a class="nav-link d-sm-inline-block" href="{{ path('registration') }}">
-                        <span class="iconify" data-icon="feather:user-plus" data-inline="false"></span> Registrarse
-                    </a>
-                {% endif %}
-            </li>
-        </ul>
-    </div>
+	<div class="navbar-collapse collapse" id="navbarColor03" style="">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item {% if currentPath == path('app_home_page') %}active{% endif %}">
+				<a class="nav-link" href="{{ url('app_home_page') }}">Inicio
+					<span class="sr-only">(current)</span>
+				</a>
+			</li>
+			<li
+				class="nav-item">{# <a class="nav-link" href="#">Features</a> #}
+			</li>
+			<li
+				class="nav-item">{# <a class="nav-link" href="#">Pricing</a> #}
+			</li>
+			<li
+				class="nav-item">{# <a class="nav-link" href="#">About</a> #}
+			</li>
+		</ul>
+		<ul class="navbar-nav pull-right">
+			<li class="nav-item">
+				{% if getCompany() is not null and getCompany().visible %}
+					<a class="nav-link" href="#">
+						<span class="iconify" data-icon="feather:map-pin" data-inline="false"></span>
+						{{ getCompany() ? getCompany().city : '' }}
+					</a>
+				{% endif %}
+			</li>
+			<li class="nav-item">
+				{% if getCompany() is not null and getCompany().visible %}
+					<a class="nav-link" href="tel:{{ getCompany() ? getCompany().phone : '' }}">
+						<span class="iconify" data-icon="feather:phone" data-inline="false"></span>
+						{{ getCompany() ? getCompany().phone : '' }}
+					</a>
+				{% endif %}
+			</li>
+			{% if getCompany() is not null and getCompany().visible %}
+				<li class="nav-item">
+					{% if getCompany().socialNetworks is not null and getCompany().socialNetworks.facebook is not null %}
+						<a class="nav-link d-sm-inline-block" data-tippy-content="Facebook" target="_blank" href="{{ getCompany().socialNetworks.facebook | external_link}}">
+							<span class="iconify" data-icon="feather:facebook" data-inline="false"></span>
+						</a>
+					{% endif %}
+					{% if getCompany().socialNetworks is not null and getCompany().socialNetworks.twitter is not null %}
+						<a class="nav-link d-sm-inline-block" data-tippy-content="Twitter" target="_blank" href="{{ getCompany().socialNetworks.twitter | external_link}}">
+							<span class="iconify" data-icon="feather:twitter" data-inline="false"></span>
+						</a>
+					{% endif %}
+					{% if getCompany().socialNetworks is not null and getCompany().socialNetworks.instagram is not null %}
+						<a class="nav-link d-sm-inline-block" data-tippy-content="Instagram" target="_blank" href="{{ getCompany().socialNetworks.instagram | external_link}}">
+							<span class="iconify" data-icon="feather:instagram" data-inline="false"></span>
+						</a>
+					{% endif %}
+				</li>
+			{% endif %}
+			<li class="nav-item">
+				{% if app.user %}
+					<a class="nav-link dropdown-toggle d-none d-sm-inline-block" href="#" data-toggle="dropdown">
+						<img src="{% if app.user.avatar %}{{ vich_uploader_asset(app.user.avatar, 'imagenFile') }}{% endif %}" class="avatar img-fluid rounded mr-1" alt="{{ app.user.username }}"/>
+						<span class="text-dark">{{ app.user.username }}</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+						<a class="dropdown-item" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
+							<i class="align-middle mr-1" data-feather="user"></i>
+							Perfil</a>
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<a class="dropdown-item" href="{{ path('admin') }}">
+								<i class="align-middle mr-1" data-feather="sliders"></i>
+								Mi panel</a>
+						{% else %}
+                        <a class="dropdown-item" href="{{ path('user_dashboard') }}">
+								<i class="align-middle mr-1" data-feather="sliders"></i>
+								Mi panel</a>
+                        {% endif %}
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="{{ path('app_logout') }}">Salir</a>
+
+					</div>
+				{% else %}
+					<a class="nav-link d-sm-inline-block" href="{{ path('app_login') }}">
+						<span class="iconify" data-icon="feather:user" data-inline="false"></span>
+						Entrar
+					</a>
+					<a class="nav-link d-sm-inline-block" href="{{ path('registration') }}">
+						<span class="iconify" data-icon="feather:user-plus" data-inline="false"></span>
+						Registrarse
+					</a>
+				{% endif %}
+			</li>
+		</ul>
+	</div>
 </nav>

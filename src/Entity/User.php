@@ -151,7 +151,7 @@ class User implements UserInterface, Serializable
     private $mailsReceived;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable = true)
      */
     private $sessionId;
 
