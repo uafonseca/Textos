@@ -141,6 +141,7 @@ class EvaluationController extends AbstractController
         }
         return $this->render('evaluation/edit-question.html.twig', [
             'question' => $question,
+            'evaluation' => $question->getEvaluation(),
             'form' => $form->createView()
         ]);
     }

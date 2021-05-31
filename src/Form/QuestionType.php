@@ -28,6 +28,8 @@ class QuestionType extends AbstractType
                 'choices' => [
                     Question::QUESTION_TYPE_OPEN_TEXT => Question::QUESTION_TYPE_OPEN_TEXT,
                     Question::QUESTION_TYPE_TRUE_OR_FALSE => Question::QUESTION_TYPE_TRUE_OR_FALSE,
+                    Question::QUESTION_TYPE_MULTI_SELECTCTION => Question::QUESTION_TYPE_MULTI_SELECTCTION,
+                    Question::QUESTION_TYPE_UNIQ_SELECT_SELECTION => Question::QUESTION_TYPE_UNIQ_SELECT_SELECTION,
                 ],
                 'placeholder' => '--Seleccione--',
                 'attr' => [
@@ -56,24 +58,7 @@ class QuestionType extends AbstractType
         }else{
             $type = $question['type'];
         }
-        if ($type == Question::QUESTION_TYPE_TRUE_OR_FALSE) {
-            $form->add('choices',CollectionType::class,[
-                'entry_type' => ChoicesType::class,
-                'constraints' => [new Valid()],
-                'prototype_name' => '__choice_name__',
-                'block_name' => 'choice',
-                'allow_add' => true,
-                'allow_delete' => true,
-                'prototype' => true,
-                'entry_options' => [
-                    'label' => false,
-                ],
-                'label' => false,
-                'attr' => array(
-                    'class' => 'choice-collection row',
-                ),
-            ]);
-        } else if ($type == Question::QUESTION_TYPE_OPEN_TEXT){
+        if ($type == Question::QUESTION_TYPE_OPEN_TEXT  ) {
             $form->add('singleQuestions',CollectionType::class,[
                 'entry_type' => SingleQuestionType::class,
                 'constraints' => [new Valid()],
@@ -90,11 +75,28 @@ class QuestionType extends AbstractType
                     'class' => 'singleQuestion-collection row',
                 ),
             ]);
+        } else {
+            $form->add('choices',CollectionType::class,[
+                'entry_type' => ChoicesType::class,
+                'constraints' => [new Valid()],
+                'prototype_name' => '__choice_name__',
+                'block_name' => 'choice',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'entry_options' => [
+                    'label' => false,
+                ],
+                'label' => false,
+                'attr' => array(
+                    'class' => 'choice-collection row',
+                ),
+            ]);
         }
-        else{
+        // else{
 
-            $event->setData($question);
-        }
+        //     $event->setData($question);
+        // }
     }
 
     /**

@@ -16,10 +16,16 @@ class ChoicesType extends AbstractType
                 'label' => 'Opción'
             ])
             ->add('value',null,[
-                'label' => 'Valor'
+                'label' => 'Valor',
+                'attr' => [
+                    'class' => 'choice-value'
+                ]
             ])
             ->add('isCorrect',null,[
-                'label' => '¿Es correcta?'
+                'label' => '¿Es correcta?',
+                'attr' => [
+                    'class' => 'checker'
+                ]
             ])
         ;
     }

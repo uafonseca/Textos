@@ -10,12 +10,14 @@
             <div class="col-md-6">{{ form_row(form.title) }}</div>
             <div class="col-md-6">{{ form_row(form.objective) }}</div>
 
-            <div class="col-md-4">{{ form_row(form.attempts) }}</div>
-            <div class="col-md-4">{{ form_row(form.percentage) }}</div>
-            <div class="col-md-4">{{ form_row(form.time) }}</div>
+            <div class="col-md-3">{{ form_row(form.attempts) }}</div>
+            <div class="col-md-3">{{ form_row(form.points) }}</div>
+            <div class="col-md-3">{{ form_row(form.percentage) }}</div>
+            <div class="col-md-3">{{ form_row(form.time) }}</div>
 
-            <div class="col-md-6">{{ form_row(form.email) }}</div>
-            <div class="col-md-6">{{ form_row(form.requirements) }}</div>
+            <div class="col-md-4">{{ form_row(form.email) }}</div>
+            <div class="col-md-4">{{ form_row(form.requirements) }}</div>
+            <div class="col-md-4">{{ form_row(form.certificate) }}</div>
 
             <div class="col-md-12 pt-3">
                 <button class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-plus-circle"></i> {{ button_label|default('Guardar') }}

@@ -11,7 +11,9 @@
             <div id="single-container"
                  class="col-md-12">{{ form.singleQuestions is defined ? form_row(form.singleQuestions) : '' }}</div>
             <div class="col-md-12 mt-4">
-                <button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-save"></i> Guardar</button>
+                <button type="submit" class="btn" style="background-color: {{ colors()['primary'] }}; color:white;"><i
+                            class="fa fa-save"></i> Guardar
+                </button>
                 <a href="{{ path('remove-question', {'id': question.id}) }}" class="remove-question btn btn-danger"><i
                             class="fa fa-trash"></i> Eliminar</a>
             </div>
@@ -21,12 +23,13 @@
 </div>
 <script>
     $(function () {
+
         $('.remove-question').on('click', function (event) {
             event.preventDefault();
             const scope = $(this);
             app.dialogs.confirm({
                 event: event,
-                onAccept: function (){
+                onAccept: function () {
                     $.ajax({
                         url: scope.attr('href'),
                         success: (response) => {
@@ -36,7 +39,7 @@
                                 app.dialogs.close(scope);
                             }
                         },
-                        fail:() =>{
+                        fail: () => {
                             alert('Ha ocurrido un error!')
                         }
                     })
@@ -45,18 +48,8 @@
 
         })
         $('form[name="ChoiceForm"]').on('submit', function (event) {
-            const form = $(this)
-            app.forms.submit(form, function (response) {
-                if (response.type === 'success') {
-                    $.alert({
-                        title: 'Información',
-                        content: response.message,
-                    });
-                    app.unit.form.updateActivities();
-                    app.dialogs.close(form);
-                } else {
-                }
-            }, event);
+            event.preventDefault();
+            validate();
         })
         $('.choice-collection').collection({
             add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
@@ -80,8 +73,9 @@
             // ... retrieve the corresponding form.
             var $form = $(this).closest('form');
             // Simulate form data, but only include the selected sport value.
+            let currentOption = $(this).val();
             var data = {};
-            data[$(this).attr('name')] = $(this).val();
+            data[$(this).attr('name')] = currentOption;
             // Submit data via AJAX to the form's action path.
             $.ajax({
                 url: $form.attr('action'),
@@ -112,8 +106,231 @@
                         add_at_the_end: true,
                         position_field_selector: '.single-counter',
                     });
+
+                    if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_UNIQ_SELECT_SELECTION") }}') {
+                        $('form[name="ChoiceForm"]').unbind('submit');
+                        $('form[name="ChoiceForm"]').on('submit', function (event) {
+                            const form = $(this)
+                            let count = counter();
+                            let values = calculateValues();
+                            if (count == 1) {
+                                if (values == {{ evaluation.points }}) {
+                                    app.forms.submit(form, function (response) {
+                                            if (response.type === 'success') {
+                                                $.alert({
+                                                    title: 'Información',
+                                                    content: response.message,
+                                                });
+                                                app.unit.form.updateActivities();
+                                                app.dialogs.close(form);
+                                            } else {
+                                            }
+                                        },
+                                        event);
+                                } else {
+                                    event.preventDefault();
+                                    toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                                }
+                            } else {
+                                event.preventDefault();
+                                toastr.error('Las preguntas de selección única deben contener exactamente una opción correcta')
+                            }
+                        })
+                    } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_MULTI_SELECTCTION") }}') {
+                        $('form[name="ChoiceForm"]').unbind('submit');
+                        $('form[name="ChoiceForm"]').on('submit', function (event) {
+                            const form = $(this)
+                            let count = counter();
+                            let values = calculateValues();
+                            if (count >= 2) {
+                                if (values == {{ evaluation.points }}) {
+                                    app.forms.submit(form, function (response) {
+                                            if (response.type === 'success') {
+                                                $.alert({
+                                                    title: 'Información',
+                                                    content: response.message,
+                                                });
+                                                app.unit.form.updateActivities();
+                                                app.dialogs.close(form);
+                                            } else {
+                                            }
+                                        },
+                                        event);
+                                } else {
+                                    event.preventDefault();
+                                    toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                                }
+                            } else {
+                                event.preventDefault();
+                                toastr.error('Las preguntas de selección multiple deben contener más de dos dos respuestas correctas')
+                            }
+                        })
+                    } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_TRUE_OR_FALSE") }}') {
+                        $('form[name="ChoiceForm"]').unbind('submit');
+                        $('form[name="ChoiceForm"]').on('submit', function (event) {
+                            const form = $(this)
+                            let values = calculateValues();
+                            if (values == {{ evaluation.points }}) {
+                                app.forms.submit(form, function (response) {
+                                        if (response.type === 'success') {
+                                            $.alert({
+                                                title: 'Información',
+                                                content: response.message,
+                                            });
+                                            app.unit.form.updateActivities();
+                                            app.dialogs.close(form);
+                                        } else {
+                                        }
+                                    },
+                                    event);
+                            } else {
+                                event.preventDefault();
+                                toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                            }
+                        })
+                    } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_OPEN_TEXT") }}') {
+                        $('form[name="ChoiceForm"]').unbind('submit');
+                        $('form[name="ChoiceForm"]').on('submit', function (event) {
+                            const form = $(this)
+                            let values = calculateValues();
+                            app.forms.submit(form, function (response) {
+                                    if (response.type === 'success') {
+                                        $.alert({
+                                            title: 'Información',
+                                            content: response.message,
+                                        });
+                                        app.unit.form.updateActivities();
+                                        app.dialogs.close(form);
+                                    } else {
+                                    }
+                                },
+                                event);
+                        })
+                    }
                 }
             });
         });
     })
+
+    function validate() {
+        let currentOption = $('#ChoiceForm_type').val();
+        if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_UNIQ_SELECT_SELECTION") }}') {
+            $('form[name="ChoiceForm"]').unbind('submit');
+            $('form[name="ChoiceForm"]').on('submit', function (event) {
+                const form = $(this)
+                let count = counter();
+                let values = calculateValues();
+                if (count == 1) {
+                    if (values == {{ evaluation.points }}) {
+                        app.forms.submit(form, function (response) {
+                                if (response.type === 'success') {
+                                    $.alert({
+                                        title: 'Información',
+                                        content: response.message,
+                                    });
+                                    app.unit.form.updateActivities();
+                                    app.dialogs.close(form);
+                                } else {
+                                }
+                            },
+                            event);
+                    } else {
+                        event.preventDefault();
+                        toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                    }
+                } else {
+                    event.preventDefault();
+                    toastr.error('Las preguntas de selección única deben contener exactamente una opción correcta')
+                }
+            }).submit();
+        } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_MULTI_SELECTCTION") }}') {
+            $('form[name="ChoiceForm"]').unbind('submit');
+            $('form[name="ChoiceForm"]').on('submit', function (event) {
+                const form = $(this)
+                let count = counter();
+                let values = calculateValues();
+                if (count >= 2) {
+                    if (values == {{ evaluation.points }}) {
+                        app.forms.submit(form, function (response) {
+                                if (response.type === 'success') {
+                                    $.alert({
+                                        title: 'Información',
+                                        content: response.message,
+                                    });
+                                    app.unit.form.updateActivities();
+                                    app.dialogs.close(form);
+                                } else {
+                                }
+                            },
+                            event);
+                    } else {
+                        event.preventDefault();
+                        toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                    }
+                } else {
+                    event.preventDefault();
+                    toastr.error('Las preguntas de selección multiple deben contener más de dos dos respuestas correctas')
+                }
+            }).submit();
+        } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_TRUE_OR_FALSE") }}') {
+            {# $('form[name="ChoiceForm"]').unbind('submit'); #}
+            $('form[name="ChoiceForm"]').on('submit', function (event) {
+                const form = $(this)
+                let values = calculateValues();
+                if (values == {{ evaluation.points }}) {
+                    app.forms.submit(form, function (response) {
+                            if (response.type === 'success') {
+                                $.alert({
+                                    title: 'Información',
+                                    content: response.message,
+                                });
+                                app.unit.form.updateActivities();
+                                app.dialogs.close(form);
+                            } else {
+                            }
+                        },
+                        event);
+                } else {
+                    event.preventDefault();
+                    toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                }
+            }).submit();
+        } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_OPEN_TEXT") }}') {
+            $('form[name="ChoiceForm"]').unbind('submit');
+            $('form[name="ChoiceForm"]').on('submit', function (event) {
+                const form = $(this)
+                let values = calculateValues();
+                app.forms.submit(form, function (response) {
+                        if (response.type === 'success') {
+                            $.alert({
+                                title: 'Información',
+                                content: response.message,
+                            });
+                            app.unit.form.updateActivities();
+                            app.dialogs.close(form);
+                        } else {
+                        }
+                    },
+                    event);
+            }).submit();
+        }
+    }
+
+    function counter() {
+        let count = 0;
+        $('input.checker').each(function () {
+            if ($(this).is(':checked'))
+                count++;
+        });
+        return count;
+    }
+
+    function calculateValues() {
+        let count = 0;
+        $('input.choice-value').each(function () {
+            count += parseInt($(this).val());
+        });
+        console.log(count)
+        return count;
+    }
 </script>

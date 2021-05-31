@@ -330,3 +330,6 @@ h3.loading{
 .dt-buttons{
     float: right;
 }
+#toast-container{
+    z-index: 9999999999999999!important;
+}

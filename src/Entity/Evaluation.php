@@ -76,6 +76,16 @@ class Evaluation
      */
     private $answers;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $points;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $certificate;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -239,6 +249,30 @@ class Evaluation
                 $answer->setEvaluation(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getPoints(): ?int
+    {
+        return $this->points;
+    }
+
+    public function setPoints(?int $points): self
+    {
+        $this->points = $points;
+
+        return $this;
+    }
+
+    public function getCertificate(): ?bool
+    {
+        return $this->certificate;
+    }
+
+    public function setCertificate(bool $certificate): self
+    {
+        $this->certificate = $certificate;
 
         return $this;
     }

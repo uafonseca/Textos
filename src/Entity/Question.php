@@ -14,7 +14,9 @@ use Doctrine\ORM\Mapping as ORM;
 class Question
 {
     const QUESTION_TYPE_TRUE_OR_FALSE = 'Verdadero o Falso';
-    const QUESTION_TYPE_OPEN_TEXT = 'Texto abierto';
+    const QUESTION_TYPE_OPEN_TEXT = 'Texto Abierto';
+    const QUESTION_TYPE_MULTI_SELECTCTION = 'Selección Multiple';
+    const QUESTION_TYPE_UNIQ_SELECT_SELECTION = 'Selección Única';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
