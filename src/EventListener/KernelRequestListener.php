@@ -16,6 +16,7 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpKernel\Event\FinishRequestEvent;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class KernelRequestListener implements EventSubscriberInterface
@@ -55,8 +56,8 @@ class KernelRequestListener implements EventSubscriberInterface
         if (in_array($event->getRequest()->get('_route'), $validRoutes)){
             $routeParams = $event->getRequest()->get('_route_params');
             $user = $this->tokenStorage->getToken()->getUser();
-
-            $this->dispatcher->dispatch(new VisitEvent($user, $routeParams), AppEvents::COURSE_VISITED);
+            if($user instanceof UserInterface)
+                $this->dispatcher->dispatch(new VisitEvent($user, $routeParams), AppEvents::COURSE_VISITED);
         }
     }
 
