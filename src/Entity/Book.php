@@ -112,6 +112,11 @@ class Book
      */
     private $courseVsits;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Certificate::class, mappedBy="course")
+     */
+    private $certificates;
+
 
     public function __construct()
     {
@@ -121,6 +126,7 @@ class Book
         $this->codes = new ArrayCollection();
         $this->userGroups = new ArrayCollection();
         $this->courseVsits = new ArrayCollection();
+        $this->certificates = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -407,6 +413,36 @@ class Book
             // set the owning side to null (unless already changed)
             if ($courseVsit->getCourse() === $this) {
                 $courseVsit->setCourse(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Certificate[]
+     */
+    public function getCertificates(): Collection
+    {
+        return $this->certificates;
+    }
+
+    public function addCertificate(Certificate $certificate): self
+    {
+        if (!$this->certificates->contains($certificate)) {
+            $this->certificates[] = $certificate;
+            $certificate->setCourse($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCertificate(Certificate $certificate): self
+    {
+        if ($this->certificates->removeElement($certificate)) {
+            // set the owning side to null (unless already changed)
+            if ($certificate->getCourse() === $this) {
+                $certificate->setCourse(null);
             }
         }
 

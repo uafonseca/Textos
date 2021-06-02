@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Certificate{% endblock %}
+
+{% block body %}
+    <h1>Certificate</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ certificate.id }}</td>
+            </tr>
+            <tr>
+                <th>Type</th>
+                <td>{{ certificate.type }}</td>
+            </tr>
+            <tr>
+                <th>Modality</th>
+                <td>{{ certificate.modality }}</td>
+            </tr>
+            <tr>
+                <th>Hours</th>
+                <td>{{ certificate.hours }}</td>
+            </tr>
+            <tr>
+                <th>StartDate</th>
+                <td>{{ certificate.startDate ? certificate.startDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>EndDate</th>
+                <td>{{ certificate.endDate ? certificate.endDate|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Representative</th>
+                <td>{{ certificate.representative }}</td>
+            </tr>
+            <tr>
+                <th>RepresentativePosition</th>
+                <td>{{ certificate.representativePosition }}</td>
+            </tr>
+            <tr>
+                <th>TrainerName</th>
+                <td>{{ certificate.trainerName }}</td>
+            </tr>
+            <tr>
+                <th>TrainerPosition</th>
+                <td>{{ certificate.trainerPosition }}</td>
+            </tr>
+            <tr>
+                <th>ContainsResolution</th>
+                <td>{{ certificate.containsResolution }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('certificate_index') }}">back to list</a>
+
+    <a href="{{ path('certificate_edit', {'id': certificate.id}) }}">edit</a>
+
+    {{ include('certificate/_delete_form.html.twig') }}
+{% endblock %}

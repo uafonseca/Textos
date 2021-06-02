@@ -29,6 +29,9 @@
                         <a href="{{ path('evaluation_add_question', {'uuid': evaluation.uuid}) }}" class="text-primary add-question" data-tippy-content="Adicionar preguntas"><i class="fa fa-plus-circle"></i></a>
                         <a href="{{ path('evaluation_edit', {'uuid': evaluation.uuid}) }}" class="text-info edit-question" data-tippy-content="Editar"><i class="fa fa-edit"></i></a>
                         <a href="{{ path('evaluation_delete', {'id': evaluation.id}) }}" class="delete-question text-danger" data-tippy-content="Eliminar"><i class="fa fa-trash"></i></a>
+                        {% if evaluation.certificate %}
+                            <a href="{{ path('certificate_new', {'id': evaluation.id}) }}" class="certificate text-info" data-tippy-content="Generar certificado"><i class="fa fa-certificate"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}
@@ -60,7 +63,7 @@
                 }
             })
         })
-        $('.add-question, .edit-question').on('click',function (event){
+        $('.add-question, .edit-question, .certificate').on('click',function (event){
             event.preventDefault();
             const scope = $(this)
             app.dialogs.create({

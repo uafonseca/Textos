@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Certificate index{% endblock %}
+
+{% block body %}
+    <h1>Certificate index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Type</th>
+                <th>Modality</th>
+                <th>Hours</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Representative</th>
+                <th>RepresentativePosition</th>
+                <th>TrainerName</th>
+                <th>TrainerPosition</th>
+                <th>ContainsResolution</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for certificate in certificates %}
+            <tr>
+                <td>{{ certificate.id }}</td>
+                <td>{{ certificate.type }}</td>
+                <td>{{ certificate.modality }}</td>
+                <td>{{ certificate.hours }}</td>
+                <td>{{ certificate.startDate ? certificate.startDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ certificate.endDate ? certificate.endDate|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ certificate.representative }}</td>
+                <td>{{ certificate.representativePosition }}</td>
+                <td>{{ certificate.trainerName }}</td>
+                <td>{{ certificate.trainerPosition }}</td>
+                <td>{{ certificate.containsResolution }}</td>
+                <td>
+                    <a href="{{ path('certificate_show', {'id': certificate.id}) }}">show</a>
+                    <a href="{{ path('certificate_edit', {'id': certificate.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="12">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('certificate_new') }}">Create new</a>
+{% endblock %}

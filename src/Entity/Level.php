@@ -42,7 +42,6 @@ class Level
      */
     private $userGroups;
     
-
     public function __construct ()
     {
         $this->uuid = Uuid::v1 ();
@@ -129,4 +128,5 @@ class Level
 
         return $this;
     }
+
 }

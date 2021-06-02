@@ -53,6 +53,7 @@
 
         })
         $('form[name="ChoiceForm"]').on('submit', function (event) {
+            $('form[name="ChoiceForm"]').unbind('submit');
             event.preventDefault();
             validate();
         })
@@ -64,11 +65,11 @@
             allow_duplicate: false,
             add_at_the_end: true,
             position_field_selector: '.choice-counter',
-             after_add: function(){
-                            $('input.choice-value').change(function(){
-                                $('#puntaje').html(calculateValues());
-                            })
-                        }
+            after_add: function(){
+                $('input.choice-value').change(function(){
+                    $('#puntaje').html(calculateValues());
+                })
+            }
         });
         $('.singleQuestion-collection').collection({
             add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
