@@ -14,7 +14,7 @@
                 <div class="col-md-4 text-center">
                     {% set is_writable = answer.attemptsMade < evaluation.attempts and not approved %}
                     {% if exist %}
-                        <h3>Puntos: {{ points['points'] }}/{{ points['max'] }}</h3>
+                        <h3>Puntos: {{ points['points'] }}/{{ evaluation.points }}</h3>
                         <h3>{{ points['status'] | raw }}</h3>
                     {% endif %}
                 </div>
@@ -42,7 +42,7 @@
                     <div class="card-body">
                         <form id="answerForm" action="#">
                             <ul class="navbar-nav">
-                                {% set answerQuestion = answer.answerQuestions[loop.index - 1] %}
+                                {% set answerQuestion = answer.answerQuestions[loop.index - 1] ? answer.answerQuestions[loop.index - 1] : null %}
                                 {% for choice in question.choices %}
                                     <li class="nav-item">
                                         <div class="form-check">
@@ -74,7 +74,14 @@
                                                 and answerQuestion.choicesAnswers[loop.index - 1].isSelected
                                                 and not answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
                                                 <i class="fa fa-times-circle text-danger"></i>
-{#                                                -{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos#}
+                                                -{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos
+                                             {% elseif
+                                                not is_writable
+                                                and exist
+                                                and not answerQuestion.choicesAnswers[loop.index - 1].isSelected
+                                                and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                                <i class="fa fa-times-circle text-danger"></i>
+                                                -{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos
                                             {% endif %}
                                         </div>
                                     </li>
@@ -91,7 +98,7 @@
                                                     {% endif %}
                                                     class="form-control choice-text"
                                                     id="single-{{ singleQuestion.id }}"
-                                                    rows="3"> {% if exist  and not is_writable and not approved %}{{ answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText ? answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText:'' }}{% endif %}</textarea>
+                                                    rows="3">{% if exist  and not is_writable and not approved %}{{ answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText ? answerQuestion.choicesAnswers[loop.index - 1].singleAnswerText:'' }}{% endif %}</textarea>
                                         </div>
                                     </li>
                                 {% endfor %}

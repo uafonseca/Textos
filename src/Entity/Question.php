@@ -191,4 +191,17 @@ class Question
 
         return $this;
     }
+    
+    /**
+     * Method getPoints
+     *
+     * @return int
+     */
+    public function getPoints(): int{
+        $points = 0;
+        foreach ($this->choices as $choice){
+            $points += $choice->getValue();
+        }
+        return $points;
+    }
 }

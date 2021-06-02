@@ -158,6 +158,7 @@ class EvaluationController extends AbstractController
      */
     public function removeQuestion(Question $question): Response
     {
+        $question->getEvaluation()->setAccumulated($question->getEvaluation()->getAccumulated() - $question->getPoints());
         $em = $this->getDoctrine()->getManager();
         $question->getEvaluation()->removeQuestion($question);
         $em->remove($question);
