@@ -70,15 +70,19 @@ class EvaluationController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+
+            $points = 0;
             /** @var \App\Entity\Choice $choice */
             foreach ($question->getChoices() as $choice) {
                 $choice->setQuestion($question);
+                $points += $choice->getValue(); 
             }
 
             /** @var \App\Entity\SingleQuestion $singleQuestion */
             foreach ($question->getSingleQuestions() as $singleQuestion) {
                 $singleQuestion->setQuestion($question);
             }
+            $evaluation->setAccumulated( $evaluation->getAccumulated() + $points);
             $em->persist($question);
             $evaluation->addQuestion($question);
             $em->flush();

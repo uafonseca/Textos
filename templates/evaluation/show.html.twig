@@ -25,8 +25,18 @@
         </div>
         <div class="card-body">
             {% for question in evaluation.questions %}
+            {# {{dump(question)}} #}
                 <div class="card">
                     <div class="card-title">
+                        {% if question.type == constant("App\\Entity\\Question::QUESTION_TYPE_OPEN_TEXT") %}
+                            <p class="text-info"><em><i class="fa fa-exclamation-triangle"></i><strong>Texto Abierto:</strong> Escriba su respuesta</em> </p>
+                        {% elseif question.type == constant("App\\Entity\\Question::QUESTION_TYPE_TRUE_OR_FALSE") %}
+                            <p class="text-info"><em><i class="fa fa-exclamation-triangle"></i> <strong>Verdadero o Falso:</strong> Marque solo las opciones que considere sean verdaderas</em></p>
+                        {% elseif question.type == constant("App\\Entity\\Question::QUESTION_TYPE_MULTI_SELECTCTION") %}
+                            <p class="text-info"><em><i class="fa fa-exclamation-triangle"></i> <strong>Selección Múltiple:</strong> Marque las opciones correctas</em></p>
+                        {% elseif question.type == constant("App\\Entity\\Question::QUESTION_TYPE_UNIQ_SELECT_SELECTION") %}
+                            <p class="text-info"><em><i class="fa fa-exclamation-triangle"></i> <strong>Selección Única:</strong> Marque solo una respuesta</em></p>
+                        {% endif %}
                         {{ question.title }}
                     </div>
                     <div class="card-body">
@@ -36,21 +46,6 @@
                                 {% for choice in question.choices %}
                                     <li class="nav-item">
                                         <div class="form-check">
-                                            {% if
-                                                not is_writable
-                                                and exist
-                                                and answerQuestion.choicesAnswers[loop.index - 1].isSelected
-                                                and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
-                                                <i class="fa fa-check-circle text-success"></i>
-                                                +{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos
-                                            {% elseif
-                                                not is_writable
-                                                and exist
-                                                and answerQuestion.choicesAnswers[loop.index - 1].isSelected
-                                                and not answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
-                                                <i class="fa fa-times-circle text-danger"></i>
-{#                                                -{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos#}
-                                            {% endif %}
                                             <input data-choice-answer-id="{{ answerQuestion.choicesAnswers[loop.index - 1].id }}"
                                                    class="choice-check form-check-input" type="checkbox"
                                                    value="{{ choice.value }}"
@@ -66,6 +61,21 @@
                                             <label class="form-check-label" for="choice-{{ choice.id }}">
                                                 {{ choice.name }}
                                             </label>
+                                            {% if
+                                                not is_writable
+                                                and exist
+                                                and answerQuestion.choicesAnswers[loop.index - 1].isSelected
+                                                and answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                                <i class="fa fa-check-circle text-success"></i>
+                                                +{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos
+                                            {% elseif
+                                                not is_writable
+                                                and exist
+                                                and answerQuestion.choicesAnswers[loop.index - 1].isSelected
+                                                and not answerQuestion.choicesAnswers[loop.index - 1].choice.isCorrect %}
+                                                <i class="fa fa-times-circle text-danger"></i>
+{#                                                -{{ answerQuestion.choicesAnswers[loop.index - 1].choice.value }} puntos#}
+                                            {% endif %}
                                         </div>
                                     </li>
                                 {% endfor %}

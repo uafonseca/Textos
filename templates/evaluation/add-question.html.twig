@@ -1,6 +1,11 @@
 {% form_theme form 'bootstrap_4_layout.html.twig'  'evaluation/_form_theme.html.twig' 'jquery.collection.html.twig' %}
 <div class="card">
-    <div class="card-header"></div>
+    <div class="card-header">
+        <h3 class="">Evaluacion: <strong>{{evaluation.title }}</strong></h3>
+        <p class="text-muted">Puntaje cuestionario: <strong>{{evaluation.points }}</strong><p>
+        <p class="text-muted">Puntaje acumulado: <strong>{{evaluation.accumulated }}</strong><p>
+        <p class="text-muted">Puntaje de la pregunta: <strong id="puntaje">0</strong><p>
+    </div>
     <div class="card-body">
         {{ form_start(form) }}
         <div class="row">
@@ -48,6 +53,11 @@
                         allow_duplicate: false,
                         add_at_the_end: true,
                         position_field_selector: '.choice-counter',
+                        after_add: function(){
+                            $('input.choice-value').change(function(){
+                                $('#puntaje').html(calculateValues());
+                            })
+                        }
                     });
                     $('.singleQuestion-collection').collection({
                         add: `<a class="btn btn-primary m-3" style="max-width: 190px;" href="#"><i class="fa fa-plus"></i> Adicionar Pregunta</a>`,
@@ -58,7 +68,6 @@
                         add_at_the_end: true,
                         position_field_selector: '.single-counter',
                     });
-
                     if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_UNIQ_SELECT_SELECTION") }}') {
                         $('form[name="ChoiceForm"]').unbind('submit');
                         $('form[name="ChoiceForm"]').on('submit', function (event) {
@@ -66,7 +75,7 @@
                             let count = counter();
                             let values = calculateValues();
                             if (count == 1) {
-                                if (values == {{ evaluation.points }}) {
+                                if (values <= {{ evaluation.points }} - {{ evaluation.accumulated }}) {
                                     app.forms.submit(form, function (response) {
                                             if (response.type === 'success') {
                                                 $.alert({
@@ -81,7 +90,7 @@
                                         event);
                                 } else {
                                     event.preventDefault();
-                                    toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                                    toastr.error('La sumatoria de los puntos de todas las preguntas debe menor o igual a ' +{{ evaluation.points }})
                                 }
                             } else {
                                 event.preventDefault();
@@ -95,7 +104,7 @@
                             let count = counter();
                             let values = calculateValues();
                             if (count >= 2) {
-                                if (values == {{ evaluation.points }}) {
+                                if (values <= {{ evaluation.points }} - {{ evaluation.accumulated }}) {
                                     app.forms.submit(form, function (response) {
                                             if (response.type === 'success') {
                                                 $.alert({
@@ -110,7 +119,7 @@
                                         event);
                                 } else {
                                     event.preventDefault();
-                                    toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                                    toastr.error('La sumatoria de los puntos de todas las preguntas debe menor o igual a ' +{{ evaluation.points }})
                                 }
                             } else {
                                 event.preventDefault();
@@ -122,7 +131,7 @@
                         $('form[name="ChoiceForm"]').on('submit', function (event) {
                             const form = $(this)
                             let values = calculateValues();
-                            if (values == {{ evaluation.points }}) {
+                            if (values <= {{ evaluation.points }} - {{ evaluation.accumulated }}) {
                                 app.forms.submit(form, function (response) {
                                         if (response.type === 'success') {
                                             $.alert({
@@ -137,7 +146,7 @@
                                     event);
                             } else {
                                 event.preventDefault();
-                                toastr.error('La sumatoria de los puntos debe ser igual a ' +{{ evaluation.points }})
+                                toastr.error('La sumatoria de los puntos de todas las preguntas debe menor o igual a ' +{{ evaluation.points }})
                             }
                         })
                     } else if (currentOption === '{{ constant("App\\Entity\\Question::QUESTION_TYPE_OPEN_TEXT") }}') {

@@ -86,6 +86,11 @@ class Evaluation
      */
     private $certificate;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $accumulated = 0;
+
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -273,6 +278,18 @@ class Evaluation
     public function setCertificate(bool $certificate): self
     {
         $this->certificate = $certificate;
+
+        return $this;
+    }
+
+    public function getAccumulated(): ?int
+    {
+        return $this->accumulated ? $this->accumulated : 0;
+    }
+
+    public function setAccumulated(?int $accumulated): self
+    {
+        $this->accumulated = $accumulated;
 
         return $this;
     }
