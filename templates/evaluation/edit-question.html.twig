@@ -3,7 +3,7 @@
     <div class="card-header">
          <h3 class="">Evaluacion: <strong>{{evaluation.title }}</strong></h3>
         <p class="text-muted">Puntaje cuestionario: <strong>{{evaluation.points }}</strong><p>
-        <p class="text-muted">Puntaje acumulado: <strong>{{evaluation.accumulated }}</strong><p>
+        <p class="text-muted">Puntaje acumulado: <strong>{{ evaluation.accumulated }}</strong><p>
         <p class="text-muted">Puntaje de la pregunta: <strong id="puntaje">0</strong><p>
     </div>
     <div class="card-body">
@@ -237,7 +237,7 @@
                 let count = counter();
                 let values = calculateValues();
                 if (count == 1) {
-                     if (values <= {{ evaluation.points }} - {{ evaluation.accumulated }}) {
+                     if (values + {{ evaluation.accumulated }} - {{question.getPoints}} <= {{ evaluation.points }} ) {
                         app.forms.submit(form, function (response) {
                                 if (response.type === 'success') {
                                     $.alert({
@@ -266,7 +266,7 @@
                 let count = counter();
                 let values = calculateValues();
                 if (count >= 2) {
-                     if (values <= {{ evaluation.points }} - {{ evaluation.accumulated }}) {
+                      if (values + {{ evaluation.accumulated }} - {{question.getPoints}} <= {{ evaluation.points }} ) {
                         app.forms.submit(form, function (response) {
                                 if (response.type === 'success') {
                                     $.alert({
@@ -293,7 +293,7 @@
             $('form[name="ChoiceForm"]').on('submit', function (event) {
                 const form = $(this)
                 let values = calculateValues();
-                 if (values <= {{ evaluation.points }} - {{ evaluation.accumulated }}) {
+                  if (values + {{ evaluation.accumulated }} - {{question.getPoints}} <= {{ evaluation.points }} ) {
                     app.forms.submit(form, function (response) {
                             if (response.type === 'success') {
                                 $.alert({
