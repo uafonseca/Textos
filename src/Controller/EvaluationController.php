@@ -121,8 +121,10 @@ class EvaluationController extends AbstractController
             ]) as $choice) {
                 $choice->setQuestion(null);
             }
+            $points = 0;
             foreach ($question->getChoices() as $choice) {
                 $choice->setQuestion($question);
+                $points += $choice->getValue();
             }
 
 
@@ -135,6 +137,7 @@ class EvaluationController extends AbstractController
             foreach ($question->getSingleQuestions() as $singleQuestion) {
                 $singleQuestion->setQuestion($question);
             }
+            $question->getEvaluation()->setAccumulated($points);
             $em->persist($question);
             $em->flush();
 
@@ -308,8 +311,8 @@ class EvaluationController extends AbstractController
                     ->setSingleAnswer($singleQuestion)
                     ->setAnswerQuestion($answerQuestion);
                 $answerQuestion->addChoicesAnswer($choiceAnswer);
-                $em->persist($answerQuestion);
             }
+            $em->persist($answerQuestion);
         }
         $em->flush();
 
