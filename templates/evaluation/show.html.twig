@@ -42,7 +42,7 @@
                     <div class="card-body">
                         <form id="answerForm" action="#">
                             <ul class="navbar-nav">
-                                {% set answerQuestion = answer.answerQuestions[loop.index - 1] ? answer.answerQuestions[loop.index - 1] : null %}
+                                {% set answerQuestion = (loop.index - 1) in answer.answerQuestions|keys ? answer.answerQuestions[loop.index - 1] : null %}
                                 {% for choice in question.choices %}
                                     <li class="nav-item">
                                         <div class="form-check">
