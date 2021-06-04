@@ -32,8 +32,8 @@ class EvaluationType extends AbstractType
                 ]
             ])
             ->add('percentage', null, ['label' => 'Porcentaje para aprobar'])
-            ->add('time', null, ['label' => 'Tiempo para responder'])
-            ->add('points', null, ['label' => 'Puntaje cuestionario'])
+            ->add('time', null, ['label' => 'Tiempo para responder(minutos)'])
+            ->add('points', null, ['label' => 'Puntaje cuestionario']) 
             ->add('certificate', ChoiceType::class, [
                     'label' => 'Generar certificado',
                     'label_attr' => [

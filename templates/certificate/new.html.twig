@@ -1,5 +1,41 @@
 {% form_theme form 'bootstrap_4_layout.html.twig' %}
-
-{{ include('certificate/_form.html.twig') }}
+<div class="card" id="container">
+    <div class="card-header">
+        <p class="card-title">Datos para generar el certificado</p>
+    </div>
+    <div class="card-body">
+        {{ include('certificate/_form.html.twig') }}
+    </div>
+</div>
+<script type="text/javascript">
+    $(() => {
+          $('form[name="certificate"]').on('submit', function (event) {
+            const form = $(this)
+            app.forms.submit(form, function (response) {
+                if (response.type === 'success') {
+                    toastr.success(response.message);
+                    app.dialogs.close(form);
+                } else {
+                    $('form[name="certificate"]').replaceWith(
+                        $(response).find('form[name="certificate"]')
+                    );
+                }
+            },event);
+         });
+        $("#certificate_startDate").datepicker({dateFormat: "d-m-yy", changeYear: true, yearRange: "-100:+0"});
+        $("#certificate_endDate").datepicker({dateFormat: "d-m-yy", changeYear: true, yearRange: "-100:+0"});
+        $('#certificate_logo_imagenFile_file').fileinput({
+            showCaption: true,
+            showPreview: false,
+            showUploadedThumbs: false,
+            showUpload: false,
+            showCancel: false,
+            showRemove: false,
+            allowedFileExtensions: ['jpg', 'jpeg', 'png', 'gif'],
+            browseLabel: '&nbsp;Importar',
+            browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+        });
+    })
+</script>
 
 

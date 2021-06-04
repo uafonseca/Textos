@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=CertificateRepository::class)
+ * @ORM\HasLifecycleCallbacks
  */
 class Certificate
 {
@@ -20,9 +21,9 @@ class Certificate
     use BlameableEntityTrait;
 
     const TYPE_DEFAULT = 'Certificado';
-    const TYPE_PARTICIPATION = 'Certificado de participación';
-    const TYPE_CAPACITATION = 'Certificado de capacitación';
-    const TYPE_APPROBATION = 'Certificado de aprobación';
+    const TYPE_PARTICIPATION = 'Participación';
+    const TYPE_CAPACITATION = 'Capacitación';
+    const TYPE_APPROBATION = 'Aprobación';
     const TYPE_DIPLOMA = 'Diploma';
     /**
      * @ORM\Id
@@ -88,7 +89,7 @@ class Certificate
     private $containsResolution;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Image::class)
+     * @ORM\ManyToOne(targetEntity=Image::class,cascade={"persist"})
      */
     private $logo;
 
@@ -96,6 +97,12 @@ class Certificate
      * @ORM\ManyToOne(targetEntity=Level::class)
      */
     private $modality;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Evaluation::class, inversedBy="certificateObj", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $evaluation;
 
 
 
@@ -257,6 +264,18 @@ class Certificate
     public function setModality(?Level $modality): self
     {
         $this->modality = $modality;
+
+        return $this;
+    }
+
+    public function getEvaluation(): ?Evaluation
+    {
+        return $this->evaluation;
+    }
+
+    public function setEvaluation(Evaluation $evaluation): self
+    {
+        $this->evaluation = $evaluation;
 
         return $this;
     }

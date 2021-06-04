@@ -48,15 +48,16 @@ class Unit
     private $activities;
 
     /**
-     * @ORM\OneToMany(targetEntity=Evaluation::class, mappedBy="unit")
+     * @ORM\OneToOne(targetEntity=Evaluation::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
-    private $evaluations;
+    private $evaluation;
+
 
     public function __construct()
     {
         $this->uuid = Uuid::v1();
         $this->activities = new ArrayCollection();
-        $this->evaluations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -135,32 +136,14 @@ class Unit
         return $this->name;
     }
 
-    /**
-     * @return Collection|Evaluation[]
-     */
-    public function getEvaluations(): Collection
+    public function getEvaluation(): ?Evaluation
     {
-        return $this->evaluations;
+        return $this->evaluation;
     }
 
-    public function addEvaluation(Evaluation $evaluation): self
+    public function setEvaluation(?Evaluation $evaluation): self
     {
-        if (!$this->evaluations->contains($evaluation)) {
-            $this->evaluations[] = $evaluation;
-            $evaluation->setUnit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeEvaluation(Evaluation $evaluation): self
-    {
-        if ($this->evaluations->removeElement($evaluation)) {
-            // set the owning side to null (unless already changed)
-            if ($evaluation->getUnit() === $this) {
-                $evaluation->setUnit(null);
-            }
-        }
+        $this->evaluation = $evaluation;
 
         return $this;
     }

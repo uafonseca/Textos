@@ -32,6 +32,9 @@
                         {% if evaluation.certificate %}
                             <a href="{{ path('certificate_new', {'id': evaluation.id}) }}" class="certificate text-info" data-tippy-content="Generar certificado"><i class="fa fa-certificate"></i></a>
                         {% endif %}
+                        {% if evaluation.certificateObj %}
+                            <a href="{{ path('certificate_generate', {'id': evaluation.certificateObj.id}) }}" class="certificate text-info" data-tippy-content="Ver certificado"><i class="fa fa-eye"></i></a>
+                        {% endif %}
                     </td>
                 </tr>
             {% else %}

@@ -6,6 +6,12 @@
         .file-default-preview {
             height: 248px !important;
         }
+        a.disabled {
+            /* Make the disabled links grayish*/
+            color: gray;
+            /* And disable the pointer events */
+            pointer-events: none;
+        }
     </style>
 {% endblock %}
 {% block title %}New Unit
@@ -55,7 +61,7 @@
                                         </div>
                                     </div>
                                     <a href="{{ path('evaluation_new',{'unit': unit.id }) }}"
-                                       class="add-evaluation btn btn-info mt-4">
+                                       class="add-evaluation btn btn-info mt-4 {% if unit.evaluation is not null %}disabled{% endif %}">
                                         <i class="fa fa-school"></i>
                                         Adicionar evaluación
                                     </a>

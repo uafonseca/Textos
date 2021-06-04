@@ -1,4 +1,22 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+    <div class="row">
+        <div class="col-md-3">{{ form_row(form.company) }}</div>
+        <div class="col-md-3">{{ form_row(form.type) }}</div>
+        <div class="col-md-3">{{ form_row(form.course) }}</div>
+        <div class="col-md-3">{{ form_row(form.modality) }}</div>
+        <div class="col-md-3">{{ form_row(form.hours) }}</div>
+        <div class="col-md-3">{{ form_row(form.startDate) }}</div>
+        <div class="col-md-3">{{ form_row(form.endDate) }}</div>
+        <div class="col-md-6">{{ form_row(form.representative) }}</div>
+        <div class="col-md-6">{{ form_row(form.representativePosition) }}</div>
+        <div class="col-md-6">{{ form_row(form.trainerName) }}</div>
+        <div class="col-md-6">{{ form_row(form.trainerPosition) }}</div>
+        <div class="col-md-4">{{ form_row(form.containsResolution) }}</div>
+        <div class="col-md-4">{{ form_row(form.logo) }}</div>
+        <div class="col-md-12 col-sm-12 mt-3">
+            <button class="btn " style="background-color: {{ colors()['primary'] }}; color:white;">
+			    <i class="fa fa-save"></i>
+		    {{ button_label|default('Adicionar') }}</button>
+		</div>
+    </div>
 {{ form_end(form) }}

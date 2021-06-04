@@ -62,10 +62,15 @@ class Answer
      */
     private $answerQuestions;
 
+    /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $timeLeft;
+
+
     public function __construct()
     {
         $this->progress = 0;
-        $this->startDate = new \DateTime();
         $this->answerQuestions = new ArrayCollection();
     }
 
@@ -182,6 +187,18 @@ class Answer
     public function setAttemptsMade(int $attemptsMade): void
     {
         $this->attemptsMade = $attemptsMade;
+    }
+
+    public function getTimeLeft(): ?\DateTimeInterface
+    {
+        return $this->timeLeft;
+    }
+
+    public function setTimeLeft(?\DateTimeInterface $timeLeft): self
+    {
+        $this->timeLeft = $timeLeft;
+
+        return $this;
     }
 
 

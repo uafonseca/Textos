@@ -21,6 +21,7 @@ class CertificateType extends AbstractType
         $builder
             ->add('type', ChoiceType::class,[
                 'label' => 'Tipo de certificado',
+                'placeholder' => '--Seleccione--',
                 'choices' => [
                     Certificate::TYPE_DEFAULT => Certificate::TYPE_DEFAULT,
                     Certificate::TYPE_PARTICIPATION => Certificate::TYPE_PARTICIPATION,
@@ -32,6 +33,7 @@ class CertificateType extends AbstractType
             ->add('modality', EntityType::class,[
                 'label' => 'Modalidad',
                 'class' => Level::class,
+                'placeholder' => '--Seleccione--',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('m');
                 }
@@ -45,7 +47,7 @@ class CertificateType extends AbstractType
                 'placeholder' => 'dd-mm-yyyy',
                 'format' => 'dd-MM-yyyy',
                 'widget' => 'single_text',
-                'required' => false
+                // 'required' => false
             ])
             ->add('endDate',null,[
                 'label' => 'Fecha final',
@@ -53,7 +55,7 @@ class CertificateType extends AbstractType
                 'placeholder' => 'dd-mm-yyyy',
                 'format' => 'dd-MM-yyyy',
                 'widget' => 'single_text',
-                'required' => false
+                // 'required' => false
             ])
             ->add('representative',null,[
                 'label' => 'Representante empresa'
@@ -68,11 +70,13 @@ class CertificateType extends AbstractType
                 'label' => 'Cargo'
             ])
             ->add('containsResolution',null, [
-                'label' => 'Contiene resolucion'
+                'label' => 'Contiene resolucion',
+                'required' => false
             ])
             ->add('company',null, [
                 'label' => 'Empresa que certifica',
                 'class' => Company::class,
+                'placeholder' => '--Seleccione--',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('m');
                 }
@@ -80,14 +84,14 @@ class CertificateType extends AbstractType
             ->add('course',null, [
                 'label' => 'Curso',
                 'class' => Book::class,
+                'placeholder' => '--Seleccione--',
                 'query_builder' => function(EntityRepository $repository){
                     return $repository->createQueryBuilder('m');
                 }
             ])
             ->add('logo',ImageType::class,[
                 'label' => 'Logo',
-                // 'required' => !$options['edit'],
-                // 'help' => 'Dimensiones de 1180 x 350 píxeles',
+                'required' => false
             ])
         ;
     }

@@ -1,18 +1,18 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}Evaluation{% endblock %}
-
+{% set points = getPoints(evaluation) %}
+{% set approved = points['points'] >= points['max'] %}
+{% set is_writable = answer.attemptsMade < evaluation.attempts and not approved %}
 {% block body %}
-    {% set points = getPoints(evaluation) %}
-    {% set approved = points['points'] >= points['max'] %}
-    <div class="card" xmlns="">
+    <div id='evaluation' class="card"  {% if is_writable %} style="opacity:0" {% endif %}>
         <div class="card-header">
             <div class="row">
                 <div class="col-md-4">
                     {{ evaluation.title |upper }}
                 </div>
                 <div class="col-md-4 text-center">
-                    {% set is_writable = answer.attemptsMade < evaluation.attempts and not approved %}
+                    
                     {% if exist %}
                         <h3>Puntos: {{ points['points'] }}/{{ evaluation.points }}</h3>
                         <h3>{{ points['status'] | raw }}</h3>
@@ -20,6 +20,9 @@
                 </div>
                 <div class="col-md-4">
                     <h4>Intentos disponibles: {{ evaluation.attempts - answer.attemptsMade }}</h4>
+                    {% if is_writable %}
+                        <h4 class="float-left mr-1 mt-1">Tiempo disponible: </h4><h2 > <strong id="timer">{{evaluation.time }}</strong> </h2>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -120,6 +123,8 @@
     <script>
         const EVALUATION_ID = '{{ evaluation.id }}'
         const ANSWER_ID = '{{ answer.id }}'
+        const MINUTES = '{{evaluation.time}}';
+        const IS_WRITABLE = '{{is_writable}}';
     </script>
     {{ encore_entry_script_tags('answers.index') }}
 {% endblock %}

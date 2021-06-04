@@ -1,0 +1,104 @@
+
+{% block body %}
+    <table class="table" width="100%" cellspacing="0"  style="margin-top: 20px">
+        <tbody>
+            <tr>
+                <td style="float:left">
+                    {% if certificate.logo is not null %}
+                        <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(certificate.logo, 'imagenFile') }}" width=100 height=50/>
+                    {% endif %}
+                </td>
+                <td style="float:right!important">
+                    {% if getCompany() is not null %}
+                        <img style="float:right" src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(getCompany().logo, 'imagenFile') }}" width=100 height=50/>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table" width="100%" cellspacing="0"  style="margin-top: 20px">
+        <tbody>
+         <tr style="height:180px"></tr>
+            <tr>
+                <td style="text-align:center">
+                    {% if getCompany() is not null %}
+                      <h1><strong>{{getCompany().name |upper}}</strong></h1>
+                    {% endif %}
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center">
+                      <h3>Otorga el presente</h3>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center">
+                    {% if certificate.type == 'Certificado' %}
+                      <h1>CERTIFICADO</h1>
+                    {% elseif certificate.type == 'Diploma'%}
+                        <h1>DIPLOMA</h1>
+                     {% else %}
+                        <h1>CERTIFICADO DE {{ certificate.type|upper }}</h1>
+                    {% endif %}
+                    
+                </td>
+            </tr>
+             <tr>
+                <td style="text-align:center">
+                      <h3>a</h3>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align:center">
+                      <h2><em>________________________________________</em></h2>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <table class="table" width="100%" cellspacing="0"  style="margin-top: 20px">
+        <tbody>
+            <tr>
+             <tr style="height:80px"></tr>
+                <td style="text-align:center">
+                    <h3>Por haber culminado el curso {{certificate.course.title |upper }} 
+                    modalidad {{ certificate.modality }} de {{ certificate.hours }} horas de duración, desde
+                    el {{certificate.startDate |date("d-m-Y")}} hasta el {{ certificate.endDate |date("d-m-Y")}} </h3>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table" width="100%" cellspacing="0">
+        <tbody>
+            <tr style="height:180px"></tr>
+            <tr>
+                <td style="text-align:center">
+                    {% if certificate.representative and certificate.representativePosition %}
+                        _________________________<br>
+                        Nombre: {{certificate.representative}} <br>
+                        Cargo: {{certificate.representativePosition}} <br>
+                    {% endif %}
+                </td>
+                <td style="text-align:center">
+                    {% if certificate.trainerName and certificate.trainerPosition %}
+                        _________________________<br>
+                        Nombre: {{certificate.trainerName}} <br>
+                        Cargo: {{certificate.trainerPosition}} <br>
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table" width="100%" cellspacing="0">
+        <tbody>
+            <tr style="height:180px"></tr>
+            <tr>
+                <td style="text-align:right">
+                    {% if certificate.containsResolution %}
+                        Resolución: {{certificate.containsResolution}}
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}

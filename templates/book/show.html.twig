@@ -38,8 +38,8 @@
 													{{ item.name }}
 												</a>
 											</button>
-											{% if item.evaluations|length > 0 %}
-												<a href="{{ path('evaluation_show', {'uuid': item.evaluations[0].uuid}) }}" style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
+											{% if item.evaluation is not null %}
+												<a href="{{ path('evaluation_show', {'uuid': item.evaluation.uuid}) }}" style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
 													<i class="fa fa-graduation-cap"></i>
 													Evaluación
 												</a>

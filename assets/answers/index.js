@@ -1,7 +1,61 @@
 app.answers = {
     index: {
-        validate: () => {
+        start: () => {
+            if (IS_WRITABLE) {
+                $('#evaluation').css('opacity', 0);
+                $.confirm({
+                    title: 'Aviso',
+                    content: 'Acepte para comenzar',
+                    buttons: {
+                        confirm: {
+                            text: 'Confirmar',
+                            btnClass: 'btn-primary',
+                            action: function () {
+                                $('#evaluation').css('opacity', 1);
+                                $.ajax({
+                                    url: Routing.generate('start-answer', {id:ANSWER_ID}),
+                                    type: 'post',
+                                    success: function(response){
+                                        if (response.type === 'success') {
+                                            fetchdata();
+                                         }
+                                    }
+                                   });
+                            }
+                        },
+                    }
+                });   
+            }
+            function fetchdata() {
 
+            
+                let minutes = MINUTES - 1;
+                let seconds = 59;
+
+                  // Run myfunc every second
+                var myfunc = setInterval(function() {
+
+                    if (seconds === 0) {
+                        minutes -= 1;
+                        seconds = 59;
+                    } else {
+                        seconds--;
+                    }
+                    if (minutes < 3) {
+                        $('#timer').css('color','red')    
+                     }
+                    $('#timer').html(pad(minutes)+':'+pad(seconds))
+                        
+                    if (minutes <= 0 && seconds<= 0) {
+                        clearInterval(myfunc);
+                        $('.send').trigger('click');
+                    }
+                }, 1000);
+                
+                function pad(d) {
+                    return (d < 10) ? '0' + d.toString() : d.toString();
+                }
+               }
         },
         submit: () => {
             $('.send').on('click', function (event) {
@@ -53,6 +107,6 @@ app.answers = {
     }
 }
 $(() => {
-    app.answers.index.validate();
+    app.answers.index.start();
     app.answers.index.submit();
 })

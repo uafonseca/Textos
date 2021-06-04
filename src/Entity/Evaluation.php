@@ -62,11 +62,6 @@ class Evaluation
     private $time;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Unit::class, inversedBy="evaluations")
-     */
-    private $unit;
-
-    /**
      * @ORM\OneToMany(targetEntity=Question::class, mappedBy="evaluation",cascade={"persist","remove"})
      */
     private $questions;
@@ -91,6 +86,18 @@ class Evaluation
      */
     private $accumulated = 0;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Unit::class, cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
+     */
+    private $unit;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Certificate::class, mappedBy="evaluation", cascade={"persist", "remove"})
+     */
+    private $certificateObj;
+
+  
     public function __construct()
     {
         $this->questions = new ArrayCollection();
@@ -186,17 +193,6 @@ class Evaluation
         return $this;
     }
 
-    public function getUnit(): ?Unit
-    {
-        return $this->unit;
-    }
-
-    public function setUnit(?Unit $unit): self
-    {
-        $this->unit = $unit;
-
-        return $this;
-    }
 
     /**
      * @return Collection|Question[]
@@ -293,4 +289,35 @@ class Evaluation
 
         return $this;
     }
+
+    public function getUnit(): ?Unit
+    {
+        return $this->unit;
+    }
+
+    public function setUnit(?Unit $unit): self
+    {
+        $this->unit = $unit;
+
+        return $this;
+    }
+
+    public function getCertificateObj(): ?Certificate
+    {
+        return $this->certificateObj;
+    }
+
+    public function setCertificateObj(Certificate $certificateObj): self
+    {
+        // set the owning side of the relation if necessary
+        if ($certificateObj->getEvaluation() !== $this) {
+            $certificateObj->setEvaluation($this);
+        }
+
+        $this->certificateObj = $certificateObj;
+
+        return $this;
+    }
+
+
 }

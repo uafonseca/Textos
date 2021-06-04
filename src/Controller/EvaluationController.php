@@ -14,6 +14,8 @@ use App\Exception\AnswerRewriteException;
 use App\Form\EvaluationType;
 use App\Form\QuestionType;
 use App\Repository\EvaluationRepository;
+use DateInterval;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,7 +182,9 @@ class EvaluationController extends AbstractController
         $evaluation = new Evaluation();
         $entityManager = $this->getDoctrine()->getManager();
         if (null != $request->query->get('unit')) {
-            $evaluation->setUnit($entityManager->getRepository(Unit::class)->find($request->query->get('unit')));
+            $unit = $entityManager->getRepository(Unit::class)->find($request->query->get('unit'));
+            $evaluation->setUnit($unit);
+            $unit->setEvaluation($evaluation);
         }
         $form = $this->createForm(EvaluationType::class, $evaluation, [
             'action' => $this->generateUrl('evaluation_new', [
@@ -229,10 +233,55 @@ class EvaluationController extends AbstractController
             $userAnswer = $this->buildAnswer($evaluation);
         }
 
+        if (!$userAnswer->getTimeLeft() instanceof \DateTimeInterface ){
+            $userAnswer->setTimeLeft(new DateTime('now'));
+        }
+        
+
+        $this->getDoctrine()->getManager()->flush();
+
         return $this->render('evaluation/show.html.twig', [
             'evaluation' => $evaluation,
             'answer' => $userAnswer,
             'exist' => $exist
+        ]);
+    }
+
+    /**
+     * Method updateTime
+     *
+     * @param Answer $answer [explicite description]
+     *
+     * @return void
+     * 
+     * @Route("/calculate-time-diff/{id}", name="calculate-time-diff", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function updateTime(Answer $answer){
+        $value = $answer->getTimeLeft();
+        $value = $value->sub(new DateInterval('PT1S'));
+        $answer->setTimeLeft($value);
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+        return new JsonResponse([
+            'type' => 'success',
+            'diff' => $answer->getTimeLeft()
+        ]);
+    }
+    
+    /**
+     * Method start
+     *
+     * @param Answer $answer [explicite description]
+     *
+     * @return void
+     * 
+     * @Route("/start-answer/{id}", name="start-answer", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function start(Answer $answer){
+        $answer->setStartDate(new DateTime('now'));
+        $this->getDoctrine()->getManager()->flush();
+        return new JsonResponse([
+            'type' => 'success',
         ]);
     }
 
@@ -255,10 +304,12 @@ class EvaluationController extends AbstractController
             $choiceObj = $em->getRepository(ChoiceAnswer::class)->find($id);
             $choiceObj->setIsSelected($choicesValues[$key] != 0);
         }
-        foreach ($choicesTextAnswers as $key => $id){
-            /** @var ChoiceAnswer $choiceObj */
-            $choiceObj = $em->getRepository(ChoiceAnswer::class)->find($id);
-            $choiceObj->setSingleAnswerText($choicesTextValues[$key]);
+        if(is_array($choicesTextAnswers)){
+            foreach ($choicesTextAnswers as $key => $id){
+                /** @var ChoiceAnswer $choiceObj */
+                $choiceObj = $em->getRepository(ChoiceAnswer::class)->find($id);
+                $choiceObj->setSingleAnswerText($choicesTextValues[$key]);
+            }
         }
         $answer = $em->getRepository(Answer::class)->find($request->request->get('ANSWER_ID'));
         $answer->setAttemptsMade($answer->getAttemptsMade() + 1);
