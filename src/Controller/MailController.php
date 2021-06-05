@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\AppEvents;
 use App\Datatables\Tables\MailDatatable;
+use App\Entity\Book;
 use App\Entity\Mail;
 use App\Entity\UserGroup;
 use App\Event\MailEvent;
@@ -78,6 +79,40 @@ class MailController extends AbstractController
         return $this->render('mail/index.html.twig', [
             'datatable' => $datatable,
             'group' => $userGroup
+        ]);
+    }
+
+     /**
+     * @Route("/by-user/{uuid}", name="mail_by_user", methods={"GET", "POST"})
+     */
+    public function showByUser(Book $book,Request $request): Response
+    {
+
+        $datatable = $this->datatableFactory->create(MailDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('mail_by_user',[
+                'uuid' => $book->getUuid(),
+            ]),
+            'vich' => $this->vich
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->join('mail.recipients', 'recipient')
+            ->leftjoin('mail.userGroup', 'userGroup')
+            ->andwhere('recipient =:user')
+            ->andwhere('userGroup.course =:course')
+            ->setParameter('course',$book)
+            ->setParameter('user',$this->getUser());
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail/table.html.twig', [
+            'datatable' => $datatable,
         ]);
     }
 

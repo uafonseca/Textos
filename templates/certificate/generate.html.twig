@@ -50,7 +50,13 @@
             </tr>
             <tr>
                 <td style="text-align:center">
-                      <h2><em>________________________________________</em></h2>
+                      <h2>
+                      {% if user is not null%}
+                        <em>{{ user.name|capitalize ~ ' '~ user.firstName|capitalize }}</em>
+                      {% else %}
+                        <em>________________________________________</em>
+                      {% endif %}
+                      </h2>
                 </td>
             </tr>
         </tbody>

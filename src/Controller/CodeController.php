@@ -48,10 +48,10 @@ class CodeController extends AbstractController
 	/** @var CodeRepository */
 	private $codeRepository;
 
-	   /** @var Pdf */
-	   private $pdf;
+	/** @var Pdf */
+	private $pdf;
 
-	   private $kernel;
+	private $kernel;
 
     /**
      * UserController constructor.
@@ -62,11 +62,10 @@ class CodeController extends AbstractController
      */
 	public function __construct(
 		DatatableFactory $datatableFactory,
-		 DatatableResponse $datatableResponse,
-		  CodeRepository $codeRepository,
-		  Pdf $pdf,
-		  KernelInterface $kernel
-		  )
+		DatatableResponse $datatableResponse,
+		CodeRepository $codeRepository,
+		Pdf $pdf,
+		KernelInterface $kernel  )
 	{
 		$this->datatableFactory = $datatableFactory;
 		$this->datatableResponse = $datatableResponse;
@@ -282,8 +281,6 @@ class CodeController extends AbstractController
             'codes' => $this->codeRepository->myCodes($this->getUser())
         ]);
     }
-
-
 	/**
 	 *@Route("print/user/{uuid}/", name="print_user_info")
 	 */

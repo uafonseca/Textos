@@ -104,16 +104,20 @@ class CertificateController extends AbstractController
      * 
      * @Route("/generate/{id}", name="certificate_generate", methods={"GET"})
      */
-    public function generate(Certificate $certificate){
+    public function generate(Certificate $certificate, Request $request){
         $web_uploads_Path = $this->kernel->getProjectDir() . '/public/uploads/';
         $path = 'pdf/';
         $documento_nombre = 'reporte.pdf';
 
+        $user = null;
+        if(null != $id = $request->query->get('user'))
+            $user = $this->getUser();
 
         $this->pdf->generateFromHtml(
             $this->render(
                 'certificate/generate.html.twig', [
                     'certificate' => $certificate,
+                    'user' => $user
                 ]
             )->getContent(),
             $web_uploads_Path . $path . $documento_nombre,

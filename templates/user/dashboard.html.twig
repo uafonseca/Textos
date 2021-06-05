@@ -1,6 +1,17 @@
 {% extends 'layout.html.twig' %}
 {% import "macros/card-macro.html.twig" as card_macro %}
 
+{% macro actions(book) %}
+	<a href="{{path('mail_by_user',{uuid:book.uuid}) }}" class="mail float-right m-1 text-success" data-tippy-content="Ver mensajes"><i class="fa fa-envelope"></i></a>
+	{% for item in book.units %}
+		{% if item.evaluation is not null and item.evaluation.certificateObj is not null %}
+			<a href="{{ path('certificate_generate',{id:item.evaluation.certificateObj.id, user: app.user.id})}}" class="certificate float-right m-1 text-info" data-tippy-content="Certificado"><i class="fa fa-certificate"></i></a>
+		{% endif %}	
+	{% endfor %}
+{% endmacro %}
+
+{% import _self as actions_macro %}
+
 {% block title %}Dashboard
 {% endblock %}
 {% block stylesheets %}
@@ -39,15 +50,14 @@
 									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
 										Ingresar
 									</a>
+									{{ actions_macro.actions(item) }}
 								{% elseif code.endDate > 'now'|date %}
 									<p class="text-muted">Inicio:
-										{{ code.starDate|date('d/m/Y') }}
-										|
-										                                        Fin:
-										{{ code.endDate|date('d/m/Y') }}</p>
+										{{ code.starDate|date('d/m/Y') }}|Fin:{{ code.endDate|date('d/m/Y') }}</p>
 									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
 										Ingresar
 									</a>
+									{{ actions_macro.actions(item) }}
 								{%else %}
 									<a href="#" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;">
 										<i class="fa fa-exclamation-triangle"></i>
@@ -68,4 +78,19 @@
 		{% endfor %}
 	</div>
 
+{% endblock %}
+{% block javascripts %}
+	<script type="text/javascript">
+		$(() => {
+			$('.certificate, .mail').on('click', function (event){
+				event.preventDefault();
+				const scope = $(this);
+				app.dialogs.create({
+					url: scope.attr('href'),
+					containerFluid: true,
+					columnClass: 'col-md-8'
+				})
+			})
+		})
+	</script>
 {% endblock %}

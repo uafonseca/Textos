@@ -340,6 +340,4 @@ class BookController extends AbstractController
     {
         return $this->getUser()->getCompany();
     }
-
-
 }

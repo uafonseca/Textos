@@ -28,7 +28,7 @@
 				<li class="sidebar-item {% if currentPath == path('user_dashboard') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_dashboard') }}">
 						<i class="align-middle" data-feather="sliders"></i>
-						<span class="align-middle">Mis Textos</span>
+						<span class="align-middle">Mis Cursos</span>
 					</a>
 				</li>
 
@@ -38,10 +38,17 @@
 						<span class="align-middle">Mis Códigos</span>
 					</a>
 				</li>
+				
+				{# <li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
+						<i class="align-middle" data-feather="user"></i>
+						<span class="align-middle">Mis cursos</span>
+					</a>
+				</li> #}
 
 				<li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
-						<i class="align-middle" data-feather="user"></i>
+						<i class="align-middle" data-feather="check-circle"></i>
 						<span class="align-middle">Perfil</span>
 					</a>
 				</li>
