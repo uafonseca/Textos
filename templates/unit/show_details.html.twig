@@ -11,7 +11,7 @@
 			<h3 class="card-text">
 				{{ unit.name }}
 				<a href="{{ path('book_show', {'uuid': unit.book.uuid}) }}" class="btn btn-warning btn-sm pull-right ml-3 mt-1">Ver unidades</a>
-				{% if unit.evaluations|length > 0 %}
+				{% if unit.evaluation is not null %}
 					<a href="{{ path('evaluation_show', {'uuid': unit.evaluations[0].uuid}) }}" style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
 						<i class="fa fa-graduation-cap"></i>
 						Evaluación

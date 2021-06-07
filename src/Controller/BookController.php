@@ -115,7 +115,7 @@ class BookController extends AbstractController
 
         $datatable->buildDatatable([
             'url' => $this->generateUrl('book_user', [
-                'uuid' => $user->getUuid()
+                'uuid' => $user->getUuid(),
             ]),
             'user' => $user
         ]);
