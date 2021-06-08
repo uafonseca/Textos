@@ -78,7 +78,8 @@
         "preferred-install": {
             "*": "dist"
         },
-        "sort-packages": true
+        "sort-packages": true,
+        "process-timeout": 120000
     },
     "autoload": {
         "psr-4": {

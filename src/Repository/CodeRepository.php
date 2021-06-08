@@ -40,7 +40,7 @@ class CodeRepository extends ServiceEntityRepository
             ->setParameter('book', $book)
             ->setParameter('user', $user)
             ->getQuery()
-            ->getOneOrNullResult();
+            ->getResult();
     }
 
     /**

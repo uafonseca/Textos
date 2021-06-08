@@ -32,7 +32,10 @@
 						</div>
 					</div
 				</div>
-				<div class="col-md-3">{{ form_row(form.file) }}</div>
+				<div class="col-md-3">
+					<a href="{{asset('utiles/formato_invitados.xlsx')}}" donwload class="text-info">Descargar formato</a>
+					{{ form_row(form.file) }}
+				</div>
 			</div>
 
 			<div class="row">

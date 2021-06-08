@@ -110,8 +110,16 @@ class CertificateController extends AbstractController
         $documento_nombre = 'reporte.pdf';
 
         $user = null;
-        if(null != $id = $request->query->get('user'))
+        if(null !=  $request->query->get('user')){
             $user = $this->getUser();
+            $status = $this->getPoints($certificate->getEvaluation());
+            if(!$status['exist'] ){
+                return new Response('No existe una calificacion');
+            }
+            if(!$status['status'] ){
+                return new Response('No cumplio con los requisitos del curso');
+            }
+        }
 
         $this->pdf->generateFromHtml(
             $this->render(
@@ -127,6 +135,37 @@ class CertificateController extends AbstractController
         return $this->render('pdf_templates/iframe.html.twig', [
             'pdf' => '/uploads/' . $path . $documento_nombre,
         ]);
+    }
+
+    /**
+     * @param \App\Entity\Evaluation $evaluation
+     * @return string[]
+     */
+    public function getPoints(Evaluation $evaluation): array
+    {
+        $points = 0;
+        $max = $evaluation->getPercentage();
+        $current = false;
+        foreach ($evaluation->getAnswers() as $answer) {
+            if($answer->getOwner() === $this->getUser()){
+                $current = true;
+                foreach ($answer->getAnswerQuestions() as $answerQuestion) {
+                    foreach ($answerQuestion->getChoicesAnswers() as $choicesAnswer)
+                        if ($choicesAnswer->getIsSelected()){
+                            if ($choicesAnswer->getChoice()->getIsCorrect())
+                                $points += $choicesAnswer->getChoice()->getValue();
+                        }
+    
+                }
+            }
+        }
+
+        return [
+            'max'       => $max,
+            'points'    => $points,
+            'status'    => $points >= $max ? true : false,
+            'exist'   => $current
+        ];
     }
 
     /**

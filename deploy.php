@@ -12,7 +12,7 @@ set('lideresv2', 'my_project');
 set('repository', 'https://github.com/uafonseca/lideres.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
-set('git_tty', true);
+set('git_tty', false);
 
 // Shared files/dirs between deploys 
 add('shared_files', []);
@@ -30,7 +30,9 @@ add('shared_dirs', ['var/log', 'var/sessions', 'vendor','public/uploads']);
 // Writable dirs by web server 
 add('writable_dirs', ['var/log','var/cache','var/sessions', 'public/']);
 
+set('ssh_multiplexing', false);
 
+set('default_timeout', 120000);
 // Hosts
 
 host('v2')

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Datatables\Tables\BookDatatable;
 use App\Datatables\Tables\UserCourseDatatable;
+use App\Datatables\Tables\UsersGroupDatatable;
 use App\Entity\Activity;
 use App\Entity\Book;
 use App\Entity\Category;
@@ -218,6 +219,36 @@ class BookController extends AbstractController
         }
         return $this->redirectToRoute('book_activate', [
             'uuid' => $book->getUuid(),
+        ]);
+    }
+
+    /**
+     *  @Route("/users/{id}", name="show_book_users", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function getParticipants(Book $book, Request $request){
+        $datatable = $this->datatableFactory->create(UsersGroupDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('show_book_users', [
+                'id' => $book->getId()
+            ]),
+            'actions' => 'hide'
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+
+            $qb
+                ->getQb()
+                ->join('user.userGroups', 'userGroup')
+                ->where('userGroup.course =:book')
+                ->setParameter('book', $book);
+
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('user_group/usersDatatable.html.twig', [
+            'datatable' => $datatable
         ]);
     }
 

@@ -93,6 +93,10 @@ class CertificateType extends AbstractType
                 'label' => 'Logo',
                 'required' => false
             ])
+            ->add('firm',ImageType::class,[
+	            'label'=>'Firma del capacitador',
+	            'required' => false,
+            ])
         ;
     }
 

@@ -93,6 +93,10 @@ class Certificate
      */
     private $logo;
 
+     /**
+     * @ORM\ManyToOne(targetEntity=Image::class,cascade={"persist"})
+     */
+    private $firm;
     /**
      * @ORM\ManyToOne(targetEntity=Level::class)
      */
@@ -252,6 +256,18 @@ class Certificate
     public function setLogo(?Image $logo): self
     {
         $this->logo = $logo;
+
+        return $this;
+    }
+
+    public function getFirm(): ?Image
+    {
+        return $this->firm;
+    }
+
+    public function setFirm(?Image $firm): self
+    {
+        $this->firm = $firm;
 
         return $this;
     }

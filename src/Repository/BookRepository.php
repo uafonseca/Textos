@@ -104,6 +104,10 @@ class BookRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    public function getParticipants(Book $book){
+
+    }
+
     // /**
     //  * @return Book[] Returns an array of Book objects
     //  */

@@ -1,22 +1,22 @@
 
 {% block body %}
-    <table class="table" width="100%" cellspacing="0"  style="margin-top: 20px">
+    <table class="table" width="100%" cellspacing="0"  style="">
         <tbody>
             <tr>
                 <td style="float:left">
                     {% if certificate.logo is not null %}
-                        <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(certificate.logo, 'imagenFile') }}" width=100 height=50/>
+                        <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(certificate.logo, 'imagenFile') }}" width=180 height=150/>
                     {% endif %}
                 </td>
                 <td style="float:right!important">
                     {% if getCompany() is not null %}
-                        <img style="float:right" src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(getCompany().logo, 'imagenFile') }}" width=100 height=50/>
+                        <img style="float:right" src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(getCompany().logo, 'imagenFile') }}" width=180 height=150/>
                     {% endif %}
                 </td>
             </tr>
         </tbody>
     </table>
-    <table class="table" width="100%" cellspacing="0"  style="margin-top: 20px">
+    <table class="table" width="100%" cellspacing="0">
         <tbody>
          <tr style="height:180px"></tr>
             <tr>
@@ -62,14 +62,18 @@
         </tbody>
     </table>
     
-    <table class="table" width="100%" cellspacing="0"  style="margin-top: 20px">
+    <table class="table" width="100%" cellspacing="0">
         <tbody>
-            <tr>
              <tr style="height:80px"></tr>
                 <td style="text-align:center">
                     <h3>Por haber culminado el curso {{certificate.course.title |upper }} 
                     modalidad {{ certificate.modality }} de {{ certificate.hours }} horas de duración, desde
                     el {{certificate.startDate |date("d-m-Y")}} hasta el {{ certificate.endDate |date("d-m-Y")}} </h3>
+                </td>
+            </tr>
+            <tr style=""></tr>
+                <td style="text-align:center">
+                    {{'now'|date('d-m-Y')}}
                 </td>
             </tr>
         </tbody>
@@ -80,16 +84,24 @@
             <tr>
                 <td style="text-align:center">
                     {% if certificate.representative and certificate.representativePosition %}
-                        _________________________<br>
-                        Nombre: {{certificate.representative}} <br>
-                        Cargo: {{certificate.representativePosition}} <br>
+                        {% if getCompany().firm is not null %}
+                            <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(getCompany().firm, 'imagenFile') }}" width=150 height=100/><br>
+                        {% else %}
+                            _________________________<br>
+                        {% endif %}
+                         {{certificate.representative}} <br>
+                         {{certificate.representativePosition}} <br>
                     {% endif %}
                 </td>
                 <td style="text-align:center">
                     {% if certificate.trainerName and certificate.trainerPosition %}
-                        _________________________<br>
-                        Nombre: {{certificate.trainerName}} <br>
-                        Cargo: {{certificate.trainerPosition}} <br>
+                        {% if certificate.firm is not null %}
+                            <img src="{{ app.request.schemeAndHttpHost ~ vich_uploader_asset(certificate.firm, 'imagenFile') }}" width=150 height=100/><br>
+                        {% else %}
+                            _________________________<br>
+                        {% endif %}
+                         {{certificate.trainerName}} <br>
+                         {{certificate.trainerPosition}} <br>
                     {% endif %}
                 </td>
             </tr>

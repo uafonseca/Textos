@@ -44,6 +44,11 @@ class CompanyType extends AbstractType
 	            'required' => false,
                 'help' => 'Dimensiones recomendadas 120 x 100'
             ])
+            ->add('firm',ImageType::class,[
+	            'label'=>'Firma del representante legal para los certificados',
+	            'required' => false,
+                'help' => 'Dimensiones recomendadas 120 x 100'
+            ])
             ->add('identity',IdentityType::class,[
                 'label' => 'Identidad'
             ])

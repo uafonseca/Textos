@@ -32,7 +32,7 @@ time_zone = "+00:00";
 -- Estructura de tabla para la tabla `estado`
 --
 
-CREATE TABLE state
+CREATE TABLE  IF NOT EXISTS state
 (
     id        INT AUTO_INCREMENT NOT NULL,
     contry_id INT DEFAULT NULL,
@@ -2057,8 +2057,8 @@ VALUES (1, 3, 'Azerbaijan'),
 --
 -- Filtros para la tabla `estado`
 --
-ALTER TABLE `estado`
-    ADD CONSTRAINT `FK_4786469191104EC2` FOREIGN KEY (`ubicacionpaisid`) REFERENCES `ubicacionpais` (`id`);
+--ALTER TABLE `estado`
+--    ADD CONSTRAINT `FK_4786469191104EC2` FOREIGN KEY (`ubicacionpaisid`) REFERENCES `ubicacionpais` (`id`);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

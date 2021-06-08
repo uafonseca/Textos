@@ -71,14 +71,16 @@ class UsersGroupDatatable extends AbstractDatatable
             ])
             ->add('email', Column::class, [
                 'title' => 'Email',
-            ])
-            ->add(null, ActionColumn::class, [
-                'title' => $this->translator->trans('sg.datatables.actions.title'),
-                'actions' => [
-                    TableActions::delete('user_delete')
-                ],
-            ])
-            ;
+            ]);
+            if(!isset($options['actions'])){
+                $this->columnBuilder
+                ->add(null, ActionColumn::class, [
+                    'title' => $this->translator->trans('sg.datatables.actions.title'),
+                    'actions' => [
+                        TableActions::delete('user_delete')
+                    ],
+                ]);
+            }
     }
 
     public function getEntity()
