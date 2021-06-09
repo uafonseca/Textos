@@ -65,6 +65,11 @@ class Activity
 	private $file;
 
     /**
+     * @ORM\Column(type="text", nullable=true)
+     */
+    private $code;
+
+    /**
      * @ORM\ManyToOne(targetEntity=Unit::class, inversedBy="activities",cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -167,6 +172,26 @@ class Activity
     public function setFile(?Image $file): self
     {
         $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of code
+     */ 
+    public function getCode()
+    {
+        return $this->code;
+    }
+
+    /**
+     * Set the value of code
+     *
+     * @return  self
+     */ 
+    public function setCode($code)
+    {
+        $this->code = $code;
 
         return $this;
     }

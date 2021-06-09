@@ -14,13 +14,23 @@
 				
 				<div id="preview" class="card-body border border-primary text-center" style="height:280px!important">
 					{% if activity.type == 'Youtube' %}
-						{{ youtube_embed(activity.url)|raw }}
+						{% if activity.url is not null %}
+							{{ youtube_embed(activity.url)|raw }}
+						{% endif %}
+						{% if activity.code is not null %}
+							{{ activity.code|raw }}
+						{% endif %}
 					{% elseif activity.type == 'Video' %}
 						<video controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></video>
 					{% elseif activity.type == 'Audio' %}
 						<audio controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></audio>
 					{% elseif activity.type == 'Genially' %}
-						<iframe style='width:100%; height:100%' src="{{ activity.url }}"></iframe>
+						{% if activity.url is not null %}
+							<iframe style='width:100%; height:100%' src="{{ activity.url }}"></iframe>
+						{% endif %}
+						{% if activity.code is not null %}
+							{{ activity.code|raw }}
+						{% endif %}
 					{% elseif activity.type == 'Archivo' %}
 						<iframe style='width:100%; height:100%' src="https://docs.google.com/gview?url={{ app.request.schemeAndHttpHost ~ vich_uploader_asset(activity.file, 'imagenFile') }}&embedded=true"></iframe>
 					{% endif %}

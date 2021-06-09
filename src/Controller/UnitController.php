@@ -223,11 +223,14 @@ class UnitController extends AbstractController
             'type' =>$type
         ]);
 
+        $activity->setType($type);
+
         $form->handleRequest($request);
+
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $activity->setType($type);
+            
 
             $em = $this->getDoctrine ()->getManager ();
 
@@ -245,6 +248,7 @@ class UnitController extends AbstractController
 
         return $this->render('activity/new.html.twig',[
             'form' => $form->createView(),
+            'activity' => $activity
         ]);
     }
 

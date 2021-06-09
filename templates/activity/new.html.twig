@@ -15,7 +15,37 @@
                             {{ form_row(form.page) }}
                         </div>
                         <div class="col-md-12">
-                            {{ form_rest(form) }}
+                            {% if activity.type == 'Youtube' or activity.type == 'Genially' %}
+                                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                    <li class="nav-item">
+                                        <a class="nav-link active " id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">
+                                            Youtube
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link " id="code-tab" data-toggle="tab" href="#code-users" role="tab" aria-controls="profile" aria-selected="false">
+                                            Youtube interactivo
+                                        </a>
+                                    </li>
+
+                                </ul>
+                                <div class="tab-content" id="myTabContent">
+                                    <div class="tab-pane fade  show active p-1" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                {{ form_row(form.url) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane fade p-1" id="code-users" role="tabpanel" aria-labelledby="profile-tab">
+                                        <div class="card">
+                                            <div id="tab-2" class="card-body">
+                                                {{ form_row(form.code) }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -64,6 +94,11 @@
                 $('#preview').html('').append(newElement);
             }
         });
+
+        $('.code').change(function(){
+            const scope = $(this);
+             $('#preview').html(scope.val())
+        })
 
         $('form[name="activity"]').on('submit', function (event) {
             const form = $(this)
