@@ -23,7 +23,7 @@
 						<span class="align-middle">Control de usuarios</span>
 					</a>
 				</li>
-			{% elseif is_granted('IS_AUTHENTICATED_FULLY')  %}
+			{% elseif is_granted('ROLE_USER')  %}
 
 				<li class="sidebar-item {% if currentPath == path('user_dashboard') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_dashboard') }}">
@@ -38,14 +38,7 @@
 						<span class="align-middle">Mis Códigos</span>
 					</a>
 				</li>
-				
-				{# <li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
-					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
-						<i class="align-middle" data-feather="user"></i>
-						<span class="align-middle">Mis cursos</span>
-					</a>
-				</li> #}
-
+			
 				<li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
 						<i class="align-middle" data-feather="check-circle"></i>
@@ -55,35 +48,35 @@
 
 			{% endif %}
 
-			{% if is_granted('ROLE_SUPER_ADMIN') %}
-
+			{% if not is_granted('ROLE_USER') %}
 				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
 					<a href="#auth" data-toggle="collapse" class="sidebar-link collapsed">
 						<i class="align-middle" data-feather="settings"></i>
 						<span class="align-middle">Configuración</span>
 					</a>
 					<ul id="auth" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('system_company') }}">Configuración del sistema</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('system_config') }}">Términos y condiciones</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('slide_index') }}">Banners</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('role_index') }}">Roles</a>
-						</li>
-						{# <li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('user_index') }}">Permisos</a>
-						</li> #}
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('code_index') }}">Códigos</a>
-						</li>
+						{% if is_granted('ROLE_SUPER_ADMIN') %}
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('system_company') }}">Configuración del sistema</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('system_config') }}">Términos y condiciones</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('slide_index') }}">Banners</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('role_index') }}">Roles</a>
+							</li>
+						{% endif %}
+						{% if is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_SUPER_ADMIN') %}
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('code_index') }}">Códigos</a>
+							</li>
+						{% endif %}
 					</ul>
 				</li>
-
+				{% if is_granted('ROLE_SUPER_ADMIN') %}
 				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
 					<a href="#catalogos" data-toggle="collapse" class="sidebar-link collapsed">
 						<i class="align-middle" data-feather="list"></i>
@@ -116,7 +109,7 @@
 						</li>
 					</ul>
 				</li>
-
+				{% endif %}
 
 				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
 					<a href="#cusos" data-toggle="collapse" class="sidebar-link collapsed">
@@ -136,7 +129,7 @@
 			{% endif %}
 
 
-			{% if is_granted('ROLE_ADMIN') %}
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') %}
 
 				<li class="sidebar-item {% if currentPath == path('book_index') %}active{% endif %}">
 					<a href="#textos" data-toggle="collapse" class="sidebar-link collapsed">

@@ -279,4 +279,16 @@ class UserController extends AbstractController
             'books' => $this->bookRepository->getBooks($loggedUser)
         ]);
     }
+    /**
+     * @Route("/capacitador/dashboard", name="capacitador_dashboard", methods={"POST","GET"},options={"expose" = true})
+     * @IsGranted("ROLE_CAPACITADOR_EXTERNO")
+     */
+    public function capacitadorDashboard(): Response
+    {
+        $loggedUser = $this->getUser();
+
+        return $this->render('user/dashboard.html.twig', [
+            'books' => $this->bookRepository->getBooks($loggedUser)
+        ]);
+    }
 }

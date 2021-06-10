@@ -114,6 +114,10 @@ class LoginFormAuthenticator extends AbstractFormLoginAuthenticator implements P
             return new RedirectResponse($this->urlGenerator->generate('admin'));
         }
 	
+        if(in_array('ROLE_CAPACITADOR_EXTERNO',$token->getRoleNames())){
+            return new RedirectResponse($this->urlGenerator->generate('capacitador_dashboard'));
+        }
+        
 	    return new RedirectResponse($this->urlGenerator->generate('user_dashboard'));
     }
 
