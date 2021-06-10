@@ -24,6 +24,18 @@
 				<div class="row">
 					<div class="col-md-8">
 						<iframe style="width: 100%; min-height: 900px;" src="{{ vich_uploader_asset(unit.pDF,'pdfFile') }}"></iframe>
+							<h3>Enlaces interactivos</h3>
+								{% for activity in unit.activities %}
+									{% if activity.type == 'Presentacion' %}
+										<div class="card">
+											<div class="card-body" style="overflow:scroll">
+											{% if activity.code %}
+												{{ activity.code|raw }}
+											{% endif %}
+											</div>
+										</div>
+									{% endif %}
+								{% endfor %}
 					</div>
 					<div class="col-md-4">
 						<div class="card">
@@ -110,20 +122,6 @@
 					</div>
 				</div>
 				<div class="row  mt-4">
-					<div class="col-md-12">
-					<h3>Enlaces interactivos</h3>
-								{% for activity in unit.activities %}
-									{% if activity.type == 'Presentacion' %}
-										<div class="card">
-											<div class="card-body" style="overflow:scroll">
-											{% if activity.code %}
-												{{ activity.code|raw }}
-											{% endif %}
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-					</div>
 				</div>
 			</section>
 		</div>
