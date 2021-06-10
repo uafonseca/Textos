@@ -30,6 +30,9 @@ class Activity
     /** @var string  */
     const TYPE_FILE = 'Archivo';
 
+    /** @var string  */
+    const TYPE_PRESENTATION = 'Presentacion';
+
     use TimestampableTrait;
     use CompanyEntityTrait;
     /**

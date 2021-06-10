@@ -37,12 +37,6 @@ class ActivityFormType extends AbstractType
                     ->add('url', null, [
                         'label' => 'Url de la actividad',
                         'required' => false,
-                    ])
-                    ->add('code', null, [
-                        'label' => 'Link para Youtube iteractivo',
-                        'attr' => ['class' => 'code'],
-                        'required' => false,
-                        'help' => 'Utilice las siguientes dimensiones para generar su código (485 x 280)',
                     ]);
                 break;
             case Activity::TYPE_AUDIO:
@@ -59,12 +53,6 @@ class ActivityFormType extends AbstractType
                         'label' => 'Link del video de Youtube',
                         'attr' => ['class' => 'youtube'],
                         'required' => false,
-                    ])
-                    ->add('code', null, [
-                        'label' => 'Link para Youtube iteractivo',
-                        'attr' => ['class' => 'code'],
-                        'required' => false,
-                        'help' => 'Utilice las siguientes dimensiones para generar su código (485 x 280)',
                     ]);
                 break;
             case Activity::TYPE_FILE:
@@ -74,6 +62,15 @@ class ActivityFormType extends AbstractType
                         'attr' => ['class' => 'file'],
                     ]);
                 break;
+            case Activity::TYPE_PRESENTATION:
+                    $builder
+                    ->add('code', null, [
+                        'label' => 'Código interactivo',
+                        'attr' => ['class' => 'code'],
+                        'required' => false,
+                        'help' => 'Utilice las siguientes dimensiones para generar su código (485 x 280)',
+                    ]);
+                    break;
             default:
                 $builder
                     ->add('file', ImageType::class, [
