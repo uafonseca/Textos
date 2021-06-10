@@ -38,7 +38,7 @@
 												 <source src="{{ vich_uploader_asset(activity.file, 'imagenFile') }}"
 												  type="{{activity.file.mimeType}}" />
 												  Your browser does not support the
-            										code>audio</code> element.
+            										<code>audio</code> element.
 													</audio>
 											</div>
 											<div class="card-footer">
@@ -104,7 +104,13 @@
 										{% endif %}
 									{% endif %}
 								{% endfor %}
-								<h3>Enlaces interactivos</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row  mt-4">
+					<div class="col-md-12">
+					<h3>Enlaces interactivos</h3>
 								{% for activity in unit.activities %}
 									{% if activity.type == 'Presentacion' %}
 										<div class="card">
@@ -116,11 +122,8 @@
 										</div>
 									{% endif %}
 								{% endfor %}
-							</div>
-						</div>
 					</div>
 				</div>
-				<div class="row  mt-4"></div>
 			</section>
 		</div>
 	</div>
