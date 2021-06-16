@@ -160,6 +160,7 @@ class CodeController extends AbstractController
 	public function create(Request $request): Response
     {
 
+		$code = new Code();
         $token = uniqid();
         $salesData = new CodeSalesData();
         $financeDetails = new FinancialDetails() ;
@@ -168,50 +169,25 @@ class CodeController extends AbstractController
             ->setPaypalUrlCancel($this->generateUrl('paymentCancel',['token'=> $token],UrlGeneratorInterface::ABSOLUTE_URL));
 
         $salesData->setFinancialDetails($financeDetails);
-		$defaultData = [
-			'salesData' => $salesData
-		];
+		$code->setSalesData($salesData);
 
-		$form = $this->createFormBuilder($defaultData, [
+		$form = $this->createForm(CodeType::class,$code, [
 			'action' => $this->generateUrl('code_create'),
 			'attr' => ['novalidate' => 'novalidate']
-		])
-			->add('book', EntityType::class, [
-				'label' => 'libro',
-				'class' => Book::class,
-				'query_builder' => function (EntityRepository $repository) {
-					return $repository->createQueryBuilder('book');
-				},
-				'choice_label' => 'title',
-				'placeholder' => '--SELECCIONE--',
-                'required' => true
-			])
-			->add('starDate', null, ['label' => 'Fecha inicio', 'required' => true])
-			->add('totalDays', NumberType::class, ['label' => 'Días de activación', 'required' => true])
-			->add('total', NumberType::class, ['label' => 'Cantidad de códigos a generar', 'required' => true])
-			->add('unlimited', CheckboxType::class, ['label' => 'Activación ilimitada', 'required' => false])
-			->add('salesData',CodeSalesType::class, ['label' => false])
-			->getForm();
+		]);
 
 		$form->handleRequest($request);
 
 		if ($form->isSubmitted() && $form->isValid()) {
 			$em = $this->getDoctrine()->getManager();
-			for ($i = 0; $i < (int)$form->getData()['total']; $i++) {
-				$code = new Code();
+			for ($i = 0; $i < (int)$form->get('total')->getData(); $i++) {
+				
 				$code->setCode(uniqid());
 				$code->setToken($token);
-				$date = new DateTime($form->getData()['starDate']);
-				$code
-					->setSalesData($salesData)
-					->setBook($em->getRepository(Book::class)->find($form->getData()['book']))
-					->setCompany($this->getUser()->getCompany())
-					->setStarDate(new DateTime($form->getData()['starDate']))
-					->setMaxDays($form->getData()['totalDays'])
-					->setUnlimited($form->getData()['unlimited']);
-
+				$date = $code->getStarDate();
+				$code->setCompany($this->getUser()->getCompany());
 				if (!$code->getUnlimited()) {
-					$code->setEndDate($date->modify("+{$form->getData()['totalDays']} days"));
+					$code->setEndDate($date->modify("+{$form->get('totalDays')->getData()} days"));
 				}
 				$em->persist($code);
 			}

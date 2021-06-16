@@ -100,19 +100,19 @@
 {% block javascripts %}
     <script type="text/javascript">
         $(document).ready(function () {
-            $('#form_salesData_details').prop('readonly', true);
-            $('#form_salesData_total').prop('readonly', true);
-            $("#form_starDate").datepicker({format: "DD/MM/YYYY", changeYear: true, yearRange: "-100:+0"});
-            $('#form_book').on('change', function () {
-                $('#form_salesData_details').val($('#form_book option:selected').text());
+            $('#code_salesData_details').prop('readonly', true);
+            $('#code_salesData_total').prop('readonly', true);
+            $("#code_starDate").datepicker({dateFormat: "d-m-yy", changeYear: true, yearRange: "-100:+0"});
+            $('#code_book').on('change', function () {
+                $('#code_salesData_details').val($('#code_book option:selected').text());
             })
             $('#pago-finalizdo').click(function () {
-                $('#form_salesData_financialDetails_paypalUrlComplete').select();
+                $('#code_salesData_financialDetails_paypalUrlComplete').select();
                 document.execCommand("copy");
                 toastr.success('Texto copiado al portapapeles')
             });
             $('#pago-cancelado').click(function () {
-                $('#form_salesData_financialDetails_PaypalUrlCancel').select();
+                $('#code_salesData_financialDetails_PaypalUrlCancel').select();
                 document.execCommand("copy");
                 toastr.success('Texto copiado al portapapeles')
             });
@@ -120,22 +120,22 @@
                 $('#next').tab('show');
             });
 
-            $('#form_salesData_value').on('change', function () {
+            $('#code_salesData_value').on('change', function () {
                 let value = $(this).val();
-                let iva = $('#form_salesData_iva').val();
+                let iva = $('#code_salesData_iva').val();
                 let percent = parseInt(iva) * parseInt(value) / 100;
-                $('#form_salesData_total').val(parseInt(value) + percent);
+                $('#code_salesData_total').val(parseInt(value) + percent);
             });
-            $('#form_salesData_iva').on('change', function () {
+            $('#code_salesData_iva').on('change', function () {
                 let iva = $(this).val();
-                let value = $('#form_salesData_value').val();
+                let value = $('#code_salesData_value').val();
                 if (iva < 0){
                     toastr.error('EL valor iva no puede ser negativo')
                 }
                 let percent = parseInt(iva) * parseInt(value) / 100;
-                $('#form_salesData_total').val(parseInt(value) + percent);
+                $('#code_salesData_total').val(parseInt(value) + percent);
             });
-            var form = $('form[name="form"]');
+            var form = $('form[name="code"]');
 
             var validator = form.validate({
                 doNotHideMessage: true, //this option enables to show the error/success messages on tab switch.
@@ -146,86 +146,86 @@
 
                 },
                 rules: {
-                    "form[book]": {
+                    "code[book]": {
                         required: true
                     },
-                    "form[starDate]": {
+                    "code[starDate]": {
                         required: true
                     },
-                    "form[salesData][value]": {
+                    "code[salesData][value]": {
                         required: true,
                         digits: true
                     },
-                    'form[totalDays]': {
+                    'code[totalDays]': {
                         required: true,
                         digits: true
                     },
-                    'form[salesData][iva]': {
+                    'code[salesData][iva]': {
                         required: true,
                         digits: true
                     },
-                    'form[total]': {
+                    'code[total]': {
                         required: true,
                         digits: true
                     },
-                    "form[salesData][currency]": {
+                    "code[salesData][currency]": {
                         required: true
                     },
-                    "form[salesData][financialDetails][paypalHtmlCode]": {
+                    "code[salesData][financialDetails][paypalHtmlCode]": {
                         required: true
                     },
                 },
                 messages: {
-                    "form[book]": {
+                    "code[book]": {
                         valueNotEquals: "Debe seleccionar un libro",
                     },
-                    "form[starDate]": {
+                    "code[starDate]": {
                         required: 'Debe seleccionar una fecha'
                     },
-                    "form[salesData][value]": {
+                    "code[salesData][value]": {
                         required: 'Debe seleccionar un valor',
                         digits: "Solo se permiten numeros"
                     },
-                    'form[totalDays]': {
+                    'code[totalDays]': {
                         required: 'Este campo no puede estar en blanco',
                         digits: "Solo se permiten numeros"
                     },
-                    'form[salesData][iva]': {
+                    'code[salesData][iva]': {
                         required: 'Este campo no puede estar en blanco',
                         digits: "Solo se permiten numeros"
                     },
-                    'form[total]': {
+                    'code[total]': {
                         required: 'Este campo no puede estar en blanco',
                         digits: "Solo se permiten numeros"
                     },
-                    "form[salesData][currency]": {
+                    "code[salesData][currency]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][total]": {
+                    "code[salesData][total]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][details]": {
+                    "code[salesData][details]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][acountName]": {
+                    "code[salesData][financialDetails][acountName]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][acountNumber]": {
+                    "code[salesData][financialDetails][acountNumber]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][dni]": {
+                    "code[salesData][financialDetails][dni]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][intitution]": {
+                    "code[salesData][financialDetails][intitution]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][acountType]": {
+                    "code[salesData][financialDetails][acountType]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][contact]": {
+                    "code[salesData][financialDetails][contact]": {
                         required: 'Este campo no puede estar en blanco',
                     },
-                    "form[salesData][financialDetails][paypalHtmlCode]": {
+                    "code[salesData][financialDetails][paypalHtmlCode]": {
                         required: 'Este campo no puede estar en blanco',
                     },
                 },

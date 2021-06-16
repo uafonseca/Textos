@@ -104,10 +104,12 @@ class CodeDatatable extends AbstractDatatable
                 'title' => 'Curso',
             ])
             ->add('starDate', DateTimeColumn::class, [
-                'title' => 'Fecha de activación',
+                'title' => 'Fecha de inicio',
+                'date_format' => 'DD-MM-yyyy'
             ])
             ->add('endDate', DateTimeColumn::class, [
                 'title' => 'Fecha de fin',
+                'date_format' => 'DD-MM-yyyy'
             ])
             ->add(null, ActionColumn::class, [
                 'title' => $this->translator->trans('sg.datatables.actions.title'),

@@ -463,17 +463,19 @@ class EvaluationController extends AbstractController
         $points = [];
         $status = [];
         foreach($userGroup->getCourse()->getUnits() as $unit){
-            $evaluations[] = $unit->getEvaluation()->getTitle();
-            $status1 = 'Pendiente';
-            $points1 = 0;
-            foreach($unit->getEvaluation()->getAnswers() as $answer){
-                if($answer->getOwner() === $user){
-                    $status1 = $answer->getPoints()['status'];
-                    $points1 = $answer->getPoints()['points'];
+            if($unit->getEvaluation()){
+                $evaluations[] = $unit->getEvaluation()->getTitle();
+                $status1 = 'Pendiente';
+                $points1 = 0;
+                foreach($unit->getEvaluation()->getAnswers() as $answer){
+                    if($answer->getOwner() === $user){
+                        $status1 = $answer->getPoints()['status'];
+                        $points1 = $answer->getPoints()['points'];
+                    }
                 }
+                $status[] = $status1;
+                $points[] = $points1;
             }
-            $status[] = $status1;
-            $points[] = $points1;
         }
 
         if(null != $request->query->get('print')){

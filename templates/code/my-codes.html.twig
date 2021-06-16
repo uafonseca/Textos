@@ -5,8 +5,8 @@
 	<div class="row">
 		{% for code in codes %}
 			<div class="col-md-3">
-				<div class="card {% if code.endDate|date('d/m/Y') <= 'now'|date('d/m/Y') %} bg-success {% else %} bg-warning-dark {% endif %}">
-					<div class="card-header">
+				<div class="card {% if code.endDate|date('d/m/Y') >= 'now'|date('d/m/Y') %} bg-success {% else %} bg-warning-dark {% endif %}">
+					<div class="card-header" style="color:black">
 						{{ code.book.title|upper }}
 					</div>
 					<div class="card-body">
