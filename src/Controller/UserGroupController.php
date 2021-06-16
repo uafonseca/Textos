@@ -148,7 +148,8 @@ class UserGroupController extends AbstractController
         $datatable->buildDatatable([
             'url' => $this->generateUrl('users_group_datatable', [
                 'uuid' => $group->getUuid(),
-            ])
+            ]),
+            'group' => $group
         ]);
 
         if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {

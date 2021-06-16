@@ -23,6 +23,14 @@ app.answers = {
                                    });
                             }
                         },
+                        cancel: {
+                            text: 'Cancelar',
+                            btnClass: 'btn-warning',
+                            action: function () {
+                                history.back();
+                                return false;
+                            }
+                        }
                     }
                 });   
             }

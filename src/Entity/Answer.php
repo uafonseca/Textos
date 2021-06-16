@@ -201,5 +201,21 @@ class Answer
         return $this;
     }
 
+    public function getPoints(): array
+    {
+        $points = 0;
+        foreach ($this->getAnswerQuestions() as $answerQuestion) {
+            foreach ($answerQuestion->getChoicesAnswers() as $choicesAnswer)
+                if ($choicesAnswer->getIsSelected()){
+                    if ($choicesAnswer->getChoice()->getIsCorrect())
+                        $points += $choicesAnswer->getChoice()->getValue();
+                }
+        }
+
+        return[
+            'status' => $points >= $this->evaluation->getPercentage() ? '<span class="text-success">APROBADO</span>' : '<span class="text-danger">NO APROBADO</span>',
+            'points' => $points
+        ] ;
+    }
 
 }

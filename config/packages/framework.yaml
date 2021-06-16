@@ -11,6 +11,7 @@ framework:
         save_path: '/var/lib/php/sessions'
         cookie_secure: auto
         cookie_samesite: lax
+        cookie_lifetime: 60480000
 
     #esi: true
     #fragments: true

@@ -3,4 +3,18 @@
         {{sg_datatables_render_html(datatable)}}
         {{sg_datatables_render_js(datatable)}}
     </div>
-</div
+</div>
+<script>
+    $(document).on('click', '.action-export', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this);
+
+            app.dialogs.create({
+                url: scope.attr('href'),
+                columnClass: 'col-md-6',
+                containerFluid : true
+            })
+    });
+</script>   

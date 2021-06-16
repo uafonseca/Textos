@@ -17,6 +17,7 @@ use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
+use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -30,11 +31,21 @@ use Twig\Environment;
 class UsersGroupDatatable extends AbstractDatatable
 {
 
+    private $group;
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $securityToken, $translator, RouterInterface $router, EntityManagerInterface $em, Environment $twig)
     {
         parent::__construct($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
         $this->uniqueId = uniqid();
     }
+
+    public function getLineFormatter()
+	{
+		return function ($row) {
+			$row['group'] = $this->group->getId();
+			return $row;
+		};
+	}
+
 
     public function buildDatatable(array $options = [])
     {
@@ -55,9 +66,19 @@ class UsersGroupDatatable extends AbstractDatatable
             'processing' => true,
         ]);
 
+        $this->group = $options['group'];
+
         $this->columnBuilder
             ->add('uuid', Column::class, [
                 'title' => 'uuid',
+                'visible' => false,
+            ])
+            ->add('id', Column::class, [
+                'title' => 'id',
+                'visible' => false,
+            ])
+            ->add('group', VirtualColumn::class, [
+                'title' => 'group',
                 'visible' => false,
             ])
             ->add('name', Column::class, [
@@ -77,7 +98,11 @@ class UsersGroupDatatable extends AbstractDatatable
                 ->add(null, ActionColumn::class, [
                     'title' => $this->translator->trans('sg.datatables.actions.title'),
                     'actions' => [
-                        TableActions::delete('user_delete')
+                        TableActions::delete('user_delete'),
+                        TableActions::default('show_status', 'fa-print text-warning', 'action-export', 'Ver',[
+                            'id' => 'id',
+                            'userGroup' => 'group',
+                        ])
                     ],
                 ]);
             }

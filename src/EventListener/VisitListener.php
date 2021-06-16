@@ -41,19 +41,17 @@ class VisitListener implements EventSubscriberInterface
     public function onCourseVisited(VisitEvent $visitEvent)
     {
         $uuid = $visitEvent->getRouteParams()['uuid'];
-
         $course = $this->service->getBook($uuid);
         $last = $this->service->getLastVisit($visitEvent->getUser(), $course);
 
-        if ($last && isset($last[0])) {
+        if (count($last) > 0 && isset($last[0])) {
             $last = $last[0];
             $minutes = 30;
             $maxAge = new DateTime('now');
             $maxAge->modify("-{$minutes} minutes");
-            dump($maxAge);
-            dump($last->getMoment());
 
-            if ($last->getMoment() > $maxAge) {
+            if ($last->getMoment() < $maxAge) {
+                
                 $visit = $this->service->createVisit();
 
                 $course = $this->service->getBook($uuid);
@@ -64,11 +62,25 @@ class VisitListener implements EventSubscriberInterface
 
                 $visitEvent->getUser()->addCourseVsit($visit);
                 $course->addCourseVsit($visit);
-
+                
                 $this->service->update($visit);
             } else {
                 return;
             }
+        }else{
+
+            $visit = $this->service->createVisit();
+
+            $course = $this->service->getBook($uuid);
+
+            $visit
+                ->setUser($visitEvent->getUser())
+                ->setCourse($course);
+
+            $visitEvent->getUser()->addCourseVsit($visit);
+            $course->addCourseVsit($visit);
+            
+            $this->service->update($visit);
         }
     }
 }

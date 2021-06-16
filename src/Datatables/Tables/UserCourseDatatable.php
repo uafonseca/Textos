@@ -132,6 +132,6 @@ class UserCourseDatatable extends AbstractDatatable
 	 */
 	public function getName()
 	{
-		return 'user-course-datatable';
+		return 'user-course-datatable'; 
 	}
 }

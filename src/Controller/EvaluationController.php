@@ -10,23 +10,56 @@ use App\Entity\Evaluation;
 use App\Entity\Question;
 use App\Entity\SingleQuestion;
 use App\Entity\Unit;
+use App\Entity\User;
+use App\Entity\UserGroup;
 use App\Exception\AnswerRewriteException;
 use App\Form\EvaluationType;
 use App\Form\QuestionType;
 use App\Repository\EvaluationRepository;
 use DateInterval;
 use DateTime;
+use Knp\Snappy\Pdf;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @Route("/evaluation")
  */
 class EvaluationController extends AbstractController
 {
+
+    	/**
+	 * pdf
+	 *
+	 * @var mixed
+	 */
+	private $pdf;
+	
+	/**
+	 * kernel
+	 *
+	 * @var mixed
+	 */
+	private $kernel;
+
+     /**
+     * Method __construct
+     *
+     * @param Pdf $pdf [explicite description]
+     * @param KernelInterface $kernel [explicite description]
+     *
+     * @return void
+     */
+    public function __construct(Pdf $pdf, KernelInterface $kernel){
+		$this->pdf = $pdf;
+        $this->kernel = $kernel;
+	}
+    
     /**
      * @Route("/", name="evaluation_index", methods={"GET"})
      */
@@ -411,5 +444,73 @@ class EvaluationController extends AbstractController
             'type' => 'success',
             'message' => 'Datos eliminados',
         ]);
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     * @param UserGroup $userGroup
+     * @return void
+     * 
+     * @Route("/status/{id}/{userGroup}", name="show_status", methods={"GET","POST"})
+     * 
+     * 
+     */
+    public function userStatus(User $user, UserGroup $userGroup, Request $request){
+        $evaluations = [];
+        $points = [];
+        $status = [];
+        foreach($userGroup->getCourse()->getUnits() as $unit){
+            $evaluations[] = $unit->getEvaluation()->getTitle();
+            $status1 = 'Pendiente';
+            $points1 = 0;
+            foreach($unit->getEvaluation()->getAnswers() as $answer){
+                if($answer->getOwner() === $user){
+                    $status1 = $answer->getPoints()['status'];
+                    $points1 = $answer->getPoints()['points'];
+                }
+            }
+            $status[] = $status1;
+            $points[] = $points1;
+        }
+
+        if(null != $request->query->get('print')){
+        $web_uploads_Path = $this->kernel->getProjectDir() . '/public/uploads/';
+        $path = 'pdf/';
+        $documento_nombre = 'reporte.pdf';
+        $this->pdf->generateFromHtml(
+            $this->render(
+                'evaluation/user_status.html.twig', [
+                    'data' => [
+                        'evaluation' => $evaluations,
+                        'status' =>$status,
+                        'points' =>$points
+                     ],
+                     'group' => $userGroup
+                ]
+            )->getContent(),
+            $web_uploads_Path . $path . $documento_nombre,
+            ['encoding' => 'utf-8'],
+            true);
+
+        return $this->render('pdf_templates/iframe.html.twig', [
+            'pdf' => '/uploads/' . $path . $documento_nombre,
+        ]);
+        }else{
+            return $this->render('evaluation/user_status.html.twig',[
+                'data' => [
+                   'evaluation' => $evaluations,
+                   'status' =>$status,
+                   'points' =>$points
+                ],
+                'group' => $userGroup,
+                'url' => $this->generateUrl('show_status',[
+                    'id' => $user->getId(),
+                    'userGroup' => $userGroup->getId()
+                ])
+            ]);
+        }
     }
 }

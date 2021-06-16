@@ -51,13 +51,13 @@
 									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
 										Ingresar
 									</a>
-								{% elseif code.endDate > 'now'|date %}
+								{% elseif code.endDate|date('d/m/Y') > 'now'|date('d/m/Y') %}
 									<p class="text-muted">Inicio:
 										{{ code.starDate|date('d/m/Y') }}|Fin:{{ code.endDate|date('d/m/Y') }}</p>
 									<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
 										Ingresar
 									</a>
-								{%else %}
+								{% else %}
 									<a href="#" class="btn" style="background-color: {{ colors()['warning'] }}; color:white;">
 										<i class="fa fa-exclamation-triangle"></i>
 										Activación vencida</a>
