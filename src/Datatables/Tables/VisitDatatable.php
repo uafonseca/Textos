@@ -18,6 +18,7 @@ use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
 use Sg\DatatablesBundle\Datatable\Column\Column;
 use Sg\DatatablesBundle\Datatable\Column\DateTimeColumn;
+use Sg\DatatablesBundle\Datatable\Column\VirtualColumn;
 use Sg\DatatablesBundle\Datatable\Style;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -31,10 +32,34 @@ use Twig\Environment;
 class VisitDatatable extends AbstractDatatable
 {
 
+    /**
+     * Undocumented function
+     *
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param TokenStorageInterface $securityToken
+     * @param [type] $translator
+     * @param RouterInterface $router
+     * @param EntityManagerInterface $em
+     * @param Environment $twig
+     */
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $securityToken, $translator, RouterInterface $router, EntityManagerInterface $em, Environment $twig)
     {
         parent::__construct($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
         $this->uniqueId = uniqid();
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return void
+     */
+    public function getLineFormatter()
+    {
+        return function ($row) {
+            $visit = $this->getEntityManager()->getRepository(CourseVsit::class)->find($row['id']);
+            $row['momment'] = $visit->getMoment()->format('d-m-Y h:m a');
+            return $row;
+        };
     }
 
     public function buildDatatable(array $options = [])
@@ -48,13 +73,23 @@ class VisitDatatable extends AbstractDatatable
             'classes' => Style::BOOTSTRAP_4_STYLE,
             'individual_filtering' => false,
             'order_cells_top' => true,
+            'dom' => 'Blfrtip',
         ]);
-        $this->extensions->set(array(
-            'responsive' => true,
-        ));
+     
         $this->features->set([
             'processing' => true,
         ]);
+
+        
+        $columns = ['1','2','3'];
+
+        $this->extensions->set(array(
+            'buttons' => [
+                'create_buttons' => [
+                    TableActions::buttonPRINT($columns),
+                ],
+            ],
+        ));
 
         $this->columnBuilder
             ->add('uuid', Column::class, [
@@ -69,9 +104,8 @@ class VisitDatatable extends AbstractDatatable
                 'title' => 'Usuario',
                 
             ])
-            ->add('moment', DateTimeColumn::class, [
+            ->add('momment', VirtualColumn::class, [
                 'title' => 'Fecha de visita',
-                'date_format' => 'D-MM-yy hh:mm a',
             ])
             ;
     }
@@ -83,6 +117,6 @@ class VisitDatatable extends AbstractDatatable
 
     public function getName()
     {
-        return 'visit-datatable';
+        return 'visit';
     }
 }

@@ -41,7 +41,7 @@ class UsersGroupDatatable extends AbstractDatatable
     public function getLineFormatter()
 	{
 		return function ($row) {
-			$row['group'] = $this->group->getId();
+			$row['group'] = $this->group ? $this->group->getId() : null;
 			return $row;
 		};
 	}
@@ -65,8 +65,9 @@ class UsersGroupDatatable extends AbstractDatatable
         $this->features->set([
             'processing' => true,
         ]);
-
-        $this->group = $options['group'];
+        
+        if (isset($options['group']))
+            $this->group = $options['group'];
 
         $this->columnBuilder
             ->add('uuid', Column::class, [

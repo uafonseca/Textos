@@ -49,7 +49,13 @@ class VisitController extends AbstractController
 
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
             $this->datatableResponse->setDatatable($datatable);
-            $this->datatableResponse->getDatatableQueryBuilder();
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+                ->getQb()
+                ->where('coursevsit.course =:course')
+                ->setParameter('course',$book)
+                ;
+
 
             return $this->datatableResponse->getResponse();
         }

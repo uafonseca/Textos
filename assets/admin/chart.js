@@ -33,10 +33,13 @@ app.admin = {
           },
           options: {
             scales: {
-              y: {
-                beginAtZero: true,
-              },
-            },
+              yAxes: [{
+                  ticks: {
+                      beginAtZero: true,
+                      callback: function(value) {if (value % 1 === 0) {return value;}}
+                  }
+              }]
+          }
           },
         });
       });

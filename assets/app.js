@@ -46,3 +46,15 @@ import './core/dom'
 
 import '@fortawesome/fontawesome-free'
 import 'jquery-validation'
+
+$(()=>{
+    $('.terms-dialog').on('click', function(event){
+        event.preventDefault();
+        const scope = $(this);
+        app.dialogs.create({
+            url: scope.attr('href'),
+            containerFluid: true,
+            columnClass:'col-md-10'
+        });
+    });
+})

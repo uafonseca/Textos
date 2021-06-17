@@ -71,6 +71,15 @@ class CodeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function buildChart(){
+        return $this->createQueryBuilder('c')
+            ->join('c.book', 'book')
+            ->select('book.title, count(c.user) as counter')
+            ->groupby('book.title')
+            ->getQuery()
+            ->getResult();
+    }
+    
     // /**
     //  * @return Code[] Returns an array of Code objects
     //  */
