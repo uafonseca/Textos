@@ -204,4 +204,5 @@ class MailController extends AbstractController
 
         return $this->redirectToRoute('mail_index');
     }
+
 }

@@ -1,0 +1,10 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+   <button class="btn float-right mt-4"
+         type="submit"
+         style="background-color: {{ colors()['primary'] }}; color:white"
+         data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando...">
+			<i class="fa fa-paper-plane" aria-hidden="true"></i>
+			{{ button_label|default('Enviar respuesta') }}
+		</button>
+{{ form_end(form) }}

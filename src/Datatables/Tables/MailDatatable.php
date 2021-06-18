@@ -25,7 +25,6 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  */
 class MailDatatable extends AbstractDatatable
 {
-
     private $vich;
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
@@ -47,10 +46,17 @@ class MailDatatable extends AbstractDatatable
         return function ($row) {
             $mail = $this->getEntityManager()->getRepository('App:Mail')->find($row['id']);
 
-            if (null !== $mail->getAttached())
+            if (null !== $mail->getAttached()) {
                 $row['file'] = '<a class="btn-pill btn-sm btn btn-primary" download href="'.$this->vich->asset($mail->getAttached(), 'imagenFile').'"> <i class="fa fa-download"></i> '.$mail->getAttached()->getOriginalName().' </a>';
-            else
+            } else {
                 $row['file'] = '';
+            }
+
+            // if (null != $homework = $mail->getHomework() === true) {
+            //     $row['homework'] = $homework;
+            // } else {
+            //     $row['homework'] = false;
+            // }
             return $row;
         };
     }
@@ -87,11 +93,15 @@ class MailDatatable extends AbstractDatatable
                 'title' => 'uuid',
                 'visible' => false,
             ])
+            ->add('homework', Column::class, [
+                'title' => 'homework',
+                'visible' => false,
+            ])
             ->add('createdAt', DateTimeColumn::class, [
                 'title' => 'Fecha',
                 'visible' => true,
                 'width' => '15%',
-                'date_format' => 'D-MM-yy hh:mm' 
+                'date_format' => 'D-MM-yy hh:mm'
             ])
             ->add('subject', Column::class, [
                 'title' => 'Asunto',
@@ -105,12 +115,30 @@ class MailDatatable extends AbstractDatatable
                 'title' => 'Adjunto',
                 'visible' => true,
             ])
-            // ->add(null, ActionColumn::class, [
-            //     'title' => $this->translator->trans('sg.datatables.actions.title'),
-            //     'actions' => [
-            //         TableActions::delete('code_delete')
-            //     ],
-            // ])
+            ->add(null, ActionColumn::class, [
+                'title' => $this->translator->trans('sg.datatables.actions.title'),
+                'actions' => [
+                    array(
+                        'route' => 'mail_response_new',
+                        'route_parameters' => array(
+                            'uuid' => 'uuid',
+                            'type' => 'testtype',
+                            '_format' => 'html',
+                            '_locale' => 'es',
+                        ),
+                        'icon' => 'fa fa-paper-plane cortex-table-action-icon',
+                        // 'confirm_message' => 'Are you sure?',
+                        'attributes' => array(
+                            'class' => 'action-show text-success',
+                            'data-tippy-content' => 'Enviar respuesta',
+                            'title' => 'Enviar respuesta',
+                        ),
+                        'render_if' => function ($row) {
+                            return $row['homework'] && $this->authorizationChecker->isGranted('ROLE_USER');
+                        },
+                    ),
+                ],
+            ])
         ;
     }
 

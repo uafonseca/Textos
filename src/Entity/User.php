@@ -165,6 +165,11 @@ class User implements UserInterface, Serializable
      */
     private $courseVsits;
 
+    /**
+     * @ORM\OneToMany(targetEntity=MailResponse::class, mappedBy="User")
+     */
+    private $mailResponses;
+
 
     /**
      * User constructor.
@@ -178,6 +183,7 @@ class User implements UserInterface, Serializable
         $this->mailsSend = new ArrayCollection();
         $this->mailsReceived = new ArrayCollection();
         $this->courseVsits = new ArrayCollection();
+        $this->mailResponses = new ArrayCollection();
     }
 
 
@@ -562,8 +568,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-      $this->plainPassword = $plainPassword;
-    }
+                     $this->plainPassword = $plainPassword;
+                   }
 
     /**
      * @return Collection|UserGroup[]
@@ -709,6 +715,36 @@ class User implements UserInterface, Serializable
             // set the owning side to null (unless already changed)
             if ($courseVsit->getUser() === $this) {
                 $courseVsit->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MailResponse[]
+     */
+    public function getMailResponses(): Collection
+    {
+        return $this->mailResponses;
+    }
+
+    public function addMailResponse(MailResponse $mailResponse): self
+    {
+        if (!$this->mailResponses->contains($mailResponse)) {
+            $this->mailResponses[] = $mailResponse;
+            $mailResponse->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailResponse(MailResponse $mailResponse): self
+    {
+        if ($this->mailResponses->removeElement($mailResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($mailResponse->getUser() === $this) {
+                $mailResponse->setUser(null);
             }
         }
 

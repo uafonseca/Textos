@@ -55,9 +55,20 @@ class Mail
      */
     private $userGroup;
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $homework;
+
+    /**
+     * @ORM\OneToMany(targetEntity=MailResponse::class, mappedBy="mail", orphanRemoval=true)
+     */
+    private $mailResponses;
+
     public function __construct()
     {
         $this->recipients = new ArrayCollection();
+        $this->mailResponses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +156,48 @@ class Mail
     public function setUserGroup(?UserGroup $userGroup): self
     {
         $this->userGroup = $userGroup;
+
+        return $this;
+    }
+
+    public function getHomework(): ?bool
+    {
+        return $this->homework;
+    }
+
+    public function setHomework(?bool $homework): self
+    {
+        $this->homework = $homework;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|MailResponse[]
+     */
+    public function getMailResponses(): Collection
+    {
+        return $this->mailResponses;
+    }
+
+    public function addMailResponse(MailResponse $mailResponse): self
+    {
+        if (!$this->mailResponses->contains($mailResponse)) {
+            $this->mailResponses[] = $mailResponse;
+            $mailResponse->setMail($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMailResponse(MailResponse $mailResponse): self
+    {
+        if ($this->mailResponses->removeElement($mailResponse)) {
+            // set the owning side to null (unless already changed)
+            if ($mailResponse->getMail() === $this) {
+                $mailResponse->setMail(null);
+            }
+        }
 
         return $this;
     }

@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header">
+        {{mail.subject|raw}}
+    </div>
+    <div class="card-body">
+        <pre>
+            {{mail.context|raw}}
+        </pre>
+        <hr>
+        {{ include('mail_response/_form.html.twig') }}
+    </div>
+</div>
+<script>
+    $(()=>{
+        $('#mail_response_attached_imagenFile_file').fileinput({
+            showCaption: true,
+            showPreview: false,
+            showUploadedThumbs: true,
+            showUpload: false,
+            showCancel: false,
+            showRemove: true,
+            browseLabel: '&nbsp;Importar',
+            browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
+        });
+        $('form[name="mail_response"]').on('submit', function (event) {
+            const form = $(this)
+            if(!$('#mail_response_context').val()){
+                toastr.error('No puede enviar el contenido en blanco')
+                event.preventDefault()
+            }else{
+                app.forms.submit(form, function (response) {
+                    if (response.type === 'success') {
+                        $.alert({
+                            title: 'Información',
+                            content: response.message,
+                        });
+                        app.dialogs.close(form);
+                    } else {
+                    }
+                }, event);
+            }
+         })
+    })
+</script>
+
+
+

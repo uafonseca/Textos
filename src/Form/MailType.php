@@ -24,6 +24,10 @@ class MailType extends AbstractType
                 'label' => 'Contenido',
                 // 'config' => ['toolbar' => 'basic'],
             ])
+            ->add('homework', null,[
+                'label' => 'Tarea',
+                // 'config' => ['toolbar' => 'basic'],
+            ])
             
             ->add('attached',ImageType::class,[
                 'label' => 'Adjunto',

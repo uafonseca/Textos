@@ -5,3 +5,16 @@
         {{sg_datatables_render_js(datatable)}}
     </div>
    </div>
+   <script>
+       $(document).ready(function(){
+        $('#sg-datatables-{{ datatable.uniqueName }}').on('click','.action-show', function (event) {
+			event.preventDefault();
+			const scope = $(this)
+			app.dialogs.create({
+				url: scope.attr('href'),
+				containerFluid:true,
+          		columnClass:'col-md-8 col-md-offset-2'
+			})
+		})
+       });
+   </script>
