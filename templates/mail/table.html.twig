@@ -10,8 +10,9 @@
         $('#sg-datatables-{{ datatable.uniqueName }}').on('click','.action-show', function (event) {
 			event.preventDefault();
 			const scope = $(this)
+            let url =  scope.attr('href')
 			app.dialogs.create({
-				url: scope.attr('href'),
+				url : url,
 				containerFluid:true,
           		columnClass:'col-md-8 col-md-offset-2'
 			})

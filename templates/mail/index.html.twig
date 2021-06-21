@@ -13,4 +13,16 @@
 
 {% block javascripts %}
     {{sg_datatables_render_js(datatable)}}
+    <script type="text/javascript">
+       $('#sg-datatables-{{ datatable.uniqueName }}').off('click').on('click', '.show-details', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this);
+
+            app.datatable.handleDetails(scope, {
+                path: scope.attr('data-path')
+            });
+        });
+    </script>
 {% endblock %}

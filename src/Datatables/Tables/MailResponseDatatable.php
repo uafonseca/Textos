@@ -6,6 +6,7 @@ namespace App\Datatables\Tables;
 use App\Datatables\Utiles\TableActions;
 use App\Entity\Code;
 use App\Entity\Mail;
+use App\Entity\MailResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
@@ -17,13 +18,12 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
-use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * Class CodeDatatable
  * @package App\Datatables\Tables
  */
-class MailDatatable extends AbstractDatatable
+class MailResponseDatatable extends AbstractDatatable
 {
     private $vich;
     public function __construct(
@@ -47,16 +47,10 @@ class MailDatatable extends AbstractDatatable
             $mail = $this->getEntityManager()->getRepository('App:Mail')->find($row['id']);
 
             if (null !== $mail->getAttached()) {
-                $row['file'] = '<a class="btn-pill btn-sm btn btn-primary" download href="'.$this->vich->asset($mail->getAttached(), 'imagenFile').'"> <i class="fa fa-download"></i>  </a>';
+                $row['attached'] = '<a class="btn-pill btn-sm btn btn-primary" download href="'.$this->vich->asset($mail->getAttached(), 'imagenFile').'"> <i class="fa fa-download"></i> </a>';
             } else {
-                $row['file'] = '';
+                $row['attached'] = '';
             }
-
-            // if (null != $homework = $mail->getHomework() === true) {
-            //     $row['homework'] = $homework;
-            // } else {
-            //     $row['homework'] = false;
-            // }
             return $row;
         };
     }
@@ -75,66 +69,41 @@ class MailDatatable extends AbstractDatatable
         $this->vich = $options['vich'];
 
         $this->options->set([
-            'classes' => 'table table-bordered table-hover',
+            'classes' => Style::BOOTSTRAP_4_STYLE,
             'individual_filtering' => false,
             'order_cells_top' => true,
             // 'dom' => 'Blfrtip',
         ]);
-
-
-
 
         $this->features->set([
             'processing' => true,
         ]);
 
         $this->columnBuilder
-            ->add(null, ActionColumn::class, [
-                'title' => 'Detalles',
-                'width' => '3%',
-                'actions' => [
-                    [
-                        'icon' => 'fa fa-plus-circle text-success fa-icono cortex-table-action-icon',
-                        'attributes' => function ($row) {
-                            return [
-                                'class' => 'show-details',
-                                'data-toggle' => 'tooltip',
-                                'data-placement' => 'top',
-                                'data-tippy-content' => 'Ver detalles',
-                                'data-path' => $this->router->generate('mail_response_index', [
-                                    'uuid' => $row['uuid'],
-                                ]),
-                            ];
-                        },
-                        'render_if' => function ($row) {
-                            return $row['homework'] && $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN');
-                        },
-                    ],
-                ],
-            ])
+        
             ->add('uuid', Column::class, [
                 'title' => 'uuid',
                 'visible' => false,
             ])
-            ->add('homework', Column::class, [
-                'title' => 'homework',
-                'visible' => false,
+            ->add('User.name', Column::class, [
+                'title' => 'Usuario',
+                'visible' => true,
             ])
             ->add('createdAt', DateTimeColumn::class, [
-                'title' => 'Fecha',
+                'title' => 'Fecha de envío',
                 'visible' => true,
                 'width' => '15%',
-                'date_format' => 'D-MM-yy hh:mm'
-            ])
-            ->add('subject', Column::class, [
-                'title' => 'Asunto',
-                'visible' => true,
+                'date_format' => 'D-MM-yy hh:mm a'
             ])
             ->add('context', Column::class, [
                 'title' => 'Contenido',
                 'visible' => true,
             ])
-            ->add('file', VirtualColumn::class, [
+            ->add('evaluation', Column::class, [
+                'title' => 'Nota',
+                'visible' => true,
+            ])
+            ->add('attached', VirtualColumn::class, [
                 'title' => 'Adjunto',
                 'visible' => true,
             ])
@@ -142,22 +111,19 @@ class MailDatatable extends AbstractDatatable
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => [
                     array(
-                        'route' => 'mail_response_new',
+                        'route' => 'mail_response_evaluate',
                         'route_parameters' => array(
                             'uuid' => 'uuid',
-                            'type' => 'testtype',
-                            '_format' => 'html',
-                            '_locale' => 'es',
                         ),
-                        'icon' => 'fa fa-paper-plane cortex-table-action-icon',
+                        'icon' => 'fa fa-edit cortex-table-action-icon',
                         // 'confirm_message' => 'Are you sure?',
                         'attributes' => array(
-                            'class' => 'action-show text-success',
-                            'data-tippy-content' => 'Enviar respuesta',
-                            'title' => 'Enviar respuesta',
+                            'class' => 'action-evaluate text-success',
+                            'data-tippy-content' => 'Evaluar',
+                            'title' => 'Evaluar',
                         ),
                         'render_if' => function ($row) {
-                            return $row['homework'] && $this->authorizationChecker->isGranted('ROLE_USER');
+                            return  $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN');
                         },
                     ),
                 ],
@@ -170,7 +136,7 @@ class MailDatatable extends AbstractDatatable
      */
     public function getEntity()
     {
-        return Mail::class;
+        return MailResponse::class;
     }
 
     /**
@@ -178,6 +144,6 @@ class MailDatatable extends AbstractDatatable
      */
     public function getName()
     {
-        return 'mail-datatable';
+        return 'mail-response-datatable';
     }
 }

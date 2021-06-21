@@ -1,0 +1,73 @@
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+<div class="card">
+    <div class="card-header">
+        Evaluar: {{response.mail.subject}}
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-8">
+                {{response.mail.context|raw}}
+            </div>
+            <div class="col-md-4">
+                {% if response.mail.attached is not null %}
+                <a href="{{vich_uploader_asset(response.mail.attached,'imagenFile')}}" download class="btn btn-success">
+                    <i class="fa fa-download"></i>
+                    Archivo adjunto
+                </a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <hr>
+            </div>
+        </div>
+        <div class="row">
+            {{ form_start(form) }}
+            <div class="row">
+                <div class="col-md-8">
+                    {{response.context|raw}}
+                </div>
+                <div class="col-md-4">
+                    {% if response.attached is not null %}
+                    <a href="{{vich_uploader_asset(response.attached,'imagenFile')}}" download class="btn btn-info">
+                        <i class="fa fa-download"></i>
+                        Adjunto recibido
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    {{ form_widget(form) }}
+                </div>
+                <div class="col-md-6">
+                    <button class="btn float-right mt-4" type="submit"
+                        style="background-color: {{ colors()['primary'] }}; color:white"
+                        data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Enviando...">
+                        <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                        {{ button_label|default('Evaluar') }}
+                    </button>
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+</div>
+<script>
+    
+    $(function (){
+        $('form[name="form"]').on('submit', function(event){
+            const form = $(this)
+            app.forms.submit(form,function(response){
+                if(response.type === 'success'){
+                    $.alert({
+                        title: 'Información',
+                        content: response.message,
+                    });
+                    $('#sg-datatables-{{uniq}}').DataTable().ajax.reload(null,false);
+                    app.dialogs.close(form);
+                }else{}},event);
+        })
+    })
+</script>

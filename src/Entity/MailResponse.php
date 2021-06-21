@@ -6,6 +6,7 @@ use App\Repository\MailResponseRepository;
 use App\Traits\TimestampableTrait;
 use App\Traits\UuidEntityTrait;
 use Doctrine\ORM\Mapping as ORM;
+use phpDocumentor\Reflection\Types\Integer;
 
 /**
  * @ORM\Entity(repositoryClass=MailResponseRepository::class)
@@ -45,9 +46,11 @@ class MailResponse
     private $attached;
 
     /**
-     * @ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $evaluation;
+
+    
 
     public function getId(): ?int
     {
@@ -102,12 +105,12 @@ class MailResponse
         return $this;
     }
 
-    public function getEvaluation(): ?string
+    public function getEvaluation(): ?int
     {
         return $this->evaluation;
     }
 
-    public function setEvaluation(?string $evaluation): self
+    public function setEvaluation(?int $evaluation): self
     {
         $this->evaluation = $evaluation;
 

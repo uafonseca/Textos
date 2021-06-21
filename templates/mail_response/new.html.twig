@@ -3,11 +3,17 @@
         {{mail.subject|raw}}
     </div>
     <div class="card-body">
-        <pre>
-            {{mail.context|raw}}
-        </pre>
+        <div class="row">
+            <div class="col-md-12">
+                {{mail.context|raw}}
+            </div>
+        </div>
         <hr>
-        {{ include('mail_response/_form.html.twig') }}
+        <div class="row">
+            <div class="col-md-12">
+                {{ include('mail_response/_form.html.twig') }}
+            </div>
+        </div>
     </div>
 </div>
 <script>
