@@ -231,7 +231,7 @@ class BookController extends AbstractController
             'url' => $this->generateUrl('show_book_users', [
                 'id' => $book->getId()
             ]),
-            'actions' => 'hide'
+            'actions' => 'hide' 
         ]);
 
         if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
