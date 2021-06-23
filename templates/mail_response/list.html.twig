@@ -1,0 +1,33 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6">
+                <p>Datos</p>
+                <strong>{{user.name ~' '~ user.firstName}}</strong>
+                <p>Cédula: <strong>{{user.cedula}}</strong></p>
+            </div>
+            <div class="col-md-6 text-right">
+               <p>{{ userGroup.groupName }}</p>
+               <p>{{ userGroup.course.title }}</p>
+               <p>{{ userGroup.modality.name }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {{ sg_datatables_render_html(datatable) }}
+        {{sg_datatables_render_js(datatable)}}
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).on('click', '.action-evaluate', function (event) {
+
+        event.preventDefault();
+
+        const scope = $(this);
+
+       app.dialogs.create({
+           url: scope.attr('href')+'?uniq={{datatable.uniqueName}}'
+       })
+
+    });
+</script>

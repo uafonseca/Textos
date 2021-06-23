@@ -30,7 +30,6 @@ use Twig\Environment;
  */
 class UsersGroupDatatable extends AbstractDatatable
 {
-
     private $group;
     public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $securityToken, $translator, RouterInterface $router, EntityManagerInterface $em, Environment $twig)
     {
@@ -39,12 +38,16 @@ class UsersGroupDatatable extends AbstractDatatable
     }
 
     public function getLineFormatter()
-	{
-		return function ($row) {
-			$row['group'] = $this->group ? $this->group->getId() : null;
-			return $row;
-		};
-	}
+    {
+        return function ($row) {
+            /** @var User $user */
+            $user = $this->getEntityManager()->getRepository('App:User')->find($row['id']);
+            $row['group'] = $this->group ? $this->group->getId() : null;
+            $row['homework'] = $user->getMailResponses()->count();
+
+            return $row;
+        };
+    }
 
 
     public function buildDatatable(array $options = [])
@@ -66,8 +69,9 @@ class UsersGroupDatatable extends AbstractDatatable
             'processing' => true,
         ]);
         
-        if (isset($options['group']))
+        if (isset($options['group'])) {
             $this->group = $options['group'];
+        }
 
         $this->columnBuilder
             ->add('uuid', Column::class, [
@@ -88,25 +92,42 @@ class UsersGroupDatatable extends AbstractDatatable
             ->add('firstName', Column::class, [
                 'title' => 'Apellidos',
             ])
-            ->add('cedula', Column::class, [
-                'title' => 'Cédula',
-            ])
             ->add('email', Column::class, [
                 'title' => 'Email',
-            ]);
-            if(!isset($options['actions'])){
-                $this->columnBuilder
+            ])
+             ->add('homework', VirtualColumn::class, [
+                'title' => 'Tareas recibidas',
+            ])
+            ;
+        if (!isset($options['actions'])) {
+            $this->columnBuilder
                 ->add(null, ActionColumn::class, [
                     'title' => $this->translator->trans('sg.datatables.actions.title'),
                     'actions' => [
                         TableActions::delete('user_delete'),
-                        TableActions::default('show_status', 'fa-print text-warning', 'action-export', 'Ver',[
+                        TableActions::default('show_status', 'fa-print text-warning', 'action-export', 'Ver', [
                             'id' => 'id',
                             'userGroup' => 'group',
-                        ])
+                        ]),
+                        array(
+                            'route' => 'mail_response_list',
+                            'route_parameters' => array(
+                                'uuid' => 'uuid',
+                                'userGroup' => 'group',
+                            ),
+                            'icon' => 'fa fa-edit cortex-table-action-icon',
+                            'attributes' => array(
+                                'class' => 'action-export text-success',
+                                'data-tippy-content' => 'Ver notas',
+                                'title' => 'Ver notas',
+                            ),
+                            'render_if' => function ($row) {
+                                return !$this->authorizationChecker->isGranted('ROLE_USER');
+                            },
+                        ),
                     ],
                 ]);
-            }
+        }
     }
 
     public function getEntity()

@@ -3,8 +3,12 @@
 namespace App\Controller;
 
 use App\Datatables\Tables\MailResponseDatatable;
+use App\Datatables\Tables\MailResponseListDatatable;
+use App\Entity\Book;
 use App\Entity\Mail;
 use App\Entity\MailResponse;
+use App\Entity\User;
+use App\Entity\UserGroup;
 use App\Form\MailResponseType;
 use App\Repository\MailResponseRepository;
 use Sg\DatatablesBundle\Datatable\DatatableFactory;
@@ -16,6 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * @Route("/mail/response")
@@ -76,6 +81,43 @@ class MailResponseController extends AbstractController
         }
         return $this->render('mail_response/index.html.twig', [
             'datatable'=>$datatable
+        ]);
+    }
+
+  /**
+   * Undocumented function
+   *
+   * @param User $user
+   * @param Book $book
+   * @param Request $request
+   * @return Response
+   * 
+   * @Route("/list/{uuid}/{userGroup}", name="mail_response_list", methods={"GET","POST"})
+   * @ParamConverter("userGroup", class="App:UserGroup")
+   */
+    public function listByUser(User $user, UserGroup $userGroup, Request $request): Response
+    {
+        $datatable = $this->datatableFactory->create(MailResponseListDatatable::class);
+
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('mail_response_list',[
+                'uuid' => $user->getUuid(),
+                'userGroup' => $userGroup->getId()
+            ]),
+            'group' => $userGroup->getCourse()
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail_response/list.html.twig', [
+            'datatable'=>$datatable,
+            'user' => $user,
+            'userGroup' => $userGroup
         ]);
     }
 
@@ -188,7 +230,8 @@ class MailResponseController extends AbstractController
             ])
         ])
         ->add('evaluation',null,[
-            'required' => true
+            'required' => true,
+            'label'=>'Nota'
         ])->getForm();
         $form->handleRequest($request);
 
@@ -206,6 +249,23 @@ class MailResponseController extends AbstractController
             'form' => $form->createView(),
             'response' => $response,
             'uniq' => $request->query->get('uniq')
+        ]);
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param MailResponse $response
+     * @param Request $request
+     * @return Response
+     * 
+     * @Route("/check/{uuid}", name="mail_response_check", options={"expose" = true}, methods={"GET","POST"})
+     */
+    public function exist(MailResponse $response, Request $request):Response{
+        return new JsonResponse([
+            'type' => 'success',
+            'data' => $response->getEvaluation()!=null
         ]);
     }
 }

@@ -37,7 +37,7 @@ class VisitController extends AbstractController
      * @Route("/visit/{id}/{user}", name="visit_index")
      * @ParamConverter("id", class="App:Book")
      */
-    public function index(Book $book,User $user, Request $request): Response
+    public function index(Book $book, User $user, Request $request): Response
     {
         $datatable = $this->datatableFactory->create(VisitDatatable::class);
         $datatable->buildDatatable([

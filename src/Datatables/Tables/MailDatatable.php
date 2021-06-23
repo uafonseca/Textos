@@ -6,6 +6,7 @@ namespace App\Datatables\Tables;
 use App\Datatables\Utiles\TableActions;
 use App\Entity\Code;
 use App\Entity\Mail;
+use App\Entity\MailResponse;
 use Doctrine\ORM\EntityManagerInterface;
 use Sg\DatatablesBundle\Datatable\AbstractDatatable;
 use Sg\DatatablesBundle\Datatable\Column\ActionColumn;
@@ -44,6 +45,7 @@ class MailDatatable extends AbstractDatatable
     public function getLineFormatter()
     {
         return function ($row) {
+            /** @var Mail $mail */
             $mail = $this->getEntityManager()->getRepository('App:Mail')->find($row['id']);
 
             if (null !== $mail->getAttached()) {
@@ -51,12 +53,20 @@ class MailDatatable extends AbstractDatatable
             } else {
                 $row['file'] = '';
             }
-
-            // if (null != $homework = $mail->getHomework() === true) {
-            //     $row['homework'] = $homework;
-            // } else {
-            //     $row['homework'] = false;
-            // }
+            $user = $this->securityToken->getToken()->getUser();
+            $evaluation = '<span class="text-info">NA</span>';
+            /** @var MailResponse $response */
+            foreach($mail->getMailResponses() as $response){
+                if ($response->getUser() === $user){
+                    if (null === $response->getEvaluation()){
+                        $evaluation = '<span class="text-danger">Pendiente</span>';
+                    }else{
+                        $evaluation = $response->getEvaluation();
+                    }
+                }
+            }
+            $row['nota'] = $evaluation;
+            $row['context'] = TableActions::truncate($mail->getContext(), 100);
             return $row;
         };
     }
@@ -87,8 +97,8 @@ class MailDatatable extends AbstractDatatable
         $this->features->set([
             'processing' => true,
         ]);
-
-        $this->columnBuilder
+        if($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')){
+            $this->columnBuilder
             ->add(null, ActionColumn::class, [
                 'title' => 'Detalles',
                 'width' => '3%',
@@ -111,7 +121,9 @@ class MailDatatable extends AbstractDatatable
                         },
                     ],
                 ],
-            ])
+            ]);
+        }
+        $this->columnBuilder
             ->add('uuid', Column::class, [
                 'title' => 'uuid',
                 'visible' => false,
@@ -130,8 +142,12 @@ class MailDatatable extends AbstractDatatable
                 'title' => 'Asunto',
                 'visible' => true,
             ])
-            ->add('context', Column::class, [
+            ->add('context', VirtualColumn::class, [
                 'title' => 'Contenido',
+                'visible' => true,
+            ])
+            ->add('nota', VirtualColumn::class, [
+                'title' => 'Nota',
                 'visible' => true,
             ])
             ->add('file', VirtualColumn::class, [

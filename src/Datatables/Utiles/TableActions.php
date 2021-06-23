@@ -15,6 +15,40 @@
 	class TableActions
 	{
 
+
+		/**
+		 * Undocumented function
+		 *
+		 * @param string $text
+		 * @param integer $max
+		 * @return string
+		 */
+		public static function truncate(string $text, int $max):string
+		{
+			if (!$text)return '';
+			$truncate_string = wordwrap($text, $max, '<-@->', true);
+			$truncate_string = $truncate_string ? self::changeEncoding($truncate_string) : '-';
+			$truncate_string = str_replace("\r", ' ', $truncate_string);
+			$truncate_string = str_replace("\n", ' ', $truncate_string);
+			$truncate_string = strlen($truncate_string) > $max ? substr($truncate_string, 0, strpos($truncate_string, '<-@->')) . ' ...' : $truncate_string;
+			return strip_tags($truncate_string) ;
+		}
+	
+		/**
+		 * @param $text
+		 * @return false|string|string[]|null
+		 */
+		public static function changeEncoding($text)
+		{
+            $encodeType = mb_detect_encoding($text, array('UTF-8', 'ASCII', 'GBK'));
+            if ($encodeType == 'UTF-8') {
+                return $text;
+            } else {
+                //return iconv($encodeType, "UTF-8//ignore", $text);
+                return mb_convert_encoding($text, "UTF-8", $encodeType);  //Change to UTF-8
+            }
+        }
+
         /**
          * @param array $columns
          * @return array

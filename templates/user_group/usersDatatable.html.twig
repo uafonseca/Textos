@@ -1,15 +1,19 @@
 <div class="card">
+    <div class="card-header">
+        <h2>Listado de participantes</h2>
+    </div>
     <div class="card-body">
         {{sg_datatables_render_html(datatable)}}
         {{sg_datatables_render_js(datatable)}}
     </div>
 </div>
 <script>
-    $(document).on('click', '.action-export', function (event) {
+     $('#sg-datatables-{{ datatable.uniqueName }}').off('click').on('click', '.action-export', function (event) {
 
             event.preventDefault();
 
             const scope = $(this);
+
 
             app.dialogs.create({
                 url: scope.attr('href'),
