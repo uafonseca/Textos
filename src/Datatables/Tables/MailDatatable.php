@@ -58,12 +58,13 @@ class MailDatatable extends AbstractDatatable
             /** @var MailResponse $response */
             foreach($mail->getMailResponses() as $response){
                 if ($response->getUser() === $user){
-                    if (null === $response->getEvaluation()){
-                        $evaluation = '<span class="text-danger">Pendiente</span>';
-                    }else{
+                    if (null != $response->getEvaluation()){
                         $evaluation = $response->getEvaluation();
                     }
                 }
+            }
+            if($mail->getHomework() && gettype($evaluation) === 'string'){
+                $evaluation = '<span class="text-danger">Pendiente</span>';
             }
             $row['nota'] = $evaluation;
             $row['context'] = TableActions::truncate($mail->getContext(), 100);
@@ -167,11 +168,16 @@ class MailDatatable extends AbstractDatatable
                         ),
                         'icon' => 'fa fa-paper-plane cortex-table-action-icon',
                         // 'confirm_message' => 'Are you sure?',
-                        'attributes' => array(
-                            'class' => 'action-show text-success',
-                            'data-tippy-content' => 'Enviar respuesta',
-                            'title' => 'Enviar respuesta',
-                        ),
+                        'attributes' => function($row){
+                            return [
+                                'class' => 'action-show text-success',
+                                'data-tippy-content' => 'Enviar respuesta',
+                                'title' => 'Enviar respuesta',
+                                'data-url' => $this->router->generate('mail_response_check-response', [
+                                    'uuid' => $row['uuid']
+                                ])
+                            ];
+                        },
                         'render_if' => function ($row) {
                             return $row['homework'] && $this->authorizationChecker->isGranted('ROLE_USER');
                         },

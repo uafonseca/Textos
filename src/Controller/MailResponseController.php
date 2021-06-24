@@ -268,4 +268,28 @@ class MailResponseController extends AbstractController
             'data' => $response->getEvaluation()!=null
         ]);
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param Mail $mail
+     * @param Request $request
+     * @return Response
+     * 
+     * @Route("/response-check/{uuid}", name="mail_response_check-response", options={"expose" = true}, methods={"GET","POST"})
+     */
+    public function existResponse(Mail $mail, Request $request):Response{
+        $em = $this->getDoctrine()->getManager();
+        $exist = false;
+        $nota = 0;
+        if( null != $response = $em->getRepository(MailResponse::class)->findByMailAndUser($mail, $this->getUser())){
+            $exist = true;
+            $nota = $response->getEvaluation();
+        }
+        return new JsonResponse([
+            'type' => 'success',
+            'data' => $exist,
+            'nota' => ($nota != null && $nota > 0)
+        ]);
+    }
 }

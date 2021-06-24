@@ -116,6 +116,8 @@ class MailController extends AbstractController
         ]);
     }
 
+    
+
     /**
      * @Route("/new/{uuid}", name="mail_new", methods={"GET","POST"})
      */
