@@ -16,6 +16,7 @@
 						<h3 class="mb-0"><strong>{{ book.title|upper }}</strong></h3>
 					</div>
 					<div class="card-body">
+						{% if not book.free %}
 						<div class="row">
 							<div class="col-md-3">
 								<h3>Dirigido a</h3>
@@ -50,7 +51,8 @@
 								{% endif %}
 
 							</div>
-						</div>
+						</div>	
+
 						<div class="row">
 							<div class="col-md-12">
 								<hr>
@@ -84,7 +86,7 @@
 								</p>
 							</div>
 						</div>
-						
+						{% endif %}
 					</div>
 				</div>
 			</div>
@@ -201,6 +203,32 @@
 {% block javascripts %}
 	<script type="text/javascript">
 		$(function(){
+			{% if book.free %}
+				$.ajax({
+					url: Routing.generate('contains_book_users',{id:'{{book.id}}' }),
+					type:'post',
+					success: (response) => {
+						if(response.status != true){
+							app.dialogs.confirm({
+								message:'¿Estas seguro de que quieres activar este Texto/Curso?',
+								onAccept:function(){
+									$.ajax({
+										url: Routing.generate('add_book_users',{id:'{{book.id}}' }),
+										type: 'post',
+										success: (data)	=>{
+											console.log(data)
+										}
+									})
+								},
+								onCancel:function(){
+									history.back();
+  									return false;
+								}
+							});
+						}
+					}
+				});
+			{% else %}
 			$('#activate').on('click', function(event){
 				event.preventDefault();
 				 $('#form').addClass('was-validated')
@@ -225,6 +253,7 @@
 					 },
 				 })
 			})
+			{% endif %}
 		})
 	</script>
 {% endblock %}

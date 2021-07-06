@@ -170,6 +170,18 @@ class User implements UserInterface, Serializable
      */
     private $mailResponses;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="user")
+     */
+    private $freeBooks;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="user")
+     */
+    private $invitations;
+
+    
+
 
     /**
      * User constructor.
@@ -184,6 +196,9 @@ class User implements UserInterface, Serializable
         $this->mailsReceived = new ArrayCollection();
         $this->courseVsits = new ArrayCollection();
         $this->mailResponses = new ArrayCollection();
+        $this->freeBooks = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
+        
     }
 
 
@@ -568,8 +583,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-                     $this->plainPassword = $plainPassword;
-                   }
+                                                            $this->plainPassword = $plainPassword;
+                                                          }
 
     /**
      * @return Collection|UserGroup[]
@@ -750,6 +765,65 @@ class User implements UserInterface, Serializable
 
         return $this;
     }
-   
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getFreeBooks(): Collection
+    {
+        return $this->freeBooks;
+    }
+
+    public function addFreeBook(Book $freeBook): self
+    {
+        if (!$this->freeBooks->contains($freeBook)) {
+            $this->freeBooks[] = $freeBook;
+            $freeBook->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFreeBook(Book $freeBook): self
+    {
+        if ($this->freeBooks->removeElement($freeBook)) {
+            // set the owning side to null (unless already changed)
+            if ($freeBook->getUser() === $this) {
+                $freeBook->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getUser() === $this) {
+                $invitation->setUser(null);
+            }
+        }
+
+        return $this;
+    }
     
 }

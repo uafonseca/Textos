@@ -18,47 +18,47 @@ class FinancialDetails
     private $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $acountName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $dni;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $acountNumber;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $intitution;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $acountType;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $contact;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $paypalUrlComplete;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $PaypalUrlCancel;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $paypalHtmlCode;
 
@@ -72,7 +72,7 @@ class FinancialDetails
         return $this->acountName;
     }
 
-    public function setAcountName(string $acountName): self
+    public function setAcountName(?string $acountName): self
     {
         $this->acountName = $acountName;
 
@@ -84,7 +84,7 @@ class FinancialDetails
         return $this->dni;
     }
 
-    public function setDni(string $dni): self
+    public function setDni(?string $dni): self
     {
         $this->dni = $dni;
 
@@ -96,7 +96,7 @@ class FinancialDetails
         return $this->acountNumber;
     }
 
-    public function setAcountNumber(string $acountNumber): self
+    public function setAcountNumber(?string $acountNumber): self
     {
         $this->acountNumber = $acountNumber;
 
@@ -108,7 +108,7 @@ class FinancialDetails
         return $this->intitution;
     }
 
-    public function setIntitution(string $intitution): self
+    public function setIntitution(?string $intitution): self
     {
         $this->intitution = $intitution;
 
@@ -120,7 +120,7 @@ class FinancialDetails
         return $this->acountType;
     }
 
-    public function setAcountType(string $acountType): self
+    public function setAcountType(?string $acountType): self
     {
         $this->acountType = $acountType;
 
@@ -132,7 +132,7 @@ class FinancialDetails
         return $this->contact;
     }
 
-    public function setContact(string $contact): self
+    public function setContact(?string $contact): self
     {
         $this->contact = $contact;
 
@@ -144,7 +144,7 @@ class FinancialDetails
         return $this->paypalUrlComplete;
     }
 
-    public function setPaypalUrlComplete(string $paypalUrlComplete): self
+    public function setPaypalUrlComplete(?string $paypalUrlComplete): self
     {
         $this->paypalUrlComplete = $paypalUrlComplete;
 
@@ -156,7 +156,7 @@ class FinancialDetails
         return $this->PaypalUrlCancel;
     }
 
-    public function setPaypalUrlCancel(string $PaypalUrlCancel): self
+    public function setPaypalUrlCancel(?string $PaypalUrlCancel): self
     {
         $this->PaypalUrlCancel = $PaypalUrlCancel;
 
@@ -168,7 +168,7 @@ class FinancialDetails
         return $this->paypalHtmlCode;
     }
 
-    public function setPaypalHtmlCode(string $paypalHtmlCode): self
+    public function setPaypalHtmlCode(?string $paypalHtmlCode): self
     {
         $this->paypalHtmlCode = $paypalHtmlCode;
 

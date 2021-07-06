@@ -62,13 +62,11 @@ class BookController extends AbstractController
         DatatableResponse $datatableResponse,
         CodeRepository $codeRepository,
         BookRepository $bookRepository
-       
     ) {
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
         $this->codeRepository = $codeRepository;
         $this->bookRepository = $bookRepository;
-        
     }
 
     /**
@@ -81,7 +79,6 @@ class BookController extends AbstractController
      */
     public function index(Request $request): Response
     {
-
         $datatable = $this->datatableFactory->create(BookDatatable::class);
 
         $datatable->buildDatatable([
@@ -111,7 +108,6 @@ class BookController extends AbstractController
      */
     public function listByUser(Request $request, User $user): Response
     {
-
         $datatable = $this->datatableFactory->create(UserCourseDatatable::class);
 
         $datatable->buildDatatable([
@@ -206,13 +202,14 @@ class BookController extends AbstractController
      */
     public function show(Book $book): Response
     {
+        /** @var User $loggedUser */
         $loggedUser = $this->getUser();
         if (!$loggedUser) {
             return $this->render('book/annony.html.twig', [
                 'book' => $book,
             ]);
         }
-        if (null != $code = $this->codeRepository->isBookActive($book, $this->getUser())) {
+        if (null != $code = $this->codeRepository->isBookActive($book, $this->getUser()) || $loggedUser->getFreeBooks()->contains($book)) {
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);
@@ -223,15 +220,51 @@ class BookController extends AbstractController
     }
 
     /**
+     * Undocumented function
+     *
+     * @param Book $book
+     * @return Response
+     * @Route("/contains/{id}", name="contains_book_users", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function containByUser(Book $book):Response
+    {
+        /** @var User $loggedUser */
+        $loggedUser = $this->getUser();
+        return new JsonResponse([
+            'status' => $loggedUser->getFreeBooks()->contains($book)
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Book $book
+     * @return Response
+     * 
+     *  @Route("/add/free/{id}", name="add_book_users", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function addFreBook(Book $book):Response
+    {
+        /** @var User $loggedUser */
+        $loggedUser = $this->getUser();
+        $loggedUser->addFreeBook($book);
+        $this->getDoctrine()->getManager()->flush();
+        return new JsonResponse([
+            'status' => 'success'
+        ]);
+    }
+
+    /**
      *  @Route("/users/{id}", name="show_book_users", methods={"GET","POST"}, options={"expose" = true})
      */
-    public function getParticipants(Book $book, Request $request){
+    public function getParticipants(Book $book, Request $request)
+    {
         $datatable = $this->datatableFactory->create(UsersGroupDatatable::class);
         $datatable->buildDatatable([
             'url' => $this->generateUrl('show_book_users', [
                 'id' => $book->getId()
             ]),
-            'actions' => 'hide' 
+            'actions' => 'hide'
         ]);
 
         if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
@@ -277,7 +310,6 @@ class BookController extends AbstractController
      */
     public function activateBook(Book $book, Request $request)
     {
-
         if ($request->isXmlHttpRequest()) {
             $key = $request->request->get('code');
             /** @var \App\Entity\User $loggedUser */
@@ -286,7 +318,6 @@ class BookController extends AbstractController
             $code = $this->codeRepository->findCode($book, $key);
 
             if ($code) {
-
                 if ($code->getEndDate() < new \DateTime('now')) {
                     return new JsonResponse([
                         'type' => 'error',
@@ -294,11 +325,12 @@ class BookController extends AbstractController
                     ]);
                 }
 
-                if ($loggedUser->getCodes()->contains($code))
+                if ($loggedUser->getCodes()->contains($code)) {
                     return new JsonResponse([
                         'type' => 'error',
                         'message' => 'No puede activar dos veces el mismo código'
                     ]);
+                }
 
                 $em = $this->getDoctrine()->getManager();
 

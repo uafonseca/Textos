@@ -32,8 +32,17 @@
 						</div>
 					</div
 				</div>
+				<div class="col-md-12">
+					<div class="input-group">
+                        <input id="url" type="text" readonly class="form-control" value="{{group.invitation}}">
+                        <div class="input-group-prepend">
+                            <button onclick="myFunction()" type="button" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">Copiar invitación</button>
+                        </div>
+                    </div>
+					<br>
+				</div>
 				<div class="col-md-3">
-					<a href="{{asset('utiles/formato_invitados.xlsx')}}" donwload class="text-info">Descargar formato</a>
+					<a href="{{asset('utiles/formato_invitados.xlsx')}}" donwload class="text-info"><i class="fa fa-download"></i> Descargar formato</a>
 					{{ form_row(form.file) }}
 				</div>
 			</div>
@@ -56,7 +65,21 @@
 {% block javascripts %}
 	<script>
 
+		function myFunction() {
+			/* Get the text field */
+			var copyText = document.getElementById("url");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Enlace copiado!')
+		} 
 		$(document).ready(function() {
+
 			app.plugins.initSelect2('#user_group_course');
 			app.plugins.initSelect2('#user_group_modality')
 			 $("#user_group_startDate").datepicker({

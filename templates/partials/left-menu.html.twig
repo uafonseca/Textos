@@ -38,10 +38,17 @@
 						<span class="align-middle">Mis Códigos</span>
 					</a>
 				</li>
+
+				<li class="sidebar-item {% if currentPath == path('invitations_index') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('invitations_index') }}">
+						<i class="align-middle" data-feather="check-circle"></i>
+						<span class="align-middle">Mis invitaciones</span>
+					</a>
+				</li>
 			
 				<li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
-						<i class="align-middle" data-feather="check-circle"></i>
+						<i class="align-middle" data-feather="user"></i>
 						<span class="align-middle">Perfil</span>
 					</a>
 				</li>
@@ -129,7 +136,7 @@
 			{% endif %}
 
 
-			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') %}
+			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') or is_granted('ROLE_SUPER_ADMIN') %}
 
 				<li class="sidebar-item {% if currentPath == path('book_index') %}active{% endif %}">
 					<a href="#textos" data-toggle="collapse" class="sidebar-link collapsed">

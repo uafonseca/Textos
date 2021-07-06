@@ -73,6 +73,11 @@ class Code
      */
     private $token;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $free;
+
     public function __construct()
     {
         $this->uuid = Uuid::v1();
@@ -200,5 +205,17 @@ class Code
             return '<span class="badge badge-success">Activo</span>';
 
         return $this->endDate > new \DateTime('now') ? '<span class="badge badge-success">Activo</span>' : '<span class="badge badge-warning">Vencido</span>';
+    }
+
+    public function getFree(): ?bool
+    {
+        return $this->free;
+    }
+
+    public function setFree(bool $free): self
+    {
+        $this->free = $free;
+
+        return $this;
     }
 }

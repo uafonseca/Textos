@@ -117,6 +117,16 @@ class Book
      */
     private $certificates;
 
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $free;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="freeBooks")
+     */
+    private $user;
+
 
     public function __construct()
     {
@@ -445,6 +455,29 @@ class Book
                 $certificate->setCourse(null);
             }
         }
+
+        return $this;
+    }
+    public function getFree(): ?bool
+    {
+        return $this->free;
+    }
+
+    public function setFree(bool $free): self
+    {
+        $this->free = $free;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

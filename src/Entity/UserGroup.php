@@ -9,6 +9,7 @@ use App\Traits\UuidEntityTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 /**
  * @ORM\Entity(repositoryClass=UserGroupRepository::class)
@@ -33,12 +34,12 @@ class UserGroup
     private $course;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $groupName;
 
     /**
-     * @ORM\Column(type="date")
+     * @ORM\Column(type="date", nullable=true)
      */
     private $startDate;
 
@@ -51,7 +52,7 @@ class UserGroup
 
     /**
      * @ORM\ManyToOne(targetEntity=Level::class, inversedBy="userGroups")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $modality;
 
@@ -80,10 +81,22 @@ class UserGroup
      */
     private $hour;
 
+       /**
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $invitation;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="userGroup")
+     */
+    private $invitations;
+
     public function __construct()
     {
+        $this->uuid = Uuid::v1();
         $this->users = new ArrayCollection();
         $this->mails = new ArrayCollection();
+        $this->invitations = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -241,6 +254,57 @@ class UserGroup
     public function setHour(?\DateTimeInterface $hour): self
     {
         $this->hour = $hour;
+
+        return $this;
+    }
+    
+
+    /**
+     * Get the value of invitation
+     */ 
+    public function getInvitation()
+    {
+        return $this->invitation;
+    }
+
+    /**
+     * Set the value of invitation
+     *
+     * @return  self
+     */ 
+    public function setInvitation($invitation)
+    {
+        $this->invitation = $invitation;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Invitation[]
+     */
+    public function getInvitations(): Collection
+    {
+        return $this->invitations;
+    }
+
+    public function addInvitation(Invitation $invitation): self
+    {
+        if (!$this->invitations->contains($invitation)) {
+            $this->invitations[] = $invitation;
+            $invitation->setUserGroup($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvitation(Invitation $invitation): self
+    {
+        if ($this->invitations->removeElement($invitation)) {
+            // set the owning side to null (unless already changed)
+            if ($invitation->getUserGroup() === $this) {
+                $invitation->setUserGroup(null);
+            }
+        }
 
         return $this;
     }

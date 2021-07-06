@@ -1,0 +1,41 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Aceptar invitación{% endblock %}
+
+{% block body %}
+<div class="col-md-12 pt-5 text-center">
+    <div class="card mt-5" style="width: 500px; margin: 0 auto 0 auto">
+    <div class="card-header">
+        <h3>Invitación al grupo <strong> {{userGroup.groupName}} </strong></h3>
+        <p>Ahora podrás acceder al contenido de este grupo</p>
+    </div>
+    <div class="card-body">
+        {% if exist is not null %}
+            <a href="{{path('book_show',{uuid:userGroup.course.uuid })}}" class="btn btn-warning btn-lg"><i class="fa fa-check-double"></i>VER CURSO</a>
+        {% else %}
+            <a href="#" class="acept btn btn-success btn-lg"><i class="fa fa-check-double"></i> ACEPTAR INVITACIÓN</a>
+        {% endif %}
+    </div>
+    <div class="card-footer">
+        <p class="text-muted mt-2">Código del grupo: {{userGroup.uuid}}</p>
+    </div>
+</div
+</div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function(){
+            $('.acept').click(function(event){
+                event.preventDefault();
+                $.ajax({
+                    url:Routing.generate('invitation-link',{uuid: '{{userGroup.uuid}}' }),
+                    type:'post',
+                    success: (data) =>{
+                        location.href = data.url;
+                    }
+                })
+            })
+        })
+    </script>
+{% endblock %}
