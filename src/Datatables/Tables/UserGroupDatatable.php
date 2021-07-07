@@ -51,7 +51,7 @@ class UserGroupDatatable extends AbstractDatatable
         $this->columnBuilder
 			->add('uuid', Column::class, [
 				'title' => 'uuid',
-				'visible' => false,
+				// 'visible' => false,
 			])
             ->add(null, ActionColumn::class, [
                 'title' => 'Detalle',
@@ -75,16 +75,20 @@ class UserGroupDatatable extends AbstractDatatable
             ])
             ->add('course.title', Column::class, [
 				'title' => 'Nombre del curso',
+                'default_content' => '--'
 			])
             ->add('groupName', Column::class, [
 				'title' => 'Nombre del grupo',
+                'default_content' => '--'
 			])
             ->add('startDate', DateTimeColumn::class, [
 				'title' => 'Fecha de inicio',
-                'date_format' => 'DD/MM/yyyy'
+                'date_format' => 'DD/MM/yyyy',
+                'default_content' => '--'
 			])
             ->add('modality.name', Column::class, [
 				'title' => 'Modalidad',
+                'default_content' => '--'
 			])
             ->add(null, ActionColumn::class, [
                 'title' => $this->translator->trans('sg.datatables.actions.title'),

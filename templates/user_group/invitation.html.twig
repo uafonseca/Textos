@@ -17,7 +17,8 @@
         {% endif %}
     </div>
     <div class="card-footer">
-        <p class="text-muted mt-2">Código del grupo: {{userGroup.uuid}}</p>
+        <p class="text-muted mt-2">Código del grupo: <span id="">{{userGroup.uuid}}</span>  <a href="#" onclick="copy()" data-tippy-content="Copiar código"><i class="fa fa-copy"></i></a></p>
+        <input type="text" style="display: none;" id="code" value="{{userGroup.uuid}}">
     </div>
 </div
 </div>
@@ -25,7 +26,21 @@
 
 {% block javascripts %}
     <script>
+        function copy() {
+                /* Get the text field */
+                var copyText = document.getElementById("code");
+
+                /* Select the text field */
+                copyText.select();
+                copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+                /* Copy the text inside the text field */
+                document.execCommand("copy");
+
+                toastr.success('Enlace copiado!')
+		    }
         $(document).ready(function(){
+             
             $('.acept').click(function(event){
                 event.preventDefault();
                 $.ajax({

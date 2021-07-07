@@ -105,7 +105,8 @@ class MailController extends AbstractController
             ->leftjoin('mail.userGroup', 'userGroup')
             ->andwhere('recipient =:user')
             ->andwhere('userGroup.course =:course')
-            ->setParameter('course',$book)
+            ->orderBy('mail.createdAt', 'DESC')
+            ->setParameter('course', $book)
             ->setParameter('user',$this->getUser());
             ;   
 
@@ -113,6 +114,7 @@ class MailController extends AbstractController
         }
         return $this->render('mail/table.html.twig', [
             'datatable' => $datatable,
+            'book' => $book
         ]);
     }
 

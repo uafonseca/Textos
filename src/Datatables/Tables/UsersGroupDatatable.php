@@ -95,12 +95,12 @@ class UsersGroupDatatable extends AbstractDatatable
             ->add('email', Column::class, [
                 'title' => 'Email',
             ])
-             ->add('homework', VirtualColumn::class, [
-                'title' => 'Tareas recibidas',
-            ])
             ;
         if (!isset($options['actions'])) {
             $this->columnBuilder
+                ->add('homework', VirtualColumn::class, [
+                    'title' => 'Tareas recibidas',
+                ])
                 ->add(null, ActionColumn::class, [
                     'title' => $this->translator->trans('sg.datatables.actions.title'),
                     'actions' => [

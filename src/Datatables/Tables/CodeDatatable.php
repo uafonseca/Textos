@@ -38,7 +38,8 @@ class CodeDatatable extends AbstractDatatable
         return function ($row) {
             /** @var Code $code */
             $code = $this->getEntityManager()->getRepository(Code::class)->find($row['id']);
-            $row['user'] = $code->getUser() ? $code->getUser()->getName() : '';
+            $row['user'] = $code->getUser() ? $code->getUser()->getName().' '.$code->getUser()->getFirstName() : '';
+            $row['username'] = $code->getUser() ? $code->getUser()->getusername() : '';
             $row['status'] = $code->getEndDate() < new \DateTime('now') ? '<span class="text-success">Activado</span>' : '<span class="text-warning">Vencido</span>';
             return $row;
         };
@@ -92,6 +93,9 @@ class CodeDatatable extends AbstractDatatable
         if (isset($options['with_user']) && $options['with_user'] === true) {
             $this->columnBuilder
                 ->add('user', VirtualColumn::class, [
+                    'title' => 'Nombre y apellidos',
+                ])
+                ->add('username', VirtualColumn::class, [
                     'title' => 'Usuario',
                 ])
                 ->add('status', VirtualColumn::class, [

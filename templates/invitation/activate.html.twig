@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-header">
+    </div>
+    <div class="card-body">
+        <div class="col-md-12">
+            <div class="input-group">
+                <input id="url" type="text" class="form-control" placeholder="Código de invitación">
+                <div class="input-group-prepend">
+                    <button type="button" class="btn action-check"
+                        style="background-color: {{ colors()['primary'] }}; color:white;"><i
+                            class="fa fa-check-double"></i> Aceptar</button>
+                </div>
+            </div>
+            <br>
+        </div>
+    </div>
+</div>
+<script>
+    $(() => {
+        $('.action-check').on('click', function (event) {
+            event.preventDefault();
+            const scope = $(this);
+            let uuid = $('#url').val();
+            console.log(uuid)
+            if (uuid) {
+                $.ajax({
+                    url: Routing.generate('add-new-code', { uuid: uuid }),
+                    type: 'post',
+                    error:(response) =>{
+                        toastr.error('Este código no es correcto')
+                    },
+                    success: (data) => {
+                        if(data.type === 'success'){
+                            location.href = data.url;
+                        }else{
+                            toastr.error(data.message)
+                        }
+                    }
+                })
+            }else{
+                toastr.error('Debe introducir un código')
+            }
+        });
+    })
+</script>

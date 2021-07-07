@@ -241,6 +241,7 @@ class ExcelManagerService
             ->setCompany($this->company)
             ->setStarDate($this->group->getStartDate())
             ->setUnlimited(true)
+            ->setFree(true)
             ->setUser($user)
             ;
 

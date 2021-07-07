@@ -8,27 +8,52 @@
 
 	<div class="card">
 		<div class="card-header">
-			<h1>Nuevo grupo de usuarios</h1>
+			<h1>Editar grupo de usuarios</h1>
 		</div>
-		<div class="card-body">
+			<div class="card-body">
 			{{ form_start(form) }}
 			<div class="row">
 				<div class="col-md-3">{{ form_row(form.groupName) }}</div>
 				<div class="col-md-3">{{ form_row(form.startDate) }}</div>
 				<div class="col-md-3">{{ form_row(form.modality) }}</div>
 				<div class="col-md-3">{{ form_row(form.course) }}</div>
+				<div class="col-md-12">
+					{{ form_row(form.details) }}
+				</div>
+				<div class="col-md-12">
+					<div class="card">
+						<div class="card-header">Invitación a reunión</div>
+						<div class="card-body">
+							<div class="row">
+								<div class="col-md-2">{{ form_row(form.chatDate)}}</div>
+								<div class="col-md-2">{{ form_row(form.hour)}}</div>
+								<div class="col-md-8">{{ form_row(form.videoLink)}}</div>
+							</div>
+						</div>
+					</div
+				</div>
+				<div class="col-md-12">
+					<div class="input-group">
+                        <input id="url" type="text" readonly class="form-control" value="{{group.invitation}}">
+                        <div class="input-group-prepend">
+                            <button onclick="myFunction()" type="button" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">Copiar invitación</button>
+                        </div>
+                    </div>
+					<br>
+				</div>
+				<div class="col-md-3">
+					<a href="{{asset('utiles/formato_invitados.xlsx')}}" donwload class="text-info"><i class="fa fa-download"></i> Descargar formato</a>
+					{{ form_row(form.file) }}
+				</div>
 			</div>
 
-			<div class="row mt-4">
+			<div class="row">
 				<div class="col-md-3">
 					<button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white">
 						<i class="fa fa-save"></i> 
 						Guardar
 					</button>
 				</div>
-			</div>
-			<div class="d-none">
-				{{form_rest(form) }}
 			</div>
 			{{ form_end(form) }}
 
@@ -39,6 +64,19 @@
 
 {% block javascripts %}
 	<script>
+	function myFunction() {
+			/* Get the text field */
+			var copyText = document.getElementById("url");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Enlace copiado!')
+		} 
 		$(function () {
 			app.plugins.initSelect2('#user_group_course');
 			app.plugins.initSelect2('#user_group_modality')

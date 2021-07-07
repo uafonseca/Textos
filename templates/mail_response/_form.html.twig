@@ -1,5 +1,11 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
+    <div class="col-md-12">
+        <label for="mail_response_context">Contenido de la respuesta para el usuario {{mail.sender.name ~ ' ' ~ mail.sender.firstName}}</label>
+        {{form_widget(form.context)}}
+    </div>
+    <div class="col-md-12">
+        {{form_row(form.attached)}}
+    </div>
    <button class="btn float-right mt-4"
          type="submit"
          style="background-color: {{ colors()['primary'] }}; color:white"

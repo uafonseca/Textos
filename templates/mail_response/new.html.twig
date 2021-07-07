@@ -1,6 +1,7 @@
 <div class="card">
     <div class="card-header">
-        {{mail.subject|raw}}
+        <p style="width: 45%; float:left"><strong>{{mail.subject|raw}}</strong></p>
+        <p style="width: 45%; float:right" class="text-right"><strong>{{mail.userGroup.course.title}}</strong></p>
     </div>
     <div class="card-body">
         <div class="row">

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Datatables\Tables\UserGroupDatatable;
 use App\Datatables\Tables\UsersGroupDatatable;
+use App\Entity\Code;
 use App\Entity\Invitation;
 use App\Entity\Role;
 use App\Entity\User;
@@ -21,6 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserGroupController extends AbstractController
 {
@@ -144,6 +146,8 @@ class UserGroupController extends AbstractController
      *
      * @param UserGroup $userGroup
      * @return Response
+     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      *@Route("/invitation-link/{uuid}", name="invitation-link", options={"expose" = true})
      */
@@ -165,6 +169,19 @@ class UserGroupController extends AbstractController
             ->setUserGroup($userGroup)
             ->setAcept(true);
             $em->persist($invitation);
+
+            $user->addUserGroup($userGroup);
+            $userGroup->addUser($user);
+
+            $code = new Code();
+            $code->setCode(uniqid())
+                ->setBook($userGroup->getCourse())
+                ->setStarDate($userGroup->getStartDate())
+                ->setUnlimited(true)
+                ->setUser($user)
+                ->setFree(true)
+                ;
+            $em->persist($code);
             $em->flush();
 
             $this->addFlash('success','Invitación aceptada');
@@ -186,7 +203,7 @@ class UserGroupController extends AbstractController
 
     /**
      *@Route("/user/group/edit/{uuid}", name="user_group_edit")
-     *@ParamConverter("uuid", class="App:UserGroup")
+     *
      */
     public function edit(UserGroup $group, Request $request)
     {
