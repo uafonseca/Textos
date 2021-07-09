@@ -6,51 +6,64 @@
 
 {% block body %}
 
-	<div class="card">
-		<div class="card-header">
-			<h1>Nuevo grupo de usuarios</h1>
-		</div>
-		<div class="card-body">
-			{{ form_start(form) }}
-			<div class="row">
-				<div class="col-md-3">{{ form_row(form.groupName) }}</div>
-				<div class="col-md-3">{{ form_row(form.startDate) }}</div>
-				<div class="col-md-3">{{ form_row(form.modality) }}</div>
-				<div class="col-md-3">{{ form_row(form.course) }}</div>
-				<div class="col-md-12">
-					{{ form_row(form.details) }}
-				</div>
-				<div class="col-md-12">
-					<div class="card">
-						<div class="card-header">Invitación a reunión</div>
-						<div class="card-body">
-							<div class="row">
-								<div class="col-md-2">{{ form_row(form.chatDate)}}</div>
-								<div class="col-md-2">{{ form_row(form.hour)}}</div>
-								<div class="col-md-8">{{ form_row(form.videoLink)}}</div>
+<div class="card">
+	<div class="card-header">
+		<h1>Nuevo grupo de usuarios</h1>
+	</div>
+	<div class="card-body">
+		{{ form_start(form) }}
+		<div class="row">
+			<div class="col-md-3">{{ form_row(form.groupName) }}</div>
+			<div class="col-md-3">{{ form_row(form.startDate) }}</div>
+			<div class="col-md-3">{{ form_row(form.modality) }}</div>
+			<div class="col-md-3">{{ form_row(form.course) }}</div>
+			<div class="col-md-12">
+				{{ form_row(form.details) }}
+			</div>
+			<div class="col-md-12">
+				<div class="card">
+					<div class="card-header">Invitación a reunión</div>
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-2">{{ form_row(form.chatDate)}}</div>
+							<div class="col-md-2">{{ form_row(form.hour)}}</div>
+							<div class="col-md-8">{{ form_row(form.videoLink)}}</div>
+						</div>
+					</div>
+				</div </div>
+				<div class="row">
+					<div class="col-md-6">
+						<div class="input-group">
+							<input id="url" type="text" readonly class="form-control" value="{{group.invitation}}">
+							<div class="input-group-prepend">
+								<button onclick="copy1()" type="button" class="btn"
+									style="background-color: {{ colors()['primary'] }}; color:white;">Copiar
+									invitación</button>
 							</div>
 						</div>
-					</div
-				</div>
-				<div class="col-md-12">
-					<div class="input-group">
-                        <input id="url" type="text" readonly class="form-control" value="{{group.invitation}}">
-                        <div class="input-group-prepend">
-                            <button onclick="myFunction()" type="button" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">Copiar invitación</button>
-                        </div>
-                    </div>
-					<br>
+					</div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input id="code" type="text" readonly class="form-control" value="{{group.uuid}}">
+							<div class="input-group-prepend">
+								<button onclick="copy2()" type="button" class="btn"
+									style="background-color: {{ colors()['primary'] }}; color:white;">Copiar
+									código</button>
+							</div>
+						</div>
+					</div>
 				</div>
 				<div class="col-md-3">
-					<a href="{{asset('utiles/formato_invitados.xlsx')}}" donwload class="text-info"><i class="fa fa-download"></i> Descargar formato</a>
+					<a href="{{asset('utiles/formato_invitados.xlsx')}}" donwload class="text-info"><i
+							class="fa fa-download"></i> Descargar formato</a>
 					{{ form_row(form.file) }}
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-md-3">
-					<button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white">
-						<i class="fa fa-save"></i> 
+					<button type="submit" class="btn" style="background-color: {{ colors()['primary'] }}; color:white">
+						<i class="fa fa-save"></i>
 						Guardar
 					</button>
 				</div>
@@ -60,12 +73,12 @@
 		</div>
 	</div>
 
-{% endblock %}
+	{% endblock %}
 
-{% block javascripts %}
+	{% block javascripts %}
 	<script>
 
-		function myFunction() {
+		function copy1() {
 			/* Get the text field */
 			var copyText = document.getElementById("url");
 
@@ -77,12 +90,25 @@
 			document.execCommand("copy");
 
 			toastr.success('Enlace copiado!')
-		} 
-		$(document).ready(function() {
+		}
+		function copy2() {
+			/* Get the text field */
+			var copyText = document.getElementById("code");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Código copiado!')
+		}
+		$(document).ready(function () {
 
 			app.plugins.initSelect2('#user_group_course');
 			app.plugins.initSelect2('#user_group_modality')
-			 $("#user_group_startDate").datepicker({
+			$("#user_group_startDate").datepicker({
 				dateFormat: "d-m-yy",
 				changeYear: true,
 				yearRange: "-0:+100",
@@ -94,8 +120,9 @@
 			});
 			{# $("#user_group_hour").timepicker({
 				showInputs: false
-			}); #}
-			 $('#user_group_file_imagenFile_file').fileinput({
+			}); #
+			}
+			$('#user_group_file_imagenFile_file').fileinput({
 				showCaption: true,
 				showPreview: false,
 				showUploadedThumbs: true,
@@ -107,6 +134,6 @@
 				browseIcon: '<i class="fa fa-upload"></i>&nbsp;'
 			});
 		})
-	
+
 	</script>
-{% endblock %}
+	{% endblock %}

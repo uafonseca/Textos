@@ -49,10 +49,10 @@ class UserGroupDatatable extends AbstractDatatable
         ]);
 
         $this->columnBuilder
-			->add('uuid', Column::class, [
-				'title' => 'uuid',
-				// 'visible' => false,
-			])
+            ->add('uuid', Column::class, [
+                'title' => 'uuid',
+                'visible' => false,
+            ])
             ->add(null, ActionColumn::class, [
                 'title' => 'Detalle',
                 'width' => '3%',
@@ -74,31 +74,40 @@ class UserGroupDatatable extends AbstractDatatable
                 ],
             ])
             ->add('course.title', Column::class, [
-				'title' => 'Nombre del curso',
+                'title' => 'Nombre del curso',
                 'default_content' => '--'
-			])
+            ])
             ->add('groupName', Column::class, [
-				'title' => 'Nombre del grupo',
+                'title' => 'Nombre del grupo',
                 'default_content' => '--'
-			])
+            ])
             ->add('startDate', DateTimeColumn::class, [
-				'title' => 'Fecha de inicio',
+                'title' => 'Fecha de inicio',
                 'date_format' => 'DD/MM/yyyy',
                 'default_content' => '--'
-			])
+            ])
             ->add('modality.name', Column::class, [
-				'title' => 'Modalidad',
+                'title' => 'Modalidad',
                 'default_content' => '--'
-			])
+            ])
             ->add(null, ActionColumn::class, [
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => [
                     TableActions::edit('user_group_edit'),
                     TableActions::delete('users_group_remove'),
                     TableActions::mailSend('mail_new'),
-                    TableActions::default('mail_index','fa-envelope text-danger','show-mail', 'Ver listado'),
-                    
-                    
+                    TableActions::default('mail_index', 'fa-envelope text-danger', 'show-mail', 'Ver listado'),
+                    [
+                        'route' => 'users_group_copy',
+                            'route_parameters' => array(
+                                'uuid' => 'uuid',
+                            ),
+                        'icon' => 'fa fa-copy cortex-table-action-icon',
+                        'attributes' => [
+                            'class' => 'action-copy text-success',
+                            'data-tippy-content' => 'Copiar código',
+                        ],
+                    ]
                 ],
             ])
         ;

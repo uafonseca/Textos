@@ -1,0 +1,57 @@
+<div class="card">
+    <div class="card-header">
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input id="url" type="text" readonly class="form-control" value="{{group.invitation}}">
+                    <div class="input-group-prepend">
+                        <button onclick="copy1()" type="button" class="btn"
+                            style="background-color: {{ colors()['primary'] }}; color:white;">Copiar
+                            invitación</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="input-group">
+                    <input id="code" type="text" readonly class="form-control" value="{{group.uuid}}">
+                    <div class="input-group-prepend">
+                        <button onclick="copy2()" type="button" class="btn"
+                            style="background-color: {{ colors()['primary'] }}; color:white;">Copiar
+                            código</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function copy1() {
+			/* Get the text field */
+			var copyText = document.getElementById("url");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Enlace copiado!')
+		}
+		function copy2() {
+			/* Get the text field */
+			var copyText = document.getElementById("code");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Código copiado!')
+		}
+</script>
