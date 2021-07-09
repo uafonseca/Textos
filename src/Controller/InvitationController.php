@@ -84,9 +84,7 @@ class InvitationController extends AbstractController
                 $em->flush();
     
                 $this->addFlash('success','Invitación aceptada');
-                $url = $this->generateUrl('book_show',[
-                    'uuid' => $group->getCourse()->getUuid()
-                ]);
+                $url = $this->generateUrl('user_dashboard');
                 return new JsonResponse([
                     'type' => 'success',
                     'url' => $url

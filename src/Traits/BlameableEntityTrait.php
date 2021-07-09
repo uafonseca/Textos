@@ -30,14 +30,14 @@ trait BlameableEntityTrait
      */
     protected $updatedBy;
 
-    public function setCreatedBy(string $createdBy): self
+    public function setCreatedBy(User $createdBy): self
     {
         $this->createdBy = $createdBy;
 
         return $this;
     }
 
-    public function getCreatedBy(): User
+    public function getCreatedBy(): ?User
     {
         return $this->createdBy;
     }
@@ -49,7 +49,7 @@ trait BlameableEntityTrait
         return $this;
     }
 
-    public function getUpdatedBy(): User
+    public function getUpdatedBy(): ?User
     {
         return $this->updatedBy;
     }

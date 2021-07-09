@@ -185,9 +185,7 @@ class UserGroupController extends AbstractController
             $em->flush();
 
             $this->addFlash('success','Invitación aceptada');
-            $url = $this->generateUrl('book_show',[
-                'uuid' => $userGroup->getCourse()->getUuid()
-            ]);
+            $url = $this->generateUrl('user_dashboard');
             return new JsonResponse([
                 'type' => 'success',
                 'url' => $url
@@ -286,6 +284,20 @@ class UserGroupController extends AbstractController
             'type' => 'success',
             'message' => 'Datos eliminados',
             'no_reload' => true
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param UserGroup $userG
+     * @return void
+     * 
+     * @Route("/user/group/copy/{uuid}", name="users_group_copy")
+     */
+    public function copy(UserGroup $userG){
+        return $this->render('invitation/show.html.twig',[
+            'group' => $userG
         ]);
     }
 }
