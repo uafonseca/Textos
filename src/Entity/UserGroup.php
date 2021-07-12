@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\UserGroupRepository;
+use App\Traits\BlameableEntityTrait;
 use App\Traits\CompanyEntityTrait;
 use App\Traits\TimestampableTrait;
 use App\Traits\UuidEntityTrait;
@@ -21,6 +22,7 @@ class UserGroup
     use UuidEntityTrait;
     use TimestampableTrait;
     use CompanyEntityTrait;
+    use BlameableEntityTrait;
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

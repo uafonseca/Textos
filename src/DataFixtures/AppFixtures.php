@@ -22,6 +22,7 @@ class AppFixtures extends Fixture
     public function load(ObjectManager $manager)
     {
         $this->geograpich($manager);
+        $this->loadDefaultRoles($manager);
         $role = new Role();
         $role->setRolename('ROLE_SUPER_ADMIN');
         $manager->persist($role);
@@ -40,6 +41,42 @@ class AppFixtures extends Fixture
 
         $manager->persist($user);
         $manager->flush();
+    }
+
+    public function loadDefaultRoles(ObjectManager $manager){
+        $role = new Role();
+        $role->setRolename('ROLE_USER');
+        $manager->persist($role);
+
+        print "Generating role: {$role->getRolename()} " . PHP_EOL;
+
+
+        $role1 = new Role();
+        $role1->setRolename('ROLE_ADMIN');
+        $manager->persist($role1);
+
+        print "Generating role: {$role1->getRolename()} " . PHP_EOL;
+
+        $role2 = new Role();
+        $role2->setRolename('ROLE_PROFESOR');
+        $manager->persist($role2);
+
+        print "Generating role: {$role2->getRolename()} " . PHP_EOL;
+
+        $role3 = new Role();
+        $role3->setRolename('ROLE_CAPACITADOR_EXTERNO');
+        $manager->persist($role3);
+
+        print "Generating role: {$role3->getRolename()} " . PHP_EOL;
+
+        $role4 = new Role();
+        $role4->setRolename('ROLE_CAPACITADOR_INTERNO');
+        $manager->persist($role4);
+
+        print "Generating role: {$role4->getRolename()} " . PHP_EOL;
+
+        $manager->flush();
+     
     }
 
 

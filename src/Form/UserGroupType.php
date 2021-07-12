@@ -2,16 +2,27 @@
 
 namespace App\Form;
 
+use App\Entity\Book;
 use App\Entity\UserGroup;
 use App\Form\FileUpload\ImageType;
+use Doctrine\ORM\EntityRepository;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class UserGroupType extends AbstractType
 {
+
+    private TokenStorageInterface $tokenStorageInterface;
+
+    public function __construct(TokenStorageInterface $tokenStorageInterface)
+    {
+        $this->tokenStorageInterface = $tokenStorageInterface;
+    }
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -27,9 +38,16 @@ class UserGroupType extends AbstractType
                 'label' => 'Modalidad',
                 'required' => true
             ])
-            ->add('course', null, [
+            ->add('course', EntityType::class, [
                 'label' => 'Curso',
-                'required' => true
+                'required' => true,
+                'class' => Book::class,
+                'query_builder' => function(EntityRepository $entityRepository){
+                    return $entityRepository->createQueryBuilder('e')
+                        ->where('e.createdBy=:loggedUser')
+                        ->setParameter('loggedUser', $this->tokenStorageInterface->getToken()->getUser())
+                    ;
+                },
             ])
             ->add('details', null, [
                 'label' => 'Detalles del curso',
@@ -45,10 +63,6 @@ class UserGroupType extends AbstractType
             ])
             ->add('hour', null, [
                 'label' => 'Hora',
-                // 'html5' => false,
-                // 'placeholder' => 'dd-mm-yyyy hh:mm',
-                // 'format' => 'hh:mm',
-                // 'widget' => 'single_text',
                 'required' => false
             ])
             ->add('videoLink', TextType::class, [

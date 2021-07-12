@@ -1,0 +1,15 @@
+{% extends 'layout.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' %}
+
+{% block title %}Edit GlobalLink{% endblock %}
+
+{% block body %}
+     <div class="card">
+        <div class="card-header">
+            <h2>Editar enlace</h2>
+        </div>
+        <div class="card-body" >
+                {{ include('global_link/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}
