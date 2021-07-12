@@ -121,7 +121,7 @@
 				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
 					<a href="#cusos" data-toggle="collapse" class="sidebar-link collapsed">
 						<i class="align-middle" data-feather="check-circle"></i>
-						<span class="align-middle">Cursos</span>
+						<span class="align-middle">Invitaciones</span>
 					</a>
 					<ul id="cusos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
 						<li class="sidebar-item">
@@ -151,6 +151,39 @@
 							<a class="sidebar-link" href="{{ path('unit_index') }}">Unidades</a>
 						</li>
 					</ul>
+				</li>
+
+				<li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('my-class') }}">
+						<i class="align-middle" data-feather="book-open"></i>
+						<span class="align-middle">Mis clases</span>
+					</a>
+				</li>
+
+			{% endif %}
+
+			{% if is_granted('ROLE_SUPER_ADMIN')  %}
+
+				<li class="sidebar-item {% if currentPath == path('global_link_index') or currentPath == path('global_link_new') %}active{% endif %}">
+					<a href="#enlaces" data-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="link"></i>
+						<span class="align-middle">Enlaces</span>
+					</a>
+					<ul id="enlaces" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('global_link_new') }}">Adicionar</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('global_link_index') }}">Listado</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('my-class') }}">
+						<i class="align-middle" data-feather="book-open"></i>
+						<span class="align-middle">Mis clases</span>
+					</a>
 				</li>
 
 			{% endif %}

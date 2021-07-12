@@ -1,0 +1,19 @@
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-md-4">
+        {{form_row(form.name)}}
+    </div>
+    <div class="col-md-4">
+        {{form_row(form.destination)}}
+    </div>
+    <div class="col-md-4">
+        {{form_row(form.imagen)}}
+    </div>
+    <div class="col-md-12">
+        {{form_row(form.url)}}
+    </div>
+    <div class="col-md-12">
+        <button class="btn mt-3" style="background-color: {{ colors()['primary'] }}; color:white;"><i class="fa fa-save"></i> {{ button_label|default('Guardar') }}</button>
+    </div>
+</div>
+{{ form_end(form) }}

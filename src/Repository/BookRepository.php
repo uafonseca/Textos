@@ -104,8 +104,13 @@ class BookRepository extends ServiceEntityRepository
         ->getResult();
     }
 
-    public function getParticipants(Book $book){
-
+    public function getMyBooks(User $user){
+        return $this->createQueryBuilder('book')
+            ->join('book.userGroups','userGroup')
+            ->where('userGroup.createdBy =:user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**

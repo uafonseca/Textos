@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GlobalLink{% endblock %}
+
+{% block body %}
+    <h1>GlobalLink</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ global_link.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ global_link.name }}</td>
+            </tr>
+            <tr>
+                <th>Url</th>
+                <td>{{ global_link.url }}</td>
+            </tr>
+            <tr>
+                <th>Destination</th>
+                <td>{{ global_link.destination }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('global_link_index') }}">back to list</a>
+
+    <a href="{{ path('global_link_edit', {'id': global_link.id}) }}">edit</a>
+
+    {{ include('global_link/_delete_form.html.twig') }}
+{% endblock %}

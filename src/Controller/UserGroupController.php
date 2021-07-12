@@ -59,7 +59,20 @@ class UserGroupController extends AbstractController
 
         if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $this->datatableResponse->setDatatable($datatable);
-            $this->datatableResponse->getDatatableQueryBuilder();
+            $builder = $this->datatableResponse->getDatatableQueryBuilder();
+
+            if(!$this->container->get('security.authorization_checker')->isGranted('ROLE_SUPER_ADMIN')){
+                $builder
+                    ->getQb()
+                    ->andWhere('usergroup.createdBy =:loggedUser')
+                    ->andWhere('usergroup.groupName is not NULL')
+                    ->setParameter('loggedUser',$this->getUser());
+            }
+            else{
+                $builder
+                ->getQb()
+                ->andWhere('usergroup.groupName is not NULL');
+            }
 
             return $this->datatableResponse->getResponse();
         }

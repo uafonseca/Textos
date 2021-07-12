@@ -481,4 +481,20 @@ class Book
 
         return $this;
     }
+
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     * @return UserGroup
+     */
+    public function findGroupByUser(User $user): UserGroup{
+        /** @var UserGroup $userGroup */
+        foreach($this->userGroups as $userGroup){
+            if ($userGroup->getCreatedBy() === $user){
+                return $userGroup;
+            }
+        }
+        return null;
+    }
 }

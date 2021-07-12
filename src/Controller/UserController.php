@@ -291,4 +291,19 @@ class UserController extends AbstractController
             'books' => $this->bookRepository->getBooks($loggedUser)
         ]);
     }
+
+
+    /**
+     * Undocumented function
+     *
+     * @return Response
+     * @Route("/my-class", name="my-class", methods={"POST","GET"},options={"expose" = true})
+     */
+    public function myClass():Response{
+        $loggedUser = $this->getUser();
+
+        return $this->render('user/my-class.html.twig',[
+            'books' => $this->bookRepository->getMyBooks($loggedUser)
+        ]);
+    }
 }
