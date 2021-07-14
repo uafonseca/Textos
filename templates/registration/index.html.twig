@@ -134,8 +134,9 @@
 						</div>
 
 						<div class="form_group">
-							<div class="col-md-6 mb-3">
-								{{ form_row(form.roles) }}
+							<div class="col-md-6 mb-3 form-check-inline">
+							<label>Registrarse como</label>
+								{{ form_widget(form.roles) }}
 							</div>
 						</div>
 					</div>
@@ -143,80 +144,6 @@
 			</div>
 			<div class="row">
 				<div id="student" class="col-md-6 offset-3 d-none">
-{#					<div class="card bg-light mb-3 mt-3">#}
-{#						<div class="card-body">#}
-{#							<div class="card-header mb-3">Datos del estudiante</div>#}
-{#							<div class="form_group">#}
-{#								<div class="row">#}
-{#									<div class="col-md-6 mb-3">#}
-{#										{{form_label(form.student.brithday)}}#}
-{#										<div class="input-group flex-nowrap">#}
-{#											<span class="input-group-text" id="addon-wrapping">#}
-{#												<i class="fa fa-calendar"></i>#}
-{#											</span>#}
-{#											{{ form_widget(form.student.brithday, {'attr': {'class': 'student'}}) }}#}
-{#										</div>#}
-{#									</div>#}
-{#									<div class="col-md-6 mb-3">#}
-{#										{{form_label(form.student.mentorName)}}#}
-{#										<div class="input-group flex-nowrap">#}
-{#											<span class="input-group-text" id="addon-wrapping">#}
-{#												<i class="fa fa-users"></i>#}
-{#											</span>#}
-{#											{{ form_widget(form.student.mentorName, {'attr': {'class': 'student'}}) }}#}
-{#										</div>#}
-{#									</div>#}
-{#								</div>#}
-{#							</div>#}
-
-{#							<div class="form_group">#}
-{#								<div class="row">#}
-{#									<div class="col-md-6 mb-3">#}
-{#										{{form_label(form.student.mentorFirstName)}}#}
-{#										<div class="input-group flex-nowrap">#}
-{#											<span class="input-group-text" id="addon-wrapping">#}
-{#												<i class="fa fa-users"></i>#}
-{#											</span>#}
-{#											{{ form_widget(form.student.mentorFirstName, {'attr': {'class': 'student'}}) }}#}
-{#										</div>#}
-{#									</div>#}
-{#									<div class="col-md-6 mb-3">#}
-{#										{{form_label(form.student.mentorLastName)}}#}
-{#										<div class="input-group flex-nowrap">#}
-{#											<span class="input-group-text" id="addon-wrapping">#}
-{#												<i class="fa fa-users"></i>#}
-{#											</span>#}
-{#											{{ form_widget(form.student.mentorLastName, {'attr': {'class': 'student'}}) }}#}
-{#										</div>#}
-{#									</div>#}
-{#								</div>#}
-{#							</div>#}
-
-{#							<div class="form_group">#}
-{#								<div class="row">#}
-{#									#}{# <div class="col-md-6 mb-3">#}
-{#										{{form_label(form.student.mentorDNI)}}#}
-{#										<div class="input-group flex-nowrap">#}
-{#											<span class="input-group-text" id="addon-wrapping">#}
-{#												<i class="fa fa-id-card"></i>#}
-{#											</span>#}
-{#											{{ form_widget(form.student.mentorDNI, {'attr': {'class': 'student'}}) }}#}
-{#										</div>#}
-{#									</div> #}
-{#									<div class="col-md-6 mb-3">#}
-{#										{{form_label(form.student.mentorPhone)}}#}
-{#										<div class="input-group flex-nowrap">#}
-{#											<span class="input-group-text" id="addon-wrapping">#}
-{#												<i class="fa fa-mobile"></i>#}
-{#											</span>#}
-{#											{{ form_widget(form.student.mentorPhone, {'attr': {'class': 'student'}}) }}#}
-{#										</div>#}
-{#									</div>#}
-{#								</div>#}
-{#							</div>#}
-{#							<i id="student-link"></i>#}
-{#						</div>#}
-{#					</div>#}
 				</div>
 				<div id="teacher" class="offset-3  col-md-6 d-none">
 					<div class="card bg-light mb-3 mt-3">
@@ -267,4 +194,9 @@
 {% endblock %}
 {% block javascripts %}
 	{{ encore_entry_script_tags('registration.index') }}
+	<script>
+		$(document).ready(function(){
+			$('.form-check').addClass('form-check-inline')
+		})
+	</script>
 {% endblock %}

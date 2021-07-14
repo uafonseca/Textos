@@ -83,6 +83,38 @@ class MailController extends AbstractController
     }
 
      /**
+     * @Route("/my-mails/{uuid}", name="my-mails", methods={"GET", "POST"}, options = {"expose" = true})
+     */
+    public function myMails(UserGroup $userGroup, Request $request): Response
+    {
+
+        $datatable = $this->datatableFactory->create(MailDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('my-mails',[
+                'uuid' => $userGroup->getUuid()
+            ]),
+            'vich' => $this->vich
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->join('mail.userGroup', 'userGroup')
+            ->where('userGroup =:g')
+            ->setParameter('g',$userGroup)
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail/myMails.html.twig', [
+            'datatable' => $datatable,
+            'group' => $userGroup
+        ]);
+    }
+
+     /**
      * @Route("/by-user/{uuid}", name="mail_by_user", methods={"GET", "POST"})
      */
     public function showByUser(Book $book,Request $request): Response

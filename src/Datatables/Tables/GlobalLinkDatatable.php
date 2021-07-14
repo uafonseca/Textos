@@ -75,7 +75,6 @@ class GlobalLinkDatatable extends AbstractDatatable
                         'class' => 'action-export text-success',
                         'data-tippy-content' => 'Editar',
                     ),
-                   
                 ]
             ]
             ])

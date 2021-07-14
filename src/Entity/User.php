@@ -180,6 +180,11 @@ class User implements UserInterface, Serializable
      */
     private $invitations;
 
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $facebookId;
+
     
 
 
@@ -583,8 +588,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-                                                            $this->plainPassword = $plainPassword;
-                                                          }
+                                                                     $this->plainPassword = $plainPassword;
+                                                                   }
 
     /**
      * @return Collection|UserGroup[]
@@ -822,6 +827,18 @@ class User implements UserInterface, Serializable
                 $invitation->setUser(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getFacebookId(): ?int
+    {
+        return $this->facebookId;
+    }
+
+    public function setFacebookId(?int $facebookId): self
+    {
+        $this->facebookId = $facebookId;
 
         return $this;
     }

@@ -1,0 +1,145 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}Mi clase{% endblock %}
+
+
+{% block body %}
+
+<div class="card">
+	<div class="card-header">
+	</div>
+
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-4">
+				<div class="card">
+					<img class="card-img-top img-resized"
+						src="{{ vich_uploader_asset(group.course.portada , 'imagenFile') }}" alt="Unsplash">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="mb-3">
+									<strong>{{ group.course.title }}</strong>
+								</h3>
+							</div>
+							<div class="col-md-12">
+								<h4>{{group.groupName}}</h4>
+								<p class="text-muted">Fecha: {{ group.startDate|date('d/m/Y') }}</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-4">
+
+				<div class="list-group" id="list-tab" role="tablist">
+					<a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list"
+						href="#list-home" role="tab" aria-controls="home"><i class="fa fa-copy"></i> Copiar
+						invitación</a>
+					<a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list"
+						href="#list-profile" role="tab" aria-controls="profile"><i class="fa fa-users"></i> Mis
+						estudiantes</a>
+					<a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list"
+						href="#list-messages" role="tab" aria-controls="messages"><i class="fa fa-paper-plane"></i> Mis
+						comunicaciones</a>
+					<a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list"
+						href="#list-settings" role="tab" aria-controls="settings"><i class="fa fa-book-reader"></i>
+						Control de trabajos</a>
+
+				</div>
+			</div>
+			<div class="col-md-4"></div>
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="tab-content" id="nav-tabContent">
+					<div class="tab-pane fade show active" id="list-home" role="tabpanel"
+						aria-labelledby="list-home-list">
+						<div class="row">
+							<div class="col-md-6">
+								<div class="input-group">
+									<input id="url" type="text" readonly class="form-control"
+										value="{{group.invitation}}">
+									<div class="input-group-prepend">
+										<button onclick="copy1()" type="button" class="btn"
+											style="background-color: {{ colors()['primary'] }}; color:white;">Copiar
+											invitación</button>
+									</div>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="input-group">
+									<input id="code" type="text" readonly class="form-control" value="{{group.uuid}}">
+									<div class="input-group-prepend">
+										<button onclick="copy2()" type="button" class="btn"
+											style="background-color: {{ colors()['primary'] }}; color:white;">Copiar
+											código</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">
+						<div class="card">
+							<div class="card-header">
+								<h3>Mis studiantes</h3>
+							</div>
+							<div class="card-body">
+								{{ sg_datatables_render_html(userDatatable) }}
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
+						
+					</div>
+					<div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
+						..4.
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+{{ sg_datatables_render_js(userDatatable) }}
+<script type="text/javascript">
+	$(() => {
+		$.ajax({
+			url: Routing.generate('my-mails',{uuid: '{{group.uuid}}'}),
+			type:'GET',
+			success: (response) => {
+				$('#list-messages').html(response)
+			}
+		})
+	})
+	function copy1() {
+			/* Get the text field */
+			var copyText = document.getElementById("url");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Enlace copiado!')
+		}
+		function copy2() {
+			/* Get the text field */
+			var copyText = document.getElementById("code");
+
+			/* Select the text field */
+			copyText.select();
+			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+
+			/* Copy the text inside the text field */
+			document.execCommand("copy");
+
+			toastr.success('Código copiado!')
+		}
+</script>
+{% endblock %}

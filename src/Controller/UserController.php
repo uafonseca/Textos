@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\AppEvents;
 use App\Datatables\Tables\UserDatatable;
+use App\Datatables\Tables\UsersGroupDatatable;
 use App\Entity\Role;
 use App\Entity\User;
+use App\Entity\UserGroup;
 use App\Event\UserEvent;
 use App\Form\User1Type;
 use App\Form\UserCreationType;
@@ -90,7 +92,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/index.html.twig', [
-            'datatable' => $userDatatable
+            'usersDatatable' => $userDatatable
         ]);
     }
 
@@ -123,7 +125,7 @@ class UserController extends AbstractController
         }
 
         return $this->render('user/index.html.twig', [
-            'datatable' => $userDatatable
+            'usersDatatable' => $userDatatable
         ]);
     }
 
@@ -269,7 +271,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"},options={"expose" = true})
-     * @IsGranted("ROLE_USER")
+     * 
      */
     public function userDashboard(): Response
     {
@@ -304,6 +306,45 @@ class UserController extends AbstractController
 
         return $this->render('user/my-class.html.twig',[
             'books' => $this->bookRepository->getMyBooks($loggedUser)
+        ]);
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param UserGroup $userGroup
+     * @return Response
+     * 
+     * @Route("/class/{uuid}", name="show_class", methods={"POST","GET"}, options={"expose" = true})
+     */
+    public function visitClass(UserGroup $userGroup, Request $request):Response{
+
+        $usersDatatable = $this->datatableFactory->create(UsersGroupDatatable::class);
+        $usersDatatable->buildDatatable([
+            'url' => $this->generateUrl('show_book_users', [
+                'id' => $userGroup->getCourse()->getId()
+            ]),
+            'actions' => 'hide'
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($usersDatatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+
+            $qb
+                ->getQb()
+                ->join('user.userGroups', 'userGroup')
+                ->where('userGroup.course =:book')
+                ->setParameter('book', $userGroup->getCourse());
+
+
+            return $this->datatableResponse->getResponse();
+        }
+
+        return $this->render('user/class.html.twig',[
+            'group' => $userGroup,
+            'userDatatable' => $usersDatatable
         ]);
     }
 }
