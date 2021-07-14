@@ -1,0 +1,54 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Registro de comunicaciones y calificaciones</h2>
+            </div>
+            <div class="col-md-6">
+                <a href="{{path('mail_new',{uuid:group.uuid})}}" class="add-mail pull-right" title="Enviar mensaje"><i class="fa fa-paper-plane fa-2x"></i></a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {{ sg_datatables_render_html(datatable) }}
+        {{sg_datatables_render_js(datatable)}}
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('.add-mail').on('click', function(event){
+            event.preventDefault();
+            const scope = $(this);
+            app.dialogs.create({
+                url: scope.attr('href')
+            })
+        })
+        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
+            event.preventDefault();
+            const scope = $(this)
+
+            $.ajax({
+                url: scope.data('url'),
+                type: 'POST',
+                success: (response) => {
+                    if (response.data == true && response.nota == false) {
+                        app.dialogs.confirm({
+                            message: 'Su trabajo ha sido enviado con éxito <br> ¿Desea volver a enviarlo? <br> Recuerde que una vez calificado no podra editar este trabajo.',
+                            onAccept: function () {
+                                app.dialogs.create({ url: scope.attr('href'), containerFluid: true, columnClass: 'col-md-8 col-md-offset-2' })
+                            }
+                        });
+                    } else if (response.nota == true) {
+                        $.alert({
+                        title: 'Información',
+                        content: 'Su trabajo ha sido calificado!',
+                    });
+                     } else {
+                        app.dialogs.create({ url: scope.attr('href'), containerFluid: true, columnClass: 'col-md-8 col-md-offset-2' })
+                    }
+                }
+            })
+
+        })
+    });
+</script>

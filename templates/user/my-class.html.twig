@@ -48,8 +48,11 @@
 								{% endif %}
 								<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
 										Ingresar
-									</a>
-							</div>0
+								</a>
+								{% if group is not null %}
+									<a href="{{ path('show_class',{uuid:group.uuid}) }}" class="btn btn-pill btn-sm btn-primary pull-right">Mi clase</a>
+								{% endif %}
+							</div>
 						</div>
 					</div>
 				</div>

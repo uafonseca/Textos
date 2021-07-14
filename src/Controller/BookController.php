@@ -209,7 +209,10 @@ class BookController extends AbstractController
                 'book' => $book,
             ]);
         }
-        if (null != $code = $this->codeRepository->isBookActive($book, $this->getUser()) || $loggedUser->getFreeBooks()->contains($book)) {
+        if (
+            null != $code = $this->codeRepository->isBookActive($book, $this->getUser())
+             || $loggedUser->getFreeBooks()->contains($book)
+             || ($this->isGranted('ROLE_ADMIN') && $book->findGroupByUser($loggedUser) != null) ) {
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);

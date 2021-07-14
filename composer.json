@@ -16,6 +16,7 @@
         "friendsofsymfony/ckeditor-bundle": "^2.3",
         "gedmo/doctrine-extensions": "^3.0",
         "knplabs/knp-snappy-bundle": "^1.8",
+        "league/oauth2-facebook": "^2.0",
         "ninsuo/symfony-collection": "^2.1",
         "pelago/emogrifier": "^5.0",
         "phpdocumentor/reflection-docblock": "^5.2",

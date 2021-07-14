@@ -44,8 +44,8 @@ class UserGroupType extends AbstractType
                 'class' => Book::class,
                 'query_builder' => function(EntityRepository $entityRepository){
                     return $entityRepository->createQueryBuilder('e')
-                        ->where('e.createdBy=:loggedUser')
-                        ->setParameter('loggedUser', $this->tokenStorageInterface->getToken()->getUser())
+                        // ->where('e.createdBy=:loggedUser')
+                        // ->setParameter('loggedUser', $this->tokenStorageInterface->getToken()->getUser())
                     ;
                 },
             ])

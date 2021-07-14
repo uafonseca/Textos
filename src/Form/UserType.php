@@ -61,18 +61,16 @@ class UserType extends AbstractType
                     if (Role::ROLE_USER === $choice->getRolename()) {
                         return 'Estudiante';
                     } elseif (Role::ROLE_ADMIN === $choice->getRolename()) {
-                        return 'Capacitador';
-                    } else {
-                        return '';
+                        return 'Docente';
                     }
                 },
                 'choice_attr' => function ($choice, $key, $value) {
                     $arrayClass = ['class' => 'custom-control-input'];
                     if (is_object($choice)) {
                         if ($choice->getRolename() === Role::ROLE_USER)
-                            $arrayClass['data'] = 'student';
+                            $arrayClass['data'] = 'student pull-left';
                         elseif ($choice->getRolename() === Role::ROLE_ADMIN)
-                            $arrayClass['data'] = 'teacher';
+                            $arrayClass['data'] = 'teacher pull-right';
                         return $arrayClass;
                     }
                 },
