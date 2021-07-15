@@ -54,6 +54,12 @@ class GlobalLinkController extends AbstractController
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            if($this->isGranted('ROLE_USER')){
+                $qb
+                ->getQb()
+                ->where('globallink.destination =:d')
+                ->setParameter('d', 'Estudiantes');
+            }
             return $this->datatableResponse->getResponse();
         }
         return $this->render('global_link/index.html.twig', [

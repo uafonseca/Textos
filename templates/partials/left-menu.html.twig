@@ -3,7 +3,11 @@
 <nav id="sidebar" class="sidebar">
 	<div class="sidebar-content js-simplebar">
 		<a class="sidebar-brand" href="{{ path('app_home_page') }}">
-			<span class="align-middle">{% if getCompany() is not null and getCompany().visible %}{{ getCompany() }}{% endif %}</span>
+			<span class="align-middle">
+				{% if getCompany() is not null and getCompany().visible %}
+					{{ getCompany() }}
+				{% endif %}
+			</span>
 		</a>
 
 		<ul class="sidebar-nav">
@@ -17,7 +21,7 @@
 						<span class="align-middle">Dashboard</span>
 					</a>
 				</li>
-					<li class="sidebar-item {% if currentPath == path('user_control') %}active{% endif %}">
+				<li class="sidebar-item {% if currentPath == path('user_control') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_control') }}">
 						<span class="iconify" data-icon="feather:user-check" data-inline="false"></span>
 						<span class="align-middle">Control de usuarios</span>
@@ -33,13 +37,13 @@
 				</li>
 
 				{% if is_granted('ROLE_USER')  %}
-				
-				<li class="sidebar-item {% if currentPath == path('my_codes') %}active{% endif %}">
-					<a class="sidebar-link" href="{{ path('my_codes') }}">
-						<i class="align-middle" data-feather="shopping-cart"></i>
-						<span class="align-middle">Mis Códigos</span>
-					</a>
-				</li>
+
+					<li class="sidebar-item {% if currentPath == path('my_codes') %}active{% endif %}">
+						<a class="sidebar-link" href="{{ path('my_codes') }}">
+							<i class="align-middle" data-feather="shopping-cart"></i>
+							<span class="align-middle">Mis Códigos</span>
+						</a>
+					</li>
 				{% endif %}
 
 				<li class="sidebar-item {% if currentPath == path('invitations_index') %}active{% endif %}">
@@ -48,7 +52,14 @@
 						<span class="align-middle">Mis invitaciones</span>
 					</a>
 				</li>
-			
+
+				<li class="sidebar-item {% if currentPath == path('global_link_index') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('global_link_index') }}">
+						<i class="align-middle" data-feather="link"></i>
+						<span class="align-middle">Enlaces</span>
+					</a>
+				</li>
+
 				<li class="sidebar-item {% if currentPath == path('user_profile', {'uuid':app.user.uuid}) %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_profile', {'uuid': app.user.uuid}) }}">
 						<i class="align-middle" data-feather="user"></i>
@@ -79,46 +90,46 @@
 								<a class="sidebar-link" href="{{ path('role_index') }}">Roles</a>
 							</li>
 						{% endif %}
-						
-							<li class="sidebar-item">
-								<a class="sidebar-link" href="{{ path('code_index') }}">Códigos</a>
-							</li>
-						
+
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('code_index') }}">Códigos</a>
+						</li>
+
 					</ul>
 				</li>
 				{% if is_granted('ROLE_SUPER_ADMIN') %}
-				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
-					<a href="#catalogos" data-toggle="collapse" class="sidebar-link collapsed">
-						<i class="align-middle" data-feather="list"></i>
-						<span class="align-middle">Catálogos</span>
-					</a>
-					<ul id="catalogos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('category_index') }}">Categorías</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('school_stage_index') }}">Temas</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('level_index') }}">Tipos de cursos</a>
-						</li>
-					</ul>
-				</li>
+					<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
+						<a href="#catalogos" data-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="list"></i>
+							<span class="align-middle">Catálogos</span>
+						</a>
+						<ul id="catalogos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('category_index') }}">Categorías</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('school_stage_index') }}">Temas</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('level_index') }}">Tipos de cursos</a>
+							</li>
+						</ul>
+					</li>
 
-				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
-					<a href="#users" data-toggle="collapse" class="sidebar-link collapsed">
-						<i class="align-middle" data-feather="users"></i>
-						<span class="align-middle">Usuarios</span>
-					</a>
-					<ul id="users" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('user_new') }}">Adicionar usuario</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('user_index') }}">Listado de usuarios</a>
-						</li>
-					</ul>
-				</li>
+					<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
+						<a href="#users" data-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="users"></i>
+							<span class="align-middle">Usuarios</span>
+						</a>
+						<ul id="users" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('user_new') }}">Adicionar usuario</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('user_index') }}">Listado de usuarios</a>
+							</li>
+						</ul>
+					</li>
 				{% endif %}
 
 				<li class="sidebar-item {% if currentPath == path('role_index') %}active{% endif %}">
@@ -182,13 +193,6 @@
 					</ul>
 				</li>
 
-				{# <li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
-					<a class="sidebar-link" href="{{ path('my-class') }}">
-						<i class="align-middle" data-feather="book-open"></i>
-						<span class="align-middle">Mis clases</span>
-					</a>
-				</li> #}
-
 			{% endif %}
 		</ul>
 	</div>
@@ -196,3 +200,4 @@
 
 <div class="main">
 	{{ include('partials/top-menu.html.twig') }}
+

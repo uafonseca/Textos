@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-body">
+        {{ sg_datatables_render_html(datatable) }}
+        {{sg_datatables_render_js(datatable)}}
+    </div>
+</div>
+
+
+<script>
+    $(document).ready(function () {
+        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
+            event.preventDefault();
+            const scope = $(this);
+        })
+    });
+</script>
