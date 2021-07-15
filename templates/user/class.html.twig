@@ -90,10 +90,76 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">
-						
+						<div class="panel loading-data">
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-md-12 no-padding" style="height:100%;background-color: white">
+										<div class="text-center" style="padding: 50px">
+											<i class="fa fa-spin fa-2x fa-spinner"></i>
+											<h3 style="display:inline"> Cargando Información...</h3>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 					<div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">
-						..4.
+						<ul class="nav nav-tabs" id="myTab" role="tablist">
+							<li class="nav-item">
+								<a class="nav-link active" id="home-tab" data-toggle="tab" href="#recibidos" role="tab"
+									aria-controls="recibidos" aria-selected="true">
+									Deberes recibidos
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" id="code-tab" data-toggle="tab" href="#code-users" role="tab"
+									aria-controls="profile" aria-selected="false">
+									Deberes no cumplidos
+								</a>
+							</li>
+						</ul>
+						<div class="tab-content" id="myTabContent">
+							<div class="tab-pane fade show active p-1" id="recibidos" role="tabpanel"
+								aria-labelledby="home-tab">
+								<div class="card">
+									<div class="card-body">
+										<div class="panel loading-data">
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-12 no-padding"
+														style="height:100%;background-color: white">
+														<div class="text-center" style="padding: 50px">
+															<i class="fa fa-spin fa-2x fa-spinner"></i>
+															<h3 style="display:inline"> Cargando Información...</h3>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="tab-pane fade p-1" id="code-users" role="tabpanel"
+								aria-labelledby="profile-tab">
+								<div class="card">
+									<div id="tab-2" class="card-body">
+										<div class="panel loading-data">
+											<div class="panel-body">
+												<div class="row">
+													<div class="col-md-12 no-padding"
+														style="height:100%;background-color: white">
+														<div class="text-center" style="padding: 50px">
+															<i class="fa fa-spin fa-2x fa-spinner"></i>
+															<h3 style="display:inline"> Cargando Información...</h3>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
@@ -107,39 +173,59 @@
 {{ sg_datatables_render_js(userDatatable) }}
 <script type="text/javascript">
 	$(() => {
-		$.ajax({
-			url: Routing.generate('my-mails',{uuid: '{{group.uuid}}'}),
-			type:'GET',
-			success: (response) => {
-				$('#list-messages').html(response)
-			}
+		$('#code-tab').on('click', function (event) {
+			$.ajax({
+				url: Routing.generate('no-recived-homework', { uuid: '{{group.uuid}}' }),
+				type: 'GET',
+				success: (response) => {
+					$('#code-users').html(response)
+				}
+			})
+		})
+		$('#list-settings-list').on('click', function (event) {
+			$.ajax({
+				url: Routing.generate('recived-homework', { uuid: '{{group.uuid}}' }),
+				type: 'GET',
+				success: (response) => {
+					$('#recibidos').html(response)
+				}
+			})
+		})
+		$('#list-messages-list').on('click', function (event) {
+			$.ajax({
+				url: Routing.generate('my-mails', { uuid: '{{group.uuid}}' }),
+				type: 'GET',
+				success: (response) => {
+					$('#list-messages').html(response)
+				}
+			})
 		})
 	})
 	function copy1() {
-			/* Get the text field */
-			var copyText = document.getElementById("url");
+		/* Get the text field */
+		var copyText = document.getElementById("url");
 
-			/* Select the text field */
-			copyText.select();
-			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+		/* Select the text field */
+		copyText.select();
+		copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
-			/* Copy the text inside the text field */
-			document.execCommand("copy");
+		/* Copy the text inside the text field */
+		document.execCommand("copy");
 
-			toastr.success('Enlace copiado!')
-		}
-		function copy2() {
-			/* Get the text field */
-			var copyText = document.getElementById("code");
+		toastr.success('Enlace copiado!')
+	}
+	function copy2() {
+		/* Get the text field */
+		var copyText = document.getElementById("code");
 
-			/* Select the text field */
-			copyText.select();
-			copyText.setSelectionRange(0, 99999); /* For mobile devices */
+		/* Select the text field */
+		copyText.select();
+		copyText.setSelectionRange(0, 99999); /* For mobile devices */
 
-			/* Copy the text inside the text field */
-			document.execCommand("copy");
+		/* Copy the text inside the text field */
+		document.execCommand("copy");
 
-			toastr.success('Código copiado!')
-		}
+		toastr.success('Código copiado!')
+	}
 </script>
 {% endblock %}

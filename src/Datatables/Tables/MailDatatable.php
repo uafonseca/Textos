@@ -157,6 +157,7 @@ class MailDatatable extends AbstractDatatable
             ])
             ->add(null, ActionColumn::class, [
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
+                'visible' => $this->authorizationChecker->isGranted('ROLE_USER'),
                 'actions' => [
                     array(
                         'route' => 'mail_response_new',

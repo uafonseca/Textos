@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Datatables\Tables\MailResponseDatatable;
 use App\Datatables\Tables\MailResponseListDatatable;
+use App\Datatables\Tables\NoRecivedDatatable;
+use App\Datatables\Tables\RecivedDatatable;
 use App\Entity\Book;
 use App\Entity\Mail;
 use App\Entity\MailResponse;
@@ -290,6 +292,79 @@ class MailResponseController extends AbstractController
             'type' => 'success',
             'data' => $exist,
             'nota' => ($nota != null && $nota > 0)
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param UserGroup $userGroup
+     * @return Response
+     * 
+     * @Route("/recived-homework/{uuid}", name="recived-homework", options={"expose" = true}, methods={"GET","POST"})
+     */
+    public function recivedHomework(Request $request, UserGroup $userGroup):Response{
+        $datatable = $this->datatableFactory->create(RecivedDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('recived-homework',[
+                'uuid' => $userGroup->getUuid()
+            ]),
+            'vich' => $this->vich
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->join('mailresponse.mail','mail')
+            ->join('mail.userGroup', 'userGroup')
+            ->where('userGroup =:g AND mail.homework =:t')
+            ->setParameter('t',true)
+            ->setParameter('g',$userGroup)
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+
+        return $this->render('mail/default_table.html.twig',[
+            'datatable' => $datatable
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param UserGroup $userGroup
+     * @return Response
+     * 
+     * @Route("/no-recived-homework/{uuid}", name="no-recived-homework", options={"expose" = true}, methods={"GET","POST"})
+     */
+    public function noRecivedHomeWork(Request $request, UserGroup $userGroup):Response{
+        $datatable = $this->datatableFactory->create(NoRecivedDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('no-recived-homework',[
+                'uuid' => $userGroup->getUuid()
+            ]),
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->join('user.mailResponses', 'response')
+            ->where('response.mail not in (:mails)')
+            ->setParameter('mails',$userGroup->getMails())
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+
+        return $this->render('mail/default_table.html.twig',[
+            'datatable' => $datatable
         ]);
     }
 }
