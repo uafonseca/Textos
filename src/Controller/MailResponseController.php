@@ -355,9 +355,13 @@ class MailResponseController extends AbstractController
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
             $qb
             ->getQb()
+            ->join('user.userGroups', 'groups')
+            ->join('groups.mails', 'mail')
             ->join('user.mailResponses', 'response')
-            ->where('response.mail not in (:mails)')
-            ->setParameter('mails',$userGroup->getMails())
+            ->join('response.mail', 'mail2')
+            ->where('groups =:g')
+            ->andWhere('mail2.userGroup !=:g')
+            ->setParameter('g',$userGroup)
             ;   
 
             return $this->datatableResponse->getResponse();

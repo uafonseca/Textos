@@ -7,10 +7,32 @@
 
 
 <script>
-    $(document).ready(function () {
-        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
-            event.preventDefault();
-            const scope = $(this);
+     $(document).on('click', '.action-evaluate', function (event) {
+
+        event.preventDefault();
+
+        const scope = $(this);
+        
+
+        $.ajax({
+            url: scope.data('url'),
+            type: 'POST',
+            success: (data) => {
+                if (data.data === true) {
+                    app.dialogs.confirm({
+                        message: 'La tarea ya fue calificada, <br> ¿Desea cambiar la nota?',
+                        onAccept: function () {
+                            app.dialogs.create({
+                                url: scope.attr('href') + '?uniq={{datatable.uniqueName}}'
+                            })
+                        }
+                    });
+                } else {
+                    app.dialogs.create({
+                        url: scope.attr('href') + '?uniq={{datatable.uniqueName}}'
+                    })
+                }
+            }
         })
     });
 </script>
