@@ -168,7 +168,7 @@ class User implements UserInterface, Serializable
     /**
      * @ORM\OneToMany(targetEntity=MailResponse::class, mappedBy="User")
      */
-    private $mailResponses;
+    private $mailResponses; 
 
     /**
      * @ORM\OneToMany(targetEntity=Book::class, mappedBy="user")
