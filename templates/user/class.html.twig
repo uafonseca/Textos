@@ -188,13 +188,13 @@
                         message: 'La tarea ya fue calificada, <br> ¿Desea cambiar la nota?',
                         onAccept: function () {
                             app.dialogs.create({
-                                url: scope.attr('href') + '?uniq={{datatable.uniqueName}}'
+                                url: scope.attr('href') + '?uniq={{userDatatable.uniqueName}}'
                             })
                         }
                     });
                 } else {
                     app.dialogs.create({
-                        url: scope.attr('href') + '?uniq={{datatable.uniqueName}}'
+                        url: scope.attr('href') + '?uniq={{userDatatable.uniqueName}}'
                     })
                 }
             }

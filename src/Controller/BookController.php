@@ -166,7 +166,7 @@ class BookController extends AbstractController
     /**
      * @Route("/new", name="book_new", methods={"GET","POST"})
      *
-     * @IsGranted("ROLE_SUPER_ADMIN")
+     * 
      * @param Request $request
      * @return Response
      */
@@ -402,7 +402,7 @@ class BookController extends AbstractController
     }
 
 
-    public function getCompany(): Company
+    public function getCompany(): ?Company
     {
         return $this->getUser()->getCompany();
     }

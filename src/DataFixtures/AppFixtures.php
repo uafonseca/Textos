@@ -58,7 +58,7 @@ class AppFixtures extends Fixture
         print "Generating role: {$role1->getRolename()} " . PHP_EOL;
 
         $role2 = new Role();
-        $role2->setRolename('ROLE_PROFESOR');
+        $role2->setRolename('ROLE_DOCENTE');
         $manager->persist($role2);
 
         print "Generating role: {$role2->getRolename()} " . PHP_EOL;
