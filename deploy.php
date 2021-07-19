@@ -47,6 +47,11 @@ host('connect')
     ->user('deploy')
     ->set('deploy_path', '/mnt/baboon/www/connect');
 
+host('classbook')
+    ->hostname('23.239.26.54')
+    ->set('branch', 'bookdy')
+    ->user('deploy')
+    ->set('deploy_path', '/mnt/baboon/www/classbook');
 
 set('release_name', function () {
     return date('YmdHis');
