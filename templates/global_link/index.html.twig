@@ -9,10 +9,10 @@
     <div class="card-body">
         <div class="row">
           {% for row in links %}
-            <div class="col-md-3">
-              <figure>
+            <div class="col-md-2">
+              <figure class="text-center">
                 <img src="{{vich_uploader_asset(row.imagen, 'imagenFile')}}" class="img-fluid img img-bordered img-responsive">
-                <figcaption><a href="{{row.url}}" target="_blank">{{row.name}}</a><figcaption>
+                <figcaption><a href="{{row.url}}" target="_blank">{{row.name | upper}}</a><figcaption>
             </figure>
             </div>
           {% endfor %}

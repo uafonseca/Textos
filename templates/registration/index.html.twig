@@ -1,173 +1,175 @@
 {% extends 'base.html.twig' %}
 {% block main %}
 	{% form_theme form 'bootstrap_4_layout.html.twig' %}
-
-	<div class="container-fluid">
-		{{ form_start(form) }}
-        <div class="row">
-        	<div class="offset-3 col-md-6 justify-center">
-				<div class="card text-center  pt-4 mx-auto">
-					{% if getCompany().logo is defined %}
-						<img class="card-img-top mx-auto"  style="width: 18rem;" src="{{ vich_uploader_asset(getCompany().logo,'imagenFile') }}" alt="Card image cap">
-					{% endif %}
-					<div class="card-body">
-						<h5 class="card-title">Registro</h5>
-					</div>
-				</div>
-			</div>
-        </div>
+	<main class="d-flex w-100">
+		<div class="container-fluid  d-flex flex-column">
 		<div class="row">
-			<div class="offset-3 col-md-6 justify-center">
-				<div class="card bg-light mb-3 ">
-					<div class="card-body">
-						<div class="card-header mb-3">Datos personales</div>
-						<div class="form_group">
-							<div class="row">
-								<div class="col-md-6 mb-3">
-									{{form_label(form.name)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-user"></i>
-										</span>
-										{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-								<div class="col-md-6 mb-3">
-									{{form_label(form.firstName)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-user"></i>
-										</span>
-										{{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form_group">
-							<div class="row">
-								<div class="col-md-6 mb-3">
-									{{form_label(form.username)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-user"></i>
-										</span>
-										{{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-								<div class="col-md-6 mb-3">
-									{{form_label(form.email)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-envelope"></i>
-										</span>
-										{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="form_group">
-							<div class="row">
-								<div class="col-md-6 mb-3">
-									{{form_label(form.scoholName)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-school"></i>
-										</span>
-										{{ form_widget(form.scoholName, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-								<div class="col-md-6 mb-3">
-									{{form_label(form.country)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-flag"></i>
-										</span>
-										{{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form_group">
-							<div class="row">
-								<div id="province-container" class="col-md-6 mb-3">
-									{{form_label(form.city)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-map"></i>
-										</span>
-										{{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-								<div class="col-md-6 mb-3">
-									{{form_label(form.canton)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-city"></i>
-										</span>
-										{{ form_widget(form.canton, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="form_group">
-							<div class="row">
-								<div class="col-md-6 mb-3">
-									{{form_label(form.password.first)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-key"></i>
-										</span>
-										{{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-								<div class="col-md-6 mb-3">
-									{{form_label(form.password.second)}}
-									<div class="input-group flex-nowrap">
-										<span class="input-group-text" id="addon-wrapping">
-											<i class="fa fa-key"></i>
-										</span>
-										{{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
-									</div>
-								</div>
-							</div>
-						</div>
-
-						<div class="form_group">
-							<div class="col-md-6 mb-3 form-check-inline">
-							<label>Registrarse como</label>
-								{{ form_widget(form.roles) }}
-							</div>
+			{{ form_start(form) }}
+			<div class="row">
+				<div class="offset-md-3 col-md-6 justify-center">
+					<div class="card text-center  pt-4 mx-auto">
+						{% if getCompany().logo is defined %}
+							<img class="card-img-top mx-auto"  style="width: 18rem;" src="{{ vich_uploader_asset(getCompany().logo,'imagenFile') }}" alt="Card image cap">
+						{% endif %}
+						<div class="card-body">
+							<h5 class="card-title">Registro</h5>
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="row">
-				<div id="student" class="col-md-6 offset-3 d-none">
-				</div>
-				<div id="teacher" class="offset-3  col-md-6 d-none">
-					<div class="card bg-light mb-3 mt-3">
+				<div class="offset-md-3 col-md-6 justify-center">
+					<div class="card bg-light mb-3 ">
 						<div class="card-body">
-							<div class="card-header mb-3">Datos del Profesor</div>
+							<div class="card-header mb-3">Datos personales</div>
 							<div class="form_group">
 								<div class="row">
 									<div class="col-md-6 mb-3">
-										{{form_label(form.profesor.dni)}}
+										{{form_label(form.name)}}
 										<div class="input-group flex-nowrap">
 											<span class="input-group-text" id="addon-wrapping">
-												<i class="fa fa-envelope"></i>
+												<i class="fa fa-user"></i>
 											</span>
-											{{ form_widget(form.profesor.dni, {'attr': {'class': 'profesor'}}) }}
+											{{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
 										</div>
 									</div>
 									<div class="col-md-6 mb-3">
-										{{form_label(form.profesor.phone)}}
+										{{form_label(form.firstName)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-user"></i>
+											</span>
+											{{ form_widget(form.firstName, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form_group">
+								<div class="row">
+									<div class="col-md-6 mb-3">
+										{{form_label(form.username)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-user"></i>
+											</span>
+											{{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										{{form_label(form.email)}}
 										<div class="input-group flex-nowrap">
 											<span class="input-group-text" id="addon-wrapping">
 												<i class="fa fa-envelope"></i>
 											</span>
-											{{ form_widget(form.profesor.phone, {'attr': {'class': 'profesor'}}) }}
-											<i id="profesor-link"></i>
+											{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form_group">
+								<div class="row">
+									<div class="col-md-6 mb-3">
+										{{form_label(form.scoholName)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-school"></i>
+											</span>
+											{{ form_widget(form.scoholName, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										{{form_label(form.country)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-flag"></i>
+											</span>
+											{{ form_widget(form.country, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form_group">
+								<div class="row">
+									<div id="province-container" class="col-md-6 mb-3">
+										{{form_label(form.city)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-map"></i>
+											</span>
+											{{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										{{form_label(form.canton)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-city"></i>
+											</span>
+											{{ form_widget(form.canton, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form_group">
+								<div class="row">
+									<div class="col-md-6 mb-3">
+										{{form_label(form.password.first)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-key"></i>
+											</span>
+											{{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+									<div class="col-md-6 mb-3">
+										{{form_label(form.password.second)}}
+										<div class="input-group flex-nowrap">
+											<span class="input-group-text" id="addon-wrapping">
+												<i class="fa fa-key"></i>
+											</span>
+											{{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
+										</div>
+									</div>
+								</div>
+							</div>
+
+							<div class="form_group">
+								<div class="col-md-6 mb-3 form-check-inline">
+								<label>Registrarse como</label>
+									{{ form_widget(form.roles) }}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div id="student" class="col-md-6 offset-md-3 d-none">
+					</div>
+					<div id="teacher" class="offset-md-3  col-md-6 d-none">
+						<div class="card bg-light mb-3 mt-3">
+							<div class="card-body">
+								<div class="card-header mb-3">Datos del Profesor</div>
+								<div class="form_group">
+									<div class="row">
+										<div class="col-md-6 mb-3">
+											{{form_label(form.profesor.dni)}}
+											<div class="input-group flex-nowrap">
+												<span class="input-group-text" id="addon-wrapping">
+													<i class="fa fa-envelope"></i>
+												</span>
+												{{ form_widget(form.profesor.dni, {'attr': {'class': 'profesor'}}) }}
+											</div>
+										</div>
+										<div class="col-md-6 mb-3">
+											{{form_label(form.profesor.phone)}}
+											<div class="input-group flex-nowrap">
+												<span class="input-group-text" id="addon-wrapping">
+													<i class="fa fa-envelope"></i>
+												</span>
+												{{ form_widget(form.profesor.phone, {'attr': {'class': 'profesor'}}) }}
+												<i id="profesor-link"></i>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -175,22 +177,24 @@
 						</div>
 					</div>
 				</div>
-			</div>
-			<div class="row">
-				<div class="col-md-12 p-3 text-center">
-					<div class="form-group">
-						<div class="col-md-12" style="margin-top:5px;">
-							<button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
-								<i class="fa fa-btn fa-user"></i>
-								Registrarse
-							</button>
+				<div class="row">
+					<div class="col-md-12 p-3 text-center">
+						<div class="form-group">
+							<div class="col-md-12" style="margin-top:5px;">
+								<button type="submit" class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
+									<i class="fa fa-btn fa-user"></i>
+									Registrarse
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			{{ form_end(form) }}
 		</div>
-		{{ form_end(form) }}
-	</div>
+			
+		</div>
+	</main>
 {% endblock %}
 {% block javascripts %}
 	{{ encore_entry_script_tags('registration.index') }}

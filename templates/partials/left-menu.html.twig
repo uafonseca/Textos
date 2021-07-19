@@ -150,7 +150,7 @@
 			{% endif %}
 
 
-			{% if is_granted('ROLE_DOCENTE') or is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') or is_granted('ROLE_SUPER_ADMIN') %}
+			{% if is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') or is_granted('ROLE_SUPER_ADMIN') %}
 
 				<li class="sidebar-item {% if currentPath == path('book_index') %}active{% endif %}">
 					<a href="#textos" data-toggle="collapse" class="sidebar-link collapsed">

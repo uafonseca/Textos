@@ -43,7 +43,7 @@ host('v2')
 
 host('connect')
     ->hostname('23.239.26.54')
-    ->set('branch', 'main')
+    ->set('branch', 'bookdy')
     ->user('deploy')
     ->set('deploy_path', '/mnt/baboon/www/connect');
 
