@@ -8,7 +8,7 @@
 			<div class="row">
 				<div class="offset-md-3 col-md-6 justify-center">
 					<div class="card text-center  pt-4 mx-auto">
-						{% if getCompany().logo is defined %}
+						{% if getCompany().logo is defined and getCompany().logo is not null %}
 							<img class="card-img-top mx-auto"  style="width: 18rem;" src="{{ vich_uploader_asset(getCompany().logo,'imagenFile') }}" alt="Card image cap">
 						{% endif %}
 						<div class="card-body">

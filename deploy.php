@@ -88,7 +88,10 @@ task('assets:install', 'php {{bin/console}} assets:install public');
 desc('Expose routes');
 task('routes:expose', 'php {{bin/console}} fos:js-routing:dump --target=public/js/fos_js_routes.js');
 
-
+desc('Set writable');
+task('set:writable', function () {
+    run('sudo chmod -R 777 {{deploy_path}}/releases/{{release_name}}/var/log');
+});
 
 
 task('build', [
@@ -97,6 +100,7 @@ task('build', [
     'routes:expose',
     'yarn:install',
     'yarn:run:production',
+    'set:writable'
 ]);
 
 after('deploy:vendors', 'build');
