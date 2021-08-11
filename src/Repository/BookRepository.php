@@ -35,9 +35,12 @@ class BookRepository extends ServiceEntityRepository
             ->join('b.codes', 'code')
             ->join('code.user', 'user')
             ->where('user =:user')
+            ->orWhere('b.free = true AND b.user =:u')
             ->setParameter('user', $user)
+            ->setParameter('u', $user)
             ->getQuery()
             ->getResult();
+
     }
 
     /**

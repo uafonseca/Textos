@@ -35,11 +35,11 @@ set('ssh_multiplexing', false);
 set('default_timeout', 120000);
 // Hosts
 
-host('v2')
-    ->hostname('23.239.26.54')
-    ->set('branch', 'main')
+host('classbook.edu')
+    ->hostname('172.105.16.81')
+    ->set('branch', 'bookdy')
     ->user('deploy')
-    ->set('deploy_path', '/var/www/html/v2Lideres');
+    ->set('deploy_path', '/var/www/html/classbook');
 
 host('connect')
     ->hostname('23.239.26.54')
