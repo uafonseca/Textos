@@ -100,7 +100,7 @@ task('build', [
     'routes:expose',
     'yarn:install',
     'yarn:run:production',
-    'set:writable'
+    // 'set:writable'
 ]);
 
 after('deploy:vendors', 'build');
