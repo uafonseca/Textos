@@ -31,13 +31,12 @@ class BookRepository extends ServiceEntityRepository
      */
     public function getBooks(User $user)
     {
+        // dd($user->getFreeBooks()->count());
         return $this->createQueryBuilder('b')
             ->join('b.codes', 'code')
             ->join('code.user', 'user')
             ->where('user =:user')
-            ->orWhere('b.free = true AND b.user =:u')
             ->setParameter('user', $user)
-            ->setParameter('u', $user)
             ->getQuery()
             ->getResult();
 

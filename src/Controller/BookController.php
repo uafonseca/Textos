@@ -251,6 +251,7 @@ class BookController extends AbstractController
         /** @var User $loggedUser */
         $loggedUser = $this->getUser();
         $loggedUser->addFreeBook($book);
+        $book->addFreeUser($loggedUser);
         $this->getDoctrine()->getManager()->flush();
         return new JsonResponse([
             'status' => 'success'

@@ -31,6 +31,28 @@
 		</div>
 	</div>
 	<div class="row mt-4">
+	{% for item in app.user.freeBooks %}
+		<div class="col-12 col-md-4 col-lg-3">
+				<div class="card">
+					<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
+					<div class="card-body">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="mb-3">
+									<strong>{{ item.title }}</strong>
+								</h3>
+							</div>
+							<div class="col-md-12">
+							<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
+										Ingresar
+									</a>
+								{{ actions_macro.actions(item) }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+	{% endfor %}
 		{% for item in books %}
 			<div class="col-12 col-md-4 col-lg-3">
 				<div class="card">
