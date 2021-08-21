@@ -8,6 +8,7 @@ use App\Datatables\Tables\UsersGroupDatatable;
 use App\Entity\Activity;
 use App\Entity\Book;
 use App\Entity\Category;
+use App\Entity\Code;
 use App\Entity\Company;
 use App\Entity\Level;
 use App\Entity\SchoolStage;
@@ -166,7 +167,7 @@ class BookController extends AbstractController
     /**
      * @Route("/new", name="book_new", methods={"GET","POST"})
      *
-     * 
+     *
      * @param Request $request
      * @return Response
      */
@@ -212,7 +213,7 @@ class BookController extends AbstractController
         if (
             null != $code = $this->codeRepository->isBookActive($book, $this->getUser())
              || $loggedUser->getFreeBooks()->contains($book)
-             || ($this->isGranted('ROLE_ADMIN') && $book->findGroupByUser($loggedUser) != null) ) {
+             || ($this->isGranted('ROLE_ADMIN') && $book->findGroupByUser($loggedUser) != null)) {
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);
@@ -243,7 +244,7 @@ class BookController extends AbstractController
      *
      * @param Book $book
      * @return Response
-     * 
+     *
      *  @Route("/add/free/{id}", name="add_book_users", methods={"GET","POST"}, options={"expose" = true})
      */
     public function addFreBook(Book $book):Response
@@ -353,6 +354,45 @@ class BookController extends AbstractController
 
         return $this->render('book/activate.html.twig', [
             'book' => $book
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Book $book
+     * @return Response
+     *
+     * @Route("/remove-activate/{id}", name="remove-activate", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function desactivate(Book $book, Request $request):Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            /** @var User $loggedUser */
+            $loggedUser = $this->getUser();
+            if ($loggedUser->getFreeBooks()->contains($book)) {
+                $loggedUser->getFreeBooks()->removeElement($book);
+                $book->removeFreeUser($loggedUser);
+                $em->flush();
+                return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Texto gratuito eliminado'
+            ]);
+            } elseif (null != $code = $book->getCodeByUser($loggedUser)) {
+                /** @var Code $code */
+                $code->setUser(null);
+                $loggedUser->removeCode($code);
+                $em->flush();
+                return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Código eliminado'
+            ]);
+            }
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'Ha ocurrido un error'
         ]);
     }
 

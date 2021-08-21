@@ -32,7 +32,18 @@
 	{{ include('partials/javascripts.html.twig') }}
 	{{ include('partials/flashBagComponent.html.twig') }}
 
-	
+	<script>
+		$(function(){
+			$('.colapse').on('click', function(e){
+				e.preventDefault();
+				if($('#sidebar').hasClass('collapsed')){
+					$('#sidebar').removeClass('collapsed');
+				}else{
+					$('#sidebar').addClass('collapsed');
+				}
+			})
+		})
+	</script>
 	{% block javascripts %}{% endblock %}
 
 

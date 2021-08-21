@@ -28,9 +28,7 @@
 									<div id="heading-{{ item.uuid }}" class="card-header">
 										<h5 class="mb-0">
 
-											<a href="{{ path('show_details', {'uuid': item.uuid }) }}" class="btn btn-sm btn-info pull-right ml-3 mt-1" data-tippy-content="Detalles de la unidad">
-												<i class="fa fa-info-circle" aria-hidden="true"></i>
-											</a>
+											
 
 											<button class="btn btn-link">
 												<a href="{{ path('unit_show', {'uuid': item.uuid}) }}" target="_blank">
@@ -48,6 +46,11 @@
 												<i class="fa fa-list"></i>
 												Recursos
 											</button>
+
+											<a href="{{ path('show_details', {'uuid': item.uuid }) }}" class="btn btn-sm btn-info pull-right ml-3 mt-1" data-tippy-content="Detalles de la unidad">
+												<i class="fa fa-info-circle" aria-hidden="true"></i>
+												Modo completo
+											</a>
 										</h5>
 									</div>
 									<div id="e{{ item.id }}" class="collapse" aria-labelledby="heading-{{ item.uuid }}" data-parent="#accordion">
