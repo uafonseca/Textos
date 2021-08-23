@@ -1,0 +1,12 @@
+
+   <div class="card">
+    <div class="card-header">
+        <h3>Respuesta del estudiante {{response.User.name ~' '~ response.User.firstName}}</h3>
+    </div>
+    <div class="card-body">
+        <p class="text-muted"> <strong>Fecha de envío: </strong>{{response.createdAt|date("m/d/Y h:i")}} </p>
+        <p class="text-muted"><strong>Evaluación: </strong>{{response.evaluation ? response.evaluation : 'NA'}} </p>
+        <h3>Contenido de la respuesta</h3>
+        <p>{{response.context|raw}}</p>
+    </div>
+   </div>

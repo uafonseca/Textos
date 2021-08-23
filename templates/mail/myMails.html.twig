@@ -16,6 +16,16 @@
 </div>
 <script>
     $(document).ready(function () {
+        $('#sg-datatables-{{ datatable.uniqueName }}').off('click').on('click', '.show-details', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this);
+
+            app.datatable.handleDetails(scope, {
+                path: scope.attr('data-path')
+            });
+        });
         $('.add-mail').on('click', function(event){
             event.preventDefault();
             const scope = $(this);
@@ -23,7 +33,7 @@
                 url: scope.attr('href')
             })
         })
-        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
+        $('#sg-datatables-{{ datatable.uniqueId }}').on('click', '.action-show', function (event) {
             event.preventDefault();
             const scope = $(this)
 

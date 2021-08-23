@@ -129,9 +129,11 @@ class RecivedDatatable extends AbstractDatatable
                                 ];
                         },
                         'render_if' => function ($row) {
-                            return  $this->authorizationChecker->isGranted('ROLE_ADMIN');
+                            return  $this->authorizationChecker->isGranted('ROLE_ADMIN') || $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN');
                         },
+                       
                     ),
+                    TableActions::export('mail_response_print')
                 ],
             ])
         ;

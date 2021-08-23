@@ -64,10 +64,10 @@
 									</div>
 									<div class="card-body">
 										<p class="card-text">{{ item.level }}</p>
-										<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill" style="background-color: {{ colors()['success'] }}; color:white;">
+										<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
 											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye align-middle mr-2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
 											Detalles </a>
-										<a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-shopping-cart fa-2x"></i></a>
+										<a href="{{ path('book_activate', {'uuid': item.uuid}) }}" class="pull-right"><i class="fa fa-download"></i></a>
 									</div>
 								</div>
 							</div>
