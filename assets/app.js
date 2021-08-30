@@ -30,6 +30,7 @@ import 'bootstrap-timepicker/css/bootstrap-timepicker.min.css'
 import 'datatables.net-buttons-bs4'
 import 'datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css'
 import 'datatables.net-buttons/js/buttons.print.min';
+import 'datatables.net-responsive';
 import 'popper.js'
 import 'select2'
 import 'bootstrap-fileinput'

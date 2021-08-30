@@ -79,6 +79,9 @@ class MailResponseDatatable extends AbstractDatatable
         $this->features->set([
             'processing' => true,
         ]);
+        $this->extensions->set([
+            'responsive' => true,
+        ]);
 
         $this->columnBuilder
         

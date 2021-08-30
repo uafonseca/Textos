@@ -34,6 +34,7 @@
         "datatables.net-buttons-bs4": "^1.6.5",
         "datatables.net-editor": "^1.6.5",
         "datatables.net-editor-jqui": "^1.6.3",
+        "datatables.net-responsive": "^2.2.9",
         "expose-loader": "^2.0.0",
         "fabric": "^4.3.1",
         "jquery": "^3.5.1",

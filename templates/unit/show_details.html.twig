@@ -27,8 +27,7 @@
 		<section>
 			<div class="row">
 				<div class="col-md-8">
-					<iframe style="width: 100%; min-height: 900px;"
-						src="{{ vich_uploader_asset(unit.pDF,'pdfFile') }}"></iframe>
+					<iframe style="width: 100%; min-height: 900px;" autoplay="0" src="https://docs.google.com/viewer?url={{ app.request.getschemeandhttphost ~ vich_uploader_asset(unit.pDF,'pdfFile') }}&embedded=true"></iframe>
 					<h3>Enlaces interactivos</h3>
 					{% for activity in unit.activities %}
 					{% if activity.type == 'Presentacion' %}

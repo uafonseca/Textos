@@ -89,9 +89,12 @@ class MailDatatable extends AbstractDatatable
             'classes' => 'table table-bordered table-hover',
             'individual_filtering' => false,
             'order_cells_top' => true,
-            // 'dom' => 'Blfrtip',
+            // 'dom' => 'Bfrtip',
         ]);
 
+        $this->extensions->set([
+            'responsive' => true,
+        ]);
 
 
 

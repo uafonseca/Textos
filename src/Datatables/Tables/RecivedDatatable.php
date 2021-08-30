@@ -76,6 +76,10 @@ class RecivedDatatable extends AbstractDatatable
             // 'dom' => 'Blfrtip',
         ]);
 
+        $this->extensions->set([
+            'responsive' => true,
+        ]);
+        
         $this->features->set([
             'processing' => true,
         ]);
