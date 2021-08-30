@@ -70,6 +70,9 @@ class MailResponseListDatatable extends AbstractDatatable
             'order_cells_top' => true,
             // 'dom' => 'Blfrtip',
         ]);
+        $this->extensions->set([
+            'responsive' => true,
+        ]);
 
         $this->features->set([
             'processing' => true,
