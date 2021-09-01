@@ -47,6 +47,7 @@ import './core/dom'
 
 import '@fortawesome/fontawesome-free'
 import 'jquery-validation'
+import 'pdfjs-dist'
 
 $(()=>{
     $('.terms-dialog').on('click', function(event){

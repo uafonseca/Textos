@@ -27,7 +27,17 @@
 		<section>
 			<div class="row">
 				<div class="col-md-8">
-					<iframe style="width: 100%; min-height: 900px;" src="https://view.officeapps.live.com/op/embed.aspx?src=={{ app.request.getschemeandhttphost ~ vich_uploader_asset(unit.pDF,'pdfFile') }}&embedded=true"></iframe>
+					<!-- Render pdf with pdfjs -->
+					<div>
+						<button id="prev" class="btn btn-primary pull-left"> <i class="fa fa-arrow-left"></i> Anterior</button>
+						<button id="next" class="btn btn-primary pull-right"> <i class="fa fa-arrow-right"></i> Siguiente</button>
+					  </div>
+					<canvas id="canvas" style="width: 100%; min-height: 900px;"></canvas>
+					<div class="text-center">
+						&nbsp; &nbsp;
+						<span>Página: <span id="page_num"></span> / <span id="page_count"></span></span>
+					</div>
+					<!-- end render pdf -->
 					<h3>Enlaces interactivos</h3>
 					{% for activity in unit.activities %}
 					{% if activity.type == 'Presentacion' %}
@@ -134,6 +144,11 @@
 </div>
 {% endblock %}
 {% block javascripts %}
+<script>
+	const url = '{{ vich_uploader_asset(unit.pDF,"pdfFile") }}';
+</script>
+{{ encore_entry_script_tags('unit.details') }}
+
 <script type="text/javascript">
 	$(function () {
 		$('.show-details').on('click', function (event) {
