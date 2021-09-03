@@ -28,11 +28,13 @@
 			<div class="row">
 				<div class="col-md-8">
 					<!-- Render pdf with pdfjs -->
-					<div>
+					<div class="text-center">
 						<button id="prev" class="btn btn-primary pull-left"> <i class="fa fa-arrow-left"></i> Anterior</button>
+						<!-- <button id="editor" style="margin: 0 auto 0 auto;" class="btn btn-info"> <i class="fa fa-edit"></i> Editor</button> -->
 						<button id="next" class="btn btn-primary pull-right"> <i class="fa fa-arrow-right"></i> Siguiente</button>
 					  </div>
 					<canvas id="canvas" style="width: 100%; min-height: 900px;"></canvas>
+					<!-- <div id="tui-image-editor" style="width: 100%; min-height: 900px;"></div> -->
 					<div class="text-center">
 						&nbsp; &nbsp;
 						<span>Página: <span id="page_num"></span> / <span id="page_count"></span></span>
@@ -148,6 +150,8 @@
 	const url = '{{ vich_uploader_asset(unit.pDF,"pdfFile") }}';
 </script>
 {{ encore_entry_script_tags('unit.details') }}
+
+<!-- {{ encore_entry_script_tags('unit.details') }} -->
 
 <script type="text/javascript">
 	$(function () {

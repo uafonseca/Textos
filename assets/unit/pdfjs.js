@@ -2,11 +2,16 @@ const pdfjsLib  = require('pdfjs-dist');
 
 const pdfjsWorker = import('pdfjs-dist/build/pdf.worker.entry');
 
+import { customTheme } from '../plugins/theme-image-editor/default-theme-editor';
+
+import translate from '../plugins/i18n/image-editor';
+
 pdfjsLib.workerSrc = pdfjsWorker
 
 const loadingTask = pdfjsLib.getDocument(url);
 
 var pdfDoc = null,
+    pagesBase64 = [],
     pageNum = 1,
     pageRendering = false,
     pageNumPending = null,
@@ -37,6 +42,11 @@ var pdfDoc = null,
               renderPage(pageNumPending);
               pageNumPending = null;
             }
+            pagesBase64[num] = {
+              img : canvas.toDataURL('image/jpeg'),
+              width : viewport.width,
+              height : viewport.height,
+            };
           });
         });
           // Update page counters
@@ -89,4 +99,32 @@ pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
   
     // Initial/first page rendering
     renderPage(pageNum);
+  });
+
+  document.getElementById('editor').addEventListener('click', function(event){
+  const ImageEditor = require('tui-image-editor');
+  
+
+  $('#canvas').fadeOut();
+
+  // const blackTheme = require('black-theme.js');
+  const instance = new ImageEditor(document.querySelector('#tui-image-editor'), {
+    includeUI: {
+      loadImage: {
+        path: pagesBase64[pageNum].img,
+        name: 'SampleImage',
+      },
+      locale: translate,
+       theme: customTheme,
+      // initMenu: 'filter',
+      menuBarPosition: 'left',
+
+    },
+    // cssMaxWidth: pagesBase64[pageNum].width / 2,
+    // cssMaxHeight: pagesBase64[pageNum].height / 2,
+    selectionStyle: {
+      cornerSize: 20,
+      rotatingPointOffset: 70,
+    },
+  });
   });

@@ -48,6 +48,7 @@ import './core/dom'
 import '@fortawesome/fontawesome-free'
 import 'jquery-validation'
 import 'pdfjs-dist'
+import 'tui-image-editor/dist/tui-image-editor.css'
 
 $(()=>{
     $('.terms-dialog').on('click', function(event){
