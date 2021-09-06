@@ -23,7 +23,7 @@ class Role
 
     public const ROLE_ADMIN = 'ROLE_ADMIN';
     public const ROLE_USER = 'ROLE_USER';
-    public const ROLE_DOCENTE = 'ROLE_DOCENTE';
+    public const ROLE_DOCENTE = 'ROLE_PROFESOR';
     /**
      * @ORM\Id
      * @ORM\GeneratedValue

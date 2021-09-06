@@ -139,6 +139,7 @@ class BookController extends AbstractController
     /**
      * @Route("/list", name="book_list", methods={"GET","POST"}, options={"expose" = true})
      *
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -167,7 +168,7 @@ class BookController extends AbstractController
     /**
      * @Route("/new", name="book_new", methods={"GET","POST"})
      *
-     *
+     * @IsGranted("ROLE_SUPER_ADMIN")
      * @param Request $request
      * @return Response
      */
@@ -196,6 +197,7 @@ class BookController extends AbstractController
 
     /**
      * @Route("/{uuid}", name="book_show", methods={"GET"})
+     *
      *
      * @param Book $book
      * @return Response
@@ -226,6 +228,7 @@ class BookController extends AbstractController
     /**
      * Undocumented function
      *
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Book $book
      * @return Response
      * @Route("/contains/{id}", name="contains_book_users", methods={"GET","POST"}, options={"expose" = true})
@@ -244,6 +247,8 @@ class BookController extends AbstractController
      *
      * @param Book $book
      * @return Response
+     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      *  @Route("/add/free/{id}", name="add_book_users", methods={"GET","POST"}, options={"expose" = true})
      */
@@ -362,6 +367,8 @@ class BookController extends AbstractController
      *
      * @param Book $book
      * @return Response
+     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      *
      * @Route("/remove-activate/{id}", name="remove-activate", methods={"GET","POST"}, options={"expose" = true})
      */

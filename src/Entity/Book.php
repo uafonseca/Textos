@@ -108,12 +108,12 @@ class Book
     private $userGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=CourseVsit::class, mappedBy="course")
+     * @ORM\OneToMany(targetEntity=CourseVsit::class, mappedBy="course", cascade={"persist", "remove"})
      */
     private $courseVsits;
 
     /**
-     * @ORM\OneToMany(targetEntity=Certificate::class, mappedBy="course")
+     * @ORM\OneToMany(targetEntity=Certificate::class, mappedBy="course", cascade={"persist", "remove"})
      */
     private $certificates;
 

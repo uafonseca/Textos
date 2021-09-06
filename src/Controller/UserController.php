@@ -271,7 +271,7 @@ class UserController extends AbstractController
 
     /**
      * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"},options={"expose" = true})
-     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function userDashboard(): Response
     {
@@ -300,6 +300,7 @@ class UserController extends AbstractController
      *
      * @return Response
      * @Route("/my-class", name="my-class", methods={"POST","GET"},options={"expose" = true})
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function myClass():Response{
         $loggedUser = $this->getUser();
