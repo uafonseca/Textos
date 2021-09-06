@@ -28,7 +28,7 @@
 						<span class="align-middle">Control de usuarios</span>
 					</a>
 				</li>
-			{% elseif is_granted('ROLE_USER') or is_granted('ROLE_DOCENTE')  %}
+			{% elseif is_granted('ROLE_USER') or is_granted('ROLE_PROFESOR')  %}
 
 				<li class="sidebar-item {% if currentPath == path('user_dashboard') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_dashboard') }}">
