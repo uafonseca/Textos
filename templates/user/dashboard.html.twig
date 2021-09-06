@@ -33,12 +33,14 @@
 	</div>
 	<div class="row mt-4">
 	{% set ids = [] %}
+	{% set exist = false %}
 	{% for item in app.user.freeBooks  %}
 		{% if  item.id not in ids|keys %}
 			{% set ids = ids|merge([item.id]) %}
+			{% set exist = true %}
 				<div class="col-12 col-md-4 col-lg-3">
 					<div class="card">
-						<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
+						<img class="card-img-top img-resized" src=" {% if item.portada.imagenFile is not null %} {{ vich_uploader_asset(item.portada , 'imagenFile') }} {% else %}{{asset('/build/images/cover-default-book.svg')}}{% endif %}" alt="Unsplash">
 						<div class="card-body">
 							<div class="row">
 								<div class="col-md-12">
@@ -61,6 +63,7 @@
 		{% for item in books %}
 			{% if  item.id not in ids|keys %}
 			{% set ids = ids|merge([item.id]) %}
+			{% set exist = true %}
 			<div class="col-12 col-md-4 col-lg-3">
 				<div class="card">
 					<img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}" alt="Unsplash">
@@ -100,14 +103,15 @@
 				</div>
 			</div>
 			{% endif %}
-		{% else %}
+		{% endfor %}
+		{% if not exist %}
 			<div class="col-12 text-center">
 				<h1 class="text-center">UPS!</h1>
 				<p class="text-center">No tienes ningún texto activado</p>
 				<a href="{{ path('app_home_page') }}" class="btn" style="background-color: {{ colors()['primary'] }}; color:white;">
 					Ver catálogo</a>
 			</div>
-		{% endfor %}
+		{% endif %}
 	</div>
 
 {% endblock %}
