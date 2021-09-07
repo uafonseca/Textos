@@ -2,7 +2,7 @@
     <div class="col-md-4">
         <div class="card">
             <a href="{{ path('book_show', { 'uuid': item.uuid }) }}">
-                <img class="card-img-top img-resized" src="{% if item.portada.imagenFile is not null %}{{ vich_uploader_asset(item.portada , 'imagenFile') }}{% else %}{{asset('/build/images/cover-default-book.svg')}}{% endif %}"
+                <img class="card-img-top img-resized" src="{{ vich_uploader_asset(item.portada , 'imagenFile') }}"
                      alt="{{ item.title }}">
             </a>
             <div class="card-header">
