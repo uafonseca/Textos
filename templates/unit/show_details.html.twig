@@ -5,6 +5,17 @@
 {% endblock %}
 
 {% block body %}
+<style>
+	@keyframes spinner {
+		to {
+			transform: rotate(360deg);
+		}
+	}
+
+	.fa-spinner {
+		animation: spinner 1s linear infinite;
+	}
+</style>
 <div class="card">
 	<div class="card-header">
 		<h2 class="card-text text-center">{{ unit.book.title }}</h2>
@@ -19,8 +30,9 @@
 				Evaluación
 			</a>
 			{% endif %}
-			<a href="{{path('mail_by_user',{uuid:unit.book.uuid}) }}" class="mail btn btn-primary btn-sm pull-right ml-3 mt-1"
-				data-tippy-content="Ver mensajes"><i class="fa fa-envelope"></i></a>
+			<a href="{{path('mail_by_user',{uuid:unit.book.uuid}) }}"
+				class="mail btn btn-primary btn-sm pull-right ml-3 mt-1" data-tippy-content="Ver mensajes"><i
+					class="fa fa-envelope"></i></a>
 		</h3>
 	</div>
 	<div class="card-body">
@@ -29,11 +41,17 @@
 				<div class="col-md-8">
 					<!-- Render pdf with pdfjs -->
 					<div class="text-center">
-						<button id="prev" class="btn btn-primary pull-left"> <i class="fa fa-arrow-left"></i> Anterior</button>
+						<button id="prev" class="btn btn-primary pull-left"> <i class="fa fa-arrow-left"></i>
+							Anterior</button>
 						<!-- <button id="editor" style="margin: 0 auto 0 auto;" class="btn btn-info"> <i class="fa fa-edit"></i> Editor</button> -->
-						<button id="next" class="btn btn-primary pull-right"> <i class="fa fa-arrow-right"></i> Siguiente</button>
-					  </div>
-					<canvas id="canvas" style="width: 100%; min-height: 900px;"></canvas>
+						<button id="next" class="btn btn-primary pull-right"> <i class="fa fa-arrow-right"></i>
+							Siguiente</button>
+					</div>
+					<div id="canvas-container" style="width: 100%; min-height: 900px;">
+						<canvas id="canvas" style="width: 100%; min-height: 900px;">
+					</div>
+
+					</canvas>
 					<!-- <div id="tui-image-editor" style="width: 100%; min-height: 900px;"></div> -->
 					<div class="text-center">
 						&nbsp; &nbsp;
@@ -160,7 +178,7 @@
 			const scope = $(this);
 			app.dialogs.create({ url: scope.attr('href') })
 		})
-		$('.mail').on('click', function (event){
+		$('.mail').on('click', function (event) {
 			event.preventDefault();
 			const scope = $(this);
 			app.dialogs.create({

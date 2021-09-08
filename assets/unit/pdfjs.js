@@ -10,6 +10,8 @@ pdfjsLib.workerSrc = pdfjsWorker
 
 const loadingTask = pdfjsLib.getDocument(url);
 
+app.dom.lock('#canvas-container')
+
 var pdfDoc = null,
   pagesBase64 = [],
   pageNum = 1,
@@ -47,6 +49,7 @@ function renderPage(num) {
         width: viewport.width,
         height: viewport.height,
       };
+      app.dom.unlock('#canvas-container')
     });
   });
   // Update page counters
@@ -73,6 +76,7 @@ function onPrevPage() {
     return;
   }
   pageNum--;
+  app.dom.lock('#canvas-container')
   queueRenderPage(pageNum);
 }
 document.getElementById('prev').addEventListener('click', onPrevPage);
@@ -85,6 +89,7 @@ function onNextPage() {
     return;
   }
   pageNum++;
+  app.dom.lock('#canvas-container')
   queueRenderPage(pageNum);
 }
 document.getElementById('next').addEventListener('click', onNextPage);
@@ -101,30 +106,30 @@ pdfjsLib.getDocument(url).promise.then(function (pdfDoc_) {
   renderPage(pageNum);
 });
 
-document.getElementById('editor').addEventListener('click', function (event) {
-  const ImageEditor = require('tui-image-editor');
+// document.getElementById('editor').addEventListener('click', function (event) {
+//   const ImageEditor = require('tui-image-editor');
 
 
-  $('#canvas').fadeOut();
+//   $('#canvas').fadeOut();
 
-  // const blackTheme = require('black-theme.js');
-  const instance = new ImageEditor(document.querySelector('#tui-image-editor'), {
-    includeUI: {
-      loadImage: {
-        path: pagesBase64[pageNum].img,
-        name: 'SampleImage',
-      },
-      locale: translate,
-      theme: customTheme,
-      // initMenu: 'filter',
-      menuBarPosition: 'left',
+//   // const blackTheme = require('black-theme.js');
+//   const instance = new ImageEditor(document.querySelector('#tui-image-editor'), {
+//     includeUI: {
+//       loadImage: {
+//         path: pagesBase64[pageNum].img,
+//         name: 'SampleImage',
+//       },
+//       locale: translate,
+//       theme: customTheme,
+//       // initMenu: 'filter',
+//       menuBarPosition: 'left',
 
-    },
-    // cssMaxWidth: pagesBase64[pageNum].width / 2,
-    // cssMaxHeight: pagesBase64[pageNum].height / 2,
-    selectionStyle: {
-      cornerSize: 20,
-      rotatingPointOffset: 70,
-    },
-  });
-});
+//     },
+//     // cssMaxWidth: pagesBase64[pageNum].width / 2,
+//     // cssMaxHeight: pagesBase64[pageNum].height / 2,
+//     selectionStyle: {
+//       cornerSize: 20,
+//       rotatingPointOffset: 70,
+//     },
+//   });
+// });

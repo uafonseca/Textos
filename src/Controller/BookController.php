@@ -139,7 +139,7 @@ class BookController extends AbstractController
     /**
      * @Route("/list", name="book_list", methods={"GET","POST"}, options={"expose" = true})
      *
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * 
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */

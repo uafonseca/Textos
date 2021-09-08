@@ -4,13 +4,13 @@ app.dom = {
             scrollTop: selector.offset().top
         }, 1000);
     },
-    lock: function (selector) {
+    lock: function (selector, options) {
         $(selector).block({
             css: {
                 backgroundColor: 'transparent',
                 border: 'none'
             },
-            message: '<div class="spinner"></div>',
+            message: '<div class=""> <i class="fa fa-spinner"></i> Cargando.. </div>',
             baseZ: 1500,
             overlayCSS: {
                 backgroundColor: '#FFFFFF',
