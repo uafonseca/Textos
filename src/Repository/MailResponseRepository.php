@@ -40,6 +40,19 @@ class MailResponseRepository extends ServiceEntityRepository
         ;
     }
 
+    public function findToUser(User $user)
+    {
+        return $this->createQueryBuilder('m')
+            ->join('m.mail', 'mail')
+            ->andWhere('mail.sender = :user')
+            ->setParameter('user', $user)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
+
     // /**
     //  * @return MailResponse[] Returns an array of MailResponse objects
     //  */

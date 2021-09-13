@@ -5,6 +5,8 @@ namespace App\Controller;
 use App\AppEvents;
 use App\Datatables\Tables\UserDatatable;
 use App\Datatables\Tables\UsersGroupDatatable;
+use App\Entity\Mail;
+use App\Entity\MailResponse;
 use App\Entity\Role;
 use App\Entity\Terms;
 use App\Entity\User;
@@ -278,9 +280,22 @@ class UserController extends AbstractController
     public function userDashboard(): Response
     {
         $loggedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        $groups = $em->getRepository(UserGroup::class)->findByUser($loggedUser);
+
+        $users = $em->getRepository(User::class)->allUsers($loggedUser);
+
+        $mailsSend = $em->getRepository(Mail::class)->findBySender($loggedUser);
+
+        $mailsRecieved = $em->getRepository(MailResponse::class)->findToUser($loggedUser);
 
         return $this->render('user/dashboard.html.twig', [
-            'books' => $this->bookRepository->getBooks($loggedUser)
+            'books' => $this->bookRepository->getBooks($loggedUser),
+            'groups' => count($groups),
+            'users' => count($users),
+            'mailsSend' => count($mailsSend),
+            'mailsRecieved' => count($mailsRecieved)
         ]);
     }
     /**
