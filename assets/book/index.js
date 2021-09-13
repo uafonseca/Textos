@@ -1,5 +1,23 @@
 app.books = {
   form: {
+      submit: () =>{
+        $('form[name="book"]').on('submit', function(event){
+          const form = $(this);
+          event.preventDefault();
+          if($('#book_free').filter(":checked").val()){
+                app.dialogs.confirm({
+                message:'¿Esta seguro de que este curso es gratuito?',
+                onAccept: function(){
+                  $(form).unbind('submit');
+                  $(form).submit();
+                },
+                onDecline: function(){
+                  event.preventDefault();
+                }
+              });
+            }
+        })
+      },
       index: () => {
           app.plugins.initSelect2('#book_category');
           app.plugins.initSelect2('#book_stage');
@@ -50,5 +68,6 @@ app.books = {
 
 $(() => {
     app.books.form.index();
+    app.books.form.submit();
     app.books.form.initInput();
   });

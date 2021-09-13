@@ -64,7 +64,8 @@ class BookType extends AbstractType
                 'label' => false,
             ])
             ->add('free', CheckboxType::class,[
-                'label' => 'Gratuito'
+                'label' => 'Gratuito',
+                'required' => false,
             ])
         ;
     }

@@ -62,5 +62,5 @@ jQuery.fn.preventDoubleSubmission = function () {
 };
 
 $(function () {
-    $('form').preventDoubleSubmission();
+    // $('form').preventDoubleSubmission();
 });

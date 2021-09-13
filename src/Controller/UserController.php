@@ -6,6 +6,7 @@ use App\AppEvents;
 use App\Datatables\Tables\UserDatatable;
 use App\Datatables\Tables\UsersGroupDatatable;
 use App\Entity\Role;
+use App\Entity\Terms;
 use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Event\UserEvent;
@@ -13,6 +14,7 @@ use App\Form\User1Type;
 use App\Form\UserCreationType;
 use App\Form\UserPromoteType;
 use App\Repository\BookRepository;
+use App\Repository\TermsRepository;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Exception;
@@ -348,4 +350,5 @@ class UserController extends AbstractController
             'userDatatable' => $usersDatatable
         ]);
     }
+ 
 }
