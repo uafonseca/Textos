@@ -27,70 +27,91 @@
 {% block body %}
 
 		<div class="row">
-		<div class="col-lg-3 col-6">
+		<div class="{% if is_granted('ROLE_PROFESOR') %} col-lg-3 {% else %} col-lg-4 {% endif %} col-6">
 			<!-- small box -->
 			<div class="small-box bg-info">
 				<div class="inner">
 					<h3>{{ groups }}</h3>
-					<p class="text-uppercase">Total de gupos</p>
+					{% if is_granted('ROLE_PROFESOR') %}
+						<p class="text-uppercase">Total de gupos</p>
+					{% else %}
+						<p class="text-uppercase">Total de cursos activos</p>		
+					{% endif %}
+					
 				</div>
 				<div class="icon">
 					<i class="fa fa-users" aria-hidden="true"></i>
 				</div>
-				<a href="{{ path('user_group') }}" class="small-box-footer">Ir al listado
-					<i class="fas fa-arrow-circle-right"></i>
-				</a>
+				{% if is_granted('ROLE_PROFESOR') %}
+					<a href="{{ path('user_group') }}" class="small-box-footer">Ir al listado
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				{% endif %}
 			</div>
 		</div>
 		<!-- ./col -->
-		<div
-			class="col-lg-3 col-6">
-			<!-- small box -->
-			<div class="small-box bg-success">
-				<div class="inner">
-					<h3>{{ users }}</h3>
-					<p class="text-uppercase">Estudiantes registrados</p>
+		{% if is_granted('ROLE_PROFESOR') %}
+			<div
+				class="col-lg-3 col-6">
+				<!-- small box -->
+				<div class="small-box bg-success">
+					<div class="inner">
+						<h3>{{ users }}</h3>
+						<p class="text-uppercase">Estudiantes registrados</p>
+					</div>
+					<div class="icon">
+						<i class="fas fa-graduation-cap"></i>
+					</div>
+					<a href="#" class="small-box-footer"><br>
+						{# <i class="fas fa-arrow-circle-right"></i> #}
+					</a>
 				</div>
-				<div class="icon">
-					<i class="fas fa-graduation-cap"></i>
-				</div>
-				<a href="#" class="small-box-footer"><br>
-					{# <i class="fas fa-arrow-circle-right"></i> #}
-				</a>
 			</div>
-		</div>
+		{% endif %}
 		<!-- ./col -->
 		<div
-			class="col-lg-3 col-6">
+		<div class="{% if is_granted('ROLE_PROFESOR') %} col-lg-3 {% else %} col-lg-4 {% endif %} col-6">
 			<!-- small box -->
-			<div class="small-box bg-warning">
+			<div class="small-box bg-cyan">
 				<div class="inner">
 					<h3>{{ mailsSend }}</h3>
-					<p class="text-uppercase">Mensajes enviados</p>
+					{% if is_granted('ROLE_PROFESOR') %}
+						<p class="text-uppercase">Mensajes enviados</p>
+					{% else %}
+						<p class="text-uppercase">Deberes enviados</p>
+					{% endif %}
 				</div>
 				<div class="icon">
 					<i class="fas fa-paper-plane"></i>
 				</div>
-				<a href="#" class="small-box-footer"><br>
-					{# <i class="fas fa-arrow-circle-right"></i> #}
-				</a>
+				{% if is_granted('ROLE_PROFESOR') %}
+					<a href="{{path('mails_send')}}" class="small-box-footer">Ir al listado
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				{% endif %}
 			</div>
 		</div>
 		<!-- ./col -->
 		<div
-			class="col-lg-3 col-6">
+		<div class="{% if is_granted('ROLE_PROFESOR') %} col-lg-3 {% else %} col-lg-4 {% endif %} col-6">
 			<!-- small box -->
 			<div class="small-box bg-danger">
 				<div class="inner">
 					<h3>{{ mailsRecieved }}</h3>
-					<p class="text-uppercase">Mensajes recibidos</p>
+					{% if is_granted('ROLE_PROFESOR') %}
+						<p class="text-uppercase">Mensajes recibidos</p>
+					{% else %}
+						<p class="text-uppercase">Deberes recibidos</p>
+					{% endif %}
 				</div>
 				<div class="icon">
 					<i class="fa fa-envelope" aria-hidden="true"></i>
 				</div>
-				<a href="#" class="small-box-footer"><br>
-					{# <i class="fas fa-arrow-circle-right"></i> #}
-				</a>
+				{% if is_granted('ROLE_PROFESOR') %}
+					<a href="{{path('mails_received')}}" class="small-box-footer">Ir al listado
+						<i class="fas fa-arrow-circle-right"></i>
+					</a>
+				{% endif %}
 			</div>
 		</div>
 		<!-- ./col -->

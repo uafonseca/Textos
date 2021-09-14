@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\AppEvents;
 use App\Datatables\Tables\MailDatatable;
+use App\Datatables\Tables\MailResponseListDatatable;
 use App\Entity\Book;
 use App\Entity\Mail;
+use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Event\MailEvent;
 use App\Form\MailType;
@@ -79,6 +81,73 @@ class MailController extends AbstractController
         return $this->render('mail/index.html.twig', [
             'datatable' => $datatable,
             'group' => $userGroup
+        ]);
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request  
+     * @return Response
+     * 
+     * @Route("/sends/current", name="mails_send", methods={"GET", "POST"})
+     */
+    public function send(Request $request): Response
+    {
+        $datatable = $this->datatableFactory->create(MailDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('mails_send'),
+            'vich' => $this->vich
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->where('mail.sender =:user')
+            ->setParameter('user',$this->getUser())
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail/index.html.twig', [
+            'datatable' => $datatable,
+        ]);
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return Response
+     * 
+     * @Route("/received/current", name="mails_received", methods={"GET", "POST"})
+     */
+    public function received(Request $request): Response
+    {
+        $datatable = $this->datatableFactory->create(MailResponseListDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('mails_received'),
+            'vich' => $this->vich
+        ]);
+
+        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb
+            ->getQb()
+            ->join('mailresponse.mail','email')
+            ->join('email.userGroup', 'userGroup')
+            ->andWhere('userGroup.createdBy =:user')
+            ->setParameter('user',$this->getUser())
+            ;   
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail/index.html.twig', [
+            'datatable' => $datatable,
         ]);
     }
 

@@ -34,6 +34,16 @@ class MailRepository extends ServiceEntityRepository
     }
 
 
+    public function findByRecieved(User $user){
+        return $this->createQueryBuilder('m')
+        ->join('m.recipients', 'user')
+        ->andWhere('user = :user')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult()
+    ;
+    }
+
     
 
     /*

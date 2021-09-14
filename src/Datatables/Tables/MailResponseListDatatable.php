@@ -45,7 +45,7 @@ class MailResponseListDatatable extends AbstractDatatable
     {
         return function ($row) {
         
-            $row['book'] = $this->book->getId();
+            // $row['book'] = $this->book->getId();
             
             return $row;
         };
@@ -62,7 +62,7 @@ class MailResponseListDatatable extends AbstractDatatable
             'method' => 'POST',
         ]);
 
-        $this->book = $options['group'];
+        // $this->book = $options['group'];
 
         $this->options->set([
             'classes' => Style::BOOTSTRAP_4_STYLE,

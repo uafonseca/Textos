@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\AppEvents;
 use App\Datatables\Tables\UserDatatable;
 use App\Datatables\Tables\UsersGroupDatatable;
+use App\Entity\Book;
 use App\Entity\Mail;
 use App\Entity\MailResponse;
 use App\Entity\Role;
@@ -282,13 +283,27 @@ class UserController extends AbstractController
         $loggedUser = $this->getUser();
         $em = $this->getDoctrine()->getManager();
 
-        $groups = $em->getRepository(UserGroup::class)->findByUser($loggedUser);
+        if($this->isGranted('ROLE_PROFESOR')){
+            $groups = $em->getRepository(UserGroup::class)->findByUser($loggedUser);
 
-        $users = $em->getRepository(User::class)->allUsers($loggedUser);
+            $users = $em->getRepository(User::class)->allUsers($loggedUser);
+    
+            $mailsSend = $em->getRepository(Mail::class)->findBySender($loggedUser);
+    
+            $mailsRecieved = $em->getRepository(MailResponse::class)->findToUser($loggedUser);
+        }else{
+            $groups = $em->getRepository(Book::class)->getBooks($loggedUser);
+    
+            $users= [];
 
-        $mailsSend = $em->getRepository(Mail::class)->findBySender($loggedUser);
+            $mailsSend = $em->getRepository(MailResponse::class)->findBy([
+                'User' => $loggedUser
+            ]);
+    
+            $mailsRecieved = $em->getRepository(Mail::class)->findByRecieved($loggedUser);
+        }
 
-        $mailsRecieved = $em->getRepository(MailResponse::class)->findToUser($loggedUser);
+        
 
         return $this->render('user/dashboard.html.twig', [
             'books' => $this->bookRepository->getBooks($loggedUser),
