@@ -46,6 +46,10 @@
 					<a href="{{ path('user_group') }}" class="small-box-footer">Ir al listado
 						<i class="fas fa-arrow-circle-right"></i>
 					</a>
+				{% else %}
+					<a href="#" class="small-box-footer">
+						<br>
+					</a>
 				{% endif %}
 			</div>
 		</div>
@@ -84,11 +88,9 @@
 				<div class="icon">
 					<i class="fas fa-paper-plane"></i>
 				</div>
-				{% if is_granted('ROLE_PROFESOR') %}
-					<a href="{{path('mails_send')}}" class="small-box-footer">Ir al listado
+					<a href="{% if is_granted('ROLE_PROFESOR') %}{{path('mails_send')}}{% else %}{{path('mails_received')}}{% endif %}" class="small-box-footer">Ir al listado
 						<i class="fas fa-arrow-circle-right"></i>
 					</a>
-				{% endif %}
 			</div>
 		</div>
 		<!-- ./col -->
@@ -107,11 +109,11 @@
 				<div class="icon">
 					<i class="fa fa-envelope" aria-hidden="true"></i>
 				</div>
-				{% if is_granted('ROLE_PROFESOR') %}
-					<a href="{{path('mails_received')}}" class="small-box-footer">Ir al listado
+				
+					<a href="{% if is_granted('ROLE_PROFESOR') %}{{path('mails_received')}}{% else %}{{path('mails_send')}}{% endif %}" class="small-box-footer">Ir al listado
 						<i class="fas fa-arrow-circle-right"></i>
 					</a>
-				{% endif %}
+				
 			</div>
 		</div>
 		<!-- ./col -->

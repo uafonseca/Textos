@@ -13,6 +13,37 @@
 
 {% block javascripts %}
     {{sg_datatables_render_js(datatable)}}
+    <script>
+    $(document).ready(function () {
+        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
+            event.preventDefault();
+            const scope = $(this)
+
+            $.ajax({
+                url: scope.data('url'),
+                type: 'POST',
+                success: (response) => {
+                    if (response.data == true && response.nota == false) {
+                        app.dialogs.confirm({
+                            message: 'Su trabajo ha sido enviado con éxito <br> ¿Desea volver a enviarlo? <br> Recuerde que una vez calificado no podra editar este trabajo.',
+                            onAccept: function () {
+                                app.dialogs.create({ url: scope.attr('href'), containerFluid: true, columnClass: 'col-md-8 col-md-offset-2' })
+                            }
+                        });
+                    } else if (response.nota == true) {
+                        $.alert({
+                        title: 'Información',
+                        content: 'Su trabajo ha sido calificado!',
+                    });
+                     } else {
+                        app.dialogs.create({ url: scope.attr('href'), containerFluid: true, columnClass: 'col-md-8 col-md-offset-2' })
+                    }
+                }
+            })
+
+        })
+    });
+</script>
     <script type="text/javascript">
        $('#sg-datatables-{{ datatable.uniqueName }}').off('click').on('click', '.show-details', function (event) {
 

@@ -34,10 +34,7 @@
             const form = $(this)
             app.forms.submit(form, function (response) {
                 if (response.type === 'success') {
-                    $.alert({
-                        title: 'Información',
-                        content: response.message,
-                    });
+					toastr.success(response.message)
                     app.dialogs.close(form);
                 } else {
                 }

@@ -68,6 +68,7 @@ class MailDatatable extends AbstractDatatable
             }
             $row['nota'] = $evaluation;
             $row['context'] = TableActions::truncate($mail->getContext(), 100);
+            $row['course'] = $mail->getUserGroup()->getCourse()->getTitle();
             return $row;
         };
     }
@@ -101,7 +102,7 @@ class MailDatatable extends AbstractDatatable
         $this->features->set([
             'processing' => true,
         ]);
-        if($this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')){
+        if($this->authorizationChecker->isGranted('ROLE_PROFESOR') || $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN')){
             $this->columnBuilder
             ->add(null, ActionColumn::class, [
                 'title' => 'Detalles',
@@ -136,6 +137,10 @@ class MailDatatable extends AbstractDatatable
                 'title' => 'homework',
                 'visible' => false,
             ])
+            ->add('course', VirtualColumn::class, [
+                'title' => 'Curso',
+                'visible' => $this->authorizationChecker->isGranted('ROLE_USER'),
+            ])
             ->add('createdAt', DateTimeColumn::class, [
                 'title' => 'Fecha',
                 'visible' => true,
@@ -166,12 +171,8 @@ class MailDatatable extends AbstractDatatable
                         'route' => 'mail_response_new',
                         'route_parameters' => array(
                             'uuid' => 'uuid',
-                            'type' => 'testtype',
-                            '_format' => 'html',
-                            '_locale' => 'es',
                         ),
                         'icon' => 'fa fa-paper-plane cortex-table-action-icon',
-                        // 'confirm_message' => 'Are you sure?',
                         'attributes' => function($row){
                             return [
                                 'class' => 'action-show text-success',
