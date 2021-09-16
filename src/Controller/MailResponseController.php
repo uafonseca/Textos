@@ -355,14 +355,14 @@ class MailResponseController extends AbstractController
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
-            // $qb
-            // ->getQb()
-            // ->join('mailresponse.mail','mail')
-            // ->join('mail.userGroup', 'userGroup')
-            // ->where('userGroup =:g AND mail.homework =:t')
-            // ->setParameter('t',true)
-            // ->setParameter('g',$userGroup)
-            // ;   
+            $qb
+            ->getQb()
+            ->join('mailresponse.mail','mail')
+            ->join('mail.userGroup', 'userGroup')
+            ->where('userGroup =:g AND mail.homework =:t')
+            ->setParameter('t',true)
+            ->setParameter('g',$userGroup)
+            ;   
 
             return $this->datatableResponse->getResponse();
         }
@@ -394,6 +394,7 @@ class MailResponseController extends AbstractController
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
             $qb
             ->getQb()
+            ->select('user, mail2')
             ->join('user.userGroups', 'groups')
             ->join('groups.mails', 'mail')
             ->join('user.mailResponses', 'response')

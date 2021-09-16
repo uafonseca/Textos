@@ -132,7 +132,7 @@ class MailResponseDatatable extends AbstractDatatable
                                 ];
                         },
                         'render_if' => function ($row) {
-                            return  $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN');
+                            return  $this->authorizationChecker->isGranted('ROLE_PROFESOR');
                         },
                     ),
                 ],

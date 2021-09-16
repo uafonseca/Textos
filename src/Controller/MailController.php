@@ -188,6 +188,7 @@ class MailController extends AbstractController
             ->getQb()
             ->join('mail.userGroup', 'userGroup')
             ->where('userGroup =:g')
+            ->distinct()
             ->setParameter('g', $userGroup)
             ;
 
