@@ -44,11 +44,13 @@ class User1Type extends AbstractType
 	        ->add ('firstName', TextType::class, [
 		        'label' => 'Primer Apellido'
 	        ])
-	        ->add ('canton', null, [
-		        'label' => 'Ciudad',
-	        ])
+	        // ->add ('canton', null, [
+		    //     'label' => 'Ciudad',
+            //     'required' => false
+	        // ])
             ->add('city', TextType::class,[
-                'disabled' => true
+                // 'disabled' => true,
+                'label' => 'Provincia',
             ])
 	        ->add ('scoholName', TextType::class, [
 		        'label' => 'Nombre de la institución'

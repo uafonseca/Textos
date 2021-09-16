@@ -41,7 +41,8 @@ class UserType extends AbstractType
                 'choice_label' => 'name'
             ])
             ->add('city', TextType::class,[
-                'disabled' => true
+                'disabled' => true,
+                'label' => 'Ciudad'
             ])
             ->add('roles', EntityType::class, [
                 'class' => Role::class,
@@ -98,7 +99,7 @@ class UserType extends AbstractType
                 'label' => 'Cantón',
             ])
             ->add('scoholName', TextType::class, [
-                'label' => 'Institución o empresa que labora'
+                'label' => 'Institución'
             ])
 //            ->add('student', EstudianteType::class)
             ->add('profesor', ProfesorType::class)

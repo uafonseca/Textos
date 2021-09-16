@@ -194,6 +194,15 @@
 
 			{% endif %}
 
+			{% if is_granted('ROLE_PROFESOR')  %}
+			<li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('my-class') }}">
+						<i class="align-middle" data-feather="book-open"></i>
+						<span class="align-middle">Mis clases</span>
+					</a>
+				</li>
+			{% endif %}
+
 			{% if is_granted('ROLE_SUPER_ADMIN')  %}
 
 				<li class="sidebar-item {% if currentPath == path('global_link_index') or currentPath == path('global_link_new') %}active{% endif %}">
