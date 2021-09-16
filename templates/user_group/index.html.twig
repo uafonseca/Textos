@@ -14,7 +14,26 @@
 
 {% block javascripts %}
     {{sg_datatables_render_js(datatable)}}
-    <script type="text/javascript">
+    <script>
+        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-change', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this)
+            app.dialogs.confirm({
+                onAccept:function(){
+                    $.ajax({
+                        url: scope.attr('href'),
+                        type:'post',
+                        success:function(data){
+                            $('#sg-datatables-{{ datatable.uniqueName }}').DataTable().ajax.reload(null,false);
+                        }
+                    })
+                }
+            })
+
+            
+        });
         $(document).on('click', '.show-details', function (event) {
 
             event.preventDefault();

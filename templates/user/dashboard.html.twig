@@ -66,8 +66,8 @@
 					<div class="icon">
 						<i class="fas fa-graduation-cap"></i>
 					</div>
-					<a href="#" class="small-box-footer"><br>
-						{# <i class="fas fa-arrow-circle-right"></i> #}
+					<a href="{{path('students_list')}}" class="small-box-footer">Ir al listado
+						<i class="fas fa-arrow-circle-right"></i>
 					</a>
 				</div>
 			</div>
@@ -144,9 +144,15 @@
 									</h3>
 								</div>
 								<div class="col-md-12">
-								<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
-											Ingresar
+									{% if getGroupByBook(item) or getGroupByBook(item) == -1 %}
+										<a href="{{ path('book_show', { 'uuid': item.uuid }) }}" class="btn btn-pill btn-sm" style="background-color: {{ colors()['success'] }}; color:white;">
+												Ingresar
 										</a>
+									{% else %}
+									<button class="btn btn-danger">Curso finalizado</button>	
+									{% endif %}
+									
+									
 									{{ actions_macro.actions(item) }}
 								</div>
 							</div>

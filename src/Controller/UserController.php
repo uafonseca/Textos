@@ -274,6 +274,24 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    /**
+     * Undocumented function
+     *
+     * @return Response
+     * 
+     * @Route("/students", name="students_list", methods={"POST","GET"})
+     */
+    public function listStudents():Response{
+        $loggedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(User::class)->allUsers($loggedUser);
+
+        return $this->render('user/list.html.twig',[
+            'users' => $users
+        ]);
+    }
+
     /**
      * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"},options={"expose" = true})
      * @IsGranted("IS_AUTHENTICATED_FULLY")

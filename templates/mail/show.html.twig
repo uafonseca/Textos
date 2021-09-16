@@ -1,9 +1,21 @@
-{% extends 'base.html.twig' %}
+<div class="card">
+    <div class="card-header">
+        <h3>Asunto: {{ mail.subject }}</h3>
+    </div>
 
-{% block title %}Mail{% endblock %}
+    <div class="card-body">
+        <h4>Contenido</h4>
+        {{ mail.context |raw}}
+    </div>
 
-{% block body %}
-    <h1>Mail</h1>
+    <div class="card-footer">
+        <p class="text-muted">Fecha de envío: {{ mail.createdAt ? mail.createdAt|date('Y-m-d H:i:s') : '' }}</p>
+    </div>
+</div>
+
+
+
+    {# <h1>Mail</h1>
 
     <table class="table">
         <tbody>
@@ -13,7 +25,7 @@
             </tr>
             <tr>
                 <th>Subject</th>
-                <td>{{ mail.subject }}</td>
+                <td></td>
             </tr>
             <tr>
                 <th>Context</th>
@@ -33,10 +45,5 @@
             </tr>
         </tbody>
     </table>
+ #}
 
-    <a href="{{ path('mail_index') }}">back to list</a>
-
-    <a href="{{ path('mail_edit', {'id': mail.id}) }}">edit</a>
-
-    {{ include('mail/_delete_form.html.twig') }}
-{% endblock %}

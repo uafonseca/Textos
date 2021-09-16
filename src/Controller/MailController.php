@@ -282,7 +282,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="mail_show", methods={"GET"})
+     * @Route("/view/{uuid}", name="mail_show", methods={"GET"})
      */
     public function show(Mail $mail): Response
     {

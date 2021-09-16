@@ -46,6 +46,10 @@ class UserGroup
     private $startDate;
 
 
+    /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $enabled;
 
     /**
      * @ORM\ManyToMany(targetEntity=User::class, inversedBy="userGroups")
@@ -307,6 +311,35 @@ class UserGroup
                 $invitation->setUserGroup(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @return string
+     */
+    public function __toString():string{
+        return $this->getGroupName();
+    }
+
+    /**
+     * Get the value of enabled
+     */ 
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set the value of enabled
+     *
+     * @return  self
+     */ 
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
 
         return $this;
     }

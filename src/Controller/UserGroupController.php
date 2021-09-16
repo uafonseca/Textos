@@ -106,6 +106,28 @@ class UserGroupController extends AbstractController
         ]);
     }
 
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return Response
+     * @Route("/user/group/change/{uuid}", name="user_group_change_status")
+     */
+    public function changeStatus(Request $request, UserGroup $userGroup):Response
+    {
+        $em = $this->getDoctrine()->getManager();
+        if($request->query->get('action') === 'true'){
+            $userGroup->setEnabled(true);
+        }else{
+            $userGroup->setEnabled(false);
+        }
+        $em->flush();
+        return new JsonResponse([
+            'OK'
+        ]);
+    }
+
     /**
      * Undocumented function
      *

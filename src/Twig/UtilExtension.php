@@ -9,8 +9,9 @@
 
 namespace App\Twig;
 
-
+use App\Entity\Book;
 use App\Entity\User;
+use App\Entity\UserGroup;
 use App\Repository\CompanyRepository;
 use App\Util\FileIcons;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -54,6 +55,8 @@ class UtilExtension extends AbstractExtension
             new TwigFunction('youtube_embed', [$this, 'youtube_embed']),
             new TwigFunction('getCompany', [$this, 'getCompany']),
             new TwigFunction('colors', [$this, 'getColors']),
+            new TwigFunction('getCurso', [$this, 'getCurso']),
+            new TwigFunction('getGroupByBook', [$this, 'getGroupByBook']),
         ];
     }
 
@@ -153,5 +156,46 @@ class UtilExtension extends AbstractExtension
         }catch (\Exception $exception){
             return null;
         }
+    }
+
+    /**
+     * Undocumented function
+     *
+     * @param User $student
+     * @return void
+     */
+    public function getCurso(User $student)
+    {
+        if ($this->token->getToken()->getUser() instanceof User)
+        {
+            /** @var UserGroup $g */
+            foreach($student->getUserGroups() as $g){
+                if($g->getCreatedBy() === $this->token->getToken()->getUser()){
+                    if($g->getUsers()->contains($student))
+                        return $g;
+                }
+            }
+        }
+        return null;
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param Book $book
+     * @return void
+     */
+    public function getGroupByBook(Book $book){
+        if ($this->token->getToken()->getUser() instanceof User)
+        {
+            /** @var UserGroup $g */
+            foreach($book->getUserGroups() as $g){
+                if($g->getCreatedBy() === $this->token->getToken()->getUser()){
+                    return $g->getEnabled();
+                }
+            }
+        }
+        return -1;
     }
 }
