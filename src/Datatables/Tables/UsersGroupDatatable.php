@@ -105,10 +105,25 @@ class UsersGroupDatatable extends AbstractDatatable
                     'title' => $this->translator->trans('sg.datatables.actions.title'),
                     'actions' => [
                         TableActions::delete('user_delete'),
-                        TableActions::default('show_status', 'fa-print text-warning', 'action-export', 'Ver', [
-                            'id' => 'id',
-                            'userGroup' => 'group',
-                        ]),
+                        // TableActions::default('show_status', 'fa-print text-warning', 'action-export', 'Ver', [
+                        //     'id' => 'id',
+                        //     'userGroup' => 'group',
+                        // ]),
+                        array(
+                            'route' => 'show_status',
+                            'route_parameters' => array(
+                                'uuid' => 'uuid',
+                                'userGroup' => 'group',
+                            ),
+                            'icon' => 'fa fa-printcortex-table-action-icon',
+                            'attributes' => array(
+                                'class' => 'action-export text-warning',
+                                'data-tippy-content' => 'Ver',
+                            ),
+                            'render_if' => function ($row) {
+                                return $this->authorizationChecker->isGranted('ROLE_USER');
+                            },
+                        ),
                         array(
                             'route' => 'mail_response_list',
                             'route_parameters' => array(

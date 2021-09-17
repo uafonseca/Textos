@@ -136,7 +136,7 @@ class MailResponseListDatatable extends AbstractDatatable
                                 ];
                         },
                         'render_if' => function ($row) {
-                            return  $this->authorizationChecker->isGranted('ROLE_USER');
+                            return  $this->authorizationChecker->isGranted('ROLE_USER') || $this->authorizationChecker->isGranted('ROLE_PROFESOR');
                         },
                     ),
                 ],

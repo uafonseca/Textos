@@ -118,9 +118,10 @@ class MailResponseController extends AbstractController
         $datatable->buildDatatable([
             'url' => $this->generateUrl('mail_response_list',[
                 'uuid' => $user->getUuid(),
-                'userGroup' => $userGroup->getId()
+                'userGroup' => $userGroup->getId(),
             ]),
-            'group' => $userGroup->getCourse()
+            'group' => $userGroup->getCourse(),
+            'vich' => $this->vich
         ]);
 
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
