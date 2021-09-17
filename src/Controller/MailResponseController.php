@@ -88,6 +88,9 @@ class MailResponseController extends AbstractController
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb->getQb()
+            ->where('mailresponse.mail =:mail')
+            ->setParameter('mail',$mail);
             
 
             return $this->datatableResponse->getResponse();

@@ -95,9 +95,9 @@ class UserType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => 'Nombre de usuario'
             ])
-            ->add('canton', TextType::class, [
-                'label' => 'Cantón',
-            ])
+            // ->add('canton', TextType::class, [
+            //     'label' => 'Cantón',
+            // ])
             ->add('scoholName', TextType::class, [
                 'label' => 'Institución'
             ])

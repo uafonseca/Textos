@@ -100,7 +100,7 @@
 											{{ form_widget(form.city, {'attr': {'class': 'form-control'}}) }}
 										</div>
 									</div>
-									<div class="col-md-6 mb-3">
+									{# <div class="col-md-6 mb-3">
 										{{form_label(form.canton)}}
 										<div class="input-group flex-nowrap">
 											<span class="input-group-text" id="addon-wrapping">
@@ -108,11 +108,7 @@
 											</span>
 											{{ form_widget(form.canton, {'attr': {'class': 'form-control'}}) }}
 										</div>
-									</div>
-								</div>
-							</div>
-							<div class="form_group">
-								<div class="row">
+									</div> #}
 									<div class="col-md-6 mb-3">
 										{{form_label(form.password.first)}}
 										<div class="input-group flex-nowrap">
@@ -122,6 +118,10 @@
 											{{ form_widget(form.password.first, {'attr': {'class': 'form-control'}}) }}
 										</div>
 									</div>
+								</div>
+							</div>
+							<div class="form_group">
+								<div class="row">
 									<div class="col-md-6 mb-3">
 										{{form_label(form.password.second)}}
 										<div class="input-group flex-nowrap">
@@ -131,14 +131,18 @@
 											{{ form_widget(form.password.second, {'attr': {'class': 'form-control'}}) }}
 										</div>
 									</div>
+									<div class="col-md-6 mb-3 form-check-inline">
+										<label>Registrarse como</label>
+											{{ form_widget(form.roles) }}
+									</div>
 								</div>
 							</div>
 
 							<div class="form_group">
-								<div class="col-md-6 mb-3 form-check-inline">
+								{# <div class="col-md-6 mb-3 form-check-inline">
 								<label>Registrarse como</label>
 									{{ form_widget(form.roles) }}
-								</div>
+								</div> #}
 							</div>
 						</div>
 					</div>
