@@ -123,7 +123,7 @@ class MailResponseDatatable extends AbstractDatatable
                         // 'confirm_message' => 'Are you sure?',
                         'attributes' => function ($row) {
                             return [
-                                'class' => 'action-evaluate text-success',
+                                'class' => 'action-evaluation text-success',
                                 'data-tippy-content' => 'Evaluar',
                                 'title' => 'Evaluar',
                                 'data-url' => $this->router->generate('mail_response_check', [

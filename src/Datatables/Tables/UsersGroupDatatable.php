@@ -137,6 +137,6 @@ class UsersGroupDatatable extends AbstractDatatable
 
     public function getName()
     {
-        return 'users-datatable';
+        return 'users1-datatable';
     }
 }

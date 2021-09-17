@@ -6,9 +6,9 @@
 </div>
 {{sg_datatables_render_js(datatable)}}
 <script type="text/javascript">
-    $(document).ready(function(){
+     $(document).ready(function(){
      
-          $('#sg-datatables-{{ datatable.uniqueId }}').off('click').on('click', '.action-evaluate', function (event) {
+      $('#sg-datatables-{{ datatable.uniqueName }}').off('click').on('click', '.action-evaluation', function (event) {
 
         event.preventDefault();
 
@@ -35,6 +35,6 @@
                 }
             }
         })
-    });
+    }); 
     })
 </script>

@@ -350,7 +350,7 @@ class UserController extends AbstractController
      *
      * @return Response
      * @Route("/my-class", name="my-class", methods={"POST","GET"},options={"expose" = true})
-     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     * @IsGranted("ROLE_PROFESOR")
      */
     public function myClass():Response{
         $loggedUser = $this->getUser();
@@ -368,6 +368,7 @@ class UserController extends AbstractController
      * @return Response
      * 
      * @Route("/class/{uuid}", name="show_class", methods={"POST","GET"}, options={"expose" = true})
+     * @IsGranted("ROLE_PROFESOR")
      */
     public function visitClass(UserGroup $userGroup, Request $request):Response{
 
