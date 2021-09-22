@@ -1,16 +1,24 @@
-<div class="card">
+<div class="row">
+<div class="col-12">
+    <div class="card" style="overflow: scroll;">
     <div class="card-header">
         <h2>Registro de comunicaciones y calificaciones</h2>
         <h4>Invitado por: {{ book.createdBy ?  book.createdBy.name ~ ' ' ~ book.createdBy.firstName : ''}}</h4>
     </div>
     <div class="card-body">
-        {{ sg_datatables_render_html(datatable) }}
+        <div class="table-responsive">
+            {{ sg_datatables_render_html(datatable) }}
+        </div>
         {{sg_datatables_render_js(datatable)}}
     </div>
 </div>
+</div>
+</div>
+
 <script>
     $(document).ready(function () {
-        $('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
+   
+        /*$('#sg-datatables-{{ datatable.uniqueName }}').on('click', '.action-show', function (event) {
             event.preventDefault();
             const scope = $(this)
 
@@ -36,6 +44,6 @@
                 }
             })
 
-        })
+        })*/
     });
 </script>

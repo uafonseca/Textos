@@ -1,140 +1,192 @@
 {% extends 'layout.html.twig' %}
 
 {% block title %}
-	{{ unit.name }}
+{{ unit.name }}
 {% endblock %}
 
 {% block body %}
-	<div class="card">
-		<div class="card-header">
-			<h2 class="card-text text-center">{{ unit.book.title }}</h2>
-			<h3 class="card-text">
-				{{ unit.name }}
-				<a href="{{ path('book_show', {'uuid': unit.book.uuid}) }}" class="btn btn-warning btn-sm pull-right ml-3 mt-1">Ver unidades</a>
-				{% if unit.evaluation is not null %}
-					<a href="{{ path('evaluation_show', {'uuid': unit.evaluation.uuid}) }}" style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
-						<i class="fa fa-graduation-cap"></i>
-						Evaluación
-					</a>
-				{% endif %}
-			</h3>
-		</div>
-		<div class="card-body">
-			<section>
-				<div class="row">
-					<div class="col-md-8">
-						<iframe style="width: 100%; min-height: 900px;" src="{{ vich_uploader_asset(unit.pDF,'pdfFile') }}"></iframe>
-							<h3>Enlaces interactivos</h3>
-								{% for activity in unit.activities %}
-									{% if activity.type == 'Presentacion' %}
-										<div class="card">
-											<div class="card-body" style="overflow:scroll">
-											{% if activity.code %}
-												{{ activity.code|raw }}
-											{% endif %}
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-					</div>
-					<div class="col-md-4">
-						<div class="card">
-							<div class="card-header">Recusros</div>
-							<div class="card-body">
-								<h3>Videos </h3>
-								{% for activity in unit.activities %}
-									{% if activity.type == 'Youtube' or activity.type == 'Video' %}
-										{% if activity.type == 'Youtube'%}
-											<div class="card">
-												<div class="card-body">
-												{% if activity.url %}
-													{{ youtube_embed(activity.url)|raw }}
-												{% endif %}
-												</div>
-												<div class="card-footer">
-													{{activity.name ~ ' Pag. '~activity.page}}
-												</div>
-											</div>
-										{% else %}
-											<div class="card">
+<style>
+	@keyframes spinner {
+		to {
+			transform: rotate(360deg);
+		}
+	}
 
-												<div class="card-body">
-													<video controls style='width:100%; height:100%' src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></video>
-												</div>
-												<div class="card-footer">
-													{{activity.name ~ ' Pag. '~activity.page}}
-												</div>
-											</div>
-										{% endif %}
+	.fa-spinner {
+		animation: spinner 1s linear infinite;
+	}
+</style>
+<div class="card">
+	<div class="card-header">
+		<h2 class="card-text text-center">{{ unit.book.title }}</h2>
+		<h3 class="card-text">
+			{{ unit.name }}
+			<a href="{{ path('book_show', {'uuid': unit.book.uuid}) }}"
+				class="btn btn-warning btn-sm pull-right ml-3 mt-1">Ver unidades</a>
+			{% if unit.evaluation is not null %}
+			<a href="{{ path('evaluation_show', {'uuid': unit.evaluation.uuid}) }}"
+				style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
+				<i class="fa fa-graduation-cap"></i>
+				Evaluación
+			</a>
+			{% endif %}
+			<a href="{{path('mail_by_user',{uuid:unit.book.uuid}) }}"
+				class="mail btn btn-primary btn-sm pull-right ml-3 mt-1" data-tippy-content="Ver mensajes"><i
+					class="fa fa-envelope"></i></a>
+		</h3>
+	</div>
+	<div class="card-body">
+		<section>
+			<div class="row">
+				<div class="col-md-8">
+					<!-- Render pdf with pdfjs -->
+					<div class="text-center">
+						<button id="prev" class="btn btn-primary pull-left"> <i class="fa fa-arrow-left"></i>
+							Anterior</button>
+						<!-- <button id="editor" style="margin: 0 auto 0 auto;" class="btn btn-info"> <i class="fa fa-edit"></i> Editor</button> -->
+						<button id="next" class="btn btn-primary pull-right"> <i class="fa fa-arrow-right"></i>
+							Siguiente</button>
+					</div>
+					<div id="canvas-container" style="width: 100%; min-height: 900px;">
+						<canvas id="canvas" style="width: 100%; min-height: 900px;">
+					</div>
+
+					</canvas>
+					<!-- <div id="tui-image-editor" style="width: 100%; min-height: 900px;"></div> -->
+					<div class="text-center">
+						&nbsp; &nbsp;
+						<span>Página: <span id="page_num"></span> / <span id="page_count"></span></span>
+					</div>
+					<!-- end render pdf -->
+					<h3>Enlaces interactivos</h3>
+					{% for activity in unit.activities %}
+					{% if activity.type == 'Presentacion' %}
+					<div class="card">
+						<div class="card-body" style="overflow:scroll">
+							{% if activity.code %}
+							{{ activity.code|raw }}
+							{% endif %}
+						</div>
+					</div>
+					{% endif %}
+					{% endfor %}
+				</div>
+				<div class="col-md-4">
+					<div class="card">
+						<div class="card-header">Recusros</div>
+						<div class="card-body">
+							<h3>Videos </h3>
+							{% for activity in unit.activities %}
+							{% if activity.type == 'Youtube' or activity.type == 'Video' %}
+							{% if activity.type == 'Youtube'%}
+							<div class="card">
+								<div class="card-body">
+									{% if activity.url %}
+									{{ youtube_embed(activity.url)|raw }}
 									{% endif %}
-								{% endfor %}
-								<h3>Audios</h3>
-								{% for activity in unit.activities %}
-									{% if activity.type == 'Audio' %}
-										<div class="card">
-											<div class="card-body">
-												<audio controls>
-												 <source src="{{ vich_uploader_asset(activity.file, 'imagenFile') }}"
-												  type="{{activity.file.mimeType}}" />
-												  Your browser does not support the
-            										<code>audio</code> element.
-													</audio>
-											</div>
-											<div class="card-footer">
-												{{activity.name ~ ' Pag. '~activity.page}}
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-								<h3>Archivos</h3>
-								{% for activity in unit.activities %}
-									{% if activity.type == 'Archivo' %}
-										<div class="card">
-											<div class="card-body">
-												<a class="btn btn-primary" download href="{{ vich_uploader_asset(activity.file, 'imagenFile') }}">
-													<i class="fa fa-download"></i>
-													{{activity.name}}</a>
-											</div>
-											<div class="card-footer">
-												{{activity.name ~ ' Pag. '~activity.page}}
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-									<h3>Enlaces</h3>
-								{% for activity in unit.activities %}
-									{% if activity.type == 'Genially' %}
-										<div class="card">
-											<div class="card-body">
-											{% if activity.url %}
-												<a href="{{activity.url}}" download>{{activity.url}}</a>
-											{% endif %}
-											</div>
-											<div class="card-footer">
-												{{activity.name ~ ' Pag. '~activity.page}}
-											</div>
-										</div>
-									{% endif %}
-								{% endfor %}
-								
+								</div>
+								<div class="card-footer">
+									{{activity.name ~ ' Pag. '~activity.page}}
+								</div>
 							</div>
+							{% else %}
+							<div class="card">
+
+								<div class="card-body">
+									<video controls style='width:100%; height:100%'
+										src="{{ vich_uploader_asset(activity.file, 'imagenFile')}}"></video>
+								</div>
+								<div class="card-footer">
+									{{activity.name ~ ' Pag. '~activity.page}}
+								</div>
+							</div>
+							{% endif %}
+							{% endif %}
+							{% endfor %}
+							<h3>Audios</h3>
+							{% for activity in unit.activities %}
+							{% if activity.type == 'Audio' %}
+							<div class="card">
+								<div class="card-body">
+									<audio controls>
+										<source src="{{ vich_uploader_asset(activity.file, 'imagenFile') }}"
+											type="{{activity.file.mimeType}}" />
+										Your browser does not support the
+										<code>audio</code> element.
+									</audio>
+								</div>
+								<div class="card-footer">
+									{{activity.name ~ ' Pag. '~activity.page}}
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							<h3>Archivos</h3>
+							{% for activity in unit.activities %}
+							{% if activity.type == 'Archivo' %}
+							<div class="card">
+								<div class="card-body">
+									<a class="btn btn-primary" download
+										href="{{ vich_uploader_asset(activity.file, 'imagenFile') }}">
+										<i class="fa fa-download"></i>
+										{{activity.name}}</a>
+								</div>
+								<div class="card-footer">
+									{{activity.name ~ ' Pag. '~activity.page}}
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+							<h3>Enlaces</h3>
+							{% for activity in unit.activities %}
+							{% if activity.type == 'Genially' %}
+							<div class="card">
+								<div class="card-body">
+									{% if activity.url %}
+									<a class="btn btn-info" href="{{activity.url}}" > <i class="fa fa-eye"></i> {{activity.name}} </a>
+									{% endif %}
+								</div>
+								<div class="card-footer">
+									{{activity.name ~ ' Pag. '~activity.page}}
+								</div>
+							</div>
+							{% endif %}
+							{% endfor %}
+
 						</div>
 					</div>
 				</div>
-				<div class="row  mt-4">
-				</div>
-			</section>
-		</div>
+			</div>
+			<div class="row  mt-4">
+			</div>
+		</section>
 	</div>
+</div>
 {% endblock %}
 {% block javascripts %}
-	<script type="text/javascript">
-		$(function () {
-$('.show-details').on('click', function (event) {
-event.preventDefault();
-const scope = $(this);
-app.dialogs.create({url: scope.attr('href')})
-})
-})
-	</script>
+<script>
+	const url = '{{ vich_uploader_asset(unit.pDF,"pdfFile") }}';
+</script>
+{{ encore_entry_script_tags('unit.details') }}
+
+<!-- {{ encore_entry_script_tags('unit.details') }} -->
+
+<script type="text/javascript">
+	$(function () {
+		$('.show-details').on('click', function (event) {
+			event.preventDefault();
+			const scope = $(this);
+			app.dialogs.create({ url: scope.attr('href') })
+		})
+		$('.mail').on('click', function (event) {
+			event.preventDefault();
+			const scope = $(this);
+			app.dialogs.create({
+				url: scope.attr('href'),
+				containerFluid: true,
+				columnClass: 'col-md-8'
+			})
+		})
+	})
+</script>
 {% endblock %}

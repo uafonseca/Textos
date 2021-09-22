@@ -329,7 +329,7 @@ class UnitController extends AbstractController
     /**
      * @return \App\Entity\Company
      */
-    public function getCompany():Company
+    public function getCompany():?Company
     {
         return $this->getUser()->getCompany();
     }

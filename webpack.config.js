@@ -28,6 +28,8 @@ Encore
     .addEntry("profile.form", "./assets/profile/index.js")
 
     .addEntry("unit.show", "./assets/unit/layout.js")
+    .addEntry("unit.details", "./assets/unit/pdfjs.js")
+    .addEntry("unit.editor", "./assets/unit/image-editor.js")
     .addEntry("questions.index", "./assets/questions/index.js")
     .addEntry("answers.index", "./assets/answers/index.js")
     .addEntry("admin.chart", "./assets/admin/chart.js")

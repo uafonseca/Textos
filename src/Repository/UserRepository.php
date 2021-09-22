@@ -45,6 +45,25 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
             ->getOneOrNullResult();
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param User $user
+     * @return void
+     */
+    public function allUsers(User $user){
+        return $this->createQueryBuilder('user')
+            ->join('user.userGroups', 'g')
+            ->andWhere('g.createdBy =:u')
+            ->setParameter('u', $user)
+            ->getQuery()
+            ->getResult()
+
+        ;
+    }
+
+
+
 
     
 

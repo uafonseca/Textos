@@ -7,13 +7,21 @@
     <div class="card-header">
     </div>
     <div class="card-body">
-        {{sg_datatables_render_html(datatable)}}
+        <div class="row">
+          {% for row in links %}
+            <div class="col-md-2">
+              <figure class="text-center">
+                <img src="{{vich_uploader_asset(row.imagen, 'imagenFile')}}" class="img-fluid img img-bordered img-responsive">
+                <figcaption><a href="{{row.url}}" target="_blank">{{row.name | upper}}</a><figcaption>
+            </figure>
+            </div>
+          {% endfor %}
+        </div>
     </div>
   </div>
 
-    {# <a href="{{ path('global_link_new') }}">Create new</a> #}
 {% endblock %}
 
 {% block javascripts %}
-    {{sg_datatables_render_js(datatable)}}
+    
 {% endblock %}

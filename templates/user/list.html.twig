@@ -1,0 +1,43 @@
+{% extends 'layout.html.twig' %}
+
+{% block title %}User index{% endblock %}
+
+{% block body %}
+    <h1>Listado de estudiantes</h1>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover dataTable no-footer dtr-inline">
+                    <thead>
+                        <tr>
+                            <th>Nombre y apellidos</th>
+                            <th>Curso</th>
+                            <th>Grupo</th>
+                            <th>Fecha de inicio del curso</th>
+                            <!-- <th>Condición</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in users %}
+                            <tr>
+                                <td>{{item.name ~ ' ' ~ item.firstName}}</td>
+                                <td>{{getCurso(item) ? getCurso(item).course.title : ''}}</td>
+                                <td>{{getCurso(item)}}</td>
+                                <td>{{getCurso(item) ? getCurso(item).startDate|date("m/d/Y") : ''}}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+  
+    <script type="text/javascript">
+  
+    </script>
+{% endblock %}

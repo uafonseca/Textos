@@ -10,10 +10,45 @@
 			</span>
 		</a>
 
+
 		<ul class="sidebar-nav">
 			<li class="sidebar-header">
 				Páginas
 			</li>
+			{% if is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') or is_granted('ROLE_SUPER_ADMIN') %}
+
+				<li class="sidebar-item {% if currentPath == path('book_index') %}active{% endif %}">
+					<a href="#textos" data-toggle="collapse" class="sidebar-link collapsed">
+						<i class="align-middle" data-feather="book"></i>
+						<span class="align-middle">Ingreso de cursos</span>
+					</a>
+					<ul id="textos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('book_index') }}">Cursos</a>
+						</li>
+						<li class="sidebar-item">
+							<a class="sidebar-link" href="{{ path('unit_index') }}">Unidades</a>
+						</li>
+					</ul>
+				</li>
+
+				<li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('my-class') }}">
+						<i class="align-middle" data-feather="book-open"></i>
+						<span class="align-middle">Mis clases</span>
+					</a>
+				</li>
+
+			{% endif %}
+
+			{% if is_granted('ROLE_PROFESOR')  %}
+			<li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
+					<a class="sidebar-link" href="{{ path('my-class') }}">
+						<i class="align-middle" data-feather="book-open"></i>
+						<span class="align-middle">Mis clases</span>
+					</a>
+				</li>
+			{% endif %}
 			{% if is_granted('ROLE_SUPER_ADMIN') %}
 				<li class="sidebar-item {% if currentPath == path('admin') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('admin') }}">
@@ -27,7 +62,7 @@
 						<span class="align-middle">Control de usuarios</span>
 					</a>
 				</li>
-			{% elseif is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')  %}
+			{% elseif is_granted('ROLE_USER') or is_granted('ROLE_PROFESOR')  %}
 
 				<li class="sidebar-item {% if currentPath == path('user_dashboard') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('user_dashboard') }}">
@@ -46,12 +81,29 @@
 					</li>
 				{% endif %}
 
-				<li class="sidebar-item {% if currentPath == path('invitations_index') %}active{% endif %}">
-					<a class="sidebar-link" href="{{ path('invitations_index') }}">
-						<i class="align-middle" data-feather="check-circle"></i>
-						<span class="align-middle">Mis invitaciones</span>
-					</a>
-				</li>
+				{# <li class="sidebar-item {% if currentPath == path('invitations_index') %}active{% endif %}">
+									<a class="sidebar-link" href="{{ path('invitations_index') }}">
+										<i class="align-middle" data-feather="check-circle"></i>
+										<span class="align-middle">Mis invitaciones</span>
+									</a>
+								</li> #}
+				{% if is_granted('ROLE_PROFESOR') %}
+					<li class="sidebar-item {% if currentPath == path('invitations_index') %}active{% endif %}">
+						<a href="#cusos" data-toggle="collapse" class="sidebar-link collapsed">
+							<i class="align-middle" data-feather="check-circle"></i>
+							<span class="align-middle">Invitaciones</span>
+						</a>
+						<ul id="cusos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('user_group_create') }}">Registro de invitados</a>
+							</li>
+							<li class="sidebar-item">
+								<a class="sidebar-link" href="{{ path('user_group') }}">Listado de cursos</a>
+							</li>
+						</ul>
+					</li>
+				{% endif %}
+
 
 				<li class="sidebar-item {% if currentPath == path('global_link_index') %}active{% endif %}">
 					<a class="sidebar-link" href="{{ path('global_link_index') }}">
@@ -150,31 +202,7 @@
 			{% endif %}
 
 
-			{% if is_granted('ROLE_ADMIN') or is_granted('ROLE_CAPACITADOR_EXTERNO') or is_granted('ROLE_CAPACITADOR_INTERNO') or is_granted('ROLE_SUPER_ADMIN') %}
-
-				<li class="sidebar-item {% if currentPath == path('book_index') %}active{% endif %}">
-					<a href="#textos" data-toggle="collapse" class="sidebar-link collapsed">
-						<i class="align-middle" data-feather="book"></i>
-						<span class="align-middle">Ingreso de cursos</span>
-					</a>
-					<ul id="textos" class="sidebar-dropdown list-unstyled collapse " data-parent="#sidebar">
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('book_index') }}">Cursos</a>
-						</li>
-						<li class="sidebar-item">
-							<a class="sidebar-link" href="{{ path('unit_index') }}">Unidades</a>
-						</li>
-					</ul>
-				</li>
-
-				<li class="sidebar-item {% if currentPath == path('my-class') %}active{% endif %}">
-					<a class="sidebar-link" href="{{ path('my-class') }}">
-						<i class="align-middle" data-feather="book-open"></i>
-						<span class="align-middle">Mis clases</span>
-					</a>
-				</li>
-
-			{% endif %}
+			
 
 			{% if is_granted('ROLE_SUPER_ADMIN')  %}
 
@@ -200,4 +228,3 @@
 
 <div class="main">
 	{{ include('partials/top-menu.html.twig') }}
-

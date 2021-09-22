@@ -76,6 +76,10 @@ class RecivedDatatable extends AbstractDatatable
             // 'dom' => 'Blfrtip',
         ]);
 
+        $this->extensions->set([
+            'responsive' => true,
+        ]);
+        
         $this->features->set([
             'processing' => true,
         ]);
@@ -129,9 +133,11 @@ class RecivedDatatable extends AbstractDatatable
                                 ];
                         },
                         'render_if' => function ($row) {
-                            return  $this->authorizationChecker->isGranted('ROLE_ADMIN');
+                            return  $this->authorizationChecker->isGranted('ROLE_PROFESOR');
                         },
+                       
                     ),
+                    TableActions::export('mail_response_print')
                 ],
             ])
         ;

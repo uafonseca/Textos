@@ -7,7 +7,20 @@
 
 
 <script>
-     $(document).on('click', '.action-evaluate', function (event) {
+    $(document).on('click', '.action-export', function (event) {
+
+            event.preventDefault();
+
+            const scope = $(this);
+
+        app.dialogs.create({
+            url: scope.attr('href'),
+            columnClass:'col-md-8',
+            containerFluid:true
+        })
+
+        });
+      /*$('#sg-datatables-{{ datatable.uniqueId }}').off('click').on('click', '.action-evaluate', function (event) {
 
         event.preventDefault();
 
@@ -33,6 +46,6 @@
                     })
                 }
             }
-        })
+        })*/
     });
 </script>

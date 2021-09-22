@@ -8,6 +8,7 @@ use App\Datatables\Tables\UsersGroupDatatable;
 use App\Entity\Activity;
 use App\Entity\Book;
 use App\Entity\Category;
+use App\Entity\Code;
 use App\Entity\Company;
 use App\Entity\Level;
 use App\Entity\SchoolStage;
@@ -138,6 +139,7 @@ class BookController extends AbstractController
     /**
      * @Route("/list", name="book_list", methods={"GET","POST"}, options={"expose" = true})
      *
+     * 
      * @param \Symfony\Component\HttpFoundation\Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -196,6 +198,7 @@ class BookController extends AbstractController
     /**
      * @Route("/{uuid}", name="book_show", methods={"GET"})
      *
+     *
      * @param Book $book
      * @return Response
      * @throws NonUniqueResultException
@@ -212,7 +215,7 @@ class BookController extends AbstractController
         if (
             null != $code = $this->codeRepository->isBookActive($book, $this->getUser())
              || $loggedUser->getFreeBooks()->contains($book)
-             || ($this->isGranted('ROLE_ADMIN') && $book->findGroupByUser($loggedUser) != null) ) {
+             || ($this->isGranted('ROLE_ADMIN') && $book->findGroupByUser($loggedUser) != null)) {
             return $this->render('book/show.html.twig', [
                 'book' => $book,
             ]);
@@ -225,6 +228,7 @@ class BookController extends AbstractController
     /**
      * Undocumented function
      *
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      * @param Book $book
      * @return Response
      * @Route("/contains/{id}", name="contains_book_users", methods={"GET","POST"}, options={"expose" = true})
@@ -244,6 +248,8 @@ class BookController extends AbstractController
      * @param Book $book
      * @return Response
      * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     *
      *  @Route("/add/free/{id}", name="add_book_users", methods={"GET","POST"}, options={"expose" = true})
      */
     public function addFreBook(Book $book):Response
@@ -251,6 +257,7 @@ class BookController extends AbstractController
         /** @var User $loggedUser */
         $loggedUser = $this->getUser();
         $loggedUser->addFreeBook($book);
+        $book->addFreeUser($loggedUser);
         $this->getDoctrine()->getManager()->flush();
         return new JsonResponse([
             'status' => 'success'
@@ -356,6 +363,47 @@ class BookController extends AbstractController
     }
 
     /**
+     * Undocumented function
+     *
+     * @param Book $book
+     * @return Response
+     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
+     *
+     * @Route("/remove-activate/{id}", name="remove-activate", methods={"GET","POST"}, options={"expose" = true})
+     */
+    public function desactivate(Book $book, Request $request):Response
+    {
+        if ($request->isXmlHttpRequest()) {
+            $em = $this->getDoctrine()->getManager();
+            /** @var User $loggedUser */
+            $loggedUser = $this->getUser();
+            if ($loggedUser->getFreeBooks()->contains($book)) {
+                $loggedUser->getFreeBooks()->removeElement($book);
+                $book->removeFreeUser($loggedUser);
+                $em->flush();
+                return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Texto gratuito eliminado'
+            ]);
+            } elseif (null != $code = $book->getCodeByUser($loggedUser)) {
+                /** @var Code $code */
+                $code->setUser(null);
+                $loggedUser->removeCode($code);
+                $em->flush();
+                return new JsonResponse([
+                'type' => 'success',
+                'message' => 'Código eliminado'
+            ]);
+            }
+        }
+        return new JsonResponse([
+            'type' => 'error',
+            'message' => 'Ha ocurrido un error'
+        ]);
+    }
+
+    /**
      * @Route("/{uuid}/edit", name="book_edit", methods={"GET","POST"})
      *
      * @IsGranted("ROLE_SUPER_ADMIN")
@@ -402,7 +450,7 @@ class BookController extends AbstractController
     }
 
 
-    public function getCompany(): Company
+    public function getCompany(): ?Company
     {
         return $this->getUser()->getCompany();
     }

@@ -59,6 +59,16 @@ class NoRecivedDatatable extends AbstractDatatable
 				'title' => 'uuid',
 				'visible' => false,
 			])
+			// ->add('id', Column::class, [
+			// 	'title' => 'id',
+			// 	'visible' => false,
+			// ])
+			// ->add('tarea', Column::class, [
+			// 	'title' => 'Tarea',
+			// 	'dql' => '(SELECT {m}.subject FROM App:User {u} JOIN App:Mail USING({}) {m} WHERE  {id} NOT IN (SELECT {r}.User.id FROM App:MailResponse {r} WHERE {r}.mail = {m} ))',
+			// 	'searchable' => true,
+			// 	'orderable' => true,
+			// ])
 			->add('name', Column::class, [
 				'title' => 'Nombre',
 			])

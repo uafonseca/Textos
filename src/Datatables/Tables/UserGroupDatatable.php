@@ -90,6 +90,10 @@ class UserGroupDatatable extends AbstractDatatable
                 'title' => 'Modalidad',
                 'default_content' => '--'
             ])
+            ->add('enabled', Column::class, [
+                'title' => 'status',
+                'visible' => false
+            ])
             ->add(null, ActionColumn::class, [
                 'title' => $this->translator->trans('sg.datatables.actions.title'),
                 'actions' => [
@@ -107,6 +111,36 @@ class UserGroupDatatable extends AbstractDatatable
                             'class' => 'action-copy text-success',
                             'data-tippy-content' => 'Copiar código',
                         ],
+                    ],
+                    [
+                        'route' => 'user_group_change_status',
+                            'route_parameters' => array(
+                                'uuid' => 'uuid',
+                                'action' => 'false'
+                            ),
+                        'icon' => 'fa fa-times cortex-table-action-icon',
+                        'attributes' => [
+                            'class' => 'action-change text-danger',
+                            'data-tippy-content' => 'Desactivar',
+                        ],
+                        'render_if' => function($row){
+                            return $row['enabled'] === null || $row['enabled'] === true;
+                        }
+                    ],
+                    [
+                        'route' => 'user_group_change_status',
+                            'route_parameters' => array(
+                                'uuid' => 'uuid',
+                                'action' => 'true'
+                            ),
+                        'icon' => 'fa fa-check cortex-table-action-icon',
+                        'attributes' => [
+                            'class' => 'action-change text-success',
+                            'data-tippy-content' => 'Activar',
+                        ],
+                        'render_if' => function($row){
+                            return $row['enabled'] === false;
+                        }
                     ]
                 ],
             ])

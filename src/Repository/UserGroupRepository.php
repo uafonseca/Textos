@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\User;
 use App\Entity\UserGroup;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -22,19 +23,20 @@ class UserGroupRepository extends ServiceEntityRepository
     // /**
     //  * @return UserGroup[] Returns an array of UserGroup objects
     //  */
-    /*
-    public function findByExampleField($value)
+   
+    public function findByUser(User $user)
     {
         return $this->createQueryBuilder('u')
-            ->andWhere('u.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('u.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('u.createdBy = :val')
+            ->andWhere('u.groupName IS NOT NULL')
+            ->setParameter('val', $user)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+    
+   
 
     /*
     public function findOneBySomeField($value): ?UserGroup

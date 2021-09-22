@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\AppEvents;
 use App\Datatables\Tables\MailDatatable;
+use App\Datatables\Tables\MailResponseListDatatable;
 use App\Entity\Book;
 use App\Entity\Mail;
+use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Event\MailEvent;
 use App\Form\MailType;
@@ -25,7 +27,6 @@ use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
  */
 class MailController extends AbstractController
 {
-
     private EventDispatcherInterface $dispatcher;
 
     /** @var DatatableFactory */
@@ -43,7 +44,6 @@ class MailController extends AbstractController
         DatatableResponse $datatableResponse,
         UploaderHelper $vich
     ) {
-
         $this->dispatcher = $eventDispatcher;
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
@@ -55,24 +55,23 @@ class MailController extends AbstractController
      */
     public function index(UserGroup $userGroup, Request $request): Response
     {
-
         $datatable = $this->datatableFactory->create(MailDatatable::class);
         $datatable->buildDatatable([
-            'url' => $this->generateUrl('mail_index',[
+            'url' => $this->generateUrl('mail_index', [
                 'uuid' => $userGroup->getUuid()
             ]),
             'vich' => $this->vich
         ]);
 
-        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
             $qb
             ->getQb()
             ->join('mail.userGroup', 'userGroup')
             ->where('userGroup =:g')
-            ->setParameter('g',$userGroup)
-            ;   
+            ->setParameter('g', $userGroup)
+            ;
 
             return $this->datatableResponse->getResponse();
         }
@@ -82,29 +81,116 @@ class MailController extends AbstractController
         ]);
     }
 
-     /**
-     * @Route("/my-mails/{uuid}", name="my-mails", methods={"GET", "POST"}, options = {"expose" = true})
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/sends/current", name="mails_send", methods={"GET", "POST"})
      */
-    public function myMails(UserGroup $userGroup, Request $request): Response
+    public function send(Request $request): Response
     {
-
         $datatable = $this->datatableFactory->create(MailDatatable::class);
         $datatable->buildDatatable([
-            'url' => $this->generateUrl('my-mails',[
+            'url' => $this->generateUrl('mails_send'),
+            'vich' => $this->vich
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            if ($this->isGranted('ROLE_USER')) {
+                $qb
+                ->getQb()
+                ->join('mail.recipients', 'user')
+                ->where('user =:user')
+                ->setParameter('user', $this->getUser())
+                ;
+            } else {
+                $qb
+                ->getQb()
+                ->where('mail.sender =:user')
+                ->setParameter('user', $this->getUser())
+                ;
+            }
+            
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail/index.html.twig', [
+            'datatable' => $datatable,
+        ]);
+    }
+
+
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return Response
+     *
+     * @Route("/received/current", name="mails_received", methods={"GET", "POST"})
+     */
+    public function received(Request $request): Response
+    {
+        $datatable = $this->datatableFactory->create(MailResponseListDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('mails_received'),
+            'vich' => $this->vich
+        ]);
+
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
+            $this->datatableResponse->setDatatable($datatable);
+            $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            if ($this->isGranted('ROLE_USER')) {
+                $qb
+                ->getQb()
+                ->join('mailresponse.User', 'user')
+                ->andWhere('user =:user')
+                ->setParameter('user', $this->getUser())
+                ;
+            } else {    
+                $qb
+                ->getQb()
+                ->join('mailresponse.mail', 'email')
+                ->join('email.userGroup', 'userGroup')
+                ->andWhere('userGroup.createdBy =:user')
+                ->setParameter('user', $this->getUser())
+            ;
+            }
+           
+
+            return $this->datatableResponse->getResponse();
+        }
+        return $this->render('mail/index.html.twig', [
+            'datatable' => $datatable,
+        ]);
+    }
+
+    /**
+    * @Route("/my-mails/{uuid}", name="my-mails", methods={"GET", "POST"}, options = {"expose" = true})
+    */
+    public function myMails(UserGroup $userGroup, Request $request): Response
+    {
+        $datatable = $this->datatableFactory->create(MailDatatable::class);
+        $datatable->buildDatatable([
+            'url' => $this->generateUrl('my-mails', [
                 'uuid' => $userGroup->getUuid()
             ]),
             'vich' => $this->vich
         ]);
 
-        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
             $qb
             ->getQb()
             ->join('mail.userGroup', 'userGroup')
             ->where('userGroup =:g')
-            ->setParameter('g',$userGroup)
-            ;   
+            ->distinct()
+            ->setParameter('g', $userGroup)
+            ;
 
             return $this->datatableResponse->getResponse();
         }
@@ -114,21 +200,20 @@ class MailController extends AbstractController
         ]);
     }
 
-     /**
-     * @Route("/by-user/{uuid}", name="mail_by_user", methods={"GET", "POST"})
-     */
-    public function showByUser(Book $book,Request $request): Response
+    /**
+    * @Route("/by-user/{uuid}", name="mail_by_user", methods={"GET", "POST"})
+    */
+    public function showByUser(Book $book, Request $request): Response
     {
-
         $datatable = $this->datatableFactory->create(MailDatatable::class);
         $datatable->buildDatatable([
-            'url' => $this->generateUrl('mail_by_user',[
+            'url' => $this->generateUrl('mail_by_user', [
                 'uuid' => $book->getUuid(),
             ]),
             'vich' => $this->vich
         ]);
 
-        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
+        if ($request->isXmlHttpRequest() && $request->isMethod('POST')) {
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
             $qb
@@ -139,8 +224,8 @@ class MailController extends AbstractController
             ->andwhere('userGroup.course =:course')
             ->orderBy('mail.createdAt', 'DESC')
             ->setParameter('course', $book)
-            ->setParameter('user',$this->getUser());
-            ;   
+            ->setParameter('user', $this->getUser());
+            ;
 
             return $this->datatableResponse->getResponse();
         }
@@ -198,7 +283,7 @@ class MailController extends AbstractController
     }
 
     /**
-     * @Route("/{id}", name="mail_show", methods={"GET"})
+     * @Route("/view/{uuid}", name="mail_show", methods={"GET"})
      */
     public function show(Mail $mail): Response
     {
@@ -240,5 +325,4 @@ class MailController extends AbstractController
 
         return $this->redirectToRoute('mail_index');
     }
-
 }

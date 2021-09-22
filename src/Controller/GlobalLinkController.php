@@ -45,25 +45,23 @@ class GlobalLinkController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $datatable = $this->datatableFactory->create(GlobalLinkDatatable::class);
-        $datatable->buildDatatable([
-            'url' => $this->generateUrl('global_link_index'),
-            'vich' => $this->vich,
-        ]);
+        $em = $this->getDoctrine()->getManager();
 
-        if($request->isXmlHttpRequest() && $request->isMethod('POST')){
-            $this->datatableResponse->setDatatable($datatable);
-            $qb = $this->datatableResponse->getDatatableQueryBuilder();
-            if($this->isGranted('ROLE_USER')){
-                $qb
-                ->getQb()
-                ->where('globallink.destination =:d')
-                ->setParameter('d', 'Estudiantes');
-            }
-            return $this->datatableResponse->getResponse();
+        $query = [];
+
+        if ($this->isGranted('ROLE_USER')){
+            $query = [
+                'destination' => 'Estudiantes'
+            ];
+        }else{
+            $query = [
+                'destination' => 'Ambos'
+            ];
         }
+        $links = $em->getRepository(GlobalLink::class)->findAll();
+
         return $this->render('global_link/index.html.twig', [
-            'datatable' => $datatable
+            'links' => $links
         ]);
     }
 

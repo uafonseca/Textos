@@ -2,11 +2,13 @@
     <div class="card-header"></div>
     <div class="card-body">
         {{ sg_datatables_render_html(datatable) }}
-        {{sg_datatables_render_js(datatable)}}
     </div>
 </div>
+{{sg_datatables_render_js(datatable)}}
 <script type="text/javascript">
-    $(document).on('click', '.action-evaluate', function (event) {
+     $(document).ready(function(){
+     
+      $('#sg-datatables-{{ datatable.uniqueName }}').off('click').on('click', '.action-evaluation', function (event) {
 
         event.preventDefault();
 
@@ -33,5 +35,6 @@
                 }
             }
         })
-    });
+    }); 
+    })
 </script>

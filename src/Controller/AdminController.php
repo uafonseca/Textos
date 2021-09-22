@@ -17,6 +17,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 /**
  * Class AdminController
@@ -135,27 +136,5 @@ class AdminController extends AbstractController
 	}
 
 
-	/**
-	 * Undocumented function
-	 *
-	 * @param Request $request
-	 * @param TermsRepository $termsRepository
-	 * @return Response
-	 * 
-	 * @Route("/terms-and-conditions", name="terms-and-conditions", options={"expose" = true})
-	 */
-	public function showDialogs(Request $request, TermsRepository $termsRepository):Response{
-		$all = $termsRepository->findAll ();
-		$terms =  new Terms();
-		if (count ($all) > 0){
-			$terms =  $all[0];
-		}
-		if(!$terms instanceof Terms){
-			return new Response('Estos datos no se han configurado aún.!!!');
-		}
-		return $this->render('partials/dialog-template.htm.twig',[
-			'title' => $request->query->get('type') === 'terms' ? 'Términos y condiciones' : 'Política de privacidad',
-			'body'=> $request->query->get('type') === 'terms' ? $terms->getTerms() : $terms->getPrivacy()
-		]);
-	}
+	
 }

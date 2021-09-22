@@ -69,12 +69,14 @@ class CodeDatatable extends AbstractDatatable
         }
 
         $this->extensions->set(array(
+            'responsive' => true,
             'buttons' => [
                 'create_buttons' => [
                     TableActions::buttonPRINT($columns),
                 ],
             ],
         ));
+       
 
         $this->features->set([
             'processing' => true,

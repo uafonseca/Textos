@@ -41,7 +41,8 @@ class UserType extends AbstractType
                 'choice_label' => 'name'
             ])
             ->add('city', TextType::class,[
-                'disabled' => true
+                'disabled' => true,
+                'label' => 'Ciudad'
             ])
             ->add('roles', EntityType::class, [
                 'class' => Role::class,
@@ -50,7 +51,7 @@ class UserType extends AbstractType
                         ->where('r.rolename = :name OR r.rolename = :name2')
                         ->setParameters(array(
                             'name' => Role::ROLE_USER,
-                            'name2' => Role::ROLE_ADMIN
+                            'name2' => Role::ROLE_DOCENTE
                         ));
                 },
                 'choice_value' => function ($choice) {
@@ -60,7 +61,7 @@ class UserType extends AbstractType
                 'choice_label' => function ($choice) {
                     if (Role::ROLE_USER === $choice->getRolename()) {
                         return 'Estudiante';
-                    } elseif (Role::ROLE_ADMIN === $choice->getRolename()) {
+                    } elseif (Role::ROLE_DOCENTE === $choice->getRolename()) {
                         return 'Docente';
                     }
                 },
@@ -69,7 +70,7 @@ class UserType extends AbstractType
                     if (is_object($choice)) {
                         if ($choice->getRolename() === Role::ROLE_USER)
                             $arrayClass['data'] = 'student pull-left';
-                        elseif ($choice->getRolename() === Role::ROLE_ADMIN)
+                        elseif ($choice->getRolename() === Role::ROLE_DOCENTE)
                             $arrayClass['data'] = 'teacher pull-right';
                         return $arrayClass;
                     }
@@ -94,11 +95,11 @@ class UserType extends AbstractType
             ->add('username', TextType::class, [
                 'label' => 'Nombre de usuario'
             ])
-            ->add('canton', TextType::class, [
-                'label' => 'Cantón',
-            ])
+            // ->add('canton', TextType::class, [
+            //     'label' => 'Cantón',
+            // ])
             ->add('scoholName', TextType::class, [
-                'label' => 'Institución o empresa que labora'
+                'label' => 'Institución'
             ])
 //            ->add('student', EstudianteType::class)
             ->add('profesor', ProfesorType::class)

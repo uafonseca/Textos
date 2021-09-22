@@ -170,10 +170,7 @@ class User implements UserInterface, Serializable
      */
     private $mailResponses; 
 
-    /**
-     * @ORM\OneToMany(targetEntity=Book::class, mappedBy="user")
-     */
-    private $freeBooks;
+ 
 
     /**
      * @ORM\OneToMany(targetEntity=Invitation::class, mappedBy="user")
@@ -184,6 +181,11 @@ class User implements UserInterface, Serializable
      * @ORM\Column(type="integer", nullable=true)
      */
     private $facebookId;
+
+    /**
+     * @ORM\ManyToMany(targetEntity=Book::class, inversedBy="freeUsers")
+     */
+    private $freeBooks;
 
     
 
@@ -588,8 +590,8 @@ class User implements UserInterface, Serializable
 	}
 
 	public function setPlainPassword( $plainPassword) {
-                                                                     $this->plainPassword = $plainPassword;
-                                                                   }
+                                                                                 $this->plainPassword = $plainPassword;
+                                                                               }
 
     /**
      * @return Collection|UserGroup[]
@@ -771,36 +773,7 @@ class User implements UserInterface, Serializable
         return $this;
     }
 
-    /**
-     * @return Collection|Book[]
-     */
-    public function getFreeBooks(): Collection
-    {
-        return $this->freeBooks;
-    }
-
-    public function addFreeBook(Book $freeBook): self
-    {
-        if (!$this->freeBooks->contains($freeBook)) {
-            $this->freeBooks[] = $freeBook;
-            $freeBook->setUser($this);
-        }
-
-        return $this;
-    }
-
-    public function removeFreeBook(Book $freeBook): self
-    {
-        if ($this->freeBooks->removeElement($freeBook)) {
-            // set the owning side to null (unless already changed)
-            if ($freeBook->getUser() === $this) {
-                $freeBook->setUser(null);
-            }
-        }
-
-        return $this;
-    }
-
+   
     /**
      * @return Collection|Invitation[]
      */
@@ -839,6 +812,30 @@ class User implements UserInterface, Serializable
     public function setFacebookId(?int $facebookId): self
     {
         $this->facebookId = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Book[]
+     */
+    public function getFreeBooks(): Collection
+    {
+        return $this->freeBooks;
+    }
+
+    public function addFreeBook(Book $freeBook): self
+    {
+        if (!$this->freeBooks->contains($freeBook)) {
+            $this->freeBooks[] = $freeBook;
+        }
+
+        return $this;
+    }
+
+    public function removeFreeBook(Book $freeBook): self
+    {
+        $this->freeBooks->removeElement($freeBook);
 
         return $this;
     }

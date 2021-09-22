@@ -18,6 +18,7 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 
 /**
  * Class CodeDatatable
@@ -25,7 +26,7 @@ use Twig\Environment;
  */
 class MailResponseListDatatable extends AbstractDatatable
 {
-    private $book;
+    private $vich;
     public function __construct(
         AuthorizationCheckerInterface $authorizationChecker,
         TokenStorageInterface $securityToken,
@@ -36,6 +37,7 @@ class MailResponseListDatatable extends AbstractDatatable
     ) {
         parent::__construct($authorizationChecker, $securityToken, $translator, $router, $em, $twig);
         $this->uniqueId = uniqid();
+        
     }
 
     /**
@@ -44,8 +46,15 @@ class MailResponseListDatatable extends AbstractDatatable
     public function getLineFormatter()
     {
         return function ($row) {
-        
-            $row['book'] = $this->book->getId();
+            /** @var MailResponse $response */
+            $response = $this->getEntityManager()->getRepository('App:MailResponse')->find($row['id']);
+            $row['book'] = $response->getMail()->getUserGroup()->getCourse()->getTitle();
+            $row['uuid'] = $response->getMail()->getUuid();
+            if (null !== $response->getAttached()) {
+                $row['attached'] = '<a class="btn-pill btn-sm btn btn-primary" download href="'.$this->vich->asset($response->getAttached(), 'imagenFile').'"> <i class="fa fa-download"></i> </a>';
+            } else {
+                $row['attached'] = '';
+            }
             
             return $row;
         };
@@ -62,13 +71,16 @@ class MailResponseListDatatable extends AbstractDatatable
             'method' => 'POST',
         ]);
 
-        $this->book = $options['group'];
+        $this->vich = $options['vich'];
 
         $this->options->set([
             'classes' => Style::BOOTSTRAP_4_STYLE,
             'individual_filtering' => false,
             'order_cells_top' => true,
             // 'dom' => 'Blfrtip',
+        ]);
+        $this->extensions->set([
+            'responsive' => true,
         ]);
 
         $this->features->set([
@@ -77,9 +89,13 @@ class MailResponseListDatatable extends AbstractDatatable
 
         $this->columnBuilder
         
-            ->add('uuid', Column::class, [
+            ->add('uuid', VirtualColumn::class, [
                 'title' => 'uuid',
                 'visible' => false,
+            ])
+            ->add('book', VirtualColumn::class, [
+                'title' => 'Curso',
+                'visible' => $this->authorizationChecker->isGranted('ROLE_USER'),
             ])
             ->add('mail.subject', Column::class, [
                 'title' => 'Asunto',
@@ -91,9 +107,39 @@ class MailResponseListDatatable extends AbstractDatatable
                 
                 'date_format' => 'D-MM-yy hh:mm a'
             ])
+            ->add('attached', VirtualColumn::class, [
+                'title' => 'Adjunto',
+                'visible' => true,
+            ])
             ->add('evaluation', Column::class, [
                 'title' => 'Nota',
                 'visible' => true,
+            ])
+            ->add(null, ActionColumn::class, [
+                'title' => $this->translator->trans('sg.datatables.actions.title'),
+                'actions' => [
+                    array(
+                        'route' => 'mail_show',
+                        'route_parameters' => array(
+                            'uuid' => 'uuid',
+                        ),
+                        'icon' => 'fa fa-eye cortex-table-action-icon',
+                        // 'confirm_message' => 'Are you sure?',
+                        'attributes' => function ($row) {
+                            return [
+                                'class' => 'action-view text-success',
+                                'data-tippy-content' => 'Ver tarea',
+                                'title' => 'Evaluar',
+                                'data-url' => $this->router->generate('mail_show', [
+                                    'uuid' => $row['uuid']
+                                ])
+                                ];
+                        },
+                        'render_if' => function ($row) {
+                            return  $this->authorizationChecker->isGranted('ROLE_USER') || $this->authorizationChecker->isGranted('ROLE_PROFESOR');
+                        },
+                    ),
+                ],
             ])
         ;
     }

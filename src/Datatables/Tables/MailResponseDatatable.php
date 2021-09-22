@@ -79,6 +79,9 @@ class MailResponseDatatable extends AbstractDatatable
         $this->features->set([
             'processing' => true,
         ]);
+        $this->extensions->set([
+            'responsive' => true,
+        ]);
 
         $this->columnBuilder
         
@@ -120,7 +123,7 @@ class MailResponseDatatable extends AbstractDatatable
                         // 'confirm_message' => 'Are you sure?',
                         'attributes' => function ($row) {
                             return [
-                                'class' => 'action-evaluate text-success',
+                                'class' => 'action-evaluation text-success',
                                 'data-tippy-content' => 'Evaluar',
                                 'title' => 'Evaluar',
                                 'data-url' => $this->router->generate('mail_response_check', [
@@ -129,7 +132,7 @@ class MailResponseDatatable extends AbstractDatatable
                                 ];
                         },
                         'render_if' => function ($row) {
-                            return  $this->authorizationChecker->isGranted('ROLE_SUPER_ADMIN');
+                            return  $this->authorizationChecker->isGranted('ROLE_PROFESOR');
                         },
                     ),
                 ],

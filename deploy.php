@@ -35,18 +35,18 @@ set('ssh_multiplexing', false);
 set('default_timeout', 120000);
 // Hosts
 
-host('v2')
-    ->hostname('23.239.26.54')
-    ->set('branch', 'main')
+host('classbook.edu')
+    ->hostname('172.105.16.81')
+    ->set('branch', 'bookdy')
     ->user('deploy')
-    ->set('deploy_path', '/var/www/html/v2Lideres');
+    ->set('deploy_path', '/var/www/html/classbook');
 
-host('connect')
-    ->hostname('23.239.26.54')
-    ->set('branch', 'main')
+
+host('demo')
+    ->hostname('172.105.16.81')
+    ->set('branch', 'bookdy')
     ->user('deploy')
-    ->set('deploy_path', '/mnt/baboon/www/connect');
-
+    ->set('deploy_path', '/var/www/html/demo_classbook');
 
 set('release_name', function () {
     return date('YmdHis');
@@ -83,7 +83,10 @@ task('assets:install', 'php {{bin/console}} assets:install public');
 desc('Expose routes');
 task('routes:expose', 'php {{bin/console}} fos:js-routing:dump --target=public/js/fos_js_routes.js');
 
-
+desc('Set writable');
+task('set:writable', function () {
+    run('sudo chmod -R 777 {{deploy_path}}/releases/{{release_name}}/var/log');
+});
 
 
 task('build', [
@@ -92,6 +95,7 @@ task('build', [
     'routes:expose',
     'yarn:install',
     'yarn:run:production',
+    // 'set:writable'
 ]);
 
 after('deploy:vendors', 'build');

@@ -23,6 +23,8 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Knp\Snappy\Pdf;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * @Route("/mail/response")
@@ -39,18 +41,27 @@ class MailResponseController extends AbstractController
 
     private UploaderHelper $vich;
 
+    /** @var Pdf */
+    private $pdf;
+
+    /** @var KernelInterface */
+    private $kernel;
+
 
     public function __construct(
         EventDispatcherInterface $eventDispatcher,
         DatatableFactory $datatableFactory,
         DatatableResponse $datatableResponse,
-        UploaderHelper $vich
+        UploaderHelper $vich,
+        Pdf $pdf, KernelInterface $kernel
     ) {
 
         $this->dispatcher = $eventDispatcher;
         $this->datatableFactory = $datatableFactory;
         $this->datatableResponse = $datatableResponse;
         $this->vich = $vich;
+        $this->pdf = $pdf;
+        $this->kernel = $kernel;
     }
     
 
@@ -77,6 +88,9 @@ class MailResponseController extends AbstractController
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
             $this->datatableResponse->setDatatable($datatable);
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
+            $qb->getQb()
+            ->where('mailresponse.mail =:mail')
+            ->setParameter('mail',$mail);
             
 
             return $this->datatableResponse->getResponse();
@@ -104,9 +118,10 @@ class MailResponseController extends AbstractController
         $datatable->buildDatatable([
             'url' => $this->generateUrl('mail_response_list',[
                 'uuid' => $user->getUuid(),
-                'userGroup' => $userGroup->getId()
+                'userGroup' => $userGroup->getId(),
             ]),
-            'group' => $userGroup->getCourse()
+            'group' => $userGroup->getCourse(),
+            'vich' => $this->vich
         ]);
 
         if($request->isXmlHttpRequest() && $request->isMethod('POST')){
@@ -254,6 +269,34 @@ class MailResponseController extends AbstractController
         ]);
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param MailResponse $response
+     * @return Response
+     * 
+     * @Route("/print/{uuid}", name="mail_response_print", options={"expose" = true}, methods={"GET","POST"})
+     */
+    public function print(MailResponse $response):Response{
+        $web_uploads_Path = $this->kernel->getProjectDir() . '/public/uploads/';
+        $path = 'pdf/';
+        $documento_nombre = 'trabajo.pdf';
+
+        $this->pdf->generateFromHtml(
+            $this->render(
+                'mail/print.html.twig', [
+                    'response' => $response,
+                ]
+            )->getContent(),
+            $web_uploads_Path . $path . $documento_nombre,
+            ['encoding' => 'utf-8'],
+            true);
+            
+            return $this->render('pdf_templates/iframe.html.twig', [
+                'pdf' => '/uploads/' . $path . $documento_nombre,
+            ]);
+    }
+
 
     /**
      * Undocumented function
@@ -355,6 +398,7 @@ class MailResponseController extends AbstractController
             $qb = $this->datatableResponse->getDatatableQueryBuilder();
             $qb
             ->getQb()
+            ->select('user, mail2')
             ->join('user.userGroups', 'groups')
             ->join('groups.mails', 'mail')
             ->join('user.mailResponses', 'response')

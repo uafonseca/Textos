@@ -4,12 +4,11 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
-		<meta
-		name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 		<link rel="shortcut icon" href="img/icons/icon-48x48.png" />
 
-		<title>CONNECT-Cortex | {% block title '' %}</title>
+		<title>CLASSBOOK | {% block title '' %}</title>
 		<link rel="stylesheet" href="https://cdn.datatables.net/v/bs/jszip-2.5.0/pdfmake-0.1.18/dt-1.10.12/b-1.2.2/b-colvis-1.2.2/b-flash-1.2.2/b-html5-1.2.2/b-print-1.2.2/fc-3.2.2/fh-3.1.2/r-2.1.0/datatables.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-daterangepicker/2.1.25/daterangepicker.min.css">
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.1/bootstrap3-editable/css/bootstrap-editable.css">
@@ -32,7 +31,18 @@
 	{{ include('partials/javascripts.html.twig') }}
 	{{ include('partials/flashBagComponent.html.twig') }}
 
-	
+	<script>
+		$(function(){
+			$('.colapse').on('click', function(e){
+				e.preventDefault();
+				if($('#sidebar').hasClass('collapsed')){
+					$('#sidebar').removeClass('collapsed');
+				}else{
+					$('#sidebar').addClass('collapsed');
+				}
+			})
+		})
+	</script>
 	{% block javascripts %}{% endblock %}
 
 

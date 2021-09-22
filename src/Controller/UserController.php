@@ -5,7 +5,11 @@ namespace App\Controller;
 use App\AppEvents;
 use App\Datatables\Tables\UserDatatable;
 use App\Datatables\Tables\UsersGroupDatatable;
+use App\Entity\Book;
+use App\Entity\Mail;
+use App\Entity\MailResponse;
 use App\Entity\Role;
+use App\Entity\Terms;
 use App\Entity\User;
 use App\Entity\UserGroup;
 use App\Event\UserEvent;
@@ -13,6 +17,7 @@ use App\Form\User1Type;
 use App\Form\UserCreationType;
 use App\Form\UserPromoteType;
 use App\Repository\BookRepository;
+use App\Repository\TermsRepository;
 use App\Repository\UserRepository;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 use Exception;
@@ -269,16 +274,61 @@ class UserController extends AbstractController
         ]);
     }
 
+
+    /**
+     * Undocumented function
+     *
+     * @return Response
+     * 
+     * @Route("/students", name="students_list", methods={"POST","GET"})
+     */
+    public function listStudents():Response{
+        $loggedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+        $users = $em->getRepository(User::class)->allUsers($loggedUser);
+
+        return $this->render('user/list.html.twig',[
+            'users' => $users
+        ]);
+    }
+
     /**
      * @Route("/dashboard", name="user_dashboard", methods={"POST","GET"},options={"expose" = true})
-     * 
+     * @IsGranted("IS_AUTHENTICATED_FULLY")
      */
     public function userDashboard(): Response
     {
         $loggedUser = $this->getUser();
+        $em = $this->getDoctrine()->getManager();
+
+        if($this->isGranted('ROLE_PROFESOR')){
+            $groups = $em->getRepository(UserGroup::class)->findByUser($loggedUser);
+
+            $users = $em->getRepository(User::class)->allUsers($loggedUser);
+    
+            $mailsSend = $em->getRepository(Mail::class)->findBySender($loggedUser);
+    
+            $mailsRecieved = $em->getRepository(MailResponse::class)->findToUser($loggedUser);
+        }else{
+            $groups = $em->getRepository(Book::class)->getBooks($loggedUser);
+    
+            $users= [];
+
+            $mailsSend = $em->getRepository(MailResponse::class)->findBy([
+                'User' => $loggedUser
+            ]);
+    
+            $mailsRecieved = $em->getRepository(Mail::class)->findByRecieved($loggedUser);
+        }
+
+        
 
         return $this->render('user/dashboard.html.twig', [
-            'books' => $this->bookRepository->getBooks($loggedUser)
+            'books' => $this->bookRepository->getBooks($loggedUser),
+            'groups' => count($groups),
+            'users' => count($users),
+            'mailsSend' => count($mailsSend),
+            'mailsRecieved' => count($mailsRecieved)
         ]);
     }
     /**
@@ -300,6 +350,7 @@ class UserController extends AbstractController
      *
      * @return Response
      * @Route("/my-class", name="my-class", methods={"POST","GET"},options={"expose" = true})
+     * @IsGranted("ROLE_PROFESOR")
      */
     public function myClass():Response{
         $loggedUser = $this->getUser();
@@ -317,6 +368,7 @@ class UserController extends AbstractController
      * @return Response
      * 
      * @Route("/class/{uuid}", name="show_class", methods={"POST","GET"}, options={"expose" = true})
+     * @IsGranted("ROLE_PROFESOR")
      */
     public function visitClass(UserGroup $userGroup, Request $request):Response{
 
@@ -347,4 +399,5 @@ class UserController extends AbstractController
             'userDatatable' => $usersDatatable
         ]);
     }
+ 
 }

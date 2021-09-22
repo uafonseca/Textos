@@ -1,10 +1,16 @@
 {% set currentPath = path(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) %}
 <nav class="navbar navbar-dark navbar-expand-lg" style="background-color: {{ colors()['primary'] }}; color:white;">
+	<a href="#" style="color: wheat;" class="mr-5 colapse"  data-toggle="push-menu" role="button">
+        <i class="fa fa-list fa-2x"></i>
+    </a>
 	<a class="navbar-brand" href="#">
 		{% if getCompany() is not null and getCompany().visible %}
 			{{ getCompany() }}
 		{% endif %}
 	</a>
+
+	
+	
 	<button class="navbar-toggler collapsed sidebar-toggle" type="button" data-toggle="collapse" data-target="#navbarColor03" aria-controls="navbarColor03" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
@@ -23,10 +29,10 @@
 				class="nav-item">{# <a class="nav-link" href="#">Pricing</a> #}
 			</li>
 			<li
-				class="nav-item">{# <a class="nav-link" href="#">About</a> #}
+				class="nav-item"><a class="nav-link" href="https://inicio.classbook.ec/">Conoce más</a>
 			</li>
 		</ul>
-		<ul class="navbar-nav pull-right">
+		<ul class="navbar-nav pull-right">	
 			<li class="nav-item">
 				{% if getCompany() is not null and getCompany().visible %}
 					<a class="nav-link" href="#">

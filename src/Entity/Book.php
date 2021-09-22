@@ -108,24 +108,26 @@ class Book
     private $userGroups;
 
     /**
-     * @ORM\OneToMany(targetEntity=CourseVsit::class, mappedBy="course")
+     * @ORM\OneToMany(targetEntity=CourseVsit::class, mappedBy="course", cascade={"persist", "remove"})
      */
     private $courseVsits;
 
     /**
-     * @ORM\OneToMany(targetEntity=Certificate::class, mappedBy="course")
+     * @ORM\OneToMany(targetEntity=Certificate::class, mappedBy="course", cascade={"persist", "remove"})
      */
     private $certificates;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $free;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="freeBooks")
+     * @ORM\ManyToMany(targetEntity=User::class, mappedBy="freeBooks")
      */
-    private $user;
+    private $freeUsers;
+
+
 
 
     public function __construct()
@@ -137,6 +139,7 @@ class Book
         $this->userGroups = new ArrayCollection();
         $this->courseVsits = new ArrayCollection();
         $this->certificates = new ArrayCollection();
+        $this->freeUsers = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -470,18 +473,7 @@ class Book
         return $this;
     }
 
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
+   
     /**
      * Undocumented function
      *
@@ -497,4 +489,33 @@ class Book
         }
         return null;
     }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getFreeUsers(): Collection
+    {
+        return $this->freeUsers;
+    }
+
+    public function addFreeUser(User $freeUser): self
+    {
+        if (!$this->freeUsers->contains($freeUser)) {
+            $this->freeUsers[] = $freeUser;
+            $freeUser->addFreeBook($this);
+        }
+
+        return $this;
+    }
+
+    public function removeFreeUser(User $freeUser): self
+    {
+        if ($this->freeUsers->removeElement($freeUser)) {
+            $freeUser->removeFreeBook($this);
+        }
+
+        return $this;
+    }
+
+
 }

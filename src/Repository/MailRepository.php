@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Mail;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -19,22 +20,31 @@ class MailRepository extends ServiceEntityRepository
         parent::__construct($registry, Mail::class);
     }
 
-    // /**
-    //  * @return Mail[] Returns an array of Mail objects
-    //  */
-    /*
-    public function findByExampleField($value)
+    /**
+     * @return Mail[] Returns an array of Mail objects
+     */
+    public function findBySender(User $user)
     {
         return $this->createQueryBuilder('m')
-            ->andWhere('m.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('m.id', 'ASC')
-            ->setMaxResults(10)
+            ->andWhere('m.sender = :user')
+            ->setParameter('user', $user)
             ->getQuery()
             ->getResult()
         ;
     }
-    */
+
+
+    public function findByRecieved(User $user){
+        return $this->createQueryBuilder('m')
+        ->join('m.recipients', 'user')
+        ->andWhere('user = :user')
+        ->setParameter('user', $user)
+        ->getQuery()
+        ->getResult()
+    ;
+    }
+
+    
 
     /*
     public function findOneBySomeField($value): ?Mail

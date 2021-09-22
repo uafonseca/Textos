@@ -79,11 +79,11 @@ class VisitDatatable extends AbstractDatatable
         $this->features->set([
             'processing' => true,
         ]);
-
         
         $columns = ['1','2','3'];
 
         $this->extensions->set(array(
+            'responsive' => true,
             'buttons' => [
                 'create_buttons' => [
                     TableActions::buttonPRINT($columns),

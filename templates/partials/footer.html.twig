@@ -11,17 +11,17 @@
 				</div>
 				<div class="col-6 text-right">
 					<ul class="list-inline">
-						<li class="list-inline-item">
+						{# <li class="list-inline-item">
 							<a class="text-muted" href="#">Support</a>
 						</li>
 						<li class="list-inline-item">
 							<a class="text-muted" href="#">Help Center</a>
+						</li> #}
+						<li class="list-inline-item">
+							<a class="text-muted terms-dialog" href="{{path('terms-and-conditions',{type:'Privacy'})}}">Política de privacidad</a>
 						</li>
 						<li class="list-inline-item">
-							<a class="text-muted terms-dialog" href="{{path('terms-and-conditions',{type:'Privacy'})}}">Privacy</a>
-						</li>
-						<li class="list-inline-item">
-							<a class="text-muted terms-dialog" href="{{path('terms-and-conditions',{type:'terms'})}}">Terms</a>
+							<a class="text-muted terms-dialog" href="{{path('terms-and-conditions',{type:'terms'})}}">Términos</a>
 						</li>
 					</ul>
 				</div>

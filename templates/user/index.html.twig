@@ -7,14 +7,16 @@
 
     <div class="card">
         <div class="card-body">
-        {{ sg_datatables_render_html(datatable) }}
+            <div class="table-responsive">
+                {{ sg_datatables_render_html(usersDatatable) }}
+            </div>
         </div>
     </div>
     {# <a href="{{ path('user_new') }}" class="btn btn-primary"> <i class="fa fa-plus"></i> Adicionar</a> #}
 {% endblock %}
 
 {% block javascripts %}
-    {{ sg_datatables_render_js(datatable) }}
+    {{ sg_datatables_render_js(usersDatatable) }}
     <script type="text/javascript">
         $(document).on('click', '.show-details', function (event) {
 
