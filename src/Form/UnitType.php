@@ -7,7 +7,9 @@ use App\Entity\Unit;
 use App\Form\FileUpload\PdfType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -24,8 +26,10 @@ class UnitType extends AbstractType
                 'class'=> Book::class,
                 'label' => 'Texto'
             ])
-
-            ->add('pdf',PdfType::class)
+            ->add('html5Code',TextareaType::class, [
+                'label' => 'Código HTML5'
+            ])
+            // ->add('pdf',PdfType::class)
 
             // ->add('activities', CollectionType::class,[
             //     'entry_type' => ActivityFormType::class,

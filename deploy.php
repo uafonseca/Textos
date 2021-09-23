@@ -9,7 +9,7 @@ require 'recipe/yarn.php';
 set('lideresv2', 'my_project');
 
 // Project repository
-set('repository', 'https://github.com/uafonseca/lideres.git');
+set('repository', 'https://github.com/uafonseca/Textos.git');
 
 // [Optional] Allocate tty for git clone. Default value is false.
 set('git_tty', false);
@@ -35,18 +35,12 @@ set('ssh_multiplexing', false);
 set('default_timeout', 120000);
 // Hosts
 
-host('classbook.edu')
+
+host('textos')
     ->hostname('172.105.16.81')
     ->set('branch', 'bookdy')
     ->user('deploy')
-    ->set('deploy_path', '/var/www/html/classbook');
-
-
-host('demo')
-    ->hostname('172.105.16.81')
-    ->set('branch', 'bookdy')
-    ->user('deploy')
-    ->set('deploy_path', '/var/www/html/demo_classbook');
+    ->set('deploy_path', '/var/www/html/Textos');
 
 set('release_name', function () {
     return date('YmdHis');

@@ -36,7 +36,7 @@
 													{{ item.name }}
 												</a>
 											</button>
-											{% if item.evaluation is not null %}
+											{# {% if item.evaluation is not null %}
 												<a href="{{ path('evaluation_show', {'uuid': item.evaluation.uuid}) }}" style="background-color: {{ colors()['info'] }}; color:white;" class="btn btn-sm pull-right ml-3 mt-1">
 													<i class="fa fa-graduation-cap"></i>
 													Evaluación
@@ -50,10 +50,10 @@
 											<a href="{{ path('show_details', {'uuid': item.uuid }) }}" class="btn btn-sm btn-info pull-right ml-3 mt-1" data-tippy-content="Detalles de la unidad">
 												<i class="fa fa-info-circle" aria-hidden="true"></i>
 												Modo completo
-											</a>
+											</a> #}
 										</h5>
 									</div>
-									<div id="e{{ item.id }}" class="collapse" aria-labelledby="heading-{{ item.uuid }}" data-parent="#accordion">
+									{# <div id="e{{ item.id }}" class="collapse" aria-labelledby="heading-{{ item.uuid }}" data-parent="#accordion">
 										<div class="card-body">
 											<table class="table table-bordered">
 												<thead>
@@ -105,11 +105,11 @@
 											</table>
 
 										</div>
-									</div>
+									</div> #}
 								</div>
 							{% endfor %}
 						</div>
-						<div class="card">
+						{# <div class="card">
 							<div class="card-header">
 								<h3>
 									<strong>Introducción</strong>
@@ -138,7 +138,7 @@
 							<div class="card-body">
 								{{ book.metadata ? book.metadata.aboutAuthor|raw : '' }}
 							</div>
-						</div>
+						</div> #}
 					</div>
 					<div class="col-md-4">
 						<div class="card">

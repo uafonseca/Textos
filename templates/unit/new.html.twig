@@ -1,57 +1,61 @@
 {% extends 'layout.html.twig' %}
-{% form_theme form 'bootstrap_4_layout.html.twig' 'jquery.collection.html.twig' 'theme_templates/theme.unit.html.twig' %}
+{% form_theme form 'bootstrap_4_layout.html.twig' 'jquery.collection.html.twig' 'theme_templates/theme.unit.html.twig'
+%}
 {% import "macros/card-macro.html.twig" as card_macro %}
 {% block stylesheets %}
-	<style type="text/css">
-		.file-default-preview {
-			height: 248px !important;
-		}
-	</style>
+<style type="text/css">
+	.file-default-preview {
+		height: 248px !important;
+	}
+</style>
 {% endblock %}
 {% block title %}New Unit
 {% endblock %}
 {% block body %}
 
-	{{ form_start(form) }}
-	{{card_macro.card_title('<h2><i class="fa fa-plus-circle"> </i> Adicionar unidad</h2>')}}
+{{ form_start(form) }}
+{{card_macro.card_title('<h2><i class="fa fa-plus-circle"> </i> Adicionar unidad</h2>')}}
 
-	<div class="card">
-		<div class="card-body">
-			<div class="row">
-				<div class="col-md-4 mb-3">
-					<div class="col-md-12 mb-3">
-						{{ form_row(form.pdf) }}
-					</div>
-				</div>
-				<div class="col-md-8 mb-3 pt-5">
-					<div class="col-md-12 mb-3">
+<div class="card">
+	<div class="card-body">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="row">
+					<div class="col-md-6 mb-3">
 						{{ form_row(form.name) }}
 					</div>
-					<div class="col-md-12 mb-3">
+					<div class="col-md-6 mb-3">
 						{{ form_row(form.book) }}
 					</div>
+				</div>
+				<div class="row">
 					<div class="col-md-12 mb-3">
-						<button class="btn"  style="background-color: {{ colors()['primary'] }}; color:white;">
-								<i class="fa fa-plus-circle"></i>
-								{{ button_label|default('Guardar') }}
-							</button>
-
-							<a href="{{ path('unit_index') }}" class="btn" style="background-color: {{ colors()['secondary'] }}; color:white;">
-								<i class="fa fa-arrow-left"></i>
-								Regresar
-							</a>
+						{{ form_row(form.html5Code) }}
 					</div>
 				</div>
+				<div class="col-md-12 mb-3">
+					<button class="btn" style="background-color: {{ colors()['primary'] }}; color:white;">
+						<i class="fa fa-plus-circle"></i>
+						{{ button_label|default('Guardar') }}
+					</button>
 
+					<a href="{{ path('unit_index') }}" class="btn"
+						style="background-color: {{ colors()['secondary'] }}; color:white;">
+						<i class="fa fa-arrow-left"></i>
+						Regresar
+					</a>
+				</div>
 			</div>
+
 		</div>
 	</div>
-	{{ form_end(form) }}
+</div>
+{{ form_end(form) }}
 
 {% endblock %}
 {% block javascripts %}
-	<script>
-		const image_url_defaultPreview = '';
-	</script>
-	{{ encore_entry_script_tags('unit.form') }}
+<script>
+	const image_url_defaultPreview = '';
+</script>
+{{ encore_entry_script_tags('unit.form') }}
 {% endblock %}

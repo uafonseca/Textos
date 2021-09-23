@@ -42,6 +42,10 @@ class Unit
      */
     private $pdf;
 
+   /**
+     * @ORM\Column(type="text", nullable = true)
+     */
+    private $html5Code;
     /**
      * @ORM\OneToMany(targetEntity=Activity::class, mappedBy="unit", orphanRemoval=true,cascade={"persist"})
      */
@@ -144,6 +148,26 @@ class Unit
     public function setEvaluation(?Evaluation $evaluation): self
     {
         $this->evaluation = $evaluation;
+
+        return $this;
+    }
+
+    /**
+     * Get the value of html5Code
+     */ 
+    public function getHtml5Code()
+    {
+        return $this->html5Code;
+    }
+
+    /**
+     * Set the value of html5Code
+     *
+     * @return  self
+     */ 
+    public function setHtml5Code($html5Code)
+    {
+        $this->html5Code = $html5Code;
 
         return $this;
     }
