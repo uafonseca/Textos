@@ -38,7 +38,7 @@ set('default_timeout', 120000);
 
 host('textos')
     ->hostname('172.105.16.81')
-    ->set('branch', 'bookdy')
+    ->set('branch', 'main')
     ->user('deploy')
     ->set('deploy_path', '/var/www/html/Textos');
 

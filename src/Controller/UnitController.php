@@ -112,8 +112,11 @@ class UnitController extends AbstractController
      */
     public function show(Unit $unit): Response
     {
+        $iframe = preg_replace('/(<[^>]+) style=".*?"/i', '$1', $unit->getHtml5Code());
+
         return $this->render('unit/show.html.twig', [
             'unit' => $unit,
+            'iframe' => $iframe
         ]);
     }
 
